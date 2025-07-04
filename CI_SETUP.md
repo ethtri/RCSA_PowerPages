@@ -25,7 +25,8 @@ The workflow is defined in `.github/workflows/power-pages-ci.yml` and includes:
   - Checkout code
   - Install Power Platform CLI
   - Authenticate to Power Platform
-  - Upload Power Pages changes
+  - Upload Power Pages using the `upload-paportal@v1` action
+  - Publish the site with `pac paportal publish`
   - Notify on success/failure
 
 ### 3. How It Works
@@ -33,7 +34,7 @@ The workflow is defined in `.github/workflows/power-pages-ci.yml` and includes:
 1. **Developer pushes changes** to main branch
 2. **GitHub Actions triggers** the workflow
 3. **Workflow authenticates** to Power Platform
-4. **Changes are uploaded** to Power Pages site
+4. **Site content is uploaded and published** automatically
 5. **Notifications** confirm success or failure
 
 ### 4. Security Best Practices

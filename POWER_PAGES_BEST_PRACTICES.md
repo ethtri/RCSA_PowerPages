@@ -29,10 +29,10 @@ pac auth list
 pac auth select --index 1
 
 # Site Management
-pac pages list -v                                    # Show data model versions
-pac pages download --path . --modelVersion 2         # Download with enhanced model
-pac pages upload --path . --modelVersion 2           # Upload changes
-pac pages upload --path . --deploymentProfile prod   # Environment-specific deployment
+pac paportal list -v                                  # Show data model versions
+pac paportal download --path . --modelVersion 2       # Download with enhanced model
+pac paportal upload --path . --modelVersion 2         # Upload changes
+pac paportal upload --path . --deploymentProfile prod # Environment-specific deployment
 ```
 
 ### Enhanced Data Model (v2) Benefits
@@ -384,12 +384,12 @@ pac auth list
 pac auth select --index 1
 
 # Development Workflow
-pac pages download --path . --modelVersion 2
+pac paportal download --path . --modelVersion 2
 # Make changes...
-pac pages upload --path . --modelVersion 2
+pac paportal upload --path . --modelVersion 2
 
 # Production Deployment
-pac pages upload --path . --deploymentProfile prod --modelVersion 2
+pac paportal upload --path . --deploymentProfile prod --modelVersion 2
 ```
 
 ### Common File Locations
