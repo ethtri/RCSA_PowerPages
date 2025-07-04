@@ -1,4 +1,4 @@
-<!-- RCSA Process Selection - First Citizens Bank -->
+<!-- RCSA Process Selection - CapTech Consulting -->
 <!-- Step 1 of 4: Select Business Unit and Process -->
 
 <link rel="stylesheet" href="~/rcsa-styles.css">
@@ -39,6 +39,9 @@
                 </p>
             </div>
             <div class="fcb-col-4 fcb-text-right">
+                <div class="captech-logo-container fcb-mb-3">
+                    <img src="~/captech-logo.png" alt="CapTech Consulting" class="captech-logo" />
+                </div>
                 <div class="fcb-badge fcb-badge-primary">
                     <i class="fas fa-clock"></i> ~8 minutes
                 </div>
@@ -81,10 +84,10 @@
                                 {% endfor %}
                             {% else %}
                                 <!-- Fallback options for testing when no data exists -->
-                                <option value="retail-banking" data-description="Consumer banking, mortgages, and personal loans">Retail Banking</option>
-                                <option value="commercial-banking" data-description="Business banking and commercial lending">Commercial Banking</option>
-                                <option value="wealth-management" data-description="Investment services and wealth advisory">Wealth Management</option>
-                                <option value="operations" data-description="Technology, operations, and support functions">Operations & Technology</option>
+                                <option value="consulting-services" data-description="Client consulting and advisory services">Consulting Services</option>
+                                <option value="technology-solutions" data-description="Technology implementation and digital transformation">Technology Solutions</option>
+                                <option value="data-analytics" data-description="Data science and analytics consulting">Data & Analytics</option>
+                                <option value="operations" data-description="Internal operations and support functions">Operations & Technology</option>
                                 <option value="risk-compliance" data-description="Risk management and regulatory compliance">Risk & Compliance</option>
                                 <option value="human-resources" data-description="Talent management and organizational development">Human Resources</option>
                             {% endif %}
@@ -392,61 +395,61 @@ class ProcessSelection {
     getProcessData() {
         // This would typically come from Dataverse, but providing fallback data for testing
         return {
-            'retail-banking': [
+            'consulting-services': [
                 {
-                    id: 'loan-origination',
-                    name: 'Loan Origination',
-                    description: 'End-to-end loan application, underwriting, and approval process',
+                    id: 'client-onboarding',
+                    name: 'Client Onboarding',
+                    description: 'End-to-end client intake, assessment, and project initiation process',
                     criticality: 'High',
                     estimatedTime: 12,
                     riskCount: 8
                 },
                 {
-                    id: 'account-opening',
-                    name: 'Account Opening',
-                    description: 'New customer onboarding and account setup procedures',
-                    criticality: 'Medium',
-                    estimatedTime: 8,
-                    riskCount: 5
-                },
-                {
-                    id: 'payment-processing',
-                    name: 'Payment Processing',
-                    description: 'Electronic payment processing and settlement',
-                    criticality: 'High',
-                    estimatedTime: 10,
-                    riskCount: 12
-                },
-                {
-                    id: 'customer-service',
-                    name: 'Customer Service',
-                    description: 'Customer support and issue resolution processes',
-                    criticality: 'Medium',
-                    estimatedTime: 6,
-                    riskCount: 4
-                }
-            ],
-            'commercial-banking': [
-                {
-                    id: 'commercial-lending',
-                    name: 'Commercial Lending',
-                    description: 'Business loan underwriting and portfolio management',
+                    id: 'project-delivery',
+                    name: 'Project Delivery',
+                    description: 'Project execution, milestone tracking, and deliverable management',
                     criticality: 'High',
                     estimatedTime: 15,
                     riskCount: 10
                 },
                 {
-                    id: 'treasury-services',
-                    name: 'Treasury Services',
-                    description: 'Cash management and treasury solutions for businesses',
-                    criticality: 'High',
-                    estimatedTime: 12,
-                    riskCount: 7
+                    id: 'knowledge-transfer',
+                    name: 'Knowledge Transfer',
+                    description: 'Client training and knowledge handover procedures',
+                    criticality: 'Medium',
+                    estimatedTime: 8,
+                    riskCount: 5
                 },
                 {
-                    id: 'trade-finance',
-                    name: 'Trade Finance',
-                    description: 'Letters of credit and international trade financing',
+                    id: 'client-support',
+                    name: 'Client Support',
+                    description: 'Ongoing client support and issue resolution processes',
+                    criticality: 'Medium',
+                    estimatedTime: 6,
+                    riskCount: 4
+                }
+            ],
+            'technology-solutions': [
+                {
+                    id: 'solution-architecture',
+                    name: 'Solution Architecture',
+                    description: 'Technology solution design and architecture planning',
+                    criticality: 'High',
+                    estimatedTime: 15,
+                    riskCount: 10
+                },
+                {
+                    id: 'system-integration',
+                    name: 'System Integration',
+                    description: 'Integration of technology systems and data migration',
+                    criticality: 'High',
+                    estimatedTime: 18,
+                    riskCount: 12
+                },
+                {
+                    id: 'deployment-management',
+                    name: 'Deployment Management',
+                    description: 'Software deployment and go-live support processes',
                     criticality: 'High',
                     estimatedTime: 14,
                     riskCount: 9

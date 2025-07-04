@@ -1,14 +1,19 @@
 /* RCSA Power Pages Design System */
-/* First Citizens Bank Risk and Compliance Assessment */
+/* CapTech Risk and Compliance Assessment */
 
 /* ============================================
    CSS VARIABLES - Design Tokens
    ============================================ */
 :root {
-  /* Primary Colors */
-  --fcb-primary: #0066CC;
-  --fcb-primary-light: #3385D6;
-  --fcb-primary-dark: #004499;
+  /* Primary Colors - CapTech Branding */
+  --captech-primary: #FEA002;
+  --captech-primary-light: #FFB347;
+  --captech-primary-dark: #E6900A;
+  
+  /* Legacy FCB variables for compatibility */
+  --fcb-primary: #FEA002;
+  --fcb-primary-light: #FFB347;
+  --fcb-primary-dark: #E6900A;
   
   /* Status Colors */
   --fcb-success: #28A745;
@@ -769,6 +774,25 @@ body {
 .entity-form .form-control:focus {
   border-color: var(--fcb-primary);
   box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);
+}
+
+/* CapTech Branding */
+.captech-logo-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.captech-logo {
+  max-height: 60px;
+  max-width: 200px;
+  height: auto;
+  width: auto;
+  filter: brightness(0) invert(1); /* Makes logo white for dark backgrounds */
+}
+
+.captech-logo-dark {
+  filter: none; /* Normal logo for light backgrounds */
 }
 
 /* Custom RCSA Page Styles */
