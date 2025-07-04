@@ -1,0 +1,9 @@
+adx_entityname: cr129_riskctrl
+adx_entitypermissionid: 77777777-7777-7777-7777-777777777777
+adx_name: RiskCtrl
+adx_read: true
+adx_write: true
+adx_create: true
+adx_scope: 1
+adx_webroles:
+  - 439a903c-bf6a-492c-b905-cbbbce3612e3 

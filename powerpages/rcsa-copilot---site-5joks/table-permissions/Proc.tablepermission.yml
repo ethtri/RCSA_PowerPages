@@ -1,0 +1,7 @@
+adx_entityname: cr129_proc
+adx_entitypermissionid: 22222222-2222-2222-2222-222222222222
+adx_name: Proc
+adx_read: true
+adx_scope: 1
+adx_webroles:
+  - 439a903c-bf6a-492c-b905-cbbbce3612e3 

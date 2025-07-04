@@ -1,0 +1,7 @@
+adx_entityname: cr129_bu
+adx_entitypermissionid: 11111111-1111-1111-1111-111111111111
+adx_name: BU
+adx_read: true
+adx_scope: 1
+adx_webroles:
+  - 439a903c-bf6a-492c-b905-cbbbce3612e3 

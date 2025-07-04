@@ -150,6 +150,19 @@ adx_entityformmetadata:
   DisplayName: simple contact us form comments
   CheckSum: e73dca5fe9406210aea3a8cdec9752d2b5a308f9e285c154f1a089f18988cb4b
   IsDeleted: false
+adx_entitylist:
+- RecordId: a6c0144e-3a67-44fd-9f80-7224f8bd76aa
+  DisplayName: risks
+  CheckSum: ae59733762a84d8f0201f7bf8f718df0d57322740f9cbfa66ed613cdca4b54a5
+  IsDeleted: false
+- RecordId: cad7dc64-cc97-425a-a644-b7ff0d73d3a9
+  DisplayName: Ctrl
+  CheckSum: 5fed9e62429884725653026ed701b25be5184989447ba5c886373e7af45b8948
+  IsDeleted: false
+- RecordId: cc91ec03-4df0-4177-b4d1-7f4b6049df3e
+  DisplayName: Active Assesses
+  CheckSum: 2a1fb90136f512b8c62168c48286d674dcfcd0b56cd06395d02347c6ce1260df
+  IsDeleted: false
 adx_entitypermission:
 - RecordId: 8b738b00-4bbf-46b0-a0e8-3c773be64bd4
   DisplayName: Feedback
@@ -663,7 +676,7 @@ adx_webpage:
   IsDeleted: false
 - RecordId: 439a903c-bf6a-492c-b905-cbbbce3612e3
   DisplayName: Home
-  CheckSum: 678e6a2557947ad60239dca7c15762a8a0f0ede7687e6553c7f287087679d94b
+  CheckSum: 28a7fff73b87ad7c41ce9aaa8cfe03ce278b06190bea96cf190efa882f0b570d
   IsDeleted: false
 - RecordId: 4aa07a28-56a0-40e7-976a-9cdbdfb06059
   DisplayName: Search
@@ -683,11 +696,15 @@ adx_webpage:
   IsDeleted: false
 - RecordId: 71b56528-503d-999a-5458-007fbde737a9
   DisplayName: Dashboard
-  CheckSum: 1a6e7faed07aaa002446b3b62642671d3482b8f0d9e10a50e422ffebe9ac2e06
+  CheckSum: 0b86354c9f1651599c8f2579566340a133cc2c3c64ae14ff692c29f0793c6a30
   IsDeleted: false
 - RecordId: 7b5843e4-6359-4927-b25b-2074482502fd
   DisplayName: Default Offline Page
   CheckSum: fd1d8e51aaa81f6508098403991073623587135c9c4f69003f899f8dcfc9cc76
+  IsDeleted: false
+- RecordId: 822179af-5b2c-1dbf-1c4c-986a1c81d513
+  DisplayName: ALLDATATABLES
+  CheckSum: a7fb0614f5c7878ca45424340841d35899075bb580e0c2eeb69a0f0fa941d979
   IsDeleted: false
 - RecordId: 8458ee77-c431-481d-9c0f-df60f18835fd
   DisplayName: Default Offline Page
@@ -747,7 +764,11 @@ adx_webpage:
   IsDeleted: false
 - RecordId: db1fdd34-c351-40ca-9c10-d00a837ef981
   DisplayName: Home
-  CheckSum: 2ee0f7faca1ce080a6253a8215fa80203db885a4f86d6e7677283bec323b301e
+  CheckSum: 2c8ccb24031d0e912f033c9bec76c2518eec66aa8d0831805e49f389223cd20e
+  IsDeleted: false
+- RecordId: dd36c0c1-b95c-8499-02ff-c15288c5e2eb
+  DisplayName: ALLDATATABLES
+  CheckSum: 0e2dff42181f3db4c76c715323c6af370403349bd6e06881b35adf51a4806afa
   IsDeleted: false
 - RecordId: f58d123f-9070-16be-daa1-7e7aecefe1a7
   DisplayName: Residual Risk Assessment
@@ -755,7 +776,7 @@ adx_webpage:
   IsDeleted: false
 - RecordId: f594e41c-28c5-7edb-b81e-df3e6c7385a0
   DisplayName: Risk Identification
-  CheckSum: 6710b893b649e993d46a186d1bdced1b599f9ba836b5793f2fa0237a358df887
+  CheckSum: 517df89c64834d476f7a2e708f9d2473e9dd8705a5071aed83621b88a81c560d
   IsDeleted: false
 - RecordId: fae4cb27-53be-454d-a07b-c02f0580838c
   DisplayName: Access Denied
