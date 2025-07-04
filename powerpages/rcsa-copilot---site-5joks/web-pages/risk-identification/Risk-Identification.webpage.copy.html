@@ -382,66 +382,66 @@ class RiskIdentification {
         
         // Mock AI suggestions based on process and business unit
         const suggestions = {
-            'client-onboarding': [
+            'loan-origination': [
                 {
-                    name: 'Incomplete Requirements Gathering',
-                    category: 'operational',
-                    description: 'Inadequate client requirements analysis leading to project scope creep and budget overruns.',
-                    likelihood: 4,
-                    impact: 4,
-                    rationale: 'Common in consulting engagements where client needs are not fully understood upfront.'
-                },
-                {
-                    name: 'Data Privacy Compliance Failure',
-                    category: 'compliance',
-                    description: 'Mishandling of client data during onboarding violating privacy regulations.',
-                    likelihood: 2,
-                    impact: 5,
-                    rationale: 'Data privacy regulations are increasingly stringent with severe penalties.'
-                },
-                {
-                    name: 'Stakeholder Misalignment',
-                    category: 'strategic',
-                    description: 'Key stakeholders not aligned on project objectives and success criteria.',
+                    name: 'Credit Risk Assessment Inadequacy',
+                    category: 'credit',
+                    description: 'Insufficient credit analysis leading to loan defaults and financial losses.',
                     likelihood: 3,
                     impact: 4,
-                    rationale: 'Stakeholder alignment is critical for project success in consulting engagements.'
-                }
-            ],
-            'project-delivery': [
+                    rationale: 'Common in loan origination processes, especially with complex financial products.'
+                },
                 {
-                    name: 'Resource Allocation Mismatch',
-                    category: 'operational',
-                    description: 'Inadequate resource planning leading to project delays and quality issues.',
+                    name: 'Documentation Compliance Failure',
+                    category: 'compliance',
+                    description: 'Missing or incomplete loan documentation violating regulatory requirements.',
                     likelihood: 4,
                     impact: 3,
-                    rationale: 'Resource constraints are common in consulting projects with tight timelines.'
+                    rationale: 'Regulatory compliance is critical in banking, with frequent documentation requirements.'
                 },
                 {
-                    name: 'Technology Integration Failure',
-                    category: 'technology',
-                    description: 'System integration issues causing project delays and client dissatisfaction.',
+                    name: 'Identity Verification Bypass',
+                    category: 'operational',
+                    description: 'Fraudulent applications due to inadequate identity verification processes.',
+                    likelihood: 2,
+                    impact: 4,
+                    rationale: 'Identity fraud is a persistent threat in financial services.'
+                }
+            ],
+            'account-opening': [
+                {
+                    name: 'KYC Process Failure',
+                    category: 'compliance',
+                    description: 'Inadequate Know Your Customer procedures leading to regulatory violations.',
                     likelihood: 3,
                     impact: 4,
-                    rationale: 'Complex technology integrations often have unexpected challenges.'
+                    rationale: 'KYC is fundamental to banking compliance and anti-money laundering efforts.'
+                },
+                {
+                    name: 'System Integration Errors',
+                    category: 'technology',
+                    description: 'Data synchronization issues between account opening and core banking systems.',
+                    likelihood: 3,
+                    impact: 3,
+                    rationale: 'Complex system integrations often have failure points.'
                 }
             ],
             'default': [
                 {
-                    name: 'Project Delivery Delays',
+                    name: 'Operational Process Breakdown',
                     category: 'operational',
-                    description: 'Process inefficiencies leading to project delays and client dissatisfaction.',
+                    description: 'Process inefficiencies leading to service disruptions and customer dissatisfaction.',
                     likelihood: 3,
                     impact: 3,
-                    rationale: 'Common operational risk across all consulting engagements.'
+                    rationale: 'Common operational risk across all banking processes.'
                 },
                 {
-                    name: 'Client Data Security Breach',
+                    name: 'Regulatory Compliance Gap',
                     category: 'compliance',
-                    description: 'Failure to protect client data resulting in regulatory penalties and reputation damage.',
+                    description: 'Failure to meet regulatory requirements resulting in penalties and sanctions.',
                     likelihood: 2,
                     impact: 4,
-                    rationale: 'Consulting firms handle sensitive client data requiring strong security measures.'
+                    rationale: 'Banking industry faces extensive regulatory oversight.'
                 }
             ]
         };
@@ -651,22 +651,22 @@ class RiskIdentification {
     // Utility methods
     getProcessName(processId) {
         const processNames = {
-            'client-onboarding': 'Client Onboarding',
-            'project-delivery': 'Project Delivery',
-            'system-integration': 'System Integration',
-            'data-migration': 'Data Migration',
-            'business-analysis': 'Business Analysis',
-            'change-management': 'Change Management',
-            'quality-assurance': 'Quality Assurance'
+            'loan-origination': 'Loan Origination',
+            'account-opening': 'Account Opening',
+            'payment-processing': 'Payment Processing',
+            'customer-service': 'Customer Service',
+            'commercial-lending': 'Commercial Lending',
+            'treasury-services': 'Treasury Services',
+            'trade-finance': 'Trade Finance'
         };
         return processNames[processId] || 'Selected Process';
     }
 
     getBusinessUnitName(businessUnitId) {
         const businessUnitNames = {
-            'consulting-services': 'Consulting Services',
-            'technology-solutions': 'Technology Solutions',
-            'data-analytics': 'Data & Analytics',
+            'retail-banking': 'Retail Banking',
+            'commercial-banking': 'Commercial Banking',
+            'wealth-management': 'Wealth Management',
             'operations': 'Operations & Technology',
             'risk-compliance': 'Risk & Compliance',
             'human-resources': 'Human Resources'
