@@ -26,7 +26,7 @@ jobs:
         
     - name: Upload Power Pages
       run: |
-        cd rcsa-copilot---site-5joks
+        cd powerpages/rcsa-copilot---site-5joks
         pac pages upload --path . --modelVersion 2
       shell: pwsh
       
