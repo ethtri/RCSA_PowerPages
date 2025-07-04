@@ -1,0 +1,498 @@
+<!-- Include Bootstrap 5 and Modern Enhancements -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/logicgate-design-system.css">
+<link rel="stylesheet" href="/bootstrap-5-upgrades.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/logicgate-components.js"></script>
+<script src="/modern-interactions.js"></script>
+
+<!-- Risk Assessment List - Modern Card Grid -->
+<main class="lg-page">
+  <!-- Page Header -->
+  <div class="container-fluid py-4">
+    <div class="row align-items-center">
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-2">
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Risk Assessments</li>
+          </ol>
+        </nav>
+        <h1 class="h2 mb-1">Risk Assessments</h1>
+        <p class="text-muted mb-0">Manage and monitor your organization's risk assessment activities</p>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-primary" onclick="riskAssessmentUI.createNewAssessment()">
+          <i class="bi bi-plus-circle me-2"></i>
+          New Assessment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters and Search -->
+  <div class="container-fluid pb-4">
+    <div class="card card-modern">
+      <div class="card-body">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-4">
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bi bi-search"></i>
+              </span>
+              <input type="text" class="form-control" placeholder="Search assessments..." id="searchInput">
+            </div>
+          </div>
+          <div class="col-md-2">
+            <select class="form-select" id="statusFilter">
+              <option value="">All Status</option>
+              <option value="draft">Draft</option>
+              <option value="in-progress">In Progress</option>
+              <option value="review">Under Review</option>
+              <option value="approved">Approved</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <select class="form-select" id="riskLevelFilter">
+              <option value="">All Risk Levels</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <select class="form-select" id="processFilter">
+              <option value="">All Processes</option>
+              <option value="financial">Financial Reporting</option>
+              <option value="operational">Operational</option>
+              <option value="compliance">Compliance</option>
+              <option value="strategic">Strategic</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <div class="btn-group w-100" role="group">
+              <input type="radio" class="btn-check" name="viewType" id="gridView" autocomplete="off" checked>
+              <label class="btn btn-outline-secondary" for="gridView">
+                <i class="bi bi-grid-3x3-gap"></i>
+              </label>
+              <input type="radio" class="btn-check" name="viewType" id="listView" autocomplete="off">
+              <label class="btn btn-outline-secondary" for="listView">
+                <i class="bi bi-list"></i>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk Actions Bar (Hidden by default) -->
+  <div class="container-fluid pb-3">
+    <div class="bulk-actions" style="display: none;">
+      <div class="card card-modern border-primary">
+        <div class="card-body py-2">
+          <div class="row align-items-center">
+            <div class="col">
+              <span class="fw-semibold text-primary">
+                <span class="selected-count">0</span> assessments selected
+              </span>
+            </div>
+            <div class="col-auto">
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-primary" onclick="riskAssessmentUI.bulkSubmit()">
+                  Submit Selected
+                </button>
+                <button class="btn btn-outline-success" onclick="riskAssessmentUI.bulkApprove()">
+                  Approve Selected
+                </button>
+                <button class="btn btn-outline-danger" onclick="riskAssessmentUI.bulkDelete()">
+                  Delete Selected
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk Assessment Grid -->
+  <div class="container-fluid">
+    <div class="risk-grid" id="assessmentGrid">
+      
+      <!-- Risk Assessment Card 1 -->
+      <div class="risk-card risk-high" data-risk-id="RA-2024-001" data-assessment-id="assess-001">
+        <div class="position-absolute top-0 end-0 p-2">
+          <input type="checkbox" class="form-check-input" id="check-001">
+        </div>
+        <div class="risk-card-header">
+          <div class="risk-card-title">Financial Reporting Controls Assessment</div>
+          <div class="risk-card-meta">
+            <span class="badge bg-secondary">RA-2024-001</span>
+            <span class="text-muted">Financial Reporting</span>
+            <span class="text-muted">•</span>
+            <span class="text-muted">Updated 2 days ago</span>
+          </div>
+        </div>
+        <div class="risk-card-body">
+          <p class="text-muted mb-3 text-truncate-2">
+            Comprehensive assessment of financial reporting controls including SOX compliance, 
+            revenue recognition processes, and internal financial controls effectiveness.
+          </p>
+          <div class="risk-card-actions">
+            <div class="d-flex align-items-center gap-2">
+              <span class="risk-pill risk-high">High Risk</span>
+              <span class="status-indicator status-review">Under Review</span>
+            </div>
+            <div class="d-flex gap-1">
+              <button class="btn btn-sm btn-outline-primary" onclick="riskAssessmentUI.openRiskDetails('RA-2024-001')" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-success submit-btn" onclick="riskAssessmentUI.submitAssessment('assess-001')" title="Submit">
+                <i class="bi bi-check-circle"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Risk Assessment Card 2 -->
+      <div class="risk-card risk-medium" data-risk-id="RA-2024-002" data-assessment-id="assess-002">
+        <div class="position-absolute top-0 end-0 p-2">
+          <input type="checkbox" class="form-check-input" id="check-002">
+        </div>
+        <div class="risk-card-header">
+          <div class="risk-card-title">Cybersecurity Risk Assessment</div>
+          <div class="risk-card-meta">
+            <span class="badge bg-secondary">RA-2024-002</span>
+            <span class="text-muted">Operational</span>
+            <span class="text-muted">•</span>
+            <span class="text-muted">Updated 1 week ago</span>
+          </div>
+        </div>
+        <div class="risk-card-body">
+          <p class="text-muted mb-3 text-truncate-2">
+            Evaluation of cybersecurity controls, threat detection capabilities, 
+            incident response procedures, and data protection measures.
+          </p>
+          <div class="risk-card-actions">
+            <div class="d-flex align-items-center gap-2">
+              <span class="risk-pill risk-medium">Medium Risk</span>
+              <span class="status-indicator status-in-progress">In Progress</span>
+            </div>
+            <div class="d-flex gap-1">
+              <button class="btn btn-sm btn-outline-primary" onclick="riskAssessmentUI.openRiskDetails('RA-2024-002')" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-warning" onclick="riskAssessmentUI.continueAssessment('assess-002')" title="Continue">
+                <i class="bi bi-play-circle"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Risk Assessment Card 3 -->
+      <div class="risk-card risk-low" data-risk-id="RA-2024-003" data-assessment-id="assess-003">
+        <div class="position-absolute top-0 end-0 p-2">
+          <input type="checkbox" class="form-check-input" id="check-003">
+        </div>
+        <div class="risk-card-header">
+          <div class="risk-card-title">Vendor Management Assessment</div>
+          <div class="risk-card-meta">
+            <span class="badge bg-secondary">RA-2024-003</span>
+            <span class="text-muted">Compliance</span>
+            <span class="text-muted">•</span>
+            <span class="text-muted">Updated yesterday</span>
+          </div>
+        </div>
+        <div class="risk-card-body">
+          <p class="text-muted mb-3 text-truncate-2">
+            Assessment of third-party vendor risk management processes, 
+            contract compliance monitoring, and vendor security controls.
+          </p>
+          <div class="risk-card-actions">
+            <div class="d-flex align-items-center gap-2">
+              <span class="risk-pill risk-low">Low Risk</span>
+              <span class="status-indicator status-approved">Approved</span>
+            </div>
+            <div class="d-flex gap-1">
+              <button class="btn btn-sm btn-outline-primary" onclick="riskAssessmentUI.openRiskDetails('RA-2024-003')" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-info" onclick="riskAssessmentUI.generateReport('assess-003')" title="Generate Report">
+                <i class="bi bi-file-earmark-text"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Risk Assessment Card 4 -->
+      <div class="risk-card risk-critical" data-risk-id="RA-2024-004" data-assessment-id="assess-004">
+        <div class="position-absolute top-0 end-0 p-2">
+          <input type="checkbox" class="form-check-input" id="check-004">
+        </div>
+        <div class="risk-card-header">
+          <div class="risk-card-title">Regulatory Compliance Assessment</div>
+          <div class="risk-card-meta">
+            <span class="badge bg-secondary">RA-2024-004</span>
+            <span class="text-muted">Compliance</span>
+            <span class="text-muted">•</span>
+            <span class="text-muted">Updated 3 hours ago</span>
+          </div>
+        </div>
+        <div class="risk-card-body">
+          <p class="text-muted mb-3 text-truncate-2">
+            Critical assessment of regulatory compliance across multiple jurisdictions 
+            including GDPR, SOX, and industry-specific regulations.
+          </p>
+          <div class="risk-card-actions">
+            <div class="d-flex align-items-center gap-2">
+              <span class="risk-pill risk-critical">Critical Risk</span>
+              <span class="status-indicator status-draft">Draft</span>
+            </div>
+            <div class="d-flex gap-1">
+              <button class="btn btn-sm btn-outline-primary" onclick="riskAssessmentUI.openRiskDetails('RA-2024-004')" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-warning" onclick="riskAssessmentUI.continueAssessment('assess-004')" title="Continue">
+                <i class="bi bi-play-circle"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Risk Assessment Card 5 -->
+      <div class="risk-card risk-medium" data-risk-id="RA-2024-005" data-assessment-id="assess-005">
+        <div class="position-absolute top-0 end-0 p-2">
+          <input type="checkbox" class="form-check-input" id="check-005">
+        </div>
+        <div class="risk-card-header">
+          <div class="risk-card-title">Business Continuity Planning</div>
+          <div class="risk-card-meta">
+            <span class="badge bg-secondary">RA-2024-005</span>
+            <span class="text-muted">Strategic</span>
+            <span class="text-muted">•</span>
+            <span class="text-muted">Updated 5 days ago</span>
+          </div>
+        </div>
+        <div class="risk-card-body">
+          <p class="text-muted mb-3 text-truncate-2">
+            Evaluation of business continuity and disaster recovery plans, 
+            including crisis management procedures and recovery time objectives.
+          </p>
+          <div class="risk-card-actions">
+            <div class="d-flex align-items-center gap-2">
+              <span class="risk-pill risk-medium">Medium Risk</span>
+              <span class="status-indicator status-approved">Approved</span>
+            </div>
+            <div class="d-flex gap-1">
+              <button class="btn btn-sm btn-outline-primary" onclick="riskAssessmentUI.openRiskDetails('RA-2024-005')" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-info" onclick="riskAssessmentUI.generateReport('assess-005')" title="Generate Report">
+                <i class="bi bi-file-earmark-text"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Risk Assessment Card 6 -->
+      <div class="risk-card risk-high" data-risk-id="RA-2024-006" data-assessment-id="assess-006">
+        <div class="position-absolute top-0 end-0 p-2">
+          <input type="checkbox" class="form-check-input" id="check-006">
+        </div>
+        <div class="risk-card-header">
+          <div class="risk-card-title">Data Privacy Impact Assessment</div>
+          <div class="risk-card-meta">
+            <span class="badge bg-secondary">RA-2024-006</span>
+            <span class="text-muted">Compliance</span>
+            <span class="text-muted">•</span>
+            <span class="text-muted">Updated 1 day ago</span>
+          </div>
+        </div>
+        <div class="risk-card-body">
+          <p class="text-muted mb-3 text-truncate-2">
+            Comprehensive data privacy impact assessment covering personal data processing, 
+            consent management, and privacy by design implementation.
+          </p>
+          <div class="risk-card-actions">
+            <div class="d-flex align-items-center gap-2">
+              <span class="risk-pill risk-high">High Risk</span>
+              <span class="status-indicator status-in-progress">In Progress</span>
+            </div>
+            <div class="d-flex gap-1">
+              <button class="btn btn-sm btn-outline-primary" onclick="riskAssessmentUI.openRiskDetails('RA-2024-006')" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-warning" onclick="riskAssessmentUI.continueAssessment('assess-006')" title="Continue">
+                <i class="bi bi-play-circle"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Load More Button -->
+    <div class="text-center py-4">
+      <button class="btn btn-outline-primary" onclick="riskAssessmentUI.loadMoreAssessments()">
+        <i class="bi bi-arrow-down-circle me-2"></i>
+        Load More Assessments
+      </button>
+    </div>
+  </div>
+</main>
+
+<!-- Enhanced JavaScript for Risk Assessment List -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Enhanced Risk Assessment UI functionality
+  window.riskAssessmentUI = window.riskAssessmentUI || {};
+  
+  // Extend with list-specific methods
+  Object.assign(window.riskAssessmentUI, {
+    createNewAssessment() {
+      modernInteractions.showLoading();
+      setTimeout(() => {
+        modernInteractions.hideLoading();
+        window.location.href = '/process-selection';
+      }, 1000);
+    },
+
+    continueAssessment(assessmentId) {
+      modernInteractions.showLoading();
+      setTimeout(() => {
+        modernInteractions.hideLoading();
+        modernInteractions.showInfo('Continuing Assessment', `Loading assessment ${assessmentId}...`);
+        // Navigate to assessment page
+      }, 1000);
+    },
+
+    generateReport(assessmentId) {
+      const btn = event.target.closest('button');
+      modernInteractions.setButtonLoading(btn, true);
+      
+      setTimeout(() => {
+        modernInteractions.setButtonLoading(btn, false);
+        modernInteractions.showSuccess('Report Generated!', 'Assessment report has been generated and is ready for download');
+      }, 2000);
+    },
+
+    loadMoreAssessments() {
+      const btn = event.target;
+      modernInteractions.setButtonLoading(btn, true);
+      
+      setTimeout(() => {
+        modernInteractions.setButtonLoading(btn, false);
+        modernInteractions.showInfo('More Assessments', 'Additional assessments loaded');
+        // Here you would typically load more cards
+      }, 1500);
+    },
+
+    bulkSubmit() {
+      const selected = document.querySelectorAll('.risk-card input[type="checkbox"]:checked');
+      modernInteractions.showLoading();
+      
+      setTimeout(() => {
+        modernInteractions.hideLoading();
+        modernInteractions.showSuccess('Bulk Submit Complete!', `${selected.length} assessments submitted for review`);
+        this.clearSelection();
+      }, 2000);
+    },
+
+    bulkApprove() {
+      const selected = document.querySelectorAll('.risk-card input[type="checkbox"]:checked');
+      modernInteractions.showLoading();
+      
+      setTimeout(() => {
+        modernInteractions.hideLoading();
+        modernInteractions.showSuccess('Bulk Approval Complete!', `${selected.length} assessments approved`);
+        this.clearSelection();
+      }, 2000);
+    },
+
+    bulkDelete() {
+      const selected = document.querySelectorAll('.risk-card input[type="checkbox"]:checked');
+      if (confirm(`Are you sure you want to delete ${selected.length} assessments?`)) {
+        modernInteractions.showLoading();
+        
+        setTimeout(() => {
+          modernInteractions.hideLoading();
+          modernInteractions.showSuccess('Bulk Delete Complete!', `${selected.length} assessments deleted`);
+          this.clearSelection();
+        }, 2000);
+      }
+    },
+
+    clearSelection() {
+      document.querySelectorAll('.risk-card input[type="checkbox"]:checked').forEach(cb => {
+        cb.checked = false;
+      });
+      this.updateBulkActions();
+    }
+  });
+
+  // Search functionality
+  document.getElementById('searchInput').addEventListener('input', modernInteractions.debounce(function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    document.querySelectorAll('.risk-card').forEach(card => {
+      const title = card.querySelector('.risk-card-title').textContent.toLowerCase();
+      const meta = card.querySelector('.risk-card-meta').textContent.toLowerCase();
+      const body = card.querySelector('.risk-card-body p').textContent.toLowerCase();
+      
+      if (title.includes(searchTerm) || meta.includes(searchTerm) || body.includes(searchTerm)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }, 300));
+
+  // Filter functionality
+  ['statusFilter', 'riskLevelFilter', 'processFilter'].forEach(filterId => {
+    document.getElementById(filterId).addEventListener('change', function() {
+      // Implement filtering logic here
+      modernInteractions.showInfo('Filter Applied', `Filtering by ${this.value || 'all'}`);
+    });
+  });
+});
+</script>
+
+<style>
+/* Additional CSS for Bootstrap Icons */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css");
+
+/* Custom enhancements for risk assessment list */
+.risk-card {
+  min-height: 280px;
+}
+
+.risk-card-title {
+  min-height: 2.8rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: ">";
+}
+
+.metric-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.metric-icon.bg-primary { background: var(--bs-primary); }
+.metric-icon.bg-success { background: var(--bs-success); }
+.metric-icon.bg-warning { background: var(--bs-warning); }
+.metric-icon.bg-info { background: var(--bs-info); }
+</style> 

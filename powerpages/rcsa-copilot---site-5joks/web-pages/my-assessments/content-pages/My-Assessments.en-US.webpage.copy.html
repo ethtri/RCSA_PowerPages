@@ -1,0 +1,591 @@
+<!-- Include Bootstrap 5 and Modern Enhancements -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/logicgate-design-system.css">
+<link rel="stylesheet" href="/bootstrap-5-upgrades.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/logicgate-components.js"></script>
+<script src="/modern-interactions.js"></script>
+
+<!-- My Assessments - Kanban Board View -->
+<main class="lg-page">
+  <!-- Page Header -->
+  <div class="container-fluid py-4">
+    <div class="row align-items-center">
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-2">
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">My Assessments</li>
+          </ol>
+        </nav>
+        <h1 class="h2 mb-1">My Assessments</h1>
+        <p class="text-muted mb-0">Track and manage your assigned risk assessments</p>
+      </div>
+      <div class="col-auto">
+        <div class="btn-group">
+          <button class="btn btn-outline-secondary" onclick="toggleView('kanban')" id="kanbanViewBtn">
+            <i class="bi bi-kanban me-2"></i>Board View
+          </button>
+          <button class="btn btn-outline-secondary" onclick="toggleView('list')" id="listViewBtn">
+            <i class="bi bi-list-ul me-2"></i>List View
+          </button>
+        </div>
+        <button class="btn btn-primary ms-2" onclick="riskAssessmentUI.createNewAssessment()">
+          <i class="bi bi-plus-circle me-2"></i>
+          New Assessment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters and Summary -->
+  <div class="container-fluid pb-4">
+    <div class="row g-3">
+      <!-- Quick Stats -->
+      <div class="col-md-8">
+        <div class="card card-modern">
+          <div class="card-body py-3">
+            <div class="row text-center">
+              <div class="col">
+                <div class="h4 mb-1 text-primary" id="draftCount">3</div>
+                <div class="small text-muted">Draft</div>
+              </div>
+              <div class="col">
+                <div class="h4 mb-1 text-info" id="inProgressCount">5</div>
+                <div class="small text-muted">In Progress</div>
+              </div>
+              <div class="col">
+                <div class="h4 mb-1 text-warning" id="reviewCount">2</div>
+                <div class="small text-muted">Under Review</div>
+              </div>
+              <div class="col">
+                <div class="h4 mb-1 text-success" id="approvedCount">8</div>
+                <div class="small text-muted">Approved</div>
+              </div>
+              <div class="col">
+                <div class="h4 mb-1 text-danger" id="rejectedCount">1</div>
+                <div class="small text-muted">Rejected</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Quick Filters -->
+      <div class="col-md-4">
+        <div class="card card-modern">
+          <div class="card-body py-3">
+            <div class="row g-2">
+              <div class="col-6">
+                <select class="form-select form-select-sm" id="riskFilter">
+                  <option value="">All Risks</option>
+                  <option value="critical">Critical</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <select class="form-select form-select-sm" id="processFilter">
+                  <option value="">All Processes</option>
+                  <option value="financial">Financial</option>
+                  <option value="operational">Operational</option>
+                  <option value="compliance">Compliance</option>
+                  <option value="strategic">Strategic</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kanban Board -->
+  <div class="container-fluid" id="kanbanView">
+    <div class="kanban-board">
+      
+      <!-- Draft Column -->
+      <div class="kanban-column" data-status="draft">
+        <div class="kanban-header">
+          <div class="kanban-title">Draft</div>
+          <div class="kanban-count">3</div>
+        </div>
+        <div class="kanban-cards" id="draftCards">
+          
+          <div class="kanban-card" data-card-id="card-001" data-risk-level="high" draggable="true">
+            <div class="kanban-card-title">Financial Controls Review</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-high">High</span>
+              <span class="badge bg-light text-dark">Financial</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>J. Smith
+              </span>
+              <span class="small text-muted">
+                <i class="bi bi-calendar me-1"></i>Due: 2 days
+              </span>
+            </div>
+          </div>
+
+          <div class="kanban-card" data-card-id="card-002" data-risk-level="medium" draggable="true">
+            <div class="kanban-card-title">Vendor Risk Assessment</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-medium">Medium</span>
+              <span class="badge bg-light text-dark">Compliance</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>A. Johnson
+              </span>
+              <span class="small text-muted">
+                <i class="bi bi-calendar me-1"></i>Due: 5 days
+              </span>
+            </div>
+          </div>
+
+          <div class="kanban-card" data-card-id="card-003" data-risk-level="critical" draggable="true">
+            <div class="kanban-card-title">Regulatory Compliance Check</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-critical">Critical</span>
+              <span class="badge bg-light text-dark">Compliance</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>M. Davis
+              </span>
+              <span class="small text-muted text-danger">
+                <i class="bi bi-exclamation-triangle me-1"></i>Overdue
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- In Progress Column -->
+      <div class="kanban-column" data-status="in-progress">
+        <div class="kanban-header">
+          <div class="kanban-title">In Progress</div>
+          <div class="kanban-count">5</div>
+        </div>
+        <div class="kanban-cards" id="inProgressCards">
+          
+          <div class="kanban-card" data-card-id="card-004" data-risk-level="high" draggable="true">
+            <div class="kanban-card-title">Cybersecurity Assessment</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-high">High</span>
+              <span class="badge bg-light text-dark">Operational</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>R. Wilson
+              </span>
+              <span class="small text-success">
+                <i class="bi bi-clock me-1"></i>60% Complete
+              </span>
+            </div>
+          </div>
+
+          <div class="kanban-card" data-card-id="card-005" data-risk-level="medium" draggable="true">
+            <div class="kanban-card-title">Business Continuity Plan</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-medium">Medium</span>
+              <span class="badge bg-light text-dark">Strategic</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>L. Brown
+              </span>
+              <span class="small text-warning">
+                <i class="bi bi-clock me-1"></i>30% Complete
+              </span>
+            </div>
+          </div>
+
+          <div class="kanban-card" data-card-id="card-006" data-risk-level="low" draggable="true">
+            <div class="kanban-card-title">Data Privacy Impact</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-low">Low</span>
+              <span class="badge bg-light text-dark">Compliance</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>K. Taylor
+              </span>
+              <span class="small text-info">
+                <i class="bi bi-clock me-1"></i>80% Complete
+              </span>
+            </div>
+          </div>
+
+          <div class="kanban-card" data-card-id="card-007" data-risk-level="medium" draggable="true">
+            <div class="kanban-card-title">Supply Chain Risk</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-medium">Medium</span>
+              <span class="badge bg-light text-dark">Operational</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>D. Anderson
+              </span>
+              <span class="small text-warning">
+                <i class="bi bi-clock me-1"></i>45% Complete
+              </span>
+            </div>
+          </div>
+
+          <div class="kanban-card" data-card-id="card-008" data-risk-level="high" draggable="true">
+            <div class="kanban-card-title">Market Risk Analysis</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-high">High</span>
+              <span class="badge bg-light text-dark">Strategic</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>S. Martinez
+              </span>
+              <span class="small text-success">
+                <i class="bi bi-clock me-1"></i>90% Complete
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Under Review Column -->
+      <div class="kanban-column" data-status="review">
+        <div class="kanban-header">
+          <div class="kanban-title">Under Review</div>
+          <div class="kanban-count">2</div>
+        </div>
+        <div class="kanban-cards" id="reviewCards">
+          
+          <div class="kanban-card" data-card-id="card-009" data-risk-level="high" draggable="true">
+            <div class="kanban-card-title">IT Security Controls</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-high">High</span>
+              <span class="badge bg-light text-dark">Operational</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>C. Garcia
+              </span>
+              <span class="small text-warning">
+                <i class="bi bi-eye me-1"></i>Pending Review
+              </span>
+            </div>
+          </div>
+
+          <div class="kanban-card" data-card-id="card-010" data-risk-level="medium" draggable="true">
+            <div class="kanban-card-title">Fraud Risk Assessment</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-medium">Medium</span>
+              <span class="badge bg-light text-dark">Financial</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>P. Rodriguez
+              </span>
+              <span class="small text-info">
+                <i class="bi bi-chat-dots me-1"></i>2 Comments
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Approved Column -->
+      <div class="kanban-column" data-status="approved">
+        <div class="kanban-header">
+          <div class="kanban-title">Approved</div>
+          <div class="kanban-count">8</div>
+        </div>
+        <div class="kanban-cards" id="approvedCards">
+          
+          <div class="kanban-card" data-card-id="card-011" data-risk-level="low" draggable="true">
+            <div class="kanban-card-title">Employee Training Assessment</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-low">Low</span>
+              <span class="badge bg-light text-dark">Operational</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>T. Lee
+              </span>
+              <span class="small text-success">
+                <i class="bi bi-check-circle me-1"></i>Approved
+              </span>
+            </div>
+          </div>
+
+          <div class="kanban-card" data-card-id="card-012" data-risk-level="medium" draggable="true">
+            <div class="kanban-card-title">Environmental Risk Review</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-medium">Medium</span>
+              <span class="badge bg-light text-dark">Compliance</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>N. Thompson
+              </span>
+              <span class="small text-success">
+                <i class="bi bi-check-circle me-1"></i>Approved
+              </span>
+            </div>
+          </div>
+
+          <!-- Show More Button for Approved -->
+          <div class="text-center py-2">
+            <button class="btn btn-sm btn-outline-secondary" onclick="loadMoreApproved()">
+              <i class="bi bi-three-dots"></i>
+              Show 6 more
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Rejected Column -->
+      <div class="kanban-column" data-status="rejected">
+        <div class="kanban-header">
+          <div class="kanban-title">Rejected</div>
+          <div class="kanban-count">1</div>
+        </div>
+        <div class="kanban-cards" id="rejectedCards">
+          
+          <div class="kanban-card" data-card-id="card-013" data-risk-level="high" draggable="true">
+            <div class="kanban-card-title">Credit Risk Assessment</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="risk-pill risk-high">High</span>
+              <span class="badge bg-light text-dark">Financial</span>
+            </div>
+            <div class="kanban-card-meta">
+              <span class="small text-muted">
+                <i class="bi bi-person me-1"></i>E. White
+              </span>
+              <span class="small text-danger">
+                <i class="bi bi-x-circle me-1"></i>Needs Revision
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- Enhanced JavaScript for Kanban Board -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Kanban functionality
+  initializeKanban();
+  
+  // View toggle functionality
+  window.toggleView = function(view) {
+    const kanbanBtn = document.getElementById('kanbanViewBtn');
+    const listBtn = document.getElementById('listViewBtn');
+    
+    if (view === 'kanban') {
+      kanbanBtn.classList.add('btn-primary');
+      kanbanBtn.classList.remove('btn-outline-secondary');
+      listBtn.classList.add('btn-outline-secondary');
+      listBtn.classList.remove('btn-primary');
+      
+      // Show kanban view (already visible)
+      modernInteractions.showInfo('Board View', 'Switched to Kanban board view');
+    } else {
+      listBtn.classList.add('btn-primary');
+      listBtn.classList.remove('btn-outline-secondary');
+      kanbanBtn.classList.add('btn-outline-secondary');
+      kanbanBtn.classList.remove('btn-primary');
+      
+      // Switch to list view
+      modernInteractions.showInfo('List View', 'Switched to list view');
+      // Here you would typically show a different view
+    }
+  };
+
+  // Load more approved assessments
+  window.loadMoreApproved = function() {
+    const btn = event.target;
+    modernInteractions.setButtonLoading(btn, true);
+    
+    setTimeout(() => {
+      modernInteractions.setButtonLoading(btn, false);
+      modernInteractions.showInfo('More Items', 'Additional approved assessments loaded');
+      btn.style.display = 'none'; // Hide the button after loading
+    }, 1000);
+  };
+
+  // Filter functionality
+  document.getElementById('riskFilter').addEventListener('change', function() {
+    filterKanbanCards('risk-level', this.value);
+  });
+
+  document.getElementById('processFilter').addEventListener('change', function() {
+    filterKanbanCards('process', this.value);
+  });
+
+  function filterKanbanCards(filterType, filterValue) {
+    const cards = document.querySelectorAll('.kanban-card');
+    
+    cards.forEach(card => {
+      let shouldShow = true;
+      
+      if (filterType === 'risk-level' && filterValue) {
+        shouldShow = card.dataset.riskLevel === filterValue;
+      } else if (filterType === 'process' && filterValue) {
+        const processText = card.querySelector('.badge').textContent.toLowerCase();
+        shouldShow = processText.includes(filterValue.toLowerCase());
+      }
+      
+      card.style.display = shouldShow ? 'block' : 'none';
+    });
+
+    // Update column counts
+    updateColumnCounts();
+    
+    if (filterValue) {
+      modernInteractions.showInfo('Filter Applied', `Showing ${filterType}: ${filterValue}`);
+    }
+  }
+
+  function updateColumnCounts() {
+    document.querySelectorAll('.kanban-column').forEach(column => {
+      const visibleCards = column.querySelectorAll('.kanban-card[style*="block"], .kanban-card:not([style*="none"])').length;
+      const countElement = column.querySelector('.kanban-count');
+      countElement.textContent = visibleCards;
+    });
+  }
+
+  function initializeKanban() {
+    // Set initial view to kanban
+    toggleView('kanban');
+    
+    // Add click handlers for kanban cards
+    document.addEventListener('click', function(e) {
+      const kanbanCard = e.target.closest('.kanban-card');
+      if (kanbanCard && !e.target.closest('button')) {
+        const cardId = kanbanCard.dataset.cardId;
+        const title = kanbanCard.querySelector('.kanban-card-title').textContent;
+        modernInteractions.showInfo('Assessment Details', `Opening ${title}...`);
+        
+        // Here you would typically open a modal or navigate to details
+        setTimeout(() => {
+          // Simulate opening assessment details
+        }, 500);
+      }
+    });
+
+    // Enhance drag and drop feedback
+    document.addEventListener('dragover', function(e) {
+      const column = e.target.closest('.kanban-column');
+      if (column) {
+        e.preventDefault();
+        column.style.background = 'rgba(59, 130, 246, 0.05)';
+        column.style.borderColor = 'rgba(59, 130, 246, 0.2)';
+      }
+    });
+
+    document.addEventListener('dragleave', function(e) {
+      const column = e.target.closest('.kanban-column');
+      if (column && !column.contains(e.relatedTarget)) {
+        column.style.background = '';
+        column.style.borderColor = '';
+      }
+    });
+
+    document.addEventListener('drop', function(e) {
+      const column = e.target.closest('.kanban-column');
+      if (column) {
+        column.style.background = '';
+        column.style.borderColor = '';
+      }
+    });
+  }
+
+  // Extend riskAssessmentUI with kanban-specific methods
+  Object.assign(window.riskAssessmentUI, {
+    moveCard(cardId, newStatus) {
+      modernInteractions.showLoading();
+      
+      setTimeout(() => {
+        modernInteractions.hideLoading();
+        
+        // Find and move the card
+        const card = document.querySelector(`[data-card-id="${cardId}"]`);
+        const newColumn = document.querySelector(`[data-status="${newStatus}"] .kanban-cards`);
+        
+        if (card && newColumn) {
+          newColumn.appendChild(card);
+          updateColumnCounts();
+          modernInteractions.showSuccess('Status Updated!', `Assessment moved to ${newStatus.replace('-', ' ')}`);
+        }
+      }, 800);
+    }
+  });
+});
+</script>
+
+<style>
+/* Additional Kanban-specific styles */
+.kanban-board {
+  padding-bottom: 2rem;
+}
+
+.kanban-column {
+  flex-shrink: 0;
+}
+
+.kanban-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.kanban-card:hover {
+  cursor: pointer;
+}
+
+.kanban-card[draggable="true"]:hover {
+  cursor: grab;
+}
+
+.kanban-card[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .kanban-board {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .kanban-column {
+    min-width: 100%;
+  }
+}
+
+/* Custom scrollbar for horizontal scroll */
+.kanban-board::-webkit-scrollbar {
+  height: 8px;
+}
+
+.kanban-board::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.kanban-board::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.kanban-board::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+</style> 
