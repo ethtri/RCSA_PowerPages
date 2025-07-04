@@ -1,41 +1,647 @@
-<div style='display: flex; flex-wrap: wrap; min-height: 50%; background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/Assessment-2.jpg"); background-position: center center; background-repeat: no-repeat; background-size: cover;' class="row sectionBlockLayout" data-component-theme="portalThemeColor8">
-  <div class="container">
-    <div style="flex-grow: 1; display: flex; flex-direction: column; margin: 240px 0px;" class="col-md-12 columnBlockLayout">
-      <h1 style="text-align: center;">Residual Assessment</h1>
-      <h4 style="text-align: center;">Evaluate Risks Effectively</h4>
-    </div>
-  </div>
-</div>
+<!-- Include LogicGate Design System -->
+<link rel="stylesheet" href="/rcsa-design-system/logicgate-design-system.css">
+<script src="/rcsa-design-system/logicgate-components.js"></script>
 
-<div style="display: flex; flex-wrap: wrap; min-height: auto;" class="row sectionBlockLayout">
-  <div class="container">
-    <div style="flex-grow: 1; display: flex; flex-direction: column; margin: 30px 0px; padding: 30px;" class="col-md-12 columnBlockLayout">
-      <h2>Risk Heat Map</h2>
-      <p>Click on the heat map below to assess the risk levels. Each color represents a different range of scores.</p>
-      <img src="/Assessment.jpg" alt="Clickable heat map for risk assessment" style="width: 100%; height: auto; border-radius: 4px;" />
+<!-- Residual Assessment Page - LogicGate Risk Cloud Inspired -->
+<main class="lg-page">
+  <!-- Application Header -->
+  <header class="lg-app-header">
+    <div class="lg-container">
+      <div class="lg-flex lg-items-center lg-justify-between">
+        <div>
+          <h1 class="lg-app-title">Residual Risk Assessment</h1>
+          <p class="lg-app-subtitle">Evaluate final risk levels after considering control effectiveness</p>
+        </div>
+        <div class="lg-text-right">
+          <div class="lg-text-sm" style="color: rgba(255,255,255,0.8);">Step 4 of 5</div>
+          <div class="lg-text-xl lg-font-semibold">Final Risk Scoring</div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  </header>
 
-<div style="display: flex; flex-wrap: wrap; min-height: auto;" class="row sectionBlockLayout">
-  <div class="container">
-    <div style="flex-grow: 1; display: flex; flex-direction: column; margin: 30px 0px; padding: 30px;" class="col-md-6 columnBlockLayout">
-      <h3>Inherent Scores</h3>
-      <p>Display the inherent scores based on the selected risk levels from the heat map.</p>
-    </div>
-    <div style="flex-grow: 1; display: flex; flex-direction: column; margin: 30px 0px; padding: 30px;" class="col-md-6 columnBlockLayout">
-      <h3>Rationale</h3>
-      <textarea style="width: 100%;" placeholder="Please provide a rationale for your assessment (minimum 50 characters)." rows="5"></textarea>
+  <!-- Progress Bar -->
+  <div class="lg-progress-container">
+    <div class="lg-container">
+      <div class="lg-progress-bar-wrapper">
+        <div class="lg-progress-bar" style="width: 80%;"></div>
+      </div>
+      <div class="lg-progress-text">4 of 5 steps completed</div>
     </div>
   </div>
-</div>
 
-<div style="display: flex; flex-wrap: wrap; min-height: auto;" class="row sectionBlockLayout">
-  <div class="container">
-    <div style="flex-grow: 1; display: flex; flex-direction: column; margin: 30px 0px; padding: 30px;" class="col-md-12 columnBlockLayout">
-      <h3>Warning</h3>
-      <p>If your score exceeds 15, please note: <strong>This will create issues.</strong></p>
-      <button style="margin-left: auto; margin-right: auto;" class="button1">Submit</button>
+  <!-- Main Content -->
+  <div class="lg-page-content">
+    <div class="lg-container">
+      
+      <!-- Assessment Overview -->
+      <div class="lg-card lg-mb-6">
+        <div class="lg-card-header">
+          <h2 class="lg-heading-3">Assessment Summary</h2>
+        </div>
+        <div class="lg-card-body">
+          <div class="lg-grid lg-grid-cols-1 lg-md-grid-cols-3 lg-gap-4">
+            <div class="summary-item">
+              <div class="lg-caption lg-text-gray-500">Business Unit</div>
+              <div class="lg-font-semibold" id="businessUnit">Commercial Banking</div>
+            </div>
+            <div class="summary-item">
+              <div class="lg-caption lg-text-gray-500">Process</div>
+              <div class="lg-font-semibold" id="process">Loan Origination</div>
+            </div>
+            <div class="summary-item">
+              <div class="lg-caption lg-text-gray-500">Risks Identified</div>
+              <div class="lg-font-semibold" id="risksCount">5 risks</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Risk Heat Map Section -->
+      <div class="lg-grid lg-grid-cols-1 lg-lg-grid-cols-3 lg-gap-6">
+        
+        <!-- Heat Map -->
+        <div class="lg-lg-grid-cols-2" style="grid-column: span 2;">
+          <div class="lg-card">
+            <div class="lg-card-header">
+              <div class="lg-flex lg-items-center lg-justify-between">
+                <h3 class="lg-heading-4">5×5 Risk Heat Map</h3>
+                <div class="lg-flex lg-items-center lg-gap-2">
+                  <span class="lg-caption lg-text-gray-500">Click cells to assess risk levels</span>
+                  <button class="lg-btn lg-btn-sm lg-btn-ghost" onclick="riskAssessment.resetHeatMap()">
+                    Reset
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="lg-card-body">
+              <div class="heat-map-container">
+                <!-- Y-axis labels (Impact) -->
+                <div class="heat-map-y-axis">
+                  <div class="axis-label">Impact</div>
+                  <div class="axis-values">
+                    <div class="axis-value">5 - Catastrophic</div>
+                    <div class="axis-value">4 - Major</div>
+                    <div class="axis-value">3 - Moderate</div>
+                    <div class="axis-value">2 - Minor</div>
+                    <div class="axis-value">1 - Negligible</div>
+                  </div>
+                </div>
+                
+                <!-- Heat Map Grid -->
+                <div class="heat-map-grid" id="heatMapGrid">
+                  <!-- Grid cells will be generated by JavaScript -->
+                </div>
+              </div>
+              
+              <!-- X-axis labels (Likelihood) -->
+              <div class="heat-map-x-axis">
+                <div class="axis-label">Likelihood</div>
+                <div class="axis-values">
+                  <div class="axis-value">1 - Rare</div>
+                  <div class="axis-value">2 - Unlikely</div>
+                  <div class="axis-value">3 - Possible</div>
+                  <div class="axis-value">4 - Likely</div>
+                  <div class="axis-value">5 - Almost Certain</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Risk Assessment Panel -->
+        <div class="lg-card">
+          <div class="lg-card-header">
+            <h3 class="lg-heading-4">Risk Assessment</h3>
+          </div>
+          <div class="lg-card-body">
+            <div class="assessment-summary" id="assessmentSummary">
+              <div class="current-risk-display">
+                <div class="lg-text-center lg-mb-4">
+                  <div class="lg-caption lg-text-gray-500">Current Selection</div>
+                  <div class="risk-score-display" id="currentRiskScore">
+                    <span class="score-value">-</span>
+                    <span class="score-label">Click heat map</span>
+                  </div>
+                </div>
+                
+                <div class="risk-breakdown" id="riskBreakdown">
+                  <div class="breakdown-item">
+                    <span class="lg-caption">Likelihood:</span>
+                    <span id="selectedLikelihood">-</span>
+                  </div>
+                  <div class="breakdown-item">
+                    <span class="lg-caption">Impact:</span>
+                    <span id="selectedImpact">-</span>
+                  </div>
+                  <div class="breakdown-item">
+                    <span class="lg-caption">Risk Level:</span>
+                    <span id="selectedRiskLevel">-</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- AI Suggestions -->
+              <div class="ai-suggestions" id="aiSuggestions">
+                <div class="lg-flex lg-items-center lg-gap-2 lg-mb-3">
+                  <div class="ai-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 2L2 7v10c0 5.55 3.84 10 9 10s9-4.45 9-10V7L12 2z"></path>
+                      <path d="M12 8v8"></path>
+                      <path d="M8 12h8"></path>
+                    </svg>
+                  </div>
+                  <span class="lg-font-medium">AI Recommendations</span>
+                </div>
+                <div class="suggestions-content" id="suggestionsContent">
+                  <div class="lg-text-sm lg-text-gray-500">
+                    Select a risk level to see AI-powered recommendations
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rationale Section -->
+      <div class="lg-card lg-mt-6">
+        <div class="lg-card-header">
+          <h3 class="lg-heading-4">Risk Assessment Rationale</h3>
+        </div>
+        <div class="lg-card-body">
+          <div class="lg-grid lg-grid-cols-1 lg-md-grid-cols-2 lg-gap-6">
+            <div>
+              <label class="lg-label">Risk Justification</label>
+              <textarea 
+                class="lg-textarea" 
+                id="riskRationale" 
+                rows="4" 
+                placeholder="Provide detailed rationale for your risk assessment (minimum 50 characters)..."
+                required
+              ></textarea>
+              <div class="lg-text-xs lg-text-gray-500 lg-mt-1">
+                <span id="rationaleCount">0</span>/50 characters minimum
+              </div>
+            </div>
+            <div>
+              <label class="lg-label">Mitigation Strategies</label>
+              <textarea 
+                class="lg-textarea" 
+                id="mitigationStrategies" 
+                rows="4" 
+                placeholder="Describe additional mitigation strategies or controls needed..."
+              ></textarea>
+              <div class="lg-text-xs lg-text-gray-500 lg-mt-1">
+                Optional: Additional risk mitigation approaches
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="lg-flex lg-items-center lg-justify-between lg-mt-6">
+        <button class="lg-btn lg-btn-outline" onclick="riskAssessment.goBack()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15,18 9,12 15,6"></polyline>
+          </svg>
+          Back to Control Mapping
+        </button>
+        
+        <div class="lg-flex lg-items-center lg-gap-3">
+          <button class="lg-btn lg-btn-ghost" onclick="riskAssessment.saveDraft()">
+            Save Draft
+          </button>
+          <button class="lg-btn lg-btn-primary" onclick="riskAssessment.completeAssessment()" disabled id="completeBtn">
+            Complete Assessment
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</main>
+
+<style>
+/* Heat Map Styles */
+.heat-map-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.heat-map-y-axis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.heat-map-y-axis .axis-label {
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+  font-weight: var(--lg-font-semibold);
+  font-size: var(--lg-text-sm);
+  color: var(--lg-gray-700);
+}
+
+.heat-map-y-axis .axis-values {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
+}
+
+.heat-map-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 2px;
+  background: var(--lg-gray-200);
+  border-radius: var(--lg-border-radius);
+  padding: 2px;
+}
+
+.heat-map-cell {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--lg-border-radius-sm);
+  cursor: pointer;
+  transition: all var(--lg-transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--lg-font-semibold);
+  font-size: var(--lg-text-sm);
+  color: white;
+  position: relative;
+}
+
+.heat-map-cell:hover {
+  transform: scale(1.05);
+  box-shadow: var(--lg-shadow-md);
+}
+
+.heat-map-cell.selected {
+  box-shadow: 0 0 0 3px var(--lg-primary-500);
+  transform: scale(1.1);
+}
+
+.heat-map-x-axis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.heat-map-x-axis .axis-label {
+  font-weight: var(--lg-font-semibold);
+  font-size: var(--lg-text-sm);
+  color: var(--lg-gray-700);
+}
+
+.heat-map-x-axis .axis-values {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.axis-value {
+  font-size: var(--lg-text-xs);
+  color: var(--lg-gray-600);
+  text-align: center;
+  width: 60px;
+}
+
+/* Risk Score Display */
+.risk-score-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border-radius: var(--lg-border-radius-lg);
+  background: var(--lg-gray-50);
+  border: 2px solid var(--lg-gray-200);
+}
+
+.score-value {
+  font-size: 2rem;
+  font-weight: var(--lg-font-bold);
+  color: var(--lg-gray-900);
+}
+
+.score-label {
+  font-size: var(--lg-text-sm);
+  color: var(--lg-gray-500);
+  margin-top: 0.25rem;
+}
+
+.risk-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--lg-gray-200);
+}
+
+.breakdown-item:last-child {
+  border-bottom: none;
+}
+
+/* AI Suggestions */
+.ai-suggestions {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--lg-blue-50);
+  border-radius: var(--lg-border-radius);
+  border: 1px solid var(--lg-blue-200);
+}
+
+.ai-icon {
+  color: var(--lg-blue-600);
+}
+
+.suggestions-content {
+  font-size: var(--lg-text-sm);
+  line-height: 1.5;
+}
+
+/* Risk Level Colors */
+.risk-1 { background: var(--lg-success-500); }
+.risk-2 { background: var(--lg-success-400); }
+.risk-3 { background: var(--lg-warning-400); }
+.risk-4 { background: var(--lg-warning-500); }
+.risk-5 { background: var(--lg-warning-600); }
+.risk-6 { background: var(--lg-orange-500); }
+.risk-8 { background: var(--lg-orange-600); }
+.risk-9 { background: var(--lg-red-500); }
+.risk-10 { background: var(--lg-red-600); }
+.risk-12 { background: var(--lg-red-700); }
+.risk-15 { background: var(--lg-red-800); }
+.risk-16 { background: var(--lg-red-900); }
+.risk-20 { background: var(--lg-red-900); }
+.risk-25 { background: var(--lg-red-900); }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .heat-map-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .heat-map-cell {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .axis-value {
+    width: 50px;
+    font-size: 10px;
+  }
+}
+</style>
+
+<script>
+// Residual Risk Assessment Application
+const riskAssessment = {
+  selectedCell: null,
+  selectedScore: null,
+  selectedLikelihood: null,
+  selectedImpact: null,
+  
+  init() {
+    this.generateHeatMap();
+    this.setupEventListeners();
+    this.loadAssessmentData();
+  },
+  
+  generateHeatMap() {
+    const grid = document.getElementById('heatMapGrid');
+    grid.innerHTML = '';
+    
+    // Generate 5x5 grid (Impact 5-1 from top to bottom, Likelihood 1-5 from left to right)
+    for (let impact = 5; impact >= 1; impact--) {
+      for (let likelihood = 1; likelihood <= 5; likelihood++) {
+        const score = impact * likelihood;
+        const cell = document.createElement('div');
+        cell.className = `heat-map-cell risk-${score}`;
+        cell.textContent = score;
+        cell.dataset.likelihood = likelihood;
+        cell.dataset.impact = impact;
+        cell.dataset.score = score;
+        
+        cell.addEventListener('click', () => this.selectCell(cell));
+        grid.appendChild(cell);
+      }
+    }
+  },
+  
+  selectCell(cell) {
+    // Remove previous selection
+    if (this.selectedCell) {
+      this.selectedCell.classList.remove('selected');
+    }
+    
+    // Select new cell
+    cell.classList.add('selected');
+    this.selectedCell = cell;
+    this.selectedScore = parseInt(cell.dataset.score);
+    this.selectedLikelihood = parseInt(cell.dataset.likelihood);
+    this.selectedImpact = parseInt(cell.dataset.impact);
+    
+    this.updateRiskDisplay();
+    this.generateAISuggestions();
+    this.validateForm();
+  },
+  
+  updateRiskDisplay() {
+    const scoreDisplay = document.getElementById('currentRiskScore');
+    const scoreValue = scoreDisplay.querySelector('.score-value');
+    const scoreLabel = scoreDisplay.querySelector('.score-label');
+    
+    scoreValue.textContent = this.selectedScore;
+    scoreLabel.textContent = this.getRiskLevel(this.selectedScore);
+    
+    // Update risk level color
+    scoreDisplay.className = `risk-score-display risk-${this.selectedScore}`;
+    
+    // Update breakdown
+    document.getElementById('selectedLikelihood').textContent = this.getLikelihoodLabel(this.selectedLikelihood);
+    document.getElementById('selectedImpact').textContent = this.getImpactLabel(this.selectedImpact);
+    document.getElementById('selectedRiskLevel').textContent = this.getRiskLevel(this.selectedScore);
+  },
+  
+  getRiskLevel(score) {
+    if (score <= 3) return 'Low';
+    if (score <= 8) return 'Medium';
+    if (score <= 15) return 'High';
+    return 'Critical';
+  },
+  
+  getLikelihoodLabel(likelihood) {
+    const labels = ['', 'Rare', 'Unlikely', 'Possible', 'Likely', 'Almost Certain'];
+    return labels[likelihood];
+  },
+  
+  getImpactLabel(impact) {
+    const labels = ['', 'Negligible', 'Minor', 'Moderate', 'Major', 'Catastrophic'];
+    return labels[impact];
+  },
+  
+  generateAISuggestions() {
+    const container = document.getElementById('suggestionsContent');
+    const riskLevel = this.getRiskLevel(this.selectedScore);
+    
+    let suggestions = [];
+    
+    if (riskLevel === 'Critical') {
+      suggestions = [
+        'Immediate escalation to senior management required',
+        'Consider suspending operations until additional controls are implemented',
+        'Develop comprehensive crisis management plan',
+        'Implement continuous monitoring and reporting'
+      ];
+    } else if (riskLevel === 'High') {
+      suggestions = [
+        'Senior management approval required for acceptance',
+        'Implement additional preventive controls',
+        'Establish enhanced monitoring procedures',
+        'Consider risk transfer mechanisms (insurance, outsourcing)'
+      ];
+    } else if (riskLevel === 'Medium') {
+      suggestions = [
+        'Management approval required for acceptance',
+        'Implement detective controls and regular reviews',
+        'Consider cost-effective mitigation strategies',
+        'Monitor for changes in risk factors'
+      ];
+    } else {
+      suggestions = [
+        'Risk may be acceptable with standard controls',
+        'Periodic review and monitoring sufficient',
+        'Document risk acceptance rationale',
+        'Consider opportunities for process improvement'
+      ];
+    }
+    
+    container.innerHTML = suggestions.map(suggestion => 
+      `<div class="lg-flex lg-items-start lg-gap-2 lg-mb-2">
+        <div class="lg-w-1 lg-h-1 lg-bg-blue-500 lg-rounded-full lg-mt-2 lg-flex-shrink-0"></div>
+        <div class="lg-text-sm">${suggestion}</div>
+      </div>`
+    ).join('');
+  },
+  
+  setupEventListeners() {
+    const rationaleTextarea = document.getElementById('riskRationale');
+    const rationaleCount = document.getElementById('rationaleCount');
+    
+    rationaleTextarea.addEventListener('input', (e) => {
+      const count = e.target.value.length;
+      rationaleCount.textContent = count;
+      rationaleCount.style.color = count >= 50 ? 'var(--lg-success-600)' : 'var(--lg-gray-500)';
+      this.validateForm();
+    });
+  },
+  
+  validateForm() {
+    const completeBtn = document.getElementById('completeBtn');
+    const rationale = document.getElementById('riskRationale').value;
+    
+    const isValid = this.selectedScore !== null && rationale.length >= 50;
+    completeBtn.disabled = !isValid;
+    
+    if (isValid) {
+      completeBtn.classList.remove('lg-btn-disabled');
+    } else {
+      completeBtn.classList.add('lg-btn-disabled');
+    }
+  },
+  
+  loadAssessmentData() {
+    // Simulate loading assessment data
+    setTimeout(() => {
+      LogicGate.Toast.show('Assessment data loaded successfully', 'success');
+    }, 500);
+  },
+  
+  resetHeatMap() {
+    if (this.selectedCell) {
+      this.selectedCell.classList.remove('selected');
+    }
+    this.selectedCell = null;
+    this.selectedScore = null;
+    this.selectedLikelihood = null;
+    this.selectedImpact = null;
+    
+    // Reset displays
+    const scoreDisplay = document.getElementById('currentRiskScore');
+    scoreDisplay.querySelector('.score-value').textContent = '-';
+    scoreDisplay.querySelector('.score-label').textContent = 'Click heat map';
+    scoreDisplay.className = 'risk-score-display';
+    
+    document.getElementById('selectedLikelihood').textContent = '-';
+    document.getElementById('selectedImpact').textContent = '-';
+    document.getElementById('selectedRiskLevel').textContent = '-';
+    
+    document.getElementById('suggestionsContent').innerHTML = 
+      '<div class="lg-text-sm lg-text-gray-500">Select a risk level to see AI-powered recommendations</div>';
+    
+    this.validateForm();
+  },
+  
+  saveDraft() {
+    const data = {
+      selectedScore: this.selectedScore,
+      selectedLikelihood: this.selectedLikelihood,
+      selectedImpact: this.selectedImpact,
+      rationale: document.getElementById('riskRationale').value,
+      mitigationStrategies: document.getElementById('mitigationStrategies').value
+    };
+    
+    localStorage.setItem('riskAssessmentDraft', JSON.stringify(data));
+    LogicGate.Toast.show('Draft saved successfully', 'success');
+  },
+  
+  completeAssessment() {
+    const data = {
+      selectedScore: this.selectedScore,
+      selectedLikelihood: this.selectedLikelihood,
+      selectedImpact: this.selectedImpact,
+      riskLevel: this.getRiskLevel(this.selectedScore),
+      rationale: document.getElementById('riskRationale').value,
+      mitigationStrategies: document.getElementById('mitigationStrategies').value,
+      completedAt: new Date().toISOString()
+    };
+    
+    // Show loading state
+    const btn = document.getElementById('completeBtn');
+    btn.innerHTML = '<span class="lg-spinner lg-spinner-sm"></span> Completing...';
+    btn.disabled = true;
+    
+    // Simulate API call
+    setTimeout(() => {
+      LogicGate.Toast.show('Risk assessment completed successfully!', 'success');
+      window.location.href = '/success-page';
+    }, 2000);
+  },
+  
+  goBack() {
+    window.location.href = '/control-mapping-overview';
+  }
+};
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', () => {
+  riskAssessment.init();
+});
+</script>
