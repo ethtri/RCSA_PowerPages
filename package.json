@@ -1,5 +1,20 @@
 {
+  "name": "rcsa-power-pages-v2",
+  "version": "1.0.0",
+  "description": "RCSA Power Pages V2 - AI-powered Risk and Compliance Assessment platform",
+  "scripts": {
+    "upload": "pac pages upload --path powerpages --environment https://org601a79e1.crm.dynamics.com",
+    "validate": "powershell -ExecutionPolicy Bypass -File scripts/validate-structure.ps1",
+    "test": "node test-pages.js",
+    "deploy-log": "echo $(date) >> docs/deploy-log.md"
+  },
+  "keywords": ["power-pages", "rcsa", "risk-assessment", "compliance"],
+  "author": "RCSA Team",
+  "license": "MIT",
   "devDependencies": {
     "jsdom": "^26.1.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 }

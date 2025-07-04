@@ -1,0 +1,26 @@
+repos:
+  - repo: local
+    hooks:
+      - id: validate-powerpages-structure
+        name: Validate Power Pages Structure
+        entry: scripts/validate-structure.sh
+        language: script
+        pass_filenames: false
+        
+      - id: check-design-system-paths
+        name: Check Design System File Paths
+        entry: scripts/check-design-paths.sh
+        language: script
+        pass_filenames: false
+        
+      - id: validate-webfile-configs
+        name: Validate WebFile Configurations
+        entry: scripts/validate-webfiles.sh
+        language: script
+        pass_filenames: false
+        
+      - id: prevent-root-directory-changes
+        name: Prevent Root Directory Changes
+        entry: scripts/check-root-changes.sh
+        language: script
+        pass_filenames: false 

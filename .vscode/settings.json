@@ -1,0 +1,22 @@
+{
+    "emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": "powerpages/.*\\.(html|css|js|yml)$",
+                "cmd": "pac pages upload --path powerpages --environment https://org601a79e1.crm.dynamics.com"
+            }
+        ]
+    },
+    "files.exclude": {
+        "**/.pac": true,
+        "**/node_modules": true,
+        "**/backups": true,
+        "**/logs": true
+    },
+    "files.watcherExclude": {
+        "**/.pac/**": true,
+        "**/backups/**": true,
+        "**/logs/**": true
+    },
+    "git.ignoreLimitWarning": true
+} 
