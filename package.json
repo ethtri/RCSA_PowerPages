@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "RCSA Power Pages V2 - AI-powered Risk and Compliance Assessment platform",
   "scripts": {
-    "upload": "pac pages upload --path powerpages --environment https://org601a79e1.crm.dynamics.com",
+    "upload": "pac pages upload --path powerpages/rcsa-copilot---site-5joks --environment https://org601a79e1.crm.dynamics.com --modelVersion 2",
     "validate": "powershell -ExecutionPolicy Bypass -File scripts/validate-structure.ps1",
     "test": "node test-pages.js",
     "deploy-log": "echo $(date) >> docs/deploy-log.md"

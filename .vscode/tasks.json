@@ -4,7 +4,7 @@
         {
             "label": "Upload Power Pages to Dev",
             "type": "shell",
-            "command": "pac pages upload --path powerpages --environment https://org601a79e1.crm.dynamics.com",
+            "command": "pac pages upload --path powerpages/rcsa-copilot---site-5joks --environment https://org601a79e1.crm.dynamics.com --modelVersion 2",
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
