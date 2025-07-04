@@ -151,9 +151,29 @@ adx_entityformmetadata:
   CheckSum: e73dca5fe9406210aea3a8cdec9752d2b5a308f9e285c154f1a089f18988cb4b
   IsDeleted: false
 adx_entitylist:
+- RecordId: 19b7804c-088b-4be1-949a-531ca790238c
+  DisplayName: KRI
+  CheckSum: 3748de9b21b18395ca53b45c3fc185676ea496e26cd1c79ff9b3f1a08e7774ee
+  IsDeleted: false
+- RecordId: 585b9517-5dc8-438e-8c62-219889cae99f
+  DisplayName: Proc
+  CheckSum: fd0a483a9e0c37afbf6a5a0354a6fd4b6775e6bf4788d81b349b6f7d805ab5c0
+  IsDeleted: false
+- RecordId: 5943ab59-4541-472c-818a-1990493d3982
+  DisplayName: Active Assesses (2)
+  CheckSum: 2b4ae2a22c1b26f3a42f922dde1288528a49929ad09b84bb9b875004a2a0e7dd
+  IsDeleted: false
+- RecordId: 5d0bdcc7-3f90-449c-ab19-d8fcd34f5a3a
+  DisplayName: Scale
+  CheckSum: 39b5ad7be11dc7da10c6c5a877ff30ff31b8e36d4b1d92e7fe7e1d079cb59a62
+  IsDeleted: false
 - RecordId: a6c0144e-3a67-44fd-9f80-7224f8bd76aa
   DisplayName: risks
   CheckSum: ae59733762a84d8f0201f7bf8f718df0d57322740f9cbfa66ed613cdca4b54a5
+  IsDeleted: false
+- RecordId: ac819149-918a-4b76-81bb-768c695b35c3
+  DisplayName: Active RiskCtrls
+  CheckSum: 646552874b53087f94c9f8746465da0b238a668593aee112191455bd40736e05
   IsDeleted: false
 - RecordId: cad7dc64-cc97-425a-a644-b7ff0d73d3a9
   DisplayName: Ctrl
@@ -163,10 +183,50 @@ adx_entitylist:
   DisplayName: Active Assesses
   CheckSum: 2a1fb90136f512b8c62168c48286d674dcfcd0b56cd06395d02347c6ce1260df
   IsDeleted: false
+- RecordId: e4e22d58-e9ef-437c-bf07-65dcda594816
+  DisplayName: Issue
+  CheckSum: fac0a371533bbf206b31d894618ab4899b4dcfcf16b31e03d2f3994766ebf8e7
+  IsDeleted: false
 adx_entitypermission:
+- RecordId: 11111111-1111-1111-1111-111111111111
+  DisplayName: cr129_bu
+  CheckSum: 905ebd7935d46b74d4a5b96ade5576bd8b894195eafd98bd117d2a77f5a0383d
+  IsDeleted: false
+- RecordId: 22222222-2222-2222-2222-222222222222
+  DisplayName: cr129_proc
+  CheckSum: b818608e8146f420cc254f276c6a4d310fb874509c41098cef20ec63978d5fd5
+  IsDeleted: false
+- RecordId: 33333333-3333-3333-3333-333333333333
+  DisplayName: cr129_risk
+  CheckSum: 2a3794bd25a25108d8295a80c03fbfe17348890910cee6b4f2526554b2755850
+  IsDeleted: false
+- RecordId: 44444444-4444-4444-4444-444444444444
+  DisplayName: cr129_control
+  CheckSum: 08ba330d711caff36c5bbe42b579e67c82a9204430a65f201b0e1f6abd152c16
+  IsDeleted: false
+- RecordId: 55555555-5555-5555-5555-555555555555
+  DisplayName: cr129_assess
+  CheckSum: daebc0f225c30cb400a2ddec52dde77020e75ff0eff65141f19d014ee2fe9d79
+  IsDeleted: false
+- RecordId: 66666666-6666-6666-6666-666666666666
+  DisplayName: cr129_issue
+  CheckSum: b4e6d65cacc4f616f4274250d56f8e68cc67963f4f9ea30ac009d03d3d770c86
+  IsDeleted: false
+- RecordId: 77777777-7777-7777-7777-777777777777
+  DisplayName: cr129_riskctrl
+  CheckSum: 27ce733da188c623a601bd3bd4c86d8bb050701a77c57e79513ec81118e5a3a1
+  IsDeleted: false
+- RecordId: 88888888-8888-8888-8888-888888888888
+  DisplayName: cr129_kri
+  CheckSum: 13a2b60c2e84ba1fe89779eaf3317804c6bbefb0728ecd6c0cebcdccb620ec18
+  IsDeleted: false
 - RecordId: 8b738b00-4bbf-46b0-a0e8-3c773be64bd4
   DisplayName: Feedback
   CheckSum: 086ddc144a6db7cb7bb63c01f9394e2816de4531f2561846b3c787b6d38e901a
+  IsDeleted: false
+- RecordId: 99999999-9999-9999-9999-999999999999
+  DisplayName: cr129_scale
+  CheckSum: c010cd136d7dc38cacf98011f1a8f5a40480584ae1c413bebbdd09be5831cdb0
   IsDeleted: false
 adx_entitypermission_webrole:
 - RecordId: 27b95ddd-4d8e-409b-acb1-5b679dd2282c
@@ -515,6 +575,10 @@ adx_webfile:
   DisplayName: theme.css
   CheckSum: 4216e07a59370933d05c5bf2bd3c838cfce6f375f4a378d9d02d05a00762e0a9
   IsDeleted: false
+- RecordId: aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+  DisplayName: rcsa-styles.css
+  CheckSum: 36eadcd378172db558c6d5c2e3a33bffc2c3520b3ea62f2ec8cd354c0dc5828b
+  IsDeleted: false
 - RecordId: b5d1d712-3e64-45f3-b14c-d445057c25a8
   DisplayName: Assessment-3.jpg
   CheckSum: b767fb29e0dec8b9c95114def9d61e023f001e25fa0cdd6fe4be1110c1c530b0
@@ -704,7 +768,7 @@ adx_webpage:
   IsDeleted: false
 - RecordId: 822179af-5b2c-1dbf-1c4c-986a1c81d513
   DisplayName: ALLDATATABLES
-  CheckSum: a7fb0614f5c7878ca45424340841d35899075bb580e0c2eeb69a0f0fa941d979
+  CheckSum: f4d785d29461e65b230fcc91063fe5e950ad37b034592931e49379a4d1c5dbd5
   IsDeleted: false
 - RecordId: 8458ee77-c431-481d-9c0f-df60f18835fd
   DisplayName: Default Offline Page
@@ -998,6 +1062,10 @@ annotation:
 - RecordId: 40c6dd99-7c58-f011-bec1-7c1e521687a7
   DisplayName: Circle-2.png
   CheckSum: df94bbcb408e26d84688051942620ae035e779056c6a1f1ba0d6167ee8d568cd
+  IsDeleted: false
+- RecordId: 40dfbc2e-8a58-f011-bec1-7c1e521687a7
+  DisplayName: rcsa-styles.css
+  CheckSum: 2477abada970db74cff60cf9360676b1790214a5894b8b63a59cefc06240b378
   IsDeleted: false
 - RecordId: 44c6dd99-7c58-f011-bec1-7c1e521687a7
   DisplayName: theme.css
