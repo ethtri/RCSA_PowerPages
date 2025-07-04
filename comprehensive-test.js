@@ -352,10 +352,10 @@ function runComprehensiveTests() {
     
     // Test page files
     const pageTests = [
-        { name: 'dashboard', path: 'rcsa-copilot---site-5joks/web-pages/dashboard/content-pages/Dashboard.en-US.webpage.copy.html', validator: validateDashboard },
-        { name: 'controlMapping', path: 'rcsa-copilot---site-5joks/web-pages/control-mapping-overview/content-pages/Control-Mapping-Overview.en-US.webpage.copy.html', validator: validateControlMapping },
-        { name: 'residualAssessment', path: 'rcsa-copilot---site-5joks/web-pages/residual-risk-assessment/content-pages/Residual-Risk-Assessment.en-US.webpage.copy.html', validator: validateResidualAssessment },
-        { name: 'successPage', path: 'rcsa-copilot---site-5joks/web-pages/success-page/content-pages/Success-Page.en-US.webpage.copy.html', validator: validateSuccessPage }
+        { name: 'dashboard', path: 'powerpages/rcsa-copilot---site-5joks/web-pages/dashboard/content-pages/Dashboard.en-US.webpage.copy.html', validator: validateDashboard },
+        { name: 'controlMapping', path: 'powerpages/rcsa-copilot---site-5joks/web-pages/control-mapping-overview/content-pages/Control-Mapping-Overview.en-US.webpage.copy.html', validator: validateControlMapping },
+        { name: 'residualAssessment', path: 'powerpages/rcsa-copilot---site-5joks/web-pages/residual-risk-assessment/content-pages/Residual-Risk-Assessment.en-US.webpage.copy.html', validator: validateResidualAssessment },
+        { name: 'successPage', path: 'powerpages/rcsa-copilot---site-5joks/web-pages/success-page/content-pages/Success-Page.en-US.webpage.copy.html', validator: validateSuccessPage }
     ];
     
     pageTests.forEach(test => {

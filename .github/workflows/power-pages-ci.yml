@@ -25,9 +25,17 @@ jobs:
         password-secret: ${{ secrets.POWER_PLATFORM_PASSWORD }}
         
     - name: Upload Power Pages
+      uses: microsoft/powerplatform-actions/upload-paportal@v1
+      with:
+        environment-url: ${{ secrets.POWER_PLATFORM_ENVIRONMENT_URL }}
+        user-name: ${{ secrets.POWER_PLATFORM_USERNAME }}
+        password-secret: ${{ secrets.POWER_PLATFORM_PASSWORD }}
+        upload-path: powerpages/rcsa-copilot---site-5joks
+        model-version: 2
+
+    - name: Publish Power Pages
       run: |
-        cd powerpages/rcsa-copilot---site-5joks
-        pac pages upload --path . --modelVersion 2
+        pac paportal publish --path powerpages/rcsa-copilot---site-5joks
       shell: pwsh
       
     - name: Notify on Success

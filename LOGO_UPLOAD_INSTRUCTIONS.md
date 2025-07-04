@@ -28,7 +28,8 @@
 2. **Upload via CLI**
    ```bash
    cd powerpages/rcsa-copilot---site-5joks
-   pac pages upload --path . --modelVersion 2
+   pac paportal upload --path . --modelVersion 2
+   pac paportal publish --path .
    ```
 
 ## 🎯 **Logo Specifications**
