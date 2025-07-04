@@ -1,76 +1,731 @@
-<div style='display: flex; flex-wrap: wrap; min-height: 50%; background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/Dashboard.jpg"); background-position: center center; background-repeat: no-repeat; background-size: cover;' class="row sectionBlockLayout" data-component-theme="portalThemeColor8">
-  <div class="container">
-    <div style="flex-grow: 1; display: flex; flex-direction: column; margin: 240px 0px;" class="col-md-12 columnBlockLayout">
-      <h1 style="text-align: center;">Welcome to Your Dashboard</h1>
-      <h4 style="text-align: center;">Stay on top of your assessments</h4>
-    </div>
-  </div>
-</div>
+<!-- Include LogicGate Design System -->
+<link rel="stylesheet" href="/rcsa-design-system/logicgate-design-system.css">
+<script src="/rcsa-design-system/logicgate-components.js"></script>
 
-<div style="display: flex; flex-wrap: wrap; min-height: auto; padding: 20px; text-align: center;" class="row sectionBlockLayout" data-component-theme="portalThemeColor">
-  <div class="container">
-    <div style="flex-grow: 1; display: flex; flex-direction: column;" class="col-md-12 columnBlockLayout">
-      <div style="background-color: red; padding: 20px;" class="card">
-        <h3>Pending Assessments</h3>
-        <p>Count: 6</p>
+<!-- Dashboard Page - LogicGate Risk Cloud Inspired -->
+<main class="lg-page">
+  <!-- Application Header -->
+  <header class="lg-app-header">
+    <div class="lg-container">
+      <div class="lg-flex lg-items-center lg-justify-between">
+        <div>
+          <h1 class="lg-app-title">Risk Assessment Dashboard</h1>
+          <p class="lg-app-subtitle">Monitor your organization's risk management activities and assessment progress</p>
+        </div>
+        <div class="lg-text-right">
+          <div class="lg-text-sm" style="color: rgba(255,255,255,0.8);">Welcome back,</div>
+          <div class="lg-text-xl lg-font-semibold" id="userGreeting">Risk Manager</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quick Actions Toolbar -->
+  <div class="lg-toolbar">
+    <div class="lg-container">
+      <div class="lg-toolbar-content">
+        <div class="lg-toolbar-actions">
+          <button class="lg-btn lg-btn-primary" onclick="dashboard.startNewAssessment()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Start New Assessment
+          </button>
+          <button class="lg-btn lg-btn-outline" onclick="dashboard.viewReports()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14,2 14,8 20,8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10,9 9,9 8,9"></polyline>
+            </svg>
+            View Reports
+          </button>
+          <button class="lg-btn lg-btn-ghost" onclick="dashboard.exportData()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7,10 12,15 17,10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Export Data
+          </button>
+        </div>
+        <div class="lg-toolbar-search">
+          <input type="text" class="lg-input" placeholder="Search assessments..." id="dashboardSearch">
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div style="display: flex; flex-wrap: wrap; min-height: auto; padding: 20px; text-align: center;" class="row sectionBlockLayout" data-component-theme="portalThemeColor">
-  <div class="container">
-    <div style="flex-grow: 1;" class="col-md-4 columnBlockLayout">
-      <div class="metric-card">
-        <h3>Completed</h3>
-        <p>10</p>
+  <!-- Main Dashboard Content -->
+  <div class="lg-page-content">
+    <div class="lg-container">
+      
+      <!-- Key Metrics Grid -->
+      <div class="lg-grid lg-grid-cols-1 lg-md-grid-cols-2 lg-lg-grid-cols-4 lg-mb-6">
+        <!-- Total Assessments -->
+        <div class="lg-card lg-card-elevated">
+          <div class="lg-card-body">
+            <div class="lg-flex lg-items-center lg-justify-between">
+              <div>
+                <div class="lg-caption lg-text-gray-500">Total Assessments</div>
+                <div class="lg-text-3xl lg-font-bold lg-text-primary" id="totalAssessments">24</div>
+                <div class="lg-text-sm lg-text-gray-600">+3 this month</div>
+              </div>
+              <div class="metric-icon bg-primary">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14,2 14,8 20,8"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Completed Assessments -->
+        <div class="lg-card lg-card-elevated">
+          <div class="lg-card-body">
+            <div class="lg-flex lg-items-center lg-justify-between">
+              <div>
+                <div class="lg-caption lg-text-gray-500">Completed</div>
+                <div class="lg-text-3xl lg-font-bold" style="color: var(--lg-success-600);" id="completedAssessments">18</div>
+                <div class="lg-text-sm lg-text-gray-600">75% completion rate</div>
+              </div>
+              <div class="metric-icon bg-success">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20,6 9,17 4,12"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- In Progress -->
+        <div class="lg-card lg-card-elevated">
+          <div class="lg-card-body">
+            <div class="lg-flex lg-items-center lg-justify-between">
+              <div>
+                <div class="lg-caption lg-text-gray-500">In Progress</div>
+                <div class="lg-text-3xl lg-font-bold" style="color: var(--lg-warning-600);" id="inProgressAssessments">4</div>
+                <div class="lg-text-sm lg-text-gray-600">Avg 2.3 days remaining</div>
+              </div>
+              <div class="metric-icon bg-warning">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12,6 12,12 16,14"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Average Time -->
+        <div class="lg-card lg-card-elevated">
+          <div class="lg-card-body">
+            <div class="lg-flex lg-items-center lg-justify-between">
+              <div>
+                <div class="lg-caption lg-text-gray-500">Avg Completion Time</div>
+                <div class="lg-text-3xl lg-font-bold lg-text-gray-900" id="avgTime">8.5</div>
+                <div class="lg-text-sm lg-text-gray-600">minutes (target: <10)</div>
+              </div>
+              <div class="metric-icon bg-info">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div style="flex-grow: 1;" class="col-md-4 columnBlockLayout">
-      <div class="metric-card">
-        <h3>In Progress</h3>
-        <p>5</p>
+
+      <!-- Main Content Grid -->
+      <div class="lg-grid lg-grid-cols-1 lg-lg-grid-cols-3 lg-gap-6">
+        
+        <!-- Recent Assessments -->
+        <div class="lg-lg-grid-cols-2" style="grid-column: span 2;">
+          <div class="lg-card">
+            <div class="lg-card-header">
+              <div class="lg-flex lg-items-center lg-justify-between">
+                <h3 class="lg-heading-4">Recent Assessments</h3>
+                <button class="lg-btn lg-btn-sm lg-btn-ghost" onclick="dashboard.viewAllAssessments()">
+                  View All
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9,18 15,12 9,6"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="lg-card-body lg-p-0">
+              <div class="assessment-list" id="recentAssessmentsList">
+                <!-- Assessments will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Risk Overview -->
+        <div class="lg-card">
+          <div class="lg-card-header">
+            <h3 class="lg-heading-4">Risk Distribution</h3>
+          </div>
+          <div class="lg-card-body">
+            <div class="risk-distribution" id="riskDistribution">
+              <div class="risk-level-item">
+                <div class="lg-flex lg-items-center lg-justify-between lg-mb-2">
+                  <span class="lg-body-sm">Critical</span>
+                  <span class="lg-font-semibold" style="color: var(--lg-risk-critical);">2</span>
+                </div>
+                <div class="lg-progress">
+                  <div class="lg-progress-bar" style="width: 8%; background: var(--lg-risk-critical);"></div>
+                </div>
+              </div>
+              
+              <div class="risk-level-item">
+                <div class="lg-flex lg-items-center lg-justify-between lg-mb-2">
+                  <span class="lg-body-sm">High</span>
+                  <span class="lg-font-semibold" style="color: var(--lg-risk-high);">7</span>
+                </div>
+                <div class="lg-progress">
+                  <div class="lg-progress-bar" style="width: 28%; background: var(--lg-risk-high);"></div>
+                </div>
+              </div>
+              
+              <div class="risk-level-item">
+                <div class="lg-flex lg-items-center lg-justify-between lg-mb-2">
+                  <span class="lg-body-sm">Medium</span>
+                  <span class="lg-font-semibold" style="color: var(--lg-risk-medium);">12</span>
+                </div>
+                <div class="lg-progress">
+                  <div class="lg-progress-bar" style="width: 48%; background: var(--lg-risk-medium);"></div>
+                </div>
+              </div>
+              
+              <div class="risk-level-item">
+                <div class="lg-flex lg-items-center lg-justify-between lg-mb-2">
+                  <span class="lg-body-sm">Low</span>
+                  <span class="lg-font-semibold" style="color: var(--lg-risk-low);">4</span>
+                </div>
+                <div class="lg-progress">
+                  <div class="lg-progress-bar" style="width: 16%; background: var(--lg-risk-low);"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="lg-mt-4 lg-text-center">
+              <button class="lg-btn lg-btn-sm lg-btn-outline" onclick="dashboard.viewRiskDetails()">
+                View Risk Dashboard
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div style="flex-grow: 1;" class="col-md-4 columnBlockLayout">
-      <div class="metric-card">
-        <h3>Avg Time</h3>
-        <p>2 hrs</p>
+
+      <!-- Quick Actions & Pending Tasks -->
+      <div class="lg-grid lg-grid-cols-1 lg-md-grid-cols-2 lg-gap-6 lg-mt-6">
+        
+        <!-- Pending Tasks -->
+        <div class="lg-card">
+          <div class="lg-card-header">
+            <h3 class="lg-heading-4">Pending Tasks</h3>
+          </div>
+          <div class="lg-card-body">
+            <div class="pending-tasks" id="pendingTasksList">
+              <!-- Tasks will be populated here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Insights -->
+        <div class="lg-card">
+          <div class="lg-card-header">
+            <h3 class="lg-heading-4">Quick Insights</h3>
+          </div>
+          <div class="lg-card-body">
+            <div class="insights-list">
+              <div class="insight-item">
+                <div class="lg-flex lg-items-start lg-gap-3">
+                  <div class="insight-icon bg-warning">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                      <line x1="12" y1="9" x2="12" y2="13"></line>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="lg-body-sm lg-font-medium">3 assessments due this week</div>
+                    <div class="lg-caption lg-text-gray-500">Review and complete pending assessments</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="insight-item">
+                <div class="lg-flex lg-items-start lg-gap-3">
+                  <div class="insight-icon bg-success">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M7 10l5 5 5-5"></path>
+                      <path d="M21 12c0 9-9 9-9 9s-9 0-9-9"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="lg-body-sm lg-font-medium">Risk scores improved 15%</div>
+                    <div class="lg-caption lg-text-gray-500">Compared to last quarter</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="insight-item">
+                <div class="lg-flex lg-items-start lg-gap-3">
+                  <div class="insight-icon bg-info">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="lg-body-sm lg-font-medium">New regulatory updates available</div>
+                    <div class="lg-caption lg-text-gray-500">Review latest compliance requirements</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</main>
 
-<div style="display: flex; flex-wrap: wrap; min-height: auto; padding: 20px;" class="row sectionBlockLayout" data-component-theme="portalThemeColor">
-  <div class="container">
-    <div style="flex-grow: 1;" class="col-md-12 columnBlockLayout">
-      <table style="width: 100%;">
-        <thead>
-          <tr>
-            <th>Process</th>
-            <th>BU</th>
-            <th>Due Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Assessment 1</td>
-            <td>Finance</td>
-            <td>2023-10-15</td>
-          </tr>
-          <tr>
-            <td>Assessment 2</td>
-            <td>HR</td>
-            <td>2023-10-20</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+<style>
+/* Dashboard-Specific Styles */
+.metric-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--lg-border-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
 
-<div style="display: flex; flex-wrap: wrap; min-height: auto; padding: 20px; text-align: center;" class="row sectionBlockLayout" data-component-theme="portalThemeColor">
-  <div class="container">
-    <div style="flex-grow: 1;" class="col-md-12 columnBlockLayout"><button style="background-color: blue; color: white;" class="button1">Start New Assessment</button></div>
-  </div>
-</div>
+.metric-icon.bg-primary { background: var(--lg-primary-600); }
+.metric-icon.bg-success { background: var(--lg-success-600); }
+.metric-icon.bg-warning { background: var(--lg-warning-600); }
+.metric-icon.bg-info { background: var(--lg-info-600); }
+
+.assessment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid var(--lg-gray-200);
+  transition: background-color var(--lg-transition-fast);
+}
+
+.assessment-item:hover {
+  background: var(--lg-gray-50);
+}
+
+.assessment-item:last-child {
+  border-bottom: none;
+}
+
+.assessment-info {
+  flex: 1;
+}
+
+.assessment-title {
+  font-weight: var(--lg-font-medium);
+  color: var(--lg-gray-900);
+  margin-bottom: 0.25rem;
+}
+
+.assessment-meta {
+  font-size: var(--lg-text-xs);
+  color: var(--lg-gray-500);
+}
+
+.assessment-status {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--lg-border-radius-full);
+  font-size: var(--lg-text-xs);
+  font-weight: var(--lg-font-medium);
+}
+
+.status-completed {
+  background: var(--lg-success-100);
+  color: var(--lg-success-800);
+}
+
+.status-in-progress {
+  background: var(--lg-warning-100);
+  color: var(--lg-warning-800);
+}
+
+.status-pending {
+  background: var(--lg-gray-100);
+  color: var(--lg-gray-800);
+}
+
+.risk-level-item {
+  margin-bottom: 1rem;
+}
+
+.risk-level-item:last-child {
+  margin-bottom: 0;
+}
+
+.pending-task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--lg-gray-200);
+}
+
+.pending-task-item:last-child {
+  border-bottom: none;
+}
+
+.task-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--lg-gray-300);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all var(--lg-transition-fast);
+}
+
+.task-checkbox:hover {
+  border-color: var(--lg-primary-500);
+}
+
+.task-info {
+  flex: 1;
+}
+
+.task-title {
+  font-size: var(--lg-text-sm);
+  font-weight: var(--lg-font-medium);
+  color: var(--lg-gray-900);
+  margin-bottom: 0.125rem;
+}
+
+.task-due {
+  font-size: var(--lg-text-xs);
+  color: var(--lg-gray-500);
+}
+
+.insight-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--lg-gray-200);
+}
+
+.insight-item:last-child {
+  border-bottom: none;
+}
+
+.insight-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--lg-border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .lg-toolbar-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .lg-toolbar-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .lg-toolbar-search {
+    min-width: 100%;
+  }
+}
+</style>
+
+<script>
+// Dashboard Application Logic
+const dashboard = {
+  data: {
+    assessments: [],
+    metrics: {},
+    tasks: [],
+    insights: []
+  },
+
+  async init() {
+    try {
+      await this.loadData();
+      this.renderRecentAssessments();
+      this.renderPendingTasks();
+      this.updateMetrics();
+      this.setupEventListeners();
+      this.showWelcomeMessage();
+    } catch (error) {
+      console.error('Failed to initialize dashboard:', error);
+      LogicGate.Toast.show('Failed to load dashboard data. Please refresh the page.', 'danger');
+    }
+  },
+
+  async loadData() {
+    // Simulate API calls - replace with actual Dataverse queries
+    await this.delay(800);
+    
+    // Mock assessment data
+    this.data.assessments = [
+      {
+        id: 'ASS001',
+        title: 'Commercial Lending Risk Assessment',
+        businessUnit: 'Commercial Banking',
+        process: 'Loan Origination',
+        status: 'completed',
+        completedDate: '2024-01-15',
+        duration: '7.5 minutes',
+        riskScore: 'Medium'
+      },
+      {
+        id: 'ASS002',
+        title: 'Payment Processing Controls Review',
+        businessUnit: 'Retail Banking',
+        process: 'Payment Processing',
+        status: 'in-progress',
+        startedDate: '2024-01-14',
+        progress: 60,
+        riskScore: 'High'
+      },
+      {
+        id: 'ASS003',
+        title: 'AML Compliance Assessment',
+        businessUnit: 'Compliance',
+        process: 'Customer Onboarding',
+        status: 'completed',
+        completedDate: '2024-01-12',
+        duration: '9.2 minutes',
+        riskScore: 'High'
+      },
+      {
+        id: 'ASS004',
+        title: 'Cybersecurity Risk Review',
+        businessUnit: 'IT Operations',
+        process: 'Information Security',
+        status: 'pending',
+        dueDate: '2024-01-20',
+        riskScore: 'Critical'
+      },
+      {
+        id: 'ASS005',
+        title: 'Market Risk Assessment',
+        businessUnit: 'Treasury',
+        process: 'Trading Operations',
+        status: 'in-progress',
+        startedDate: '2024-01-13',
+        progress: 25,
+        riskScore: 'Medium'
+      }
+    ];
+
+    // Mock pending tasks
+    this.data.tasks = [
+      {
+        id: 'TASK001',
+        title: 'Review Credit Risk Controls',
+        dueDate: '2024-01-18',
+        priority: 'high'
+      },
+      {
+        id: 'TASK002',
+        title: 'Update Operational Risk Matrix',
+        dueDate: '2024-01-19',
+        priority: 'medium'
+      },
+      {
+        id: 'TASK003',
+        title: 'Complete Compliance Training',
+        dueDate: '2024-01-22',
+        priority: 'low'
+      }
+    ];
+
+    // Update metrics
+    this.data.metrics = {
+      total: this.data.assessments.length,
+      completed: this.data.assessments.filter(a => a.status === 'completed').length,
+      inProgress: this.data.assessments.filter(a => a.status === 'in-progress').length,
+      avgTime: '8.5'
+    };
+  },
+
+  renderRecentAssessments() {
+    const container = document.getElementById('recentAssessmentsList');
+    container.innerHTML = '';
+
+    this.data.assessments.slice(0, 5).forEach(assessment => {
+      const item = document.createElement('div');
+      item.className = 'assessment-item';
+      item.onclick = () => this.viewAssessment(assessment.id);
+
+      const statusClass = `status-${assessment.status.replace('-', '-')}`;
+      const statusText = assessment.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+      item.innerHTML = `
+        <div class="assessment-info">
+          <div class="assessment-title">${assessment.title}</div>
+          <div class="assessment-meta">
+            ${assessment.businessUnit} • ${assessment.process}
+            ${assessment.status === 'completed' ? `• Completed ${this.formatDate(assessment.completedDate)}` : ''}
+            ${assessment.status === 'in-progress' ? `• ${assessment.progress}% complete` : ''}
+            ${assessment.status === 'pending' ? `• Due ${this.formatDate(assessment.dueDate)}` : ''}
+          </div>
+        </div>
+        <div class="lg-flex lg-items-center lg-gap-3">
+          <span class="lg-risk-badge lg-risk-${assessment.riskScore.toLowerCase()}">${assessment.riskScore}</span>
+          <span class="assessment-status ${statusClass}">${statusText}</span>
+        </div>
+      `;
+
+      container.appendChild(item);
+    });
+  },
+
+  renderPendingTasks() {
+    const container = document.getElementById('pendingTasksList');
+    container.innerHTML = '';
+
+    this.data.tasks.forEach(task => {
+      const item = document.createElement('div');
+      item.className = 'pending-task-item';
+
+      item.innerHTML = `
+        <div class="task-checkbox" onclick="dashboard.completeTask('${task.id}')"></div>
+        <div class="task-info">
+          <div class="task-title">${task.title}</div>
+          <div class="task-due">Due: ${this.formatDate(task.dueDate)}</div>
+        </div>
+        <span class="lg-badge lg-badge-${task.priority === 'high' ? 'danger' : task.priority === 'medium' ? 'warning' : 'gray'}">${task.priority}</span>
+      `;
+
+      container.appendChild(item);
+    });
+  },
+
+  updateMetrics() {
+    document.getElementById('totalAssessments').textContent = this.data.metrics.total;
+    document.getElementById('completedAssessments').textContent = this.data.metrics.completed;
+    document.getElementById('inProgressAssessments').textContent = this.data.metrics.inProgress;
+    document.getElementById('avgTime').textContent = this.data.metrics.avgTime;
+  },
+
+  setupEventListeners() {
+    // Dashboard search
+    document.getElementById('dashboardSearch').addEventListener('input', (e) => {
+      this.filterAssessments(e.target.value);
+    });
+
+    // Set user greeting based on time of day
+    const hour = new Date().getHours();
+    let greeting = 'Good morning';
+    if (hour >= 12 && hour < 17) greeting = 'Good afternoon';
+    else if (hour >= 17) greeting = 'Good evening';
+    
+    document.getElementById('userGreeting').textContent = `${greeting}, Risk Manager`;
+  },
+
+  showWelcomeMessage() {
+    const hour = new Date().getHours();
+    let message = 'Good morning! Ready to tackle today\'s risk assessments?';
+    if (hour >= 12 && hour < 17) message = 'Good afternoon! Keep up the great work on risk management.';
+    else if (hour >= 17) message = 'Good evening! Wrapping up another day of effective risk oversight.';
+    
+    LogicGate.Toast.show(message, 'info', 5000);
+  },
+
+  startNewAssessment() {
+    window.location.href = '/process-selection';
+  },
+
+  viewAssessment(assessmentId) {
+    LogicGate.Toast.show(`Opening assessment ${assessmentId}...`, 'info');
+    // Navigate to assessment details
+  },
+
+  viewAllAssessments() {
+    LogicGate.Toast.show('Opening assessments list...', 'info');
+    // Navigate to assessments list page
+  },
+
+  viewReports() {
+    LogicGate.Toast.show('Opening reports dashboard...', 'info');
+    // Navigate to reports page
+  },
+
+  exportData() {
+    const exportData = {
+      metrics: this.data.metrics,
+      assessments: this.data.assessments,
+      exportDate: new Date().toISOString()
+    };
+    
+    LogicGate.Export.toJSON(exportData, 'dashboard-export.json');
+    LogicGate.Toast.show('Dashboard data exported successfully!', 'success');
+  },
+
+  viewRiskDetails() {
+    LogicGate.Toast.show('Opening risk analytics dashboard...', 'info');
+    // Navigate to risk dashboard
+  },
+
+  completeTask(taskId) {
+    const task = this.data.tasks.find(t => t.id === taskId);
+    if (task) {
+      LogicGate.Toast.show(`Task "${task.title}" marked as complete!`, 'success');
+      // Remove task from list and update backend
+      this.data.tasks = this.data.tasks.filter(t => t.id !== taskId);
+      this.renderPendingTasks();
+    }
+  },
+
+  filterAssessments(searchTerm) {
+    const items = document.querySelectorAll('.assessment-item');
+    const term = searchTerm.toLowerCase();
+
+    items.forEach(item => {
+      const title = item.querySelector('.assessment-title').textContent.toLowerCase();
+      const meta = item.querySelector('.assessment-meta').textContent.toLowerCase();
+      const show = title.includes(term) || meta.includes(term);
+      
+      item.style.display = show ? '' : 'none';
+    });
+  },
+
+  formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric',
+      year: date.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined
+    });
+  },
+
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+};
+
+// Initialize dashboard when page loads
+document.addEventListener('DOMContentLoaded', () => {
+  dashboard.init();
+});
+</script>
