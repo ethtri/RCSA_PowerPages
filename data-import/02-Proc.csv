@@ -1,0 +1,13 @@
+ProcessName,ProcessID,BUName,ProcessCriticality
+Wire Transfers,P001,Retail Banking,Critical
+Account Opening,P002,Retail Banking,High
+Loan Origination,P003,Commercial Banking,Critical
+Credit Card Processing,P004,Retail Banking,High
+ATM Reconciliation,P005,Operations,Standard
+ACH Processing,P006,Operations,High
+Investment Advisory,P007,Wealth Management,High
+Cash Management,P008,Treasury & Markets,Critical
+Mortgage Processing,P009,Retail Banking,High
+Trade Finance,P010,Commercial Banking,High
+Payment Processing,P011,Operations,Critical
+Customer Onboarding,P012,Retail Banking,High 

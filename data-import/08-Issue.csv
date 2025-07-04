@@ -1,0 +1,9 @@
+IssueTitle,RiskTitle,Owner,TargetDate,Status,Severity,IssueRootCause
+Manual dual auth prone to error,Unauthorized Wire Transfer,operations@firstcitizens.com,2025-09-30,Open,High,Process
+ID verification system outdated,Identity Theft in Account Opening,compliance@firstcitizens.com,2025-06-30,In Progress,Medium,Technology
+Credit model needs recalibration,Credit Risk Mispricing,credit@firstcitizens.com,2025-08-31,Open,High,Process
+ATM reconciliation manual process,ATM Cash Discrepancies,operations@firstcitizens.com,2025-07-31,Open,Low,Process
+Investment suitability documentation gaps,Unsuitable Investment Advice,wealth@firstcitizens.com,2025-05-31,In Progress,Medium,Process
+Liquidity reporting frequency inadequate,Liquidity Risk Management,treasury@firstcitizens.com,2025-04-30,Open,High,Process
+Mortgage compliance checklist outdated,Mortgage Compliance Violations,mortgage@firstcitizens.com,2025-06-30,Open,Medium,Process
+Trade finance documentation incomplete,Trade Finance Documentation,tradefinance@firstcitizens.com,2025-08-31,Open,Medium,Process 

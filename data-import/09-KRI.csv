@@ -1,0 +1,13 @@
+MetricName,RiskTitle,CurrentVal,AmberThres,RedThres,LastUpdated
+Wire Exception Rate,Unauthorized Wire Transfer,0.15,0.10,0.20,2025-01-26
+Account Opening Fraud Rate,Identity Theft in Account Opening,0.05,0.03,0.08,2025-01-26
+Loan Default Rate,Credit Risk Mispricing,2.1,1.5,3.0,2025-01-26
+Card Fraud Loss Rate,Card Fraud Losses,0.08,0.10,0.15,2025-01-26
+ATM Variance Rate,ATM Cash Discrepancies,0.02,0.05,0.10,2025-01-26
+ACH Return Rate,ACH Return Processing Errors,1.2,1.0,2.0,2025-01-26
+Investment Complaint Rate,Unsuitable Investment Advice,0.01,0.02,0.05,2025-01-26
+Liquidity Coverage Ratio,Liquidity Risk Management,125,110,100,2025-01-26
+Mortgage Compliance Score,Mortgage Compliance Violations,92,90,85,2025-01-26
+Trade Finance Error Rate,Trade Finance Documentation,0.03,0.05,0.08,2025-01-26
+Payment System Uptime,Payment System Downtime,99.8,99.5,99.0,2025-01-26
+Data Breach Incidents,Customer Data Breach,0,0,1,2025-01-26 

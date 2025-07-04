@@ -1,0 +1,16 @@
+ControlTitle,ControlType,AutomatedFlag,DesignEff,OperEff,ControlOwner
+Dual Authorization Wire Review,Preventive,No,4,3,operations@firstcitizens.com
+Customer ID Verification System,Preventive,Yes,5,4,compliance@firstcitizens.com
+Credit Scoring Model,Preventive,Yes,4,4,credit@firstcitizens.com
+Real-time Fraud Monitoring,Detective,Yes,5,5,fraud@firstcitizens.com
+Daily Cash Reconciliation,Detective,No,3,3,operations@firstcitizens.com
+ACH Exception Processing,Detective,Yes,4,4,operations@firstcitizens.com
+Investment Suitability Assessment,Preventive,No,4,3,wealth@firstcitizens.com
+Liquidity Stress Testing,Preventive,Yes,5,4,treasury@firstcitizens.com
+Mortgage Compliance Checklist,Preventive,No,3,3,mortgage@firstcitizens.com
+Trade Documentation Review,Preventive,No,4,3,tradefinance@firstcitizens.com
+Payment System Monitoring,Detective,Yes,5,5,technology@firstcitizens.com
+Data Encryption Controls,Preventive,Yes,5,5,security@firstcitizens.com
+AML Transaction Monitoring,Detective,Yes,4,4,compliance@firstcitizens.com
+Loan Application Verification,Preventive,Yes,4,4,underwriting@firstcitizens.com
+Client Risk Profiling,Preventive,No,3,3,wealth@firstcitizens.com 

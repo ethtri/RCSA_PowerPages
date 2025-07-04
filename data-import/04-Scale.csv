@@ -1,0 +1,6 @@
+Score,Description,LikelihoodDesc,ImpactDesc,Color
+1,Very Low,Rare (>5 years),Minimal (<$10K),Green
+2,Low,Unlikely (2-5 years),Minor ($10K-$100K),Green
+3,Medium,Possible (1-2 years),Moderate ($100K-$1M),Amber
+4,High,Likely (6-12 months),Major ($1M-$10M),Red
+5,Very High,Almost Certain (<6 months),Severe (>$10M),Red 

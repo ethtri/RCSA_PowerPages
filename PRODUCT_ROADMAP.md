@@ -34,6 +34,7 @@ A white-label, enterprise-grade RCSA platform that transforms traditional 2+ hou
 - [x] **Processes** - Loan Origination, Account Opening, Payment Processing, etc.
 - [x] **Risk Categories** - Credit, Operational, Market, Liquidity, Compliance, etc.
 - [x] **AI Risk Suggestions** - Banking-specific risk scenarios
+- [ ] **Dummy Data** - Realistic sample data across all 9 Dataverse tables
 
 ---
 

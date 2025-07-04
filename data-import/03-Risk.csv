@@ -1,0 +1,16 @@
+RiskTitle,ProcessName,RiskCategory,InherentL,InherentI
+Unauthorized Wire Transfer,Wire Transfers,Fraud,4,5
+Identity Theft in Account Opening,Account Opening,Fraud,3,4
+Credit Risk Mispricing,Loan Origination,Credit,4,4
+Card Fraud Losses,Credit Card Processing,Fraud,5,3
+ATM Cash Discrepancies,ATM Reconciliation,Operational,2,2
+ACH Return Processing Errors,ACH Processing,Operational,3,3
+Unsuitable Investment Advice,Investment Advisory,Compliance,2,4
+Liquidity Risk Management,Cash Management,Operational,3,5
+Mortgage Compliance Violations,Mortgage Processing,Compliance,3,4
+Trade Finance Documentation,Trade Finance,Operational,4,3
+Payment System Downtime,Payment Processing,Technology,2,5
+Customer Data Breach,Customer Onboarding,Technology,3,5
+Money Laundering via Wires,Wire Transfers,Compliance,4,5
+Loan Application Fraud,Loan Origination,Fraud,3,4
+Investment Suitability Breach,Investment Advisory,Compliance,2,4 

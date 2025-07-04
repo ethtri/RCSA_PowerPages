@@ -1,0 +1,9 @@
+AssessmentName,RiskTitle,Assessor,AssmntDate,ResidualL,ResidualI,Rationale,AssessmentStatus
+Wire Transfers Q1 2025,Unauthorized Wire Transfer,sarah.chen@firstcitizens.com,2025-01-15,2,4,Dual auth reduces likelihood but impact remains high,Submitted
+Account Opening Q1 2025,Identity Theft in Account Opening,sarah.chen@firstcitizens.com,2025-01-20,2,3,ID verification system effective with encrypted data storage,Submitted
+Loan Origination Q1 2025,Credit Risk Mispricing,michael.rodriguez@firstcitizens.com,2025-01-25,3,3,Credit model good but manual overrides create risk,Submitted
+Card Processing Q1 2025,Card Fraud Losses,sarah.chen@firstcitizens.com,2025-02-01,3,2,Real-time monitoring very effective,Submitted
+ATM Ops Q1 2025,ATM Cash Discrepancies,lisa.thompson@firstcitizens.com,2025-02-05,2,2,Daily reconciliation process working well,Submitted
+ACH Processing Q1 2025,ACH Return Processing Errors,lisa.thompson@firstcitizens.com,2025-02-10,2,3,Automated exception handling reduces errors,Submitted
+Investment Advisory Q1 2025,Unsuitable Investment Advice,patricia.wong@firstcitizens.com,2025-02-15,2,3,Suitability assessment and profiling controls effective,Submitted
+Cash Management Q1 2025,Liquidity Risk Management,david.johnson@firstcitizens.com,2025-02-20,2,4,Stress testing robust but impact remains significant,Submitted 
