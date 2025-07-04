@@ -1,0 +1,46 @@
+name: Power Pages CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Power Platform CLI
+      uses: microsoft/powerplatform-actions/actions-install@v1
+      
+    - name: Authenticate to Power Platform
+      uses: microsoft/powerplatform-actions/who-am-i@v1
+      with:
+        environment-url: ${{ secrets.POWER_PLATFORM_ENVIRONMENT_URL }}
+        user-name: ${{ secrets.POWER_PLATFORM_USERNAME }}
+        password-secret: ${{ secrets.POWER_PLATFORM_PASSWORD }}
+        
+    - name: Upload Power Pages
+      run: |
+        cd rcsa-copilot---site-5joks
+        pac pages upload --path . --modelVersion 2
+      shell: pwsh
+      
+    - name: Notify on Success
+      if: success()
+      run: |
+        echo "✅ Power Pages deployment completed successfully!"
+        echo "🌐 Site: RCSA Copilot - site-5joks"
+        echo "📅 Deployed: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+      shell: pwsh
+      
+    - name: Notify on Failure  
+      if: failure()
+      run: |
+        echo "❌ Power Pages deployment failed!"
+        echo "Please check the logs above for details."
+      shell: pwsh 
