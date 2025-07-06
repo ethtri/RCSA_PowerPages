@@ -1,82 +1,189 @@
-<!-- Include LogicGate Design System -->
-<link rel="stylesheet" href="/logicgate-design-system.css">
-<script src="/logicgate-components.js"></script>
+<!-- Include Bootstrap 5 and Modern Enhancements -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="/bootstrap-5-upgrades.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/modern-interactions.js"></script>
 
-<!-- Control Mapping Page - LogicGate Risk Cloud Inspired -->
-<main class="lg-page">
-  <!-- Application Header -->
-  <header class="lg-app-header">
-    <div class="lg-container">
-      <h1 class="lg-app-title">Control Mapping</h1>
-      <p class="lg-app-subtitle">Link mitigating controls to identified risks across your organization</p>
-    </div>
-  </header>
+<style>
+/* Clean Control Mapping Styles */
+.control-header {
+  background: linear-gradient(135deg, #fd7e14 0%, #ffc107 100%);
+  color: white;
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+}
 
-  <!-- Enterprise Toolbar -->
-  <div class="lg-toolbar">
-    <div class="lg-container">
-      <div class="lg-toolbar-content">
-        <div class="lg-toolbar-actions">
-          <button class="lg-btn lg-btn-sm lg-btn-primary" onclick="controlMapping.bulkMapControls()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-            </svg>
-            Bulk Map Controls
-          </button>
-          <button class="lg-btn lg-btn-sm lg-btn-outline" onclick="controlMapping.exportMappings()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7,10 12,15 17,10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            Export Mappings
-          </button>
-          <div class="lg-btn-group">
-            <button class="lg-btn lg-btn-sm lg-btn-ghost" onclick="controlMapping.filterRisks('all')" id="filterAll">
-              All Risks
-            </button>
-            <button class="lg-btn lg-btn-sm lg-btn-ghost" onclick="controlMapping.filterRisks('unmapped')" id="filterUnmapped">
-              Unmapped
-            </button>
-            <button class="lg-btn lg-btn-sm lg-btn-ghost" onclick="controlMapping.filterRisks('high')" id="filterHigh">
-              High Risk
-            </button>
-          </div>
+.progress-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.progress-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #fd7e14, #ffc107);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.risk-card {
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.risk-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.risk-card.mapped {
+  border-color: #28a745;
+  background: #f8fff9;
+}
+
+.risk-card.unmapped {
+  border-color: #ffc107;
+  background: #fffbf0;
+}
+
+.control-chip {
+  background: #e7f3ff;
+  color: #0d6efd;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin: 0.25rem;
+  display: inline-block;
+  position: relative;
+}
+
+.control-chip .remove-control {
+  margin-left: 0.5rem;
+  cursor: pointer;
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.control-chip .remove-control:hover {
+  color: #a71e2a;
+}
+
+.control-option {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.control-option:hover {
+  border-color: #0d6efd;
+  background: #f8f9ff;
+}
+
+.control-option.selected {
+  border-color: #0d6efd;
+  background: #e7f3ff;
+}
+
+.filter-tabs {
+  background: white;
+  border-radius: 8px;
+  padding: 0.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.filter-tab {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  margin: 0 0.25rem;
+}
+
+.filter-tab.active {
+  background: #fd7e14;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .control-header {
+    padding: 2rem 0;
+  }
+  
+  .risk-card {
+    padding: 1rem;
+  }
+}
+</style>
+
+<!-- Clean Bootstrap 5 Control Mapping Page -->
+<div class="container-fluid">
+  
+  <!-- Page Header -->
+  <div class="control-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="display-5 fw-bold mb-2">Control Mapping</h1>
+          <p class="lead mb-0">Link mitigating controls to identified risks across your organization</p>
         </div>
-        <div class="lg-toolbar-search">
-          <input type="text" class="lg-input" placeholder="Search risks and controls..." id="globalSearch">
+        <div class="col-md-4 text-md-end">
+          <div class="step-indicator bg-white bg-opacity-25 rounded-pill px-3 py-1">
+            <i class="bi bi-3-circle me-2"></i>
+            Step 3 of 5
+          </div>
+          <div class="h5 mt-2 mb-0">Control Mapping</div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Progress Summary -->
-  <div class="lg-container">
-    <div class="lg-card lg-card-elevated" style="margin-bottom: 2rem;">
-      <div class="lg-card-body">
-        <div class="lg-flex lg-items-center lg-justify-between">
-          <div class="lg-flex lg-items-center lg-gap-6">
-            <div class="lg-progress-circle" id="progressCircle">
-              0/0
-            </div>
-            <div>
-              <h3 class="lg-heading-4" style="margin-bottom: 0.5rem;">Mapping Progress</h3>
-              <p class="lg-body-sm lg-text-gray-600">Track your control mapping completion across all identified risks</p>
-            </div>
+  <div class="container">
+    <div class="progress-card">
+      <div class="row align-items-center">
+        <div class="col-md-2">
+          <div class="progress-circle mx-auto" id="progressCircle">
+            0/3
           </div>
-          <div class="lg-flex lg-items-center lg-gap-6">
-            <div class="lg-text-center">
-              <div class="lg-text-2xl lg-font-bold lg-text-primary" id="totalRisks">0</div>
-              <div class="lg-caption">Total Risks</div>
+        </div>
+        <div class="col-md-6">
+          <h4 class="fw-bold mb-2">Mapping Progress</h4>
+          <p class="text-muted mb-0">Track your control mapping completion across all identified risks</p>
+        </div>
+        <div class="col-md-4">
+          <div class="row text-center">
+            <div class="col-4">
+              <div class="h3 fw-bold text-primary" id="totalRisks">3</div>
+              <div class="small text-muted">Total Risks</div>
             </div>
-            <div class="lg-text-center">
-              <div class="lg-text-2xl lg-font-bold" style="color: var(--lg-success-600);" id="mappedRisks">0</div>
-              <div class="lg-caption">Mapped</div>
+            <div class="col-4">
+              <div class="h3 fw-bold text-success" id="mappedRisks">0</div>
+              <div class="small text-muted">Mapped</div>
             </div>
-            <div class="lg-text-center">
-              <div class="lg-text-2xl lg-font-bold" style="color: var(--lg-warning-600);" id="unmappedRisks">0</div>
-              <div class="lg-caption">Unmapped</div>
+            <div class="col-4">
+              <div class="h3 fw-bold text-warning" id="unmappedRisks">3</div>
+              <div class="small text-muted">Unmapped</div>
             </div>
           </div>
         </div>
@@ -84,759 +191,379 @@
     </div>
   </div>
 
-  <!-- Main Content -->
-  <div class="lg-page-content">
-    <div class="lg-container">
-      <!-- Risk Cards Grid -->
-      <div class="lg-grid lg-grid-cols-1 lg-md-grid-cols-2 lg-lg-grid-cols-3" id="riskCardsGrid">
-        <!-- Risk cards will be populated here -->
-      </div>
+  <!-- Filter Tabs -->
+  <div class="container">
+    <div class="filter-tabs text-center">
+      <button class="filter-tab active" onclick="filterRisks('all')" id="filterAll">
+        <i class="bi bi-list me-1"></i>All Risks
+      </button>
+      <button class="filter-tab" onclick="filterRisks('unmapped')" id="filterUnmapped">
+        <i class="bi bi-exclamation-triangle me-1"></i>Unmapped
+      </button>
+      <button class="filter-tab" onclick="filterRisks('mapped')" id="filterMapped">
+        <i class="bi bi-check-circle me-1"></i>Mapped
+      </button>
+      <button class="filter-tab" onclick="filterRisks('high')" id="filterHigh">
+        <i class="bi bi-shield-exclamation me-1"></i>High Risk
+      </button>
+    </div>
+  </div>
 
-      <!-- Loading State -->
-      <div class="lg-text-center" id="loadingState" style="padding: 4rem;">
-        <div class="lg-spinner" style="margin: 0 auto 1rem;"></div>
-        <p class="lg-body lg-text-gray-600">Loading risk assessments...</p>
+  <!-- Risk Cards Grid -->
+  <div class="container">
+    <div class="row g-4" id="riskCardsGrid">
+      
+      <!-- Risk 1 -->
+      <div class="col-lg-4">
+        <div class="risk-card unmapped" data-risk-id="risk-1" data-risk-level="critical">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="fw-bold mb-0">Credit Default Risk</h5>
+            <span class="badge bg-danger">Critical</span>
+          </div>
+          <p class="text-muted mb-3">Risk of borrower defaulting on loan obligations due to inadequate credit assessment processes.</p>
+          
+          <div class="mb-3">
+            <div class="small fw-bold mb-2">Mapped Controls:</div>
+            <div class="controls-container" id="controls-risk-1">
+              <div class="text-muted small">No controls mapped yet</div>
+            </div>
+          </div>
+          
+          <div class="d-grid">
+            <button class="btn btn-outline-primary" onclick="openControlMapping('risk-1', 'Credit Default Risk')">
+              <i class="bi bi-plus-circle me-2"></i>
+              Map Controls
+            </button>
+          </div>
+        </div>
       </div>
-
-      <!-- Empty State -->
-      <div class="lg-text-center lg-hidden" id="emptyState" style="padding: 4rem;">
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin: 0 auto 1rem; color: var(--lg-gray-400);">
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="12" y1="8" x2="12" y2="12"></line>
-          <line x1="12" y1="16" x2="12.01" y2="16"></line>
-        </svg>
-        <h3 class="lg-heading-3">No Risks Found</h3>
-        <p class="lg-body lg-text-gray-600">No risks match your current filter criteria.</p>
+      
+      <!-- Risk 2 -->
+      <div class="col-lg-4">
+        <div class="risk-card unmapped" data-risk-id="risk-2" data-risk-level="high">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="fw-bold mb-0">Operational Process Failure</h5>
+            <span class="badge bg-warning">High</span>
+          </div>
+          <p class="text-muted mb-3">Risk of system failures or human errors disrupting critical business operations and service delivery.</p>
+          
+          <div class="mb-3">
+            <div class="small fw-bold mb-2">Mapped Controls:</div>
+            <div class="controls-container" id="controls-risk-2">
+              <div class="text-muted small">No controls mapped yet</div>
+            </div>
+          </div>
+          
+          <div class="d-grid">
+            <button class="btn btn-outline-primary" onclick="openControlMapping('risk-2', 'Operational Process Failure')">
+              <i class="bi bi-plus-circle me-2"></i>
+              Map Controls
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Risk 3 -->
+      <div class="col-lg-4">
+        <div class="risk-card unmapped" data-risk-id="risk-3" data-risk-level="medium">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="fw-bold mb-0">Regulatory Compliance Gap</h5>
+            <span class="badge bg-info">Medium</span>
+          </div>
+          <p class="text-muted mb-3">Risk of non-compliance with regulatory requirements leading to penalties and reputational damage.</p>
+          
+          <div class="mb-3">
+            <div class="small fw-bold mb-2">Mapped Controls:</div>
+            <div class="controls-container" id="controls-risk-3">
+              <div class="text-muted small">No controls mapped yet</div>
+            </div>
+          </div>
+          
+          <div class="d-grid">
+            <button class="btn btn-outline-primary" onclick="openControlMapping('risk-3', 'Regulatory Compliance Gap')">
+              <i class="bi bi-plus-circle me-2"></i>
+              Map Controls
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</main>
 
-<!-- Control Selection Modal -->
-<div class="lg-modal lg-hidden" id="controlSelectionModal">
-  <div class="lg-modal-backdrop" onclick="controlMapping.closeModal()"></div>
-  <div class="lg-modal-content lg-modal-lg">
-    <div class="lg-modal-header">
-      <h3 class="lg-modal-title">Map Controls to Risk</h3>
-      <button class="lg-modal-close" onclick="controlMapping.closeModal()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-    </div>
-    <div class="lg-modal-body">
-      <div class="lg-mb-4">
-        <h4 class="lg-heading-4" id="modalRiskTitle">Risk Title</h4>
-        <p class="lg-body-sm lg-text-gray-600" id="modalRiskDescription">Risk description</p>
+  <!-- Action Buttons -->
+  <div class="container">
+    <div class="row mt-4 mb-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+          <button class="btn btn-outline-secondary btn-lg" onclick="goBack()">
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Risk Identification
+          </button>
+          <button class="btn btn-warning btn-lg" id="continueBtn" onclick="continueToNextStep()" disabled>
+            Continue to Residual Assessment
+            <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
       </div>
-      
-      <div class="lg-mb-4">
-        <input type="text" class="lg-input" placeholder="Search available controls..." id="controlSearch">
-      </div>
-      
-      <div class="control-options-grid" id="controlOptionsGrid">
-        <!-- Control options will be populated here -->
-      </div>
-    </div>
-    <div class="lg-modal-footer">
-      <button class="lg-btn lg-btn-secondary" onclick="controlMapping.closeModal()">Cancel</button>
-      <button class="lg-btn lg-btn-primary" onclick="controlMapping.saveControlMapping()">Save Mapping</button>
     </div>
   </div>
 </div>
 
-<style>
-/* Additional Control Mapping Styles */
-.control-options-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
-  max-height: 400px;
-  overflow-y: auto;
-  padding: 1rem 0;
-}
-
-.control-option {
-  background: white;
-  border: 1px solid var(--lg-gray-200);
-  border-radius: var(--lg-border-radius);
-  padding: 1rem;
-  cursor: pointer;
-  transition: all var(--lg-transition-fast);
-}
-
-.control-option:hover {
-  border-color: var(--lg-primary-300);
-  box-shadow: var(--lg-shadow-sm);
-}
-
-.control-option.selected {
-  border-color: var(--lg-primary-500);
-  background: var(--lg-primary-50);
-}
-
-.control-option-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-
-.control-option-checkbox {
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--lg-gray-300);
-  border-radius: 3px;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.control-option.selected .control-option-checkbox {
-  background: var(--lg-primary-500);
-  border-color: var(--lg-primary-500);
-}
-
-.control-option.selected .control-option-checkbox::after {
-  content: '✓';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 10px;
-  font-weight: bold;
-}
-
-.control-title {
-  font-weight: var(--lg-font-medium);
-  font-size: var(--lg-text-sm);
-  color: var(--lg-gray-900);
-}
-
-.control-description {
-  font-size: var(--lg-text-xs);
-  color: var(--lg-gray-600);
-  line-height: 1.4;
-}
-
-.control-effectiveness {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.effectiveness-score {
-  font-size: var(--lg-text-xs);
-  font-weight: var(--lg-font-medium);
-  color: var(--lg-gray-700);
-}
-
-.effectiveness-bar {
-  flex: 1;
-  height: 4px;
-  background: var(--lg-gray-200);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.effectiveness-fill {
-  height: 100%;
-  background: var(--lg-success-500);
-  transition: width var(--lg-transition-base);
-}
-
-.lg-btn-group {
-  display: flex;
-  border-radius: var(--lg-border-radius);
-  overflow: hidden;
-}
-
-.lg-btn-group .lg-btn {
-  border-radius: 0;
-  border-right: none;
-}
-
-.lg-btn-group .lg-btn:last-child {
-  border-right: 1px solid var(--lg-gray-300);
-}
-
-.lg-btn-group .lg-btn.active {
-  background: var(--lg-primary-100);
-  color: var(--lg-primary-700);
-  border-color: var(--lg-primary-300);
-}
-
-/* Risk Card Enhancements */
-.risk-card-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.mapped-controls {
-  margin-top: 1rem;
-}
-
-.mapped-controls-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-}
-
-.mapped-control-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem;
-  background: var(--lg-gray-50);
-  border-radius: var(--lg-border-radius-sm);
-  margin-bottom: 0.25rem;
-  font-size: var(--lg-text-xs);
-}
-
-.mapped-control-remove {
-  background: none;
-  border: none;
-  color: var(--lg-gray-400);
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 2px;
-  transition: color var(--lg-transition-fast);
-}
-
-.mapped-control-remove:hover {
-  color: var(--lg-danger-600);
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .lg-toolbar-content {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .lg-toolbar-actions {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .lg-toolbar-search {
-    min-width: 100%;
-  }
-  
-  .control-options-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
-
-<script>
-// Control Mapping Application Logic
-const controlMapping = {
-  currentRisk: null,
-  selectedControls: [],
-  risks: [],
-  controls: [],
-  mappings: {},
-
-  async init() {
-    try {
-      await this.loadData();
-      this.renderRiskCards();
-      this.updateProgressSummary();
-      this.setupEventListeners();
-      this.hideLoadingState();
-    } catch (error) {
-      console.error('Failed to initialize control mapping:', error);
-      LogicGate.Toast.show('Failed to load data. Please refresh the page.', 'danger');
-    }
-  },
-
-  async loadData() {
-    // Simulate API calls - replace with actual Dataverse API calls
-    await this.delay(1000);
-    
-    // Mock data - replace with actual data fetching
-    this.risks = [
-      {
-        id: 'RSK001',
-        title: 'Credit Risk - Commercial Lending',
-        description: 'Risk of financial loss from borrower default in commercial lending operations',
-        process: 'Commercial Lending',
-        inherentRisk: 'High',
-        likelihood: 4,
-        impact: 4,
-        mappedControls: []
-      },
-      {
-        id: 'RSK002', 
-        title: 'Operational Risk - Payment Processing',
-        description: 'Risk of system failures or errors in payment processing systems',
-        process: 'Payment Processing',
-        inherentRisk: 'Medium',
-        likelihood: 3,
-        impact: 3,
-        mappedControls: ['CTRL001']
-      },
-      {
-        id: 'RSK003',
-        title: 'Compliance Risk - AML Monitoring',
-        description: 'Risk of regulatory violations in anti-money laundering monitoring',
-        process: 'AML Compliance',
-        inherentRisk: 'High',
-        likelihood: 3,
-        impact: 5,
-        mappedControls: ['CTRL002', 'CTRL003']
-      },
-      {
-        id: 'RSK004',
-        title: 'Cybersecurity Risk - Data Breach',
-        description: 'Risk of unauthorized access to customer data and systems',
-        process: 'Information Security',
-        inherentRisk: 'Critical',
-        likelihood: 2,
-        impact: 5,
-        mappedControls: []
-      },
-      {
-        id: 'RSK005',
-        title: 'Market Risk - Interest Rate Changes',
-        description: 'Risk of losses from adverse interest rate movements',
-        process: 'Treasury Management',
-        inherentRisk: 'Medium',
-        likelihood: 4,
-        impact: 3,
-        mappedControls: ['CTRL004']
-      },
-      {
-        id: 'RSK006',
-        title: 'Liquidity Risk - Funding Shortfall',
-        description: 'Risk of insufficient liquidity to meet obligations',
-        process: 'Liquidity Management',
-        inherentRisk: 'High',
-        likelihood: 2,
-        impact: 4,
-        mappedControls: []
-      }
-    ];
-
-    this.controls = [
-      {
-        id: 'CTRL001',
-        title: 'Automated Transaction Monitoring',
-        description: 'Real-time monitoring system for suspicious transactions',
-        effectiveness: 85,
-        type: 'Automated'
-      },
-      {
-        id: 'CTRL002',
-        title: 'Customer Due Diligence Process',
-        description: 'Enhanced due diligence procedures for high-risk customers',
-        effectiveness: 90,
-        type: 'Manual'
-      },
-      {
-        id: 'CTRL003',
-        title: 'Regulatory Reporting Framework',
-        description: 'Automated regulatory reporting and compliance tracking',
-        effectiveness: 95,
-        type: 'Automated'
-      },
-      {
-        id: 'CTRL004',
-        title: 'Interest Rate Risk Management',
-        description: 'Comprehensive interest rate risk measurement and hedging',
-        effectiveness: 80,
-        type: 'Manual'
-      },
-      {
-        id: 'CTRL005',
-        title: 'Multi-Factor Authentication',
-        description: 'Advanced authentication system for system access',
-        effectiveness: 92,
-        type: 'Automated'
-      },
-      {
-        id: 'CTRL006',
-        title: 'Data Encryption Standards',
-        description: 'End-to-end encryption for sensitive data protection',
-        effectiveness: 88,
-        type: 'Automated'
-      },
-      {
-        id: 'CTRL007',
-        title: 'Credit Risk Assessment Model',
-        description: 'Advanced modeling for credit risk evaluation',
-        effectiveness: 85,
-        type: 'Automated'
-      },
-      {
-        id: 'CTRL008',
-        title: 'Liquidity Stress Testing',
-        description: 'Regular stress testing of liquidity positions',
-        effectiveness: 75,
-        type: 'Manual'
-      }
-    ];
-
-    // Build mappings object
-    this.mappings = {};
-    this.risks.forEach(risk => {
-      this.mappings[risk.id] = risk.mappedControls || [];
-    });
-  },
-
-  renderRiskCards() {
-    const grid = document.getElementById('riskCardsGrid');
-    grid.innerHTML = '';
-
-    this.risks.forEach(risk => {
-      const card = this.createRiskCard(risk);
-      grid.appendChild(card);
-    });
-  },
-
-  createRiskCard(risk) {
-    const card = document.createElement('div');
-    card.className = `lg-card lg-risk-card lg-card-interactive risk-${risk.inherentRisk.toLowerCase()}`;
-    card.setAttribute('data-risk-id', risk.id);
-
-    const mappedControls = this.mappings[risk.id] || [];
-    const hasControls = mappedControls.length > 0;
-
-    card.innerHTML = `
-      <div class="lg-control-indicator ${hasControls ? 'mapped' : 'unmapped'}"></div>
-      <div class="lg-card-body">
-        <div class="lg-flex lg-items-start lg-justify-between lg-mb-3">
-          <div class="lg-flex-1">
-            <h3 class="lg-heading-4">${risk.title}</h3>
-            <p class="lg-body-sm lg-text-gray-600">${risk.description}</p>
-          </div>
-          <span class="lg-risk-badge lg-risk-${risk.inherentRisk.toLowerCase()}">${risk.inherentRisk}</span>
+<!-- Control Selection Modal -->
+<div class="modal fade" id="controlMappingModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Map Controls to Risk</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <h6 class="fw-bold" id="modalRiskTitle">Risk Title</h6>
+          <p class="text-muted" id="modalRiskDescription">Risk description</p>
         </div>
         
-        <div class="lg-flex lg-items-center lg-gap-4 lg-mb-3">
-          <div class="lg-flex lg-items-center lg-gap-2">
-            <span class="lg-caption">Process:</span>
-            <span class="lg-badge lg-badge-gray">${risk.process}</span>
-          </div>
-          <div class="lg-flex lg-items-center lg-gap-2">
-            <span class="lg-caption">Risk Score:</span>
-            <span class="lg-font-semibold">${risk.likelihood * risk.impact}</span>
-          </div>
+        <div class="mb-3">
+          <input type="text" class="form-control" placeholder="Search available controls..." id="controlSearch">
         </div>
-
-        ${mappedControls.length > 0 ? `
-          <div class="mapped-controls">
-            <div class="mapped-controls-header">
-              <span class="lg-caption">Mapped Controls (${mappedControls.length})</span>
-              <button class="lg-btn lg-btn-sm lg-btn-ghost" onclick="controlMapping.openControlModal('${risk.id}')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="5" x2="12" y2="19"></line>
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-                Add More
-              </button>
+        
+        <div class="control-options" id="controlOptions">
+          <div class="control-option" data-control-id="ctrl-1">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="ctrl-1">
+              <label class="form-check-label" for="ctrl-1">
+                <strong>Segregation of Duties</strong><br>
+                <small class="text-muted">Ensures critical processes require multiple approvals</small>
+              </label>
             </div>
-            ${mappedControls.map(controlId => {
-              const control = this.controls.find(c => c.id === controlId);
-              return control ? `
-                <div class="mapped-control-item">
-                  <span>${control.title}</span>
-                  <button class="mapped-control-remove" onclick="controlMapping.removeControl('${risk.id}', '${controlId}')">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
-                </div>
-              ` : '';
-            }).join('')}
           </div>
-        ` : ''}
-
-        <div class="risk-card-actions">
-          ${mappedControls.length === 0 ? `
-            <button class="lg-btn lg-btn-primary lg-btn-sm" onclick="controlMapping.openControlModal('${risk.id}')">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-              </svg>
-              Map Controls
-            </button>
-          ` : `
-            <button class="lg-btn lg-btn-outline lg-btn-sm" onclick="controlMapping.openControlModal('${risk.id}')">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                <path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-              </svg>
-              Edit Controls
-            </button>
-          `}
-          <button class="lg-btn lg-btn-ghost lg-btn-sm" onclick="controlMapping.viewRiskDetails('${risk.id}')">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-              <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-            View Details
-          </button>
+          
+          <div class="control-option" data-control-id="ctrl-2">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="ctrl-2">
+              <label class="form-check-label" for="ctrl-2">
+                <strong>Regular System Backups</strong><br>
+                <small class="text-muted">Automated daily backups of critical systems and data</small>
+              </label>
+            </div>
+          </div>
+          
+          <div class="control-option" data-control-id="ctrl-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="ctrl-3">
+              <label class="form-check-label" for="ctrl-3">
+                <strong>Compliance Monitoring</strong><br>
+                <small class="text-muted">Regular audits and compliance checks</small>
+              </label>
+            </div>
+          </div>
+          
+          <div class="control-option" data-control-id="ctrl-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="ctrl-4">
+              <label class="form-check-label" for="ctrl-4">
+                <strong>Access Controls</strong><br>
+                <small class="text-muted">Role-based access to sensitive systems and data</small>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
-    `;
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="saveControlMapping()">Save Mapping</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-    return card;
-  },
+<!-- Clean JavaScript -->
+<script>
+let currentRiskId = null;
+let riskMappings = {};
 
-  openControlModal(riskId) {
-    const risk = this.risks.find(r => r.id === riskId);
-    if (!risk) return;
-
-    this.currentRisk = risk;
-    this.selectedControls = [...(this.mappings[riskId] || [])];
-
-    // Update modal content
-    document.getElementById('modalRiskTitle').textContent = risk.title;
-    document.getElementById('modalRiskDescription').textContent = risk.description;
-    
-    // Render control options
-    this.renderControlOptions();
-    
-    // Show modal
-    document.getElementById('controlSelectionModal').classList.remove('lg-hidden');
-    document.body.style.overflow = 'hidden';
-  },
-
-  renderControlOptions() {
-    const grid = document.getElementById('controlOptionsGrid');
-    grid.innerHTML = '';
-
-    this.controls.forEach(control => {
-      const option = document.createElement('div');
-      option.className = `control-option ${this.selectedControls.includes(control.id) ? 'selected' : ''}`;
-      option.onclick = () => this.toggleControlSelection(control.id);
-
-      option.innerHTML = `
-        <div class="control-option-header">
-          <div class="control-option-checkbox"></div>
-          <div class="control-title">${control.title}</div>
-        </div>
-        <div class="control-description">${control.description}</div>
-        <div class="control-effectiveness">
-          <span class="effectiveness-score">${control.effectiveness}%</span>
-          <div class="effectiveness-bar">
-            <div class="effectiveness-fill" style="width: ${control.effectiveness}%"></div>
-          </div>
-        </div>
-      `;
-
-      grid.appendChild(option);
-    });
-  },
-
-  toggleControlSelection(controlId) {
-    const index = this.selectedControls.indexOf(controlId);
-    if (index > -1) {
-      this.selectedControls.splice(index, 1);
-    } else {
-      this.selectedControls.push(controlId);
-    }
-    
-    // Update visual state
-    const option = document.querySelector(`[onclick*="${controlId}"]`);
-    if (option) {
-      option.classList.toggle('selected', this.selectedControls.includes(controlId));
-    }
-  },
-
-  saveControlMapping() {
-    if (!this.currentRisk) return;
-
-    // Update mappings
-    this.mappings[this.currentRisk.id] = [...this.selectedControls];
-    
-    // Update risk object
-    const risk = this.risks.find(r => r.id === this.currentRisk.id);
-    if (risk) {
-      risk.mappedControls = [...this.selectedControls];
-    }
-
-    // Re-render affected card
-    this.renderRiskCards();
-    this.updateProgressSummary();
-    
-    // Close modal
-    this.closeModal();
-    
-    // Show success message
-    LogicGate.Toast.show(`Successfully mapped ${this.selectedControls.length} controls to ${this.currentRisk.title}`, 'success');
-  },
-
-  closeModal() {
-    document.getElementById('controlSelectionModal').classList.add('lg-hidden');
-    document.body.style.overflow = '';
-    this.currentRisk = null;
-    this.selectedControls = [];
-  },
-
-  removeControl(riskId, controlId) {
-    const mappedControls = this.mappings[riskId] || [];
-    const index = mappedControls.indexOf(controlId);
-    
-    if (index > -1) {
-      mappedControls.splice(index, 1);
-      this.mappings[riskId] = mappedControls;
-      
-      // Update risk object
-      const risk = this.risks.find(r => r.id === riskId);
-      if (risk) {
-        risk.mappedControls = mappedControls;
-      }
-      
-      this.renderRiskCards();
-      this.updateProgressSummary();
-      
-      const control = this.controls.find(c => c.id === controlId);
-      LogicGate.Toast.show(`Removed ${control?.title || 'control'} from risk mapping`, 'info');
-    }
-  },
-
-  updateProgressSummary() {
-    const totalRisks = this.risks.length;
-    const mappedRisks = this.risks.filter(r => (this.mappings[r.id] || []).length > 0).length;
-    const unmappedRisks = totalRisks - mappedRisks;
-
-    // Update progress circle
-    LogicGate.Progress.updateCircle('#progressCircle', mappedRisks, totalRisks);
-    
-    // Update summary numbers
-    document.getElementById('totalRisks').textContent = totalRisks;
-    document.getElementById('mappedRisks').textContent = mappedRisks;
-    document.getElementById('unmappedRisks').textContent = unmappedRisks;
-  },
-
-  setupEventListeners() {
-    // Global search
-    document.getElementById('globalSearch').addEventListener('input', (e) => {
-      this.filterRiskCards(e.target.value);
-    });
-
-    // Control search in modal
-    document.getElementById('controlSearch').addEventListener('input', (e) => {
-      this.filterControlOptions(e.target.value);
-    });
-
-    // Filter buttons
-    document.getElementById('filterAll').addEventListener('click', () => this.setActiveFilter('filterAll'));
-    document.getElementById('filterUnmapped').addEventListener('click', () => this.setActiveFilter('filterUnmapped'));
-    document.getElementById('filterHigh').addEventListener('click', () => this.setActiveFilter('filterHigh'));
-  },
-
-  setActiveFilter(activeId) {
-    ['filterAll', 'filterUnmapped', 'filterHigh'].forEach(id => {
-      document.getElementById(id).classList.remove('active');
-    });
-    document.getElementById(activeId).classList.add('active');
-  },
-
-  filterRisks(filter) {
-    const cards = document.querySelectorAll('.lg-risk-card');
-    let visibleCount = 0;
-
-    cards.forEach(card => {
-      const riskId = card.getAttribute('data-risk-id');
-      const risk = this.risks.find(r => r.id === riskId);
-      let show = true;
-
-      if (filter === 'unmapped') {
-        show = (this.mappings[riskId] || []).length === 0;
-      } else if (filter === 'high') {
-        show = risk && (risk.inherentRisk === 'High' || risk.inherentRisk === 'Critical');
-      }
-
-      card.style.display = show ? '' : 'none';
-      if (show) visibleCount++;
-    });
-
-    // Show/hide empty state
-    document.getElementById('emptyState').classList.toggle('lg-hidden', visibleCount > 0);
-  },
-
-  filterRiskCards(searchTerm) {
-    const cards = document.querySelectorAll('.lg-risk-card');
-    const term = searchTerm.toLowerCase();
-    let visibleCount = 0;
-
-    cards.forEach(card => {
-      const title = card.querySelector('.lg-heading-4').textContent.toLowerCase();
-      const description = card.querySelector('.lg-body-sm').textContent.toLowerCase();
-      const show = title.includes(term) || description.includes(term);
-      
-      card.style.display = show ? '' : 'none';
-      if (show) visibleCount++;
-    });
-
-    document.getElementById('emptyState').classList.toggle('lg-hidden', visibleCount > 0);
-  },
-
-  filterControlOptions(searchTerm) {
-    const options = document.querySelectorAll('.control-option');
-    const term = searchTerm.toLowerCase();
-
-    options.forEach(option => {
-      const title = option.querySelector('.control-title').textContent.toLowerCase();
-      const description = option.querySelector('.control-description').textContent.toLowerCase();
-      const show = title.includes(term) || description.includes(term);
-      
-      option.style.display = show ? '' : 'none';
-    });
-  },
-
-  hideLoadingState() {
-    document.getElementById('loadingState').style.display = 'none';
-  },
-
-  bulkMapControls() {
-    LogicGate.Toast.show('Bulk mapping feature coming soon!', 'info');
-  },
-
-  exportMappings() {
-    const exportData = this.risks.map(risk => ({
-      riskId: risk.id,
-      riskTitle: risk.title,
-      process: risk.process,
-      inherentRisk: risk.inherentRisk,
-      mappedControls: (this.mappings[risk.id] || []).map(controlId => {
-        const control = this.controls.find(c => c.id === controlId);
-        return {
-          controlId: controlId,
-          controlTitle: control?.title || 'Unknown',
-          effectiveness: control?.effectiveness || 0
-        };
-      })
-    }));
-
-    LogicGate.Export.toJSON(exportData, 'control-mappings.json');
-    LogicGate.Toast.show('Control mappings exported successfully!', 'success');
-  },
-
-  viewRiskDetails(riskId) {
-    const risk = this.risks.find(r => r.id === riskId);
-    if (risk) {
-      LogicGate.Toast.show(`Viewing details for ${risk.title}`, 'info');
-      // Navigate to risk details page
-    }
-  },
-
-  delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+const controlData = {
+  'ctrl-1': { name: 'Segregation of Duties', description: 'Ensures critical processes require multiple approvals' },
+  'ctrl-2': { name: 'Regular System Backups', description: 'Automated daily backups of critical systems and data' },
+  'ctrl-3': { name: 'Compliance Monitoring', description: 'Regular audits and compliance checks' },
+  'ctrl-4': { name: 'Access Controls', description: 'Role-based access to sensitive systems and data' }
 };
 
-// Initialize the application
-document.addEventListener('DOMContentLoaded', () => {
-  controlMapping.init();
+function openControlMapping(riskId, riskTitle) {
+  currentRiskId = riskId;
+  document.getElementById('modalRiskTitle').textContent = riskTitle;
+  
+  // Clear previous selections
+  document.querySelectorAll('#controlOptions input[type="checkbox"]').forEach(cb => {
+    cb.checked = false;
+  });
+  
+  // Check already mapped controls
+  if (riskMappings[riskId]) {
+    riskMappings[riskId].forEach(controlId => {
+      const checkbox = document.getElementById(controlId);
+      if (checkbox) checkbox.checked = true;
+    });
+  }
+  
+  const modal = new bootstrap.Modal(document.getElementById('controlMappingModal'));
+  modal.show();
+}
+
+function saveControlMapping() {
+  if (!currentRiskId) return;
+  
+  const selectedControls = [];
+  document.querySelectorAll('#controlOptions input[type="checkbox"]:checked').forEach(cb => {
+    selectedControls.push(cb.id);
+  });
+  
+  riskMappings[currentRiskId] = selectedControls;
+  updateRiskCard(currentRiskId, selectedControls);
+  updateProgress();
+  
+  const modal = bootstrap.Modal.getInstance(document.getElementById('controlMappingModal'));
+  modal.hide();
+  
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showSuccess('Controls Mapped', `Mapped ${selectedControls.length} controls to risk`);
+  }
+}
+
+function updateRiskCard(riskId, controlIds) {
+  const riskCard = document.querySelector(`[data-risk-id="${riskId}"]`);
+  const controlsContainer = document.getElementById(`controls-${riskId}`);
+  
+  if (controlIds.length === 0) {
+    controlsContainer.innerHTML = '<div class="text-muted small">No controls mapped yet</div>';
+    riskCard.classList.remove('mapped');
+    riskCard.classList.add('unmapped');
+  } else {
+    let controlsHtml = '';
+    controlIds.forEach(controlId => {
+      const control = controlData[controlId];
+      if (control) {
+        controlsHtml += `
+          <span class="control-chip">
+            ${control.name}
+            <span class="remove-control" onclick="removeControl('${riskId}', '${controlId}')">&times;</span>
+          </span>
+        `;
+      }
+    });
+    controlsContainer.innerHTML = controlsHtml;
+    riskCard.classList.remove('unmapped');
+    riskCard.classList.add('mapped');
+  }
+}
+
+function removeControl(riskId, controlId) {
+  if (riskMappings[riskId]) {
+    riskMappings[riskId] = riskMappings[riskId].filter(id => id !== controlId);
+    updateRiskCard(riskId, riskMappings[riskId]);
+    updateProgress();
+    
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showInfo('Control Removed', 'Control mapping removed');
+    }
+  }
+}
+
+function updateProgress() {
+  const totalRisks = 3;
+  const mappedCount = Object.keys(riskMappings).filter(riskId => riskMappings[riskId].length > 0).length;
+  const unmappedCount = totalRisks - mappedCount;
+  
+  document.getElementById('progressCircle').textContent = `${mappedCount}/${totalRisks}`;
+  document.getElementById('mappedRisks').textContent = mappedCount;
+  document.getElementById('unmappedRisks').textContent = unmappedCount;
+  
+  // Enable continue button if all risks are mapped
+  const continueBtn = document.getElementById('continueBtn');
+  continueBtn.disabled = mappedCount < totalRisks;
+  
+  if (mappedCount === totalRisks) {
+    continueBtn.classList.remove('btn-warning');
+    continueBtn.classList.add('btn-success');
+  } else {
+    continueBtn.classList.remove('btn-success');
+    continueBtn.classList.add('btn-warning');
+  }
+}
+
+function filterRisks(filter) {
+  // Update active tab
+  document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+  document.getElementById(`filter${filter.charAt(0).toUpperCase() + filter.slice(1)}`).classList.add('active');
+  
+  // Filter risk cards
+  document.querySelectorAll('.risk-card').forEach(card => {
+    const riskId = card.dataset.riskId;
+    const riskLevel = card.dataset.riskLevel;
+    const isMapped = riskMappings[riskId] && riskMappings[riskId].length > 0;
+    
+    let show = false;
+    switch(filter) {
+      case 'all':
+        show = true;
+        break;
+      case 'mapped':
+        show = isMapped;
+        break;
+      case 'unmapped':
+        show = !isMapped;
+        break;
+      case 'high':
+        show = riskLevel === 'critical' || riskLevel === 'high';
+        break;
+    }
+    
+    card.closest('.col-lg-4').style.display = show ? 'block' : 'none';
+  });
+}
+
+function continueToNextStep() {
+  const mappedCount = Object.keys(riskMappings).filter(riskId => riskMappings[riskId].length > 0).length;
+  
+  if (mappedCount < 3) {
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showError('Incomplete Mapping', 'Please map controls to all risks before continuing');
+    }
+    return;
+  }
+  
+  // Show loading state
+  const btn = document.getElementById('continueBtn');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
+  btn.disabled = true;
+  
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showSuccess('Proceeding', 'Moving to Residual Risk Assessment...');
+  }
+  
+  setTimeout(() => {
+    window.location.href = '/residual-risk-assessment';
+  }, 2000);
+}
+
+function goBack() {
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showInfo('Returning to Risk Identification', 'Redirecting...');
+  }
+  
+  setTimeout(() => {
+    window.location.href = '/risk-identification';
+  }, 1000);
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('✅ Control Mapping loaded with clean Bootstrap 5');
+  updateProgress();
+  
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showSuccess('Control Mapping Ready', 'Map controls to identified risks to proceed');
+  }
 });
 </script>
