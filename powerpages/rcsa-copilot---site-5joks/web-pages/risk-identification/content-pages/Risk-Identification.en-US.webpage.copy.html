@@ -6,7 +6,7 @@
 <script src="/modern-interactions.js"></script>
 
 <style>
-/* Clean Risk Identification Styles */
+/* Enhanced Risk Identification Styles */
 .risk-header {
   background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: white;
@@ -23,12 +23,50 @@
   margin-bottom: 1rem;
 }
 
-.risk-card {
+.section-card {
   background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  justify-content: between;
+  align-items: center;
+}
+
+.section-header.existing {
+  background: linear-gradient(45deg, #0d6efd, #6610f2);
+  color: white;
+  border-bottom: none;
+}
+
+.section-header.ai {
+  background: linear-gradient(45deg, #28a745, #20c997);
+  color: white;
+  border-bottom: none;
+}
+
+.section-header.custom {
+  background: linear-gradient(45deg, #ffc107, #fd7e14);
+  color: white;
+  border-bottom: none;
+}
+
+.section-body {
+  padding: 2rem;
+}
+
+.risk-card {
+  background: #f8f9fa;
   border: 2px solid #e9ecef;
   border-radius: 12px;
-  padding: 2rem;
-  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
   transition: all 0.3s ease;
   position: relative;
 }
@@ -36,6 +74,16 @@
 .risk-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.risk-card.existing {
+  border-left: 4px solid #0d6efd;
+  background: #f8f9ff;
+}
+
+.risk-card.ai-suggested {
+  border-left: 4px solid #28a745;
+  background: #f8fff9;
 }
 
 .risk-card.accepted {
@@ -48,6 +96,19 @@
   background: #fff5f5;
   opacity: 0.7;
 }
+
+.risk-source-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+}
+
+.risk-source-badge.existing { background: #e3f2fd; color: #1976d2; }
+.risk-source-badge.ai { background: #e8f5e8; color: #2e7d32; }
+.risk-source-badge.custom { background: #fff8e1; color: #f57c00; }
 
 .risk-matrix {
   background: #f8f9fa;
@@ -79,19 +140,33 @@
 .risk-level-4 { background: #f8d7da; color: #721c24; }
 .risk-level-5 { background: #f5c6cb; color: #721c24; }
 
-.counter-card {
+.summary-card {
   background: linear-gradient(45deg, #28a745, #20c997);
   color: white;
   border-radius: 12px;
   padding: 2rem;
   text-align: center;
   margin-bottom: 2rem;
+  position: sticky;
+  top: 2rem;
 }
 
-.counter-number {
+.summary-number {
   font-size: 3rem;
   font-weight: bold;
   line-height: 1;
+}
+
+.loading-placeholder {
+  text-align: center;
+  padding: 3rem;
+  color: #6c757d;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #6c757d;
 }
 
 @media (max-width: 768px) {
@@ -99,13 +174,18 @@
     padding: 2rem 0;
   }
   
-  .risk-card {
+  .section-body {
     padding: 1.5rem;
+  }
+  
+  .summary-card {
+    position: relative;
+    top: auto;
   }
 }
 </style>
 
-<!-- Clean Bootstrap 5 Risk Identification Page -->
+<!-- Enhanced Bootstrap 5 Risk Identification Page -->
 <div class="container-fluid">
   
   <!-- Page Header -->
@@ -115,10 +195,10 @@
         <div class="col-md-8">
           <div class="ai-badge">
             <i class="bi bi-robot me-2"></i>
-            AI-Powered Risk Discovery
+            Enhanced Risk Discovery
           </div>
           <h1 class="display-5 fw-bold mb-2">Risk Identification</h1>
-          <p class="lead mb-0">AI-powered risk discovery and assessment for your selected process</p>
+          <p class="lead mb-0">Comprehensive risk discovery: existing, AI-suggested, and custom risks</p>
         </div>
         <div class="col-md-4 text-md-end">
           <div class="step-indicator bg-white bg-opacity-25 rounded-pill px-3 py-1">
@@ -131,161 +211,214 @@
     </div>
   </div>
 
-  <!-- AI-Suggested Risks -->
-  <div class="container">
-    <div class="row mb-4">
-      <div class="col-12">
-        <h3 class="h4 fw-bold mb-3">
-          <i class="bi bi-lightbulb me-2 text-warning"></i>
-          AI-Suggested Risks
-        </h3>
-        <p class="text-muted mb-4">Our AI has identified the following potential risks for your selected process. Review each risk and choose to accept, modify, or reject.</p>
-      </div>
-    </div>
-    
-    <div class="row g-4 mb-4">
-      <!-- Risk 1 -->
-      <div class="col-lg-4">
-        <div class="risk-card" id="risk-1">
-          <div class="d-flex justify-content-between align-items-start mb-3">
-            <h5 class="fw-bold mb-0">Credit Default Risk</h5>
-            <span class="badge bg-danger">Critical</span>
-          </div>
-          <p class="text-muted mb-3">Risk of borrower defaulting on loan obligations due to inadequate credit assessment processes.</p>
-          
-          <div class="risk-matrix mb-3">
-            <div class="small fw-bold mb-2">Risk Assessment</div>
-            <div class="row">
-              <div class="col-6">
-                <div class="small text-muted">Likelihood: 4</div>
-                <div class="small text-muted">Impact: 5</div>
-              </div>
-              <div class="col-6">
-                <div class="matrix-cell risk-level-5 active">20</div>
-                <div class="small text-muted">Risk Score</div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="d-grid gap-2">
-            <div class="btn-group" role="group">
-              <button class="btn btn-success btn-sm" onclick="acceptRisk('risk-1', 'Credit Default Risk')">
-                <i class="bi bi-check-lg me-1"></i>Accept
-              </button>
-              <button class="btn btn-warning btn-sm" onclick="modifyRisk('risk-1')">
-                <i class="bi bi-pencil me-1"></i>Modify
-              </button>
-              <button class="btn btn-outline-danger btn-sm" onclick="rejectRisk('risk-1')">
-                <i class="bi bi-x-lg me-1"></i>Reject
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Risk 2 -->
-      <div class="col-lg-4">
-        <div class="risk-card" id="risk-2">
-          <div class="d-flex justify-content-between align-items-start mb-3">
-            <h5 class="fw-bold mb-0">Operational Process Failure</h5>
-            <span class="badge bg-warning">High</span>
-          </div>
-          <p class="text-muted mb-3">Risk of system failures or human errors disrupting critical business operations and service delivery.</p>
-          
-          <div class="risk-matrix mb-3">
-            <div class="small fw-bold mb-2">Risk Assessment</div>
-            <div class="row">
-              <div class="col-6">
-                <div class="small text-muted">Likelihood: 3</div>
-                <div class="small text-muted">Impact: 4</div>
-              </div>
-              <div class="col-6">
-                <div class="matrix-cell risk-level-4 active">12</div>
-                <div class="small text-muted">Risk Score</div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="d-grid gap-2">
-            <div class="btn-group" role="group">
-              <button class="btn btn-success btn-sm" onclick="acceptRisk('risk-2', 'Operational Process Failure')">
-                <i class="bi bi-check-lg me-1"></i>Accept
-              </button>
-              <button class="btn btn-warning btn-sm" onclick="modifyRisk('risk-2')">
-                <i class="bi bi-pencil me-1"></i>Modify
-              </button>
-              <button class="btn btn-outline-danger btn-sm" onclick="rejectRisk('risk-2')">
-                <i class="bi bi-x-lg me-1"></i>Reject
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Risk 3 -->
-      <div class="col-lg-4">
-        <div class="risk-card" id="risk-3">
-          <div class="d-flex justify-content-between align-items-start mb-3">
-            <h5 class="fw-bold mb-0">Regulatory Compliance Gap</h5>
-            <span class="badge bg-info">Medium</span>
-          </div>
-          <p class="text-muted mb-3">Risk of non-compliance with regulatory requirements leading to penalties and reputational damage.</p>
-          
-          <div class="risk-matrix mb-3">
-            <div class="small fw-bold mb-2">Risk Assessment</div>
-            <div class="row">
-              <div class="col-6">
-                <div class="small text-muted">Likelihood: 2</div>
-                <div class="small text-muted">Impact: 3</div>
-              </div>
-              <div class="col-6">
-                <div class="matrix-cell risk-level-2 active">6</div>
-                <div class="small text-muted">Risk Score</div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="d-grid gap-2">
-            <div class="btn-group" role="group">
-              <button class="btn btn-success btn-sm" onclick="acceptRisk('risk-3', 'Regulatory Compliance Gap')">
-                <i class="bi bi-check-lg me-1"></i>Accept
-              </button>
-              <button class="btn btn-warning btn-sm" onclick="modifyRisk('risk-3')">
-                <i class="bi bi-pencil me-1"></i>Modify
-              </button>
-              <button class="btn btn-outline-danger btn-sm" onclick="rejectRisk('risk-3')">
-                <i class="bi bi-x-lg me-1"></i>Reject
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Progress Section -->
   <div class="container">
     <div class="row">
+      
+      <!-- Main Content -->
       <div class="col-lg-8">
-        <div class="counter-card">
-          <div class="row align-items-center">
-            <div class="col-md-4">
-              <div class="counter-number" id="acceptedCount">0</div>
-              <div>Risks Accepted</div>
+        
+        <!-- Section 1: Existing Risks -->
+        <div class="section-card">
+          <div class="section-header existing">
+            <div>
+              <h3 class="h4 mb-1">
+                <i class="bi bi-database me-2"></i>
+                Existing Risks
+              </h3>
+              <p class="mb-0 opacity-75">Risks already identified for this process</p>
             </div>
-            <div class="col-md-8">
-              <h5 class="mb-3">Ready to Continue?</h5>
-              <p class="mb-0">Accept at least one risk to proceed to control mapping.</p>
+            <div class="badge bg-white text-primary fs-6" id="existingRiskCount">
+              Loading...
+            </div>
+          </div>
+          <div class="section-body">
+            <div id="existingRisksContainer">
+              <div class="loading-placeholder">
+                <div class="spinner-border text-primary mb-3" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p>Loading existing risks from database...</p>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- Section 2: AI-Suggested Risks -->
+        <div class="section-card">
+          <div class="section-header ai">
+            <div>
+              <h3 class="h4 mb-1">
+                <i class="bi bi-lightbulb me-2"></i>
+                AI-Suggested Risks
+              </h3>
+              <p class="mb-0 opacity-75">AI-powered risk suggestions based on industry best practices</p>
+            </div>
+            <div class="badge bg-white text-success fs-6" id="aiRiskCount">
+              3 Suggested
+            </div>
+          </div>
+          <div class="section-body">
+            <div id="aiRisksContainer">
+              <div class="loading-placeholder">
+                <div class="spinner-border text-success mb-3" role="status">
+                  <span class="visually-hidden">Generating...</span>
+                </div>
+                <p>AI is analyzing your process and generating risk suggestions...</p>
+                <small class="text-muted">This typically takes 2-3 seconds</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Custom Risk Entry -->
+        <div class="section-card">
+          <div class="section-header custom">
+            <div>
+              <h3 class="h4 mb-1">
+                <i class="bi bi-plus-circle me-2"></i>
+                Add Custom Risk
+              </h3>
+              <p class="mb-0 opacity-75">Create custom risks specific to your situation</p>
+            </div>
+            <button class="btn btn-light btn-sm" onclick="toggleCustomRiskForm()">
+              <i class="bi bi-plus me-1"></i>Add Risk
+            </button>
+          </div>
+          <div class="section-body">
+            <div id="customRiskForm" style="display: none;">
+              <form id="addCustomRiskForm">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="customRiskTitle" class="form-label">Risk Title</label>
+                      <input type="text" class="form-control" id="customRiskTitle" required>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="customRiskCategory" class="form-label">Category</label>
+                      <select class="form-select" id="customRiskCategory" required>
+                        <option value="">Select Category...</option>
+                        <option value="Operational">Operational</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Fraud">Fraud</option>
+                        <option value="Compliance">Compliance</option>
+                        <option value="Credit">Credit</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="customRiskDescription" class="form-label">Description</label>
+                  <textarea class="form-control" id="customRiskDescription" rows="3" required></textarea>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="customRiskLikelihood" class="form-label">Likelihood (1-5)</label>
+                      <select class="form-select" id="customRiskLikelihood" required>
+                        <option value="">Select...</option>
+                        <option value="1">1 - Very Low</option>
+                        <option value="2">2 - Low</option>
+                        <option value="3">3 - Medium</option>
+                        <option value="4">4 - High</option>
+                        <option value="5">5 - Very High</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="customRiskImpact" class="form-label">Impact (1-5)</label>
+                      <select class="form-select" id="customRiskImpact" required>
+                        <option value="">Select...</option>
+                        <option value="1">1 - Negligible</option>
+                        <option value="2">2 - Minor</option>
+                        <option value="3">3 - Moderate</option>
+                        <option value="4">4 - Major</option>
+                        <option value="5">5 - Severe</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex gap-2">
+                  <button type="submit" class="btn btn-warning">
+                    <i class="bi bi-plus me-1"></i>Add Custom Risk
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary" onclick="toggleCustomRiskForm()">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div id="customRiskPlaceholder">
+              <div class="empty-state">
+                <i class="bi bi-plus-circle-dotted display-1 text-muted mb-3"></i>
+                <h5 class="text-muted">No Custom Risks Added</h5>
+                <p class="text-muted">Click "Add Risk" to create a custom risk specific to your situation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-      
+
+      <!-- Sidebar -->
       <div class="col-lg-4">
-        <div class="d-grid gap-3">
-          <button class="btn btn-outline-primary btn-lg" onclick="addCustomRisk()">
-            <i class="bi bi-plus-circle me-2"></i>
-            Add Custom Risk
+        
+        <!-- Risk Summary -->
+        <div class="summary-card">
+          <div class="summary-number" id="totalRiskCount">0</div>
+          <div class="h5 mb-3">Total Risks Identified</div>
+          <div class="row text-center">
+            <div class="col-4">
+              <div class="h6" id="existingCount">0</div>
+              <small>Existing</small>
+            </div>
+            <div class="col-4">
+              <div class="h6" id="aiCount">0</div>
+              <small>AI Added</small>
+            </div>
+            <div class="col-4">
+              <div class="h6" id="customCount">0</div>
+              <small>Custom</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Process Context -->
+        <div class="section-card">
+          <div class="section-body">
+            <h5 class="fw-bold mb-3">
+              <i class="bi bi-gear me-2 text-primary"></i>
+              Selected Process
+            </h5>
+            <div class="d-flex align-items-center mb-3">
+              <div class="flex-grow-1">
+                <div class="fw-semibold" id="selectedProcessName">Loading...</div>
+                <small class="text-muted" id="selectedBusinessUnit">Loading...</small>
+              </div>
+            </div>
+            <hr>
+            <h6 class="fw-bold mb-2">Next Steps</h6>
+            <ul class="list-unstyled small text-muted">
+              <li class="mb-1">✓ Review existing risks</li>
+              <li class="mb-1">✓ Accept relevant AI suggestions</li>
+              <li class="mb-1">✓ Add custom risks if needed</li>
+              <li class="mb-1">→ Continue to control mapping</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mt-4 mb-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+          <button class="btn btn-outline-secondary btn-lg" onclick="goBack()">
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Process Selection
           </button>
           <button class="btn btn-success btn-lg" id="continueBtn" onclick="continueToNextStep()" disabled>
             Continue to Control Mapping
@@ -295,181 +428,591 @@
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Action Buttons -->
-  <div class="container">
-    <div class="row mt-4 mb-4">
-      <div class="col-12">
+<!-- Enhanced JavaScript -->
+<script>
+class EnhancedRiskIdentification {
+  constructor() {
+    this.existingRisks = [];
+    this.aiSuggestedRisks = [];
+    this.customRisks = [];
+    this.acceptedAiRisks = [];
+    this.selectedProcess = null;
+    this.selectedBusinessUnit = null;
+    this.init();
+  }
+
+  init() {
+    this.loadSessionData();
+    this.bindEvents();
+    this.loadExistingRisks();
+    this.generateAISuggestions();
+    this.updateUI();
+    console.log('✅ Enhanced Risk Identification initialized');
+  }
+
+  loadSessionData() {
+    // Get process selection from previous step
+    this.selectedProcess = sessionStorage.getItem('rcsa_process') || 'loan-origination';
+    this.selectedBusinessUnit = sessionStorage.getItem('rcsa_business_unit') || 'commercial';
+    
+    // Update UI with process info
+    this.updateProcessInfo();
+  }
+
+  updateProcessInfo() {
+    const processNames = {
+      'loan-origination': 'Loan Origination',
+      'credit-assessment': 'Credit Assessment',
+      'account-opening': 'Account Opening',
+      'payment-processing': 'Payment Processing',
+      'fraud-detection': 'Fraud Detection'
+    };
+    
+    const businessUnits = {
+      'commercial': 'Commercial Banking',
+      'retail': 'Retail Banking',
+      'investment': 'Investment Banking',
+      'compliance': 'Compliance & Risk',
+      'operations': 'Operations'
+    };
+
+    document.getElementById('selectedProcessName').textContent = 
+      processNames[this.selectedProcess] || 'Selected Process';
+    document.getElementById('selectedBusinessUnit').textContent = 
+      businessUnits[this.selectedBusinessUnit] || 'Selected Business Unit';
+  }
+
+  bindEvents() {
+    // Custom risk form
+    document.getElementById('addCustomRiskForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.addCustomRisk();
+    });
+
+    // Continue button
+    document.getElementById('continueBtn').addEventListener('click', () => {
+      this.continueToNextStep();
+    });
+  }
+
+  async loadExistingRisks() {
+    try {
+      // In a real implementation, this would query the Power Pages entity list
+      // For now, we'll simulate with realistic data
+      setTimeout(() => {
+        const mockExistingRisks = this.getMockExistingRisks();
+        this.existingRisks = mockExistingRisks;
+        this.renderExistingRisks();
+        this.updateCounts();
+      }, 1500);
+    } catch (error) {
+      console.error('Failed to load existing risks:', error);
+      this.showExistingRisksError();
+    }
+  }
+
+  getMockExistingRisks() {
+    // Mock data representing existing risks from database
+    const processRisks = {
+      'loan-origination': [
+        {
+          id: 'existing-1',
+          title: 'Unauthorized Wire Transfers',
+          category: 'Fraud',
+          description: 'Risk of fraudulent wire transfers due to inadequate authorization controls.',
+          likelihood: 4,
+          impact: 5,
+          source: 'existing',
+          lastUpdated: '2024-01-15'
+        },
+        {
+          id: 'existing-2', 
+          title: 'Documentation Compliance Failure',
+          category: 'Compliance',
+          description: 'Risk of regulatory violations due to incomplete loan documentation.',
+          likelihood: 3,
+          impact: 4,
+          source: 'existing',
+          lastUpdated: '2024-01-10'
+        }
+      ],
+      'account-opening': [
+        {
+          id: 'existing-3',
+          title: 'Identity Verification Bypass',
+          category: 'Operational',
+          description: 'Risk of fraudulent account opening due to inadequate KYC procedures.',
+          likelihood: 3,
+          impact: 4,
+          source: 'existing',
+          lastUpdated: '2024-01-12'
+        }
+      ]
+    };
+
+    return processRisks[this.selectedProcess] || [];
+  }
+
+  renderExistingRisks() {
+    const container = document.getElementById('existingRisksContainer');
+    
+    if (this.existingRisks.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="bi bi-database-x display-1 text-muted mb-3"></i>
+          <h5 class="text-muted">No Existing Risks Found</h5>
+          <p class="text-muted">No risks have been previously identified for this process.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = this.existingRisks.map(risk => `
+      <div class="risk-card existing" data-risk-id="${risk.id}">
+        <div class="risk-source-badge existing">
+          <i class="bi bi-database me-1"></i>Database
+        </div>
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h5 class="fw-bold mb-0">${risk.title}</h5>
+          <span class="badge bg-${this.getCategoryColor(risk.category)}">${risk.category}</span>
+        </div>
+        <p class="text-muted mb-3">${risk.description}</p>
+        
+        <div class="risk-matrix mb-3">
+          <div class="small fw-bold mb-2">Current Assessment</div>
+          <div class="row">
+            <div class="col-6">
+              <div class="small text-muted">Likelihood: ${risk.likelihood}</div>
+              <div class="small text-muted">Impact: ${risk.impact}</div>
+            </div>
+            <div class="col-6">
+              <div class="matrix-cell risk-level-${risk.likelihood * risk.impact <= 6 ? '2' : risk.likelihood * risk.impact <= 12 ? '3' : risk.likelihood * risk.impact <= 20 ? '4' : '5'} active">
+                ${risk.likelihood * risk.impact}
+              </div>
+              <div class="small text-muted">Risk Score</div>
+            </div>
+          </div>
+        </div>
+        
         <div class="d-flex justify-content-between align-items-center">
-          <button class="btn btn-outline-secondary btn-lg" onclick="goBack()">
-            <i class="bi bi-arrow-left me-2"></i>
-            Back to Process Selection
-          </button>
-          <div class="text-muted">
-            <small>Step 2 of 5 - Risk Identification</small>
+          <small class="text-muted">Last updated: ${risk.lastUpdated}</small>
+          <div class="btn-group btn-group-sm">
+            <button class="btn btn-outline-primary" onclick="editExistingRisk('${risk.id}')">
+              <i class="bi bi-pencil me-1"></i>Edit
+            </button>
+            <button class="btn btn-outline-danger" onclick="removeExistingRisk('${risk.id}')">
+              <i class="bi bi-trash me-1"></i>Remove
+            </button>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- Custom Risk Modal -->
-<div class="modal fade" id="customRiskModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add Custom Risk</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <form id="customRiskForm">
-          <div class="mb-3">
-            <label for="riskTitle" class="form-label">Risk Title</label>
-            <input type="text" class="form-control" id="riskTitle" required>
-          </div>
-          <div class="mb-3">
-            <label for="riskDescription" class="form-label">Risk Description</label>
-            <textarea class="form-control" id="riskDescription" rows="3" required></textarea>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <label for="riskLikelihood" class="form-label">Likelihood (1-5)</label>
-              <select class="form-select" id="riskLikelihood" required>
-                <option value="">Select...</option>
-                <option value="1">1 - Very Low</option>
-                <option value="2">2 - Low</option>
-                <option value="3">3 - Medium</option>
-                <option value="4">4 - High</option>
-                <option value="5">5 - Very High</option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label for="riskImpact" class="form-label">Impact (1-5)</label>
-              <select class="form-select" id="riskImpact" required>
-                <option value="">Select...</option>
-                <option value="1">1 - Negligible</option>
-                <option value="2">2 - Minor</option>
-                <option value="3">3 - Moderate</option>
-                <option value="4">4 - Major</option>
-                <option value="5">5 - Severe</option>
-              </select>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="saveCustomRisk()">Add Risk</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Clean JavaScript -->
-<script>
-let acceptedRisks = [];
-let customRiskCounter = 0;
-
-function acceptRisk(riskId, riskName) {
-  const riskCard = document.getElementById(riskId);
-  riskCard.classList.add('accepted');
-  
-  // Add to accepted risks if not already there
-  if (!acceptedRisks.find(r => r.id === riskId)) {
-    acceptedRisks.push({ id: riskId, name: riskName });
-    updateCounter();
+    `).join('');
   }
-  
-  if (typeof modernInteractions !== 'undefined') {
-    modernInteractions.showSuccess('Risk Accepted', `"${riskName}" has been accepted`);
+
+  async generateAISuggestions() {
+    try {
+      // Simulate AI generation delay
+      setTimeout(() => {
+        const aiSuggestions = this.getMockAISuggestions();
+        this.aiSuggestedRisks = aiSuggestions;
+        this.renderAISuggestions();
+        this.updateCounts();
+      }, 2500);
+    } catch (error) {
+      console.error('Failed to generate AI suggestions:', error);
+      this.showAIError();
+    }
+  }
+
+  getMockAISuggestions() {
+    const suggestions = {
+      'loan-origination': [
+        {
+          id: 'ai-1',
+          title: 'Credit Risk Assessment Inadequacy',
+          category: 'Credit',
+          description: 'Insufficient credit analysis leading to loan defaults and financial losses.',
+          likelihood: 3,
+          impact: 4,
+          source: 'ai',
+          rationale: 'Common in loan origination processes, especially with complex financial products.'
+        },
+        {
+          id: 'ai-2',
+          title: 'System Integration Failures',
+          category: 'Technology',
+          description: 'Risk of data inconsistencies between loan origination and core banking systems.',
+          likelihood: 2,
+          impact: 3,
+          source: 'ai',
+          rationale: 'System integrations are common failure points in banking operations.'
+        },
+        {
+          id: 'ai-3',
+          title: 'Regulatory Reporting Delays',
+          category: 'Compliance',
+          description: 'Risk of late or inaccurate regulatory reporting due to process inefficiencies.',
+          likelihood: 3,
+          impact: 3,
+          source: 'ai',
+          rationale: 'Regulatory compliance requires timely and accurate reporting processes.'
+        }
+      ],
+      'account-opening': [
+        {
+          id: 'ai-4',
+          title: 'KYC Process Failure',
+          category: 'Compliance',
+          description: 'Inadequate Know Your Customer procedures leading to regulatory violations.',
+          likelihood: 3,
+          impact: 4,
+          source: 'ai',
+          rationale: 'KYC is fundamental to banking compliance and anti-money laundering efforts.'
+        },
+        {
+          id: 'ai-5',
+          title: 'Data Privacy Breach',
+          category: 'Technology',
+          description: 'Risk of customer data exposure during account opening process.',
+          likelihood: 2,
+          impact: 5,
+          source: 'ai',
+          rationale: 'Account opening involves collection of sensitive personal information.'
+        }
+      ]
+    };
+
+    return suggestions[this.selectedProcess] || suggestions['loan-origination'];
+  }
+
+  renderAISuggestions() {
+    const container = document.getElementById('aiRisksContainer');
+    
+    container.innerHTML = this.aiSuggestedRisks.map(risk => `
+      <div class="risk-card ai-suggested" data-risk-id="${risk.id}">
+        <div class="risk-source-badge ai">
+          <i class="bi bi-robot me-1"></i>AI Generated
+        </div>
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h5 class="fw-bold mb-0">${risk.title}</h5>
+          <span class="badge bg-${this.getCategoryColor(risk.category)}">${risk.category}</span>
+        </div>
+        <p class="text-muted mb-3">${risk.description}</p>
+        
+        <div class="risk-matrix mb-3">
+          <div class="small fw-bold mb-2">AI Assessment</div>
+          <div class="row">
+            <div class="col-6">
+              <div class="small text-muted">Likelihood: ${risk.likelihood}</div>
+              <div class="small text-muted">Impact: ${risk.impact}</div>
+            </div>
+            <div class="col-6">
+              <div class="matrix-cell risk-level-${risk.likelihood * risk.impact <= 6 ? '2' : risk.likelihood * risk.impact <= 12 ? '3' : risk.likelihood * risk.impact <= 20 ? '4' : '5'} active">
+                ${risk.likelihood * risk.impact}
+              </div>
+              <div class="small text-muted">Risk Score</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="alert alert-info p-2 mb-3">
+          <small>
+            <i class="bi bi-lightbulb me-1"></i>
+            <strong>AI Rationale:</strong> ${risk.rationale}
+          </small>
+        </div>
+        
+        <div class="d-grid gap-2">
+          <div class="btn-group" role="group">
+            <button class="btn btn-success btn-sm" onclick="acceptAIRisk('${risk.id}')">
+              <i class="bi bi-check-lg me-1"></i>Accept
+            </button>
+            <button class="btn btn-warning btn-sm" onclick="modifyAIRisk('${risk.id}')">
+              <i class="bi bi-pencil me-1"></i>Modify
+            </button>
+            <button class="btn btn-outline-danger btn-sm" onclick="rejectAIRisk('${risk.id}')">
+              <i class="bi bi-x-lg me-1"></i>Reject
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  addCustomRisk() {
+    const title = document.getElementById('customRiskTitle').value;
+    const category = document.getElementById('customRiskCategory').value;
+    const description = document.getElementById('customRiskDescription').value;
+    const likelihood = parseInt(document.getElementById('customRiskLikelihood').value);
+    const impact = parseInt(document.getElementById('customRiskImpact').value);
+
+    const customRisk = {
+      id: `custom-${Date.now()}`,
+      title,
+      category,
+      description,
+      likelihood,
+      impact,
+      source: 'custom',
+      timestamp: new Date().toISOString()
+    };
+
+    this.customRisks.push(customRisk);
+    this.renderCustomRisks();
+    this.updateCounts();
+    this.clearCustomRiskForm();
+    
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showSuccess('Custom Risk Added', `"${title}" has been added successfully`);
+    }
+  }
+
+  renderCustomRisks() {
+    // Update placeholder or create custom risks display
+    const placeholder = document.getElementById('customRiskPlaceholder');
+    
+    if (this.customRisks.length === 0) {
+      placeholder.style.display = 'block';
+      return;
+    }
+    
+    placeholder.style.display = 'none';
+    
+    // Add custom risks display after the form
+    let customContainer = document.getElementById('customRisksDisplay');
+    if (!customContainer) {
+      customContainer = document.createElement('div');
+      customContainer.id = 'customRisksDisplay';
+      customContainer.className = 'mt-4';
+      document.getElementById('customRiskForm').parentNode.appendChild(customContainer);
+    }
+    
+    customContainer.innerHTML = this.customRisks.map(risk => `
+      <div class="risk-card" data-risk-id="${risk.id}">
+        <div class="risk-source-badge custom">
+          <i class="bi bi-person me-1"></i>Custom
+        </div>
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h5 class="fw-bold mb-0">${risk.title}</h5>
+          <span class="badge bg-${this.getCategoryColor(risk.category)}">${risk.category}</span>
+        </div>
+        <p class="text-muted mb-3">${risk.description}</p>
+        
+        <div class="risk-matrix mb-3">
+          <div class="small fw-bold mb-2">Risk Assessment</div>
+          <div class="row">
+            <div class="col-6">
+              <div class="small text-muted">Likelihood: ${risk.likelihood}</div>
+              <div class="small text-muted">Impact: ${risk.impact}</div>
+            </div>
+            <div class="col-6">
+              <div class="matrix-cell risk-level-${risk.likelihood * risk.impact <= 6 ? '2' : risk.likelihood * risk.impact <= 12 ? '3' : risk.likelihood * risk.impact <= 20 ? '4' : '5'} active">
+                ${risk.likelihood * risk.impact}
+              </div>
+              <div class="small text-muted">Risk Score</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="d-flex justify-content-between align-items-center">
+          <small class="text-muted">Added: ${new Date(risk.timestamp).toLocaleDateString()}</small>
+          <button class="btn btn-outline-danger btn-sm" onclick="removeCustomRisk('${risk.id}')">
+            <i class="bi bi-trash me-1"></i>Remove
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  updateCounts() {
+    const existingCount = this.existingRisks.length;
+    const aiCount = this.acceptedAiRisks.length;
+    const customCount = this.customRisks.length;
+    const totalCount = existingCount + aiCount + customCount;
+
+    document.getElementById('existingRiskCount').textContent = `${existingCount} Found`;
+    document.getElementById('aiRiskCount').textContent = `${aiCount} Added`;
+    document.getElementById('totalRiskCount').textContent = totalCount;
+    document.getElementById('existingCount').textContent = existingCount;
+    document.getElementById('aiCount').textContent = aiCount;
+    document.getElementById('customCount').textContent = customCount;
+
+    // Enable continue button if we have any risks
+    const continueBtn = document.getElementById('continueBtn');
+    continueBtn.disabled = totalCount === 0;
+  }
+
+  getCategoryColor(category) {
+    const colors = {
+      'Operational': 'warning',
+      'Technology': 'info',
+      'Fraud': 'danger',
+      'Compliance': 'primary',
+      'Credit': 'success'
+    };
+    return colors[category] || 'secondary';
+  }
+
+  clearCustomRiskForm() {
+    document.getElementById('addCustomRiskForm').reset();
+    toggleCustomRiskForm();
+  }
+
+  continueToNextStep() {
+    // Store all identified risks for next step
+    const allRisks = [
+      ...this.existingRisks,
+      ...this.acceptedAiRisks,
+      ...this.customRisks
+    ];
+    
+    sessionStorage.setItem('rcsa_identified_risks', JSON.stringify(allRisks));
+    
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showSuccess('Proceeding', 'Moving to Control Mapping...');
+    }
+    
+    setTimeout(() => {
+      window.location.href = '/Control-Mapping-Overview';
+    }, 1500);
+  }
+
+  showExistingRisksError() {
+    document.getElementById('existingRisksContainer').innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-exclamation-triangle display-1 text-warning mb-3"></i>
+        <h5 class="text-muted">Unable to Load Existing Risks</h5>
+        <p class="text-muted">There was an error loading existing risks from the database.</p>
+        <button class="btn btn-outline-primary" onclick="location.reload()">
+          <i class="bi bi-arrow-clockwise me-1"></i>Retry
+        </button>
+      </div>
+    `;
+  }
+
+  showAIError() {
+    document.getElementById('aiRisksContainer').innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-exclamation-triangle display-1 text-warning mb-3"></i>
+        <h5 class="text-muted">AI Service Unavailable</h5>
+        <p class="text-muted">Unable to generate AI suggestions at this time.</p>
+        <button class="btn btn-outline-success" onclick="riskIdentification.generateAISuggestions()">
+          <i class="bi bi-arrow-clockwise me-1"></i>Retry AI Suggestions
+        </button>
+      </div>
+    `;
+  }
+
+  updateUI() {
+    this.updateCounts();
   }
 }
 
-function rejectRisk(riskId) {
-  const riskCard = document.getElementById(riskId);
-  riskCard.classList.add('rejected');
+// Global functions for button actions
+function toggleCustomRiskForm() {
+  const form = document.getElementById('customRiskForm');
+  const placeholder = document.getElementById('customRiskPlaceholder');
   
-  // Remove from accepted risks
-  acceptedRisks = acceptedRisks.filter(r => r.id !== riskId);
-  updateCounter();
+  if (form.style.display === 'none') {
+    form.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    form.style.display = 'none';
+    placeholder.style.display = 'block';
+  }
+}
+
+function acceptAIRisk(riskId) {
+  const risk = riskIdentification.aiSuggestedRisks.find(r => r.id === riskId);
+  if (risk) {
+    riskIdentification.acceptedAiRisks.push(risk);
+    
+    // Update the risk card to show accepted state
+    const riskCard = document.querySelector(`[data-risk-id="${riskId}"]`);
+    riskCard.classList.add('accepted');
+    riskCard.querySelector('.btn-group').innerHTML = `
+      <button class="btn btn-success btn-sm" disabled>
+        <i class="bi bi-check-lg me-1"></i>Accepted
+      </button>
+      <button class="btn btn-outline-secondary btn-sm" onclick="undoAcceptAIRisk('${riskId}')">
+        <i class="bi bi-arrow-counterclockwise me-1"></i>Undo
+      </button>
+    `;
+    
+    riskIdentification.updateCounts();
+    
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showSuccess('Risk Accepted', `"${risk.title}" has been accepted`);
+    }
+  }
+}
+
+function undoAcceptAIRisk(riskId) {
+  riskIdentification.acceptedAiRisks = riskIdentification.acceptedAiRisks.filter(r => r.id !== riskId);
+  
+  // Reset the risk card
+  const riskCard = document.querySelector(`[data-risk-id="${riskId}"]`);
+  riskCard.classList.remove('accepted');
+  riskCard.querySelector('.btn-group').innerHTML = `
+    <button class="btn btn-success btn-sm" onclick="acceptAIRisk('${riskId}')">
+      <i class="bi bi-check-lg me-1"></i>Accept
+    </button>
+    <button class="btn btn-warning btn-sm" onclick="modifyAIRisk('${riskId}')">
+      <i class="bi bi-pencil me-1"></i>Modify
+    </button>
+    <button class="btn btn-outline-danger btn-sm" onclick="rejectAIRisk('${riskId}')">
+      <i class="bi bi-x-lg me-1"></i>Reject
+    </button>
+  `;
+  
+  riskIdentification.updateCounts();
+}
+
+function rejectAIRisk(riskId) {
+  const riskCard = document.querySelector(`[data-risk-id="${riskId}"]`);
+  riskCard.classList.add('rejected');
   
   if (typeof modernInteractions !== 'undefined') {
     modernInteractions.showWarning('Risk Rejected', 'Risk has been rejected');
   }
 }
 
-function modifyRisk(riskId) {
+function modifyAIRisk(riskId) {
   if (typeof modernInteractions !== 'undefined') {
     modernInteractions.showInfo('Modify Risk', 'Risk modification feature coming soon');
   }
 }
 
-function addCustomRisk() {
-  const modal = new bootstrap.Modal(document.getElementById('customRiskModal'));
-  modal.show();
-}
-
-function saveCustomRisk() {
-  const title = document.getElementById('riskTitle').value;
-  const description = document.getElementById('riskDescription').value;
-  const likelihood = document.getElementById('riskLikelihood').value;
-  const impact = document.getElementById('riskImpact').value;
-  
-  if (!title || !description || !likelihood || !impact) {
-    if (typeof modernInteractions !== 'undefined') {
-      modernInteractions.showError('Validation Error', 'Please fill in all fields');
-    }
-    return;
-  }
-  
-  customRiskCounter++;
-  const riskId = `custom-risk-${customRiskCounter}`;
-  const riskScore = parseInt(likelihood) * parseInt(impact);
-  
-  // Add to accepted risks
-  acceptedRisks.push({ id: riskId, name: title });
-  updateCounter();
-  
-  // Close modal and reset form
-  const modal = bootstrap.Modal.getInstance(document.getElementById('customRiskModal'));
-  modal.hide();
-  document.getElementById('customRiskForm').reset();
-  
+function editExistingRisk(riskId) {
   if (typeof modernInteractions !== 'undefined') {
-    modernInteractions.showSuccess('Custom Risk Added', `"${title}" has been added and accepted`);
+    modernInteractions.showInfo('Edit Risk', 'Risk editing feature coming soon');
   }
 }
 
-function updateCounter() {
-  document.getElementById('acceptedCount').textContent = acceptedRisks.length;
-  
-  // Enable continue button if at least one risk is accepted
-  const continueBtn = document.getElementById('continueBtn');
-  continueBtn.disabled = acceptedRisks.length === 0;
-}
-
-function continueToNextStep() {
-  if (acceptedRisks.length === 0) {
+function removeExistingRisk(riskId) {
+  if (confirm('Are you sure you want to remove this existing risk?')) {
+    riskIdentification.existingRisks = riskIdentification.existingRisks.filter(r => r.id !== riskId);
+    riskIdentification.renderExistingRisks();
+    riskIdentification.updateCounts();
+    
     if (typeof modernInteractions !== 'undefined') {
-      modernInteractions.showError('No Risks Selected', 'Please accept at least one risk to continue');
+      modernInteractions.showWarning('Risk Removed', 'Existing risk has been removed');
     }
-    return;
   }
-  
-  // Show loading state
-  const btn = document.getElementById('continueBtn');
-  const originalText = btn.innerHTML;
-  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
-  btn.disabled = true;
-  
-  if (typeof modernInteractions !== 'undefined') {
-    modernInteractions.showSuccess('Proceeding', `Moving to Control Mapping with ${acceptedRisks.length} risks...`);
+}
+
+function removeCustomRisk(riskId) {
+  if (confirm('Are you sure you want to remove this custom risk?')) {
+    riskIdentification.customRisks = riskIdentification.customRisks.filter(r => r.id !== riskId);
+    riskIdentification.renderCustomRisks();
+    riskIdentification.updateCounts();
+    
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showWarning('Risk Removed', 'Custom risk has been removed');
+    }
   }
-  
-  setTimeout(() => {
-    window.location.href = '/control-mapping-overview';
-  }, 2000);
 }
 
 function goBack() {
@@ -478,16 +1021,17 @@ function goBack() {
   }
   
   setTimeout(() => {
-    window.location.href = '/process-selection';
+    window.location.href = '/Process-Selection';
   }, 1000);
 }
 
-// Initialize
+// Initialize when DOM is ready
+let riskIdentification;
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('✅ Risk Identification loaded with clean Bootstrap 5');
+  riskIdentification = new EnhancedRiskIdentification();
   
   if (typeof modernInteractions !== 'undefined') {
-    modernInteractions.showSuccess('AI Analysis Complete', 'Risk identification page loaded successfully!');
+    modernInteractions.showSuccess('Page Ready', 'Enhanced Risk Identification loaded successfully!');
   }
 });
 </script>
