@@ -1,6 +1,10 @@
 adx_create: true
 adx_entityname: cr129_riskctrl
 adx_entitypermissionid: 77777777-7777-7777-7777-777777777777
+adx_entitypermission_webrole:
+- 27b95ddd-4d8e-409b-acb1-5b679dd2282c
+- a3f35e16-a398-428c-b9db-986df58ce13e
+- b912c42b-d467-42b7-88c9-2427536440e4
 adx_read: true
-adx_scope: 1
+adx_scope: 756150000
 adx_write: true

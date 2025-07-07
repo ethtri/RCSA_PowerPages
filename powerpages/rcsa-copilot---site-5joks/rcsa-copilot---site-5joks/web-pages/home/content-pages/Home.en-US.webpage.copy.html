@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CapTech RCSA Copilot - AI-Powered Risk Assessment</title>
+    <style>
+        /* Modern Landing Page Styles */
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 0;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .hero-content p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-button {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+        
+        .cta-button:hover {
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .cta-button.primary {
+            background: white;
+            color: #667eea;
+        }
+        
+        .cta-button.primary:hover {
+            background: rgba(255,255,255,0.9);
+            transform: translateY(-2px);
+        }
+        
+        .features-section {
+            padding: 4rem 0;
+            background: #f8f9fa;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+        
+        .feature-card h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .feature-card p {
+            color: #6c757d;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .stats-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .stat-item {
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .workflow-section {
+            padding: 4rem 0;
+            background: white;
+        }
+        
+        .workflow-step {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+        
+        .workflow-step h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .workflow-step p {
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+        
+        .col-md-4, .col-md-6, .col-md-12 {
+            padding: 0 15px;
+        }
+        
+        .col-md-4 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+        }
+        
+        .col-md-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+        
+        .col-md-12 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .col-md-4, .col-md-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1>🤖 AI-Powered Risk Assessment</h1>
+                <p>Transform your RCSA process with intelligent automation, comprehensive risk discovery, and streamlined compliance workflows</p>
+                <div>
+                    <a href="/Dashboard" class="cta-button primary">
+                        <i class="bi bi-play-circle me-2"></i>Start Assessment
+                    </a>
+                    <a href="#features" class="cta-button">
+                        <i class="bi bi-info-circle me-2"></i>Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Benefits -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="color: #2c3e50; font-size: 2.5rem; margin-bottom: 1rem;">Why Choose RCSA Copilot?</h2>
+                    <p style="color: #6c757d; font-size: 1.2rem;">Experience the future of risk assessment with AI-enhanced workflows</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">🧠</div>
+                        <h3>AI-Powered Risk Discovery</h3>
+                        <p>Our intelligent system automatically identifies potential risks based on your business processes, industry best practices, and regulatory requirements.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>80% Faster Assessments</h3>
+                        <p>Reduce assessment time from weeks to days with automated risk suggestions, smart control mapping, and streamlined workflows.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Enhanced Accuracy</h3>
+                        <p>Minimize human error with AI-guided risk identification, automated control suggestions, and comprehensive validation checks.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Real-Time Insights</h3>
+                        <p>Get instant visibility into your risk landscape with dynamic dashboards, automated scoring, and comprehensive reporting.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Regulatory Compliance</h3>
+                        <p>Stay compliant with built-in regulatory frameworks, automated documentation, and audit-ready reporting capabilities.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Scalable Solution</h3>
+                        <p>From single assessments to enterprise-wide programs, our platform scales with your organization's needs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Stats -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <span class="stat-number">80%</span>
+                        <span class="stat-label">Time Reduction</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Risk Coverage</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Audit Ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Overview -->
+    <section class="workflow-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="color: #2c3e50; font-size: 2.5rem; margin-bottom: 1rem;">Simple 5-Step Process</h2>
+                    <p style="color: #6c757d; font-size: 1.2rem;">Our guided workflow makes risk assessment straightforward and comprehensive</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="workflow-step">
+                        <div class="step-number">1</div>
+                        <h4>Select Process</h4>
+                        <p>Choose your business process from our comprehensive library</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="workflow-step">
+                        <div class="step-number">2</div>
+                        <h4>Discover Risks</h4>
+                        <p>AI identifies existing and potential risks automatically</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="workflow-step">
+                        <div class="step-number">3</div>
+                        <h4>Map Controls</h4>
+                        <p>System suggests relevant controls and mitigation strategies</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="workflow-step">
+                        <div class="step-number">4</div>
+                        <h4>Assess Impact</h4>
+                        <p>Calculate residual risk with intelligent scoring algorithms</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="workflow-step">
+                        <div class="step-number">5</div>
+                        <h4>Generate Reports</h4>
+                        <p>Receive comprehensive, audit-ready documentation</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="/Dashboard" class="cta-button primary" style="color: #667eea;">
+                    <i class="bi bi-arrow-right-circle me-2"></i>Begin Your Assessment
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="hero-section" style="padding: 3rem 0;">
+        <div class="container">
+            <div style="text-align: center;">
+                <h2 style="margin-bottom: 1rem;">Ready to Transform Your Risk Assessment?</h2>
+                <p style="margin-bottom: 2rem; opacity: 0.9;">Join the future of intelligent risk management</p>
+                <a href="/Dashboard" class="cta-button primary">
+                    <i class="bi bi-rocket me-2"></i>Get Started Now
+                </a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

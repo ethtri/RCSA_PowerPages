@@ -1,0 +1,324 @@
+<!-- Include Bootstrap 5 and Modern Enhancements -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="/bootstrap-5-upgrades.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/modern-interactions.js"></script>
+
+<style>
+/* Clean Dashboard Styles */
+.dashboard-header {
+  background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+  color: white;
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+}
+
+.metric-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+
+.metric-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.metric-icon.bg-primary { background: linear-gradient(45deg, #0d6efd, #6610f2); }
+.metric-icon.bg-success { background: linear-gradient(45deg, #28a745, #20c997); }
+.metric-icon.bg-warning { background: linear-gradient(45deg, #ffc107, #fd7e14); }
+.metric-icon.bg-info { background: linear-gradient(45deg, #17a2b8, #6f42c1); }
+
+.assessment-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.assessment-item {
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.assessment-item:hover {
+  background-color: #f8f9fa;
+}
+
+.assessment-item:last-child {
+  border-bottom: none;
+}
+
+.risk-pill {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.risk-pill.risk-high { background: #fee2e2; color: #dc2626; }
+.risk-pill.risk-medium { background: #fef3c7; color: #d97706; }
+.risk-pill.risk-low { background: #d1fae5; color: #059669; }
+
+.status-indicator {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-indicator.status-completed { background: #d1fae5; color: #059669; }
+.status-indicator.status-in-progress { background: #dbeafe; color: #2563eb; }
+.status-indicator.status-review { background: #fef3c7; color: #d97706; }
+
+.quick-actions {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.action-btn {
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.action-btn:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    padding: 2rem 0;
+  }
+  
+  .metric-card {
+    padding: 1.5rem;
+  }
+}
+</style>
+
+<!-- Clean Bootstrap 5 Dashboard -->
+<div class="container-fluid">
+  
+  <!-- Page Header -->
+  <div class="dashboard-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="display-5 fw-bold mb-2">Risk & Compliance Assessment</h1>
+          <p class="lead mb-0">AI-powered RCSA workflow for comprehensive risk management</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <div class="h5 mb-1">Welcome back,</div>
+          <div class="h4 mb-0">Risk Manager</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Metrics -->
+  <div class="container">
+    <div class="row g-4 mb-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="metric-card text-center">
+          <div class="metric-icon bg-primary mx-auto">
+            <i class="bi bi-clipboard-data"></i>
+          </div>
+          <div class="h2 fw-bold text-primary mb-1">24</div>
+          <div class="text-muted">Total Assessments</div>
+          <div class="small text-success mt-1">+3 this month</div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="metric-card text-center">
+          <div class="metric-icon bg-success mx-auto">
+            <i class="bi bi-check-circle"></i>
+          </div>
+          <div class="h2 fw-bold text-success mb-1">18</div>
+          <div class="text-muted">Completed</div>
+          <div class="small text-muted mt-1">75% completion rate</div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="metric-card text-center">
+          <div class="metric-icon bg-warning mx-auto">
+            <i class="bi bi-clock"></i>
+          </div>
+          <div class="h2 fw-bold text-warning mb-1">4</div>
+          <div class="text-muted">In Progress</div>
+          <div class="small text-muted mt-1">Avg 2.3 days remaining</div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="metric-card text-center">
+          <div class="metric-icon bg-info mx-auto">
+            <i class="bi bi-speedometer2"></i>
+          </div>
+          <div class="h2 fw-bold text-info mb-1">8.5</div>
+          <div class="text-muted">Avg Time (min)</div>
+          <div class="small text-muted mt-1">Target: &lt;10 min</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      
+      <!-- Recent Assessments -->
+      <div class="col-lg-8">
+        <div class="assessment-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="h4 fw-bold mb-0">
+              <i class="bi bi-list-check me-2 text-primary"></i>
+              Recent Assessments
+            </h3>
+            <button class="btn btn-outline-primary btn-sm">
+              View All
+              <i class="bi bi-arrow-right ms-1"></i>
+            </button>
+          </div>
+          
+          <div class="assessment-item" onclick="openAssessment('RA-2024-001')">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="fw-semibold text-dark">Financial Controls Assessment</div>
+                <div class="small text-muted">Updated 2 hours ago • Financial Reporting</div>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <span class="risk-pill risk-high">High</span>
+                <span class="status-indicator status-review">Review</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="assessment-item" onclick="openAssessment('RA-2024-002')">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="fw-semibold text-dark">Cybersecurity Risk Assessment</div>
+                <div class="small text-muted">Updated 1 day ago • Operational</div>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <span class="risk-pill risk-medium">Medium</span>
+                <span class="status-indicator status-in-progress">In Progress</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="assessment-item" onclick="openAssessment('RA-2024-003')">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="fw-semibold text-dark">Vendor Management Review</div>
+                <div class="small text-muted">Updated 2 days ago • Compliance</div>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <span class="risk-pill risk-low">Low</span>
+                <span class="status-indicator status-completed">Completed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="col-lg-4">
+        <div class="quick-actions">
+          <h4 class="h5 fw-bold mb-3">
+            <i class="bi bi-lightning me-2 text-warning"></i>
+            Quick Actions
+          </h4>
+          
+          <a href="/Process-Selection" class="action-btn btn btn-primary">
+            <i class="bi bi-plus-circle me-2"></i>
+            Start New Assessment
+          </a>
+          
+          <a href="#" class="action-btn btn btn-outline-secondary">
+            <i class="bi bi-file-earmark-text me-2"></i>
+            View Reports
+          </a>
+          
+          <a href="#" class="action-btn btn btn-outline-secondary">
+            <i class="bi bi-download me-2"></i>
+            Export Data
+          </a>
+          
+          <a href="#" class="action-btn btn btn-outline-secondary">
+            <i class="bi bi-gear me-2"></i>
+            Settings
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Clean JavaScript -->
+<script>
+// Update timestamp every second
+function updateTimestamp() {
+  const now = new Date();
+  const timestamp = now.toLocaleString();
+  const timestampElement = document.getElementById('timestamp');
+  if (timestampElement) {
+    timestampElement.textContent = timestamp;
+  }
+}
+
+function openAssessment(assessmentId) {
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showInfo('Opening Assessment', `Loading assessment ${assessmentId}...`);
+  }
+  
+  setTimeout(() => {
+    console.log('Opening assessment:', assessmentId);
+    // Add navigation logic here
+  }, 1000);
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('✅ Dashboard loaded with clean Bootstrap 5');
+  updateTimestamp();
+  setInterval(updateTimestamp, 1000);
+  
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showSuccess('Dashboard Ready', 'RCSA Dashboard loaded successfully!');
+  }
+});
+</script>
+

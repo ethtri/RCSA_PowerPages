@@ -108,13 +108,29 @@
             <i class="bi bi-building me-2 text-primary"></i>
             Select Business Unit
           </h3>
+          
+          <!-- DEBUG SECTION -->
+          <div class="alert alert-info mb-3">
+            <strong>DEBUG INFO:</strong><br>
+            {% entitylist id:"Active BUS (5)" %}
+            Entity List Results: {{ entitylist.records.size }}<br>
+            {% if entitylist.records.size > 0 %}
+              First BU: {{ entitylist.records[0].cr129_buname }} (ID: {{ entitylist.records[0].cr129_buid }})<br>
+              Available fields: 
+              {% for field in entitylist.records[0] %}
+                {{ field[0] }}: {{ field[1] }}<br>
+              {% endfor %}
+            {% endif %}
+          </div>
+          
           <select class="form-select form-select-lg" id="businessUnitSelect" onchange="loadProcesses()">
             <option value="">Choose Business Unit...</option>
-            <option value="commercial">Commercial Banking</option>
-            <option value="retail">Retail Banking</option>
-            <option value="investment">Investment Banking</option>
-            <option value="compliance">Compliance & Risk</option>
-            <option value="operations">Operations</option>
+            {% entitylist id:"Active BUS (5)" %}
+            {% for bu in entitylist.records %}
+            <option value="{{ bu.cr129_buid }}" data-name="{{ bu.cr129_buname }}" data-description="{{ bu.cr129_description }}">
+              {{ bu.cr129_buname }}
+            </option>
+            {% endfor %}
           </select>
           <div class="form-text">
             Select the business unit for your risk assessment
@@ -165,36 +181,34 @@
 let selectedBusinessUnit = null;
 let selectedProcess = null;
 
-const processData = {
-  commercial: [
-    { id: 'loan-origination', name: 'Loan Origination', description: 'Commercial lending process', riskLevel: 'high' },
-    { id: 'credit-assessment', name: 'Credit Assessment', description: 'Credit risk evaluation', riskLevel: 'critical' },
-    { id: 'collateral-mgmt', name: 'Collateral Management', description: 'Asset collateral tracking', riskLevel: 'medium' }
-  ],
-  retail: [
-    { id: 'account-opening', name: 'Account Opening', description: 'Customer onboarding process', riskLevel: 'medium' },
-    { id: 'payment-processing', name: 'Payment Processing', description: 'Transaction processing', riskLevel: 'high' },
-    { id: 'fraud-detection', name: 'Fraud Detection', description: 'Suspicious activity monitoring', riskLevel: 'critical' }
-  ],
-  investment: [
-    { id: 'trading-operations', name: 'Trading Operations', description: 'Securities trading process', riskLevel: 'critical' },
-    { id: 'portfolio-mgmt', name: 'Portfolio Management', description: 'Investment portfolio oversight', riskLevel: 'high' },
-    { id: 'client-advisory', name: 'Client Advisory', description: 'Investment advisory services', riskLevel: 'medium' }
-  ],
-  compliance: [
-    { id: 'aml-monitoring', name: 'AML Monitoring', description: 'Anti-money laundering compliance', riskLevel: 'critical' },
-    { id: 'regulatory-reporting', name: 'Regulatory Reporting', description: 'Compliance reporting process', riskLevel: 'high' },
-    { id: 'audit-management', name: 'Audit Management', description: 'Internal audit coordination', riskLevel: 'medium' }
-  ],
-  operations: [
-    { id: 'data-management', name: 'Data Management', description: 'Data governance and quality', riskLevel: 'high' },
-    { id: 'system-maintenance', name: 'System Maintenance', description: 'IT infrastructure management', riskLevel: 'medium' },
-    { id: 'vendor-management', name: 'Vendor Management', description: 'Third-party vendor oversight', riskLevel: 'medium' }
-  ]
-};
+// Generate process data from Dataverse using entitylist approach
+{% entitylist id:"Active BUS (5)" %}
+{% entitylist id:"Proc" %}
+
+const processData = {};
+
+// Build process data grouped by business unit
+{% for proc in entitylist.records %}
+  {% assign bu_id = proc.cr129_businessunit.cr129_buid %}
+  {% unless processData[bu_id] %}
+    processData["{{ bu_id }}"] = [];
+  {% endunless %}
+  
+  processData["{{ bu_id }}"].push({
+    id: "{{ proc.cr129_procid }}",
+    name: "{{ proc.cr129_processname }}",
+    description: "{{ proc.cr129_description | default: 'Process description' }}",
+    riskLevel: "medium"
+  });
+{% endfor %}
+
+// DEBUG: Log the process data
+console.log('Process Data:', processData);
+console.log('Number of Business Units with Processes:', Object.keys(processData).length);
 
 function loadProcesses() {
-  const businessUnit = document.getElementById('businessUnitSelect').value;
+  const businessUnitSelect = document.getElementById('businessUnitSelect');
+  const businessUnit = businessUnitSelect.value;
   const container = document.getElementById('processContainer');
   
   if (!businessUnit) {
@@ -209,6 +223,16 @@ function loadProcesses() {
   
   selectedBusinessUnit = businessUnit;
   const processes = processData[businessUnit] || [];
+  
+  if (processes.length === 0) {
+    container.innerHTML = `
+      <div class="text-center text-muted py-4">
+        <i class="bi bi-info-circle me-2"></i>
+        No processes found for this business unit
+      </div>
+    `;
+    return;
+  }
   
   let html = '';
   processes.forEach(process => {
@@ -228,7 +252,7 @@ function loadProcesses() {
   container.innerHTML = html;
   
   if (typeof modernInteractions !== 'undefined') {
-    modernInteractions.showInfo('Processes Loaded', `Found ${processes.length} processes for ${businessUnit}`);
+    modernInteractions.showInfo('Processes Loaded', `Found ${processes.length} processes for selected business unit`);
   }
 }
 
@@ -293,3 +317,62 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+
+<!-- Add CSS for process cards -->
+<style>
+.selection-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 24px;
+}
+
+.process-card {
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.process-card:hover {
+  border-color: #0d6efd;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+  transform: translateY(-2px);
+}
+
+.process-card.selected {
+  border-color: #0d6efd;
+  background: #f8f9ff;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+}
+
+.risk-badge {
+  background: #6c757d;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.risk-badge.high {
+  background: #dc3545;
+}
+
+.risk-badge.medium {
+  background: #fd7e14;
+}
+
+.risk-badge.low {
+  background: #198754;
+}
+
+.risk-badge.critical {
+  background: #6f42c1;
+}
+</style>

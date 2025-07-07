@@ -1,0 +1,428 @@
+<!-- Include Bootstrap 5 and Modern Enhancements -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="/bootstrap-5-upgrades.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/modern-interactions.js"></script>
+
+<style>
+/* Clean Process Selection Styles */
+.process-header {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+}
+
+.step-indicator {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+}
+
+.selection-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.process-card {
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.process-card:hover {
+  border-color: #28a745;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+}
+
+.process-card.selected {
+  border-color: #28a745;
+  background: #f8fff9;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+}
+
+.risk-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.risk-badge.critical { background: #fee2e2; color: #dc2626; }
+.risk-badge.high { background: #fef3c7; color: #d97706; }
+.risk-badge.medium { background: #dbeafe; color: #2563eb; }
+.risk-badge.low { background: #d1fae5; color: #059669; }
+
+@media (max-width: 768px) {
+  .process-header {
+    padding: 2rem 0;
+  }
+  
+  .selection-card {
+    padding: 1.5rem;
+  }
+}
+</style>
+
+<!-- Clean Bootstrap 5 Process Selection Page -->
+<div class="container-fluid">
+  
+  <!-- Page Header -->
+  <div class="process-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="display-5 fw-bold mb-2">Process Selection</h1>
+          <p class="lead mb-0">Select your business unit and process for risk assessment</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <div class="step-indicator">
+            <i class="bi bi-1-circle me-2"></i>
+            Step 1 of 5
+          </div>
+          <div class="h5 mt-2 mb-0">Getting Started</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Process Selection Content -->
+  <div class="container">
+    <div class="row">
+      
+      <!-- Business Unit Selection -->
+      <div class="col-lg-4">
+        <div class="selection-card">
+          <h3 class="h5 fw-bold mb-3">
+            <i class="bi bi-building me-2 text-primary"></i>
+            Select Business Unit
+          </h3>
+          
+          <!-- COMPREHENSIVE DEBUG SECTION -->
+          <div class="alert alert-warning mb-3">
+            <strong>DEBUG TESTS:</strong><br>
+            
+            <!-- Test 1: Simple FetchXML -->
+            {% fetchxml simple_bu %}
+            <fetch top="5">
+              <entity name="cr129_bu">
+                <all-attributes />
+              </entity>
+            </fetch>
+            {% endfetchxml %}
+            FetchXML Results: {{ simple_bu.results.entities.size }}<br>
+            
+            <!-- Test 2: Entity List Approach -->
+            {% entitylist id:"BU" %}
+            Entity List Results: {{ entitylist.records.size }}<br>
+            
+            <!-- Test 3: Show first record if available -->
+            {% if simple_bu.results.entities.size > 0 %}
+              {% assign first_record = simple_bu.results.entities[0] %}
+              First Record Fields:<br>
+              {% for field in first_record %}
+                - {{ field[0] }}: "{{ field[1] }}"<br>
+              {% endfor %}
+            {% endif %}
+          </div>
+          
+          <select class="form-select form-select-lg" id="businessUnitSelect" onchange="loadProcesses()">
+            <option value="">Choose Business Unit...</option>
+            
+            <!-- Try FetchXML approach first -->
+            {% fetchxml bu_dropdown %}
+            <fetch>
+              <entity name="cr129_bu">
+                <all-attributes />
+                <order attribute="cr129_buname" />
+              </entity>
+            </fetch>
+            {% endfetchxml %}
+            
+            {% if bu_dropdown.results.entities.size > 0 %}
+              {% for bu in bu_dropdown.results.entities %}
+              <option value="{{ bu.cr129_buid }}" data-name="{{ bu.cr129_buname }}">
+                {{ bu.cr129_buname | default: bu.cr129_name | default: "Business Unit" }}
+              </option>
+              {% endfor %}
+            {% else %}
+              <!-- Fallback: Try entity list approach -->
+              {% entitylist id:"BU" %}
+              {% if entitylist.records.size > 0 %}
+                {% for bu in entitylist.records %}
+                <option value="{{ bu.id }}" data-name="{{ bu.name }}">
+                  {{ bu.name }}
+                </option>
+                {% endfor %}
+              {% else %}
+                <option value="" disabled>No business units found</option>
+              {% endif %}
+            {% endif %}
+          </select>
+          <div class="form-text">
+            Select the business unit for your risk assessment
+          </div>
+        </div>
+      </div>
+
+      <!-- Process Selection -->
+      <div class="col-lg-8">
+        <div class="selection-card">
+          <h3 class="h5 fw-bold mb-3">
+            <i class="bi bi-diagram-3 me-2 text-success"></i>
+            Available Processes
+          </h3>
+          
+          <div id="processContainer">
+            <div class="text-center text-muted py-4">
+              <i class="bi bi-arrow-left me-2"></i>
+              Please select a business unit first
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="container">
+    <div class="row mt-4 mb-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+          <button class="btn btn-outline-secondary btn-lg" onclick="goBack()">
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Dashboard
+          </button>
+          <button class="btn btn-success btn-lg" id="continueBtn" onclick="continueToNextStep()" disabled>
+            Continue to Risk Identification
+            <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Clean JavaScript -->
+<script>
+let selectedBusinessUnit = null;
+let selectedProcess = null;
+
+// Generate process data from Dataverse using FetchXML
+{% fetchxml all_processes %}
+<fetch>
+  <entity name="cr129_proc">
+    <attribute name="cr129_procid" />
+    <attribute name="cr129_processname" />
+    <attribute name="cr129_description" />
+    <link-entity name="cr129_bu" from="cr129_buid" to="cr129_buname" alias="bu">
+      <attribute name="cr129_buid" />
+      <attribute name="cr129_buname" />
+    </link-entity>
+    <order attribute="cr129_processname" />
+  </entity>
+</fetch>
+{% endfetchxml %}
+
+const processData = {};
+{% if all_processes.results.entities.size > 0 %}
+  {% for proc in all_processes.results.entities %}
+    {% assign bu_id = proc['bu.cr129_buid'] %}
+    {% unless processData[bu_id] %}
+      // Initialize array for this business unit
+      if (!processData["{{ bu_id }}"]) {
+        processData["{{ bu_id }}"] = [];
+      }
+    {% endunless %}
+    processData["{{ bu_id }}"].push({
+      id: "{{ proc.cr129_procid }}",
+      name: "{{ proc.cr129_processname }}",
+      description: "{{ proc.cr129_description | default: 'Process description' }}",
+      riskLevel: "medium"
+    });
+  {% endfor %}
+{% endif %}
+
+console.log('🔍 DEBUG: Process data generated via FetchXML:', processData);
+
+function loadProcesses() {
+  const businessUnitSelect = document.getElementById('businessUnitSelect');
+  const businessUnit = businessUnitSelect.value;
+  const container = document.getElementById('processContainer');
+  
+  if (!businessUnit) {
+    container.innerHTML = `
+      <div class="text-center text-muted py-4">
+        <i class="bi bi-arrow-left me-2"></i>
+        Please select a business unit first
+      </div>
+    `;
+    return;
+  }
+  
+  selectedBusinessUnit = businessUnit;
+  const processes = processData[businessUnit] || [];
+  
+  if (processes.length === 0) {
+    container.innerHTML = `
+      <div class="text-center text-muted py-4">
+        <i class="bi bi-info-circle me-2"></i>
+        No processes found for this business unit
+      </div>
+    `;
+    return;
+  }
+  
+  let html = '';
+  processes.forEach(process => {
+    html += `
+      <div class="process-card" onclick="selectProcess('${process.id}', '${process.name}')">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="flex-grow-1">
+            <h5 class="fw-bold mb-1">${process.name}</h5>
+            <p class="text-muted mb-0">${process.description}</p>
+          </div>
+          <span class="risk-badge ${process.riskLevel}">${process.riskLevel}</span>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+  
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showInfo('Processes Loaded', `Found ${processes.length} processes for selected business unit`);
+  }
+}
+
+function selectProcess(processId, processName) {
+  // Remove previous selection
+  document.querySelectorAll('.process-card').forEach(card => {
+    card.classList.remove('selected');
+  });
+  
+  // Add selection to clicked card
+  event.currentTarget.classList.add('selected');
+  
+  selectedProcess = { id: processId, name: processName };
+  
+  // Enable continue button
+  document.getElementById('continueBtn').disabled = false;
+  
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showSuccess('Process Selected', `Selected: ${processName}`);
+  }
+}
+
+function continueToNextStep() {
+  if (!selectedBusinessUnit || !selectedProcess) {
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showError('Selection Required', 'Please select both business unit and process');
+    }
+    return;
+  }
+  
+  // Show loading state
+  const btn = document.getElementById('continueBtn');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
+  btn.disabled = true;
+  
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showSuccess('Proceeding', 'Moving to Risk Identification...');
+  }
+  
+  setTimeout(() => {
+    window.location.href = '/Risk-ID';
+  }, 2000);
+}
+
+function goBack() {
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showInfo('Returning to Dashboard', 'Redirecting...');
+  }
+  
+  setTimeout(() => {
+    window.location.href = '/Dashboard';
+  }, 1000);
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('✅ Process Selection loaded with clean Bootstrap 5');
+  
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showSuccess('Page Ready', 'Process Selection page loaded successfully!');
+  }
+});
+</script>
+
+<!-- Add CSS for process cards -->
+<style>
+.selection-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 24px;
+}
+
+.process-card {
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.process-card:hover {
+  border-color: #0d6efd;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+  transform: translateY(-2px);
+}
+
+.process-card.selected {
+  border-color: #0d6efd;
+  background: #f8f9ff;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+}
+
+.risk-badge {
+  background: #6c757d;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.risk-badge.high {
+  background: #dc3545;
+}
+
+.risk-badge.medium {
+  background: #fd7e14;
+}
+
+.risk-badge.low {
+  background: #198754;
+}
+
+.risk-badge.critical {
+  background: #6f42c1;
+}
+</style>

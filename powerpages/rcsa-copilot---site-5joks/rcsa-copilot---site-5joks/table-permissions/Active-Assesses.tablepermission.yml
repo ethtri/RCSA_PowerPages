@@ -1,0 +1,16 @@
+adx_accountrelationship: 
+adx_append: false
+adx_appendto: false
+adx_childTablePermissions: []
+adx_contactrelationship: 
+adx_create: false
+adx_delete: false
+adx_entitylogicalname: cr129_assess
+adx_entityname: Active Assesses
+adx_entitypermission_webrole: []
+adx_entitypermissionid: df16e1a9-c439-4d7a-a637-6c43c7d6f5eb
+adx_parententitypermission: 
+adx_parentrelationship: 
+adx_read: true
+adx_scope: 756150000
+adx_write: false
