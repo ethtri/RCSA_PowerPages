@@ -1,9 +1,7 @@
 <!-- Include Bootstrap 5 and Modern Enhancements -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-<link rel="stylesheet" href="/bootstrap-5-upgrades.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/modern-interactions.js"></script>
 
 <style>
 /* ========================================
@@ -173,7 +171,7 @@
   border-radius: 12px !important;
 }
 
-.container .section-card .section-body .risk-card.ai {
+.container .section-card .section-body .risk-card.ai-suggested {
   box-shadow: 0 8px 25px rgba(76, 175, 80, 0.12) !important;
   border: 1px solid rgba(76, 175, 80, 0.1) !important;
   background: #ffffff !important;
@@ -377,6 +375,27 @@
 }
 
 /* === END PROTECTED FIXES === */
+
+/* Risk card hover and visual effects - CONSISTENT CLASSES */
+.risk-card.ai-suggested,
+.risk-card.ai-suggested::before,
+.risk-card.ai-suggested::after {
+  transition: all 0.3s ease !important;
+}
+
+/* Ensure all risk cards have consistent spacing and shadows */
+.risk-card.existing,
+.risk-card.ai-suggested,
+.risk-card.custom {
+  background: white !important;
+  border-radius: 12px !important;
+  padding: 1.5rem !important;
+  padding-top: 3.5rem !important;
+  margin-bottom: 1.5rem !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+}
+
 </style>
 
 <!-- Enhanced Bootstrap 5 Risk Identification Page -->
@@ -968,46 +987,47 @@ class EnhancedRiskIdentification {
   }
 
   renderCustomRisks() {
-    // Update placeholder or create custom risks display
     const placeholder = document.getElementById('customRisksEmpty');
+    const customContainer = document.getElementById('customRisksDisplay');
     
-    if (this.customRisks.length === 0) {
+    // Defensive programming - ensure arrays are always defined
+    const customRisks = this.customRisks || [];
+    
+    if (!placeholder || !customContainer) {
+      console.warn('Custom risks containers not found');
+      return;
+    }
+    
+    if (customRisks.length === 0) {
       placeholder.style.display = 'block';
+      customContainer.style.display = 'none';
       return;
     }
     
     placeholder.style.display = 'none';
+    customContainer.style.display = 'block';
     
-    // Add custom risks display after the form
-    let customContainer = document.getElementById('customRisksDisplay');
-    if (!customContainer) {
-      customContainer = document.createElement('div');
-      customContainer.id = 'customRisksDisplay';
-      customContainer.className = 'mt-4';
-      document.getElementById('customRiskForm').parentNode.appendChild(customContainer);
-    }
-    
-    customContainer.innerHTML = this.customRisks.map(risk => `
-      <div class="risk-card" data-risk-id="${risk.id}">
+    customContainer.innerHTML = customRisks.map(risk => `
+      <div class="risk-card custom" data-risk-id="${risk.id}">
         <div class="risk-source-badge custom">
           <i class="bi bi-person me-1"></i>Custom
         </div>
         <div class="d-flex justify-content-between align-items-start mb-3">
-          <h5 class="fw-bold mb-0">${risk.title}</h5>
-          <span class="badge bg-${this.getCategoryColor(risk.category)}">${risk.category}</span>
+          <h5 class="fw-bold mb-0">${risk.title || 'Untitled Risk'}</h5>
+          <span class="badge bg-${this.getCategoryColor(risk.category)}">${risk.category || 'Other'}</span>
         </div>
-        <p class="text-muted mb-3">${risk.description}</p>
+        <p class="text-muted mb-3">${risk.description || 'No description provided'}</p>
         
         <div class="risk-matrix mb-3">
           <div class="small fw-bold mb-2">Risk Assessment</div>
           <div class="row">
             <div class="col-6">
-              <div class="small text-muted">Likelihood: ${risk.likelihood}</div>
-              <div class="small text-muted">Impact: ${risk.impact}</div>
+              <div class="small text-muted">Likelihood: ${risk.likelihood || 'N/A'}</div>
+              <div class="small text-muted">Impact: ${risk.impact || 'N/A'}</div>
             </div>
             <div class="col-6">
-              <div class="matrix-cell risk-level-${risk.likelihood * risk.impact <= 6 ? '2' : risk.likelihood * risk.impact <= 12 ? '3' : risk.likelihood * risk.impact <= 20 ? '4' : '5'} active">
-                ${risk.likelihood * risk.impact}
+              <div class="matrix-cell risk-level-${(risk.likelihood || 1) * (risk.impact || 1) <= 6 ? '2' : (risk.likelihood || 1) * (risk.impact || 1) <= 12 ? '3' : (risk.likelihood || 1) * (risk.impact || 1) <= 20 ? '4' : '5'} active">
+                ${(risk.likelihood || 1) * (risk.impact || 1)}
               </div>
               <div class="small text-muted">Risk Score</div>
             </div>
@@ -1015,7 +1035,7 @@ class EnhancedRiskIdentification {
         </div>
         
         <div class="d-flex justify-content-between align-items-center">
-          <small class="text-muted">Added: ${new Date(risk.timestamp).toLocaleDateString()}</small>
+          <small class="text-muted">Added: ${risk.timestamp ? new Date(risk.timestamp).toLocaleDateString() : 'Unknown'}</small>
           <button class="btn btn-outline-danger btn-sm" onclick="removeCustomRisk('${risk.id}')">
             <i class="bi bi-trash me-1"></i>Remove
           </button>
@@ -1025,21 +1045,32 @@ class EnhancedRiskIdentification {
   }
 
   updateCounts() {
-    const existingCount = this.existingRisks.length;
-    const aiCount = this.acceptedAiRisks.length;
-    const customCount = this.customRisks.length;
+    // Defensive programming - ensure arrays are always defined
+    const existingCount = (this.existingRisks || []).length;
+    const aiCount = (this.acceptedAiRisks || []).length;
+    const customCount = (this.customRisks || []).length;
     const totalCount = existingCount + aiCount + customCount;
 
-    document.getElementById('existingRiskCount').textContent = `${existingCount} Found`;
-    document.getElementById('aiRiskCount').textContent = `${aiCount} Added`;
-    document.getElementById('totalRiskCount').textContent = totalCount;
-    document.getElementById('existingCount').textContent = existingCount;
-    document.getElementById('aiCount').textContent = aiCount;
-    document.getElementById('customCount').textContent = customCount;
+    // Safely update DOM elements
+    const existingRiskCountEl = document.getElementById('existingRiskCount');
+    const aiRiskCountEl = document.getElementById('aiRiskCount');
+    const totalRiskCountEl = document.getElementById('totalRiskCount');
+    const existingCountEl = document.getElementById('existingCount');
+    const aiCountEl = document.getElementById('aiCount');
+    const customCountEl = document.getElementById('customCount');
+    const continueBtn = document.getElementById('continueBtn');
+
+    if (existingRiskCountEl) existingRiskCountEl.textContent = `${existingCount} Found`;
+    if (aiRiskCountEl) aiRiskCountEl.textContent = `${aiCount} Added`;
+    if (totalRiskCountEl) totalRiskCountEl.textContent = totalCount;
+    if (existingCountEl) existingCountEl.textContent = existingCount;
+    if (aiCountEl) aiCountEl.textContent = aiCount;
+    if (customCountEl) customCountEl.textContent = customCount;
 
     // Enable continue button if we have any risks
-    const continueBtn = document.getElementById('continueBtn');
-    continueBtn.disabled = totalCount === 0;
+    if (continueBtn) {
+      continueBtn.disabled = totalCount === 0;
+    }
   }
 
   getCategoryColor(category) {
@@ -1113,12 +1144,21 @@ function toggleCustomRiskForm() {
   const form = document.getElementById('customRiskForm');
   const placeholder = document.getElementById('customRisksEmpty');
   
+  // Check if we have custom risks to determine if we should show placeholder
+  const hasCustomRisks = riskIdentification && riskIdentification.customRisks && riskIdentification.customRisks.length > 0;
+  
   if (form.style.display === 'none') {
     form.style.display = 'block';
-    placeholder.style.display = 'none';
+    // Only hide placeholder if no custom risks exist
+    if (!hasCustomRisks) {
+      placeholder.style.display = 'none';
+    }
   } else {
     form.style.display = 'none';
-    placeholder.style.display = 'block';
+    // Only show placeholder if no custom risks exist
+    if (!hasCustomRisks) {
+      placeholder.style.display = 'block';
+    }
   }
 }
 
@@ -1438,10 +1478,30 @@ function goBack() {
 // Initialize when DOM is ready
 let riskIdentification;
 document.addEventListener('DOMContentLoaded', function() {
-  riskIdentification = new EnhancedRiskIdentification();
-  
-  if (typeof modernInteractions !== 'undefined') {
-    modernInteractions.showSuccess('Page Ready', 'Enhanced Risk Identification loaded successfully!');
+  try {
+    console.log('🚀 Initializing Enhanced Risk Identification...');
+    riskIdentification = new EnhancedRiskIdentification();
+    console.log('✅ Enhanced Risk Identification initialized successfully');
+    
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showSuccess('Page Ready', 'Enhanced Risk Identification loaded successfully!');
+    }
+  } catch (error) {
+    console.error('❌ Error initializing Risk Identification:', error);
+  }
+});
+
+// Global error handler to catch any unhandled errors
+window.addEventListener('error', function(event) {
+  // Only log our own errors, not third-party ones
+  if (event.filename && event.filename.includes('Risk-ID')) {
+    console.error('🔥 Risk Identification Error:', {
+      message: event.message,
+      filename: event.filename,
+      lineno: event.lineno,
+      colno: event.colno,
+      error: event.error
+    });
   }
 });
 
