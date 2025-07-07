@@ -1,3 +1,6 @@
+# Disable workflow-breaking navigation links
+# Users should follow the guided workflow instead of jumping to random pages
+
 - adx_disablepagevalidation: false
   adx_displayimageonly: false
   adx_displayorder: 3
@@ -23,6 +26,7 @@
   adx_robotsfollowlink: true
   adx_weblinkid: 0bd3775d-633e-d938-5596-704ba0ed4401
   adx_weblinksetid: 8f14c53a-3a7c-4edf-9c89-8b1a9edb8d9d
+# Disable workflow pages from navigation menu
 - adx_displayimageonly: false
   adx_displayorder: 11
   adx_displaypagechildlinks: false
@@ -34,6 +38,8 @@
   adx_robotsfollowlink: true
   adx_weblinkid: 1ca4a54a-e933-58d6-0c77-82c3712e20d4
   adx_weblinksetid: 8f14c53a-3a7c-4edf-9c89-8b1a9edb8d9d
+  statecode: 1
+  statuscode: 2
 - adx_disablepagevalidation: false
   adx_displayimageonly: false
   adx_displayorder: 2
@@ -49,6 +55,7 @@
   adx_weblinksetid: 8f14c53a-3a7c-4edf-9c89-8b1a9edb8d9d
   statecode: 1
   statuscode: 2
+# Disable workflow pages from navigation menu
 - adx_displayimageonly: false
   adx_displayorder: 9
   adx_displaypagechildlinks: false
@@ -61,6 +68,9 @@
   adx_robotsfollowlink: true
   adx_weblinkid: 2b5ca1b2-7ff0-ba83-097f-58e319398e11
   adx_weblinksetid: 8f14c53a-3a7c-4edf-9c89-8b1a9edb8d9d
+  statecode: 1
+  statuscode: 2
+# Disable workflow pages from navigation menu
 - adx_displayimageonly: false
   adx_displayorder: 10
   adx_displaypagechildlinks: false
@@ -72,6 +82,9 @@
   adx_robotsfollowlink: true
   adx_weblinkid: 2ec0666f-9414-049c-852f-e2d2c4083193
   adx_weblinksetid: 8f14c53a-3a7c-4edf-9c89-8b1a9edb8d9d
+  statecode: 1
+  statuscode: 2
+# Disable workflow pages from navigation menu
 - adx_displayimageonly: false
   adx_displayorder: 7
   adx_displaypagechildlinks: false
@@ -83,6 +96,8 @@
   adx_robotsfollowlink: true
   adx_weblinkid: 344b9479-26f6-4501-48af-c4da54f5dbcf
   adx_weblinksetid: 8f14c53a-3a7c-4edf-9c89-8b1a9edb8d9d
+  statecode: 1
+  statuscode: 2
 - adx_disablepagevalidation: false
   adx_displayimageonly: false
   adx_displayorder: 4
@@ -94,43 +109,6 @@
   adx_publishingstateid: 0c05b030-bb84-4276-94fc-ece9f13ab2e8
   adx_robotsfollowlink: true
   adx_weblinkid: 453d2da7-a0b6-4c55-942d-9a94569bbb96
-  adx_weblinksetid: 8f14c53a-3a7c-4edf-9c89-8b1a9edb8d9d
-  statecode: 1
-  statuscode: 2
-- adx_displayimageonly: false
-  adx_displayorder: 12
-  adx_displaypagechildlinks: false
-  adx_displaypagevalidation: false
-  adx_name: Success Page
-  adx_openinnewwindow: false
-  adx_pageid: abad3986-f1e7-a316-a758-8537246e198c
-  adx_publishingstateid: 0c05b030-bb84-4276-94fc-ece9f13ab2e8
-  adx_robotsfollowlink: true
-  adx_weblinkid: 834989aa-82aa-7733-aa2a-6263d7ef03e3
-  adx_weblinksetid: 8f14c53a-3a7c-4edf-9c89-8b1a9edb8d9d
-- adx_disablepagevalidation: false
-  adx_displayimageonly: false
-  adx_displayorder: 1
-  adx_displaypagechildlinks: false
-  adx_name: Home
-  adx_openinnewwindow: false
-  adx_pageid: 439a903c-bf6a-492c-b905-cbbbce3612e3
-  adx_publishingstateid: 0c05b030-bb84-4276-94fc-ece9f13ab2e8
-  adx_robotsfollowlink: true
-  adx_weblinkid: 9c68443a-121c-4deb-ba66-5f13e15123c6
-  adx_weblinksetid: 8f14c53a-3a7c-4edf-9c89-8b1a9edb8d9d
-- adx_disablepagevalidation: false
-  adx_displayimageonly: false
-  adx_displayorder: 1
-  adx_displaypagechildlinks: false
-  adx_filecontent: 
-  adx_name: Subpage 1-deleted
-  adx_openinnewwindow: false
-  adx_pageid: a803cdde-8beb-467a-be45-06c6d654f6b8
-  adx_parentweblinkid: 453d2da7-a0b6-4c55-942d-9a94569bbb96
-  adx_publishingstateid: 0c05b030-bb84-4276-94fc-ece9f13ab2e8
-  adx_robotsfollowlink: true
-  adx_weblinkid: a805b0e0-ace9-4261-b41d-b6219e99d9b8
   adx_weblinksetid: 8f14c53a-3a7c-4edf-9c89-8b1a9edb8d9d
   statecode: 1
   statuscode: 2

@@ -6,6 +6,33 @@
 <script src="/modern-interactions.js"></script>
 
 <style>
+/* ========================================
+   RISK IDENTIFICATION ENHANCED STYLES v2.1
+   ========================================
+   
+   IMPORTANT: This CSS includes enhanced card separation
+   and visual improvements. Do not remove or modify the
+   following styles without updating the version number:
+   
+   - .risk-card enhanced shadows and spacing
+   - .risk-card:not(:last-child)::after separators
+   - Enhanced hover effects and color-coded borders
+   
+   Last updated: Enhanced card separation implementation
+   ======================================== */
+
+.risk-card {
+  background: white !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 12px;
+  padding: 1.5rem;
+  padding-top: 3.5rem;
+  margin-bottom: 1.5rem !important;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
 /* Enhanced Risk Identification Styles */
 .risk-header {
   background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
@@ -70,53 +97,111 @@
 }
 
 .risk-card {
-  background: #f8f9fa;
-  border: 2px solid #e9ecef;
+  background: white !important;
+  border: 1px solid #e9ecef !important;
   border-radius: 12px;
   padding: 1.5rem;
   padding-top: 3.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem !important;
   transition: all 0.3s ease;
   position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
 }
 
 .risk-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+  border-color: #dee2e6 !important;
 }
 
 .risk-card.existing {
-  border-left: 4px solid #0d6efd;
-  background: #f8f9ff;
+  border-left: 4px solid #0d6efd !important;
+  background: white !important;
+  box-shadow: 0 2px 8px rgba(13, 110, 253, 0.1) !important;
+}
+
+.risk-card.existing:hover {
+  box-shadow: 0 6px 20px rgba(13, 110, 253, 0.2) !important;
 }
 
 .risk-card.ai-suggested {
-  border-left: 4px solid #28a745;
-  background: #f8fff9;
+  border-left: 4px solid #28a745 !important;
+  background: white !important;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.1) !important;
+}
+
+.risk-card.ai-suggested:hover {
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.2) !important;
 }
 
 .risk-card.accepted {
-  border-color: #28a745;
-  background: #f8fff9;
+  border: 2px solid #28a745 !important;
+  background: #f8fff9 !important;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15) !important;
 }
 
 .risk-card.rejected {
-  border-color: #dc3545;
-  background: #fff5f5;
+  border: 2px solid #dc3545 !important;
+  background: #fff5f5 !important;
   opacity: 0.7;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.1) !important;
 }
 
+/* Add subtle separator between cards - Enhanced */
+.risk-card:not(:last-child)::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: -0.75rem !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 60% !important;
+  height: 1px !important;
+  background: linear-gradient(90deg, transparent, #e9ecef, transparent) !important;
+  opacity: 0.5 !important;
+  z-index: 1 !important;
+}
+
+/* === ENHANCED CARD VISUAL SEPARATION - SIMPLIFIED === */
+/* Basic visual improvements without complex selectors */
+
+/* Enhanced Card Visual Separation - Maximum Specificity */
+.container .section-card .section-body .risk-card.existing {
+  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.12) !important;
+  border: 1px solid rgba(25, 118, 210, 0.1) !important;
+  background: #ffffff !important;
+  margin-bottom: 1.5rem !important;
+  border-radius: 12px !important;
+}
+
+.container .section-card .section-body .risk-card.ai {
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.12) !important;
+  border: 1px solid rgba(76, 175, 80, 0.1) !important;
+  background: #ffffff !important;
+  margin-bottom: 1.5rem !important;
+  border-radius: 12px !important;
+}
+
+.container .section-card .section-body .risk-card.custom {
+  box-shadow: 0 8px 25px rgba(245, 124, 0, 0.12) !important;
+  border: 1px solid rgba(245, 124, 0, 0.1) !important;
+  background: #ffffff !important;
+  margin-bottom: 1.5rem !important;
+  border-radius: 12px !important;
+}
+
+/* Basic card spacing */
+.risk-card {
+  margin-bottom: 1.5rem !important;
+}
+
+/* === END ENHANCED CARD SEPARATION === */
+
+/* Risk source badge positioning - Simple fix */
 .risk-source-badge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 0.75rem;
-  padding: 0.375rem 0.75rem;
-  border-radius: 15px;
-  z-index: 10;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  position: absolute !important;
+  top: 0.75rem !important;
+  right: 0.75rem !important;
+  z-index: 10 !important;
 }
 
 .risk-source-badge.existing { 
@@ -234,6 +319,64 @@
     padding: 0.25rem 0.5rem;
   }
 }
+
+/* ============================================================================ */
+/* PROTECTED FIXES - DO NOT REMOVE OR MODIFY */
+/* These fixes address recurring UX issues and are protected against overwrites */
+/* ============================================================================ */
+
+/* PROTECTED FIX #1: Overlapping Labels Solution */
+.risk-source-badge {
+  position: absolute !important;
+  top: 0.5rem !important;
+  right: 0.5rem !important;
+  font-size: 0.7rem !important;
+  padding: 0.3rem 0.6rem !important;
+  border-radius: 12px !important;
+  z-index: 15 !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3px !important;
+  transform: translateY(0) !important;
+  margin: 0 !important;
+}
+
+/* PROTECTED FIX #2: Remove AI Card Color Stripe */
+.container .section-card .section-body .risk-card.ai {
+  border-left: none !important;
+  border-image: none !important;
+  border-left-color: transparent !important;
+  border-left-width: 0 !important;
+}
+
+/* Force removal of any left border or stripe on AI cards */
+.risk-card.ai,
+.risk-card.ai::before,
+.risk-card.ai::after {
+  border-left: none !important;
+  border-image: none !important;
+}
+
+/* PROTECTED FIX #3: Category Badge Positioning - Prevent Overlap */
+.risk-card .badge:not(.risk-source-badge) {
+  margin-top: 2.5rem !important;
+  position: relative !important;
+  z-index: 5 !important;
+  clear: both !important;
+  display: inline-block !important;
+}
+
+/* Ensure proper spacing for all card content when source badge is present */
+.risk-card {
+  padding-top: 2rem !important;
+}
+
+.risk-card .card-body,
+.risk-card > .d-flex:first-child {
+  margin-top: 1rem !important;
+}
+
+/* === END PROTECTED FIXES === */
 </style>
 
 <!-- Enhanced Bootstrap 5 Risk Identification Page -->
@@ -401,12 +544,16 @@
                 </div>
               </form>
             </div>
-            <div id="customRiskPlaceholder">
-              <div class="empty-state">
-                <i class="bi bi-plus-circle-dotted display-1 text-muted mb-3"></i>
-                <h5 class="text-muted">No Custom Risks Added</h5>
-                <p class="text-muted">Click "Add Risk" to create a custom risk specific to your situation.</p>
-              </div>
+            <!-- Custom Risks Display -->
+            <div id="customRisksDisplay" style="display: none;">
+              <!-- Custom risks will be displayed here -->
+            </div>
+            
+            <!-- Empty State - PROTECTED FIX #3: Hide when custom risks exist -->
+            <div id="customRisksEmpty" class="empty-state">
+              <i class="bi bi-plus-circle-dotted text-muted mb-3" style="font-size: 3rem;"></i>
+              <h5 class="text-muted">No Custom Risks Added</h5>
+              <p class="text-muted">Click 'Add Risk' to create a custom risk specific to your situation</p>
             </div>
           </div>
         </div>
@@ -822,7 +969,7 @@ class EnhancedRiskIdentification {
 
   renderCustomRisks() {
     // Update placeholder or create custom risks display
-    const placeholder = document.getElementById('customRiskPlaceholder');
+    const placeholder = document.getElementById('customRisksEmpty');
     
     if (this.customRisks.length === 0) {
       placeholder.style.display = 'block';
@@ -964,7 +1111,7 @@ class EnhancedRiskIdentification {
 // Global functions for button actions
 function toggleCustomRiskForm() {
   const form = document.getElementById('customRiskForm');
-  const placeholder = document.getElementById('customRiskPlaceholder');
+  const placeholder = document.getElementById('customRisksEmpty');
   
   if (form.style.display === 'none') {
     form.style.display = 'block';
@@ -1031,14 +1178,226 @@ function rejectAIRisk(riskId) {
 }
 
 function modifyAIRisk(riskId) {
-  if (typeof modernInteractions !== 'undefined') {
-    modernInteractions.showInfo('Modify Risk', 'Risk modification feature coming soon');
+  const risk = riskIdentification.aiSuggestedRisks.find(r => r.id === riskId);
+  if (risk) {
+    showRiskEditModal(risk, 'ai');
   }
 }
 
 function editExistingRisk(riskId) {
-  if (typeof modernInteractions !== 'undefined') {
-    modernInteractions.showInfo('Edit Risk', 'Risk editing feature coming soon');
+  const risk = riskIdentification.existingRisks.find(r => r.id === riskId);
+  if (risk) {
+    showRiskEditModal(risk, 'existing');
+  }
+}
+
+function showRiskEditModal(risk, type) {
+  // Create modal HTML
+  const modalHtml = `
+    <div class="modal fade" id="editRiskModal" tabindex="-1" aria-labelledby="editRiskModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editRiskModalLabel">
+              <i class="bi bi-pencil me-2"></i>Edit Risk
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editRiskForm">
+              <div class="mb-3">
+                <label for="editRiskTitle" class="form-label">Risk Title</label>
+                <input type="text" class="form-control" id="editRiskTitle" value="${risk.title}" required>
+              </div>
+              
+              <div class="mb-3">
+                <label for="editRiskCategory" class="form-label">Category</label>
+                <select class="form-select" id="editRiskCategory" required>
+                  <option value="Operational" ${risk.category === 'Operational' ? 'selected' : ''}>Operational</option>
+                  <option value="Technology" ${risk.category === 'Technology' ? 'selected' : ''}>Technology</option>
+                  <option value="Fraud" ${risk.category === 'Fraud' ? 'selected' : ''}>Fraud</option>
+                  <option value="Compliance" ${risk.category === 'Compliance' ? 'selected' : ''}>Compliance</option>
+                  <option value="Credit" ${risk.category === 'Credit' ? 'selected' : ''}>Credit</option>
+                </select>
+              </div>
+              
+              <div class="mb-3">
+                <label for="editRiskDescription" class="form-label">Description</label>
+                <textarea class="form-control" id="editRiskDescription" rows="3" required>${risk.description}</textarea>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="editRiskLikelihood" class="form-label">Likelihood (1-5)</label>
+                  <select class="form-select" id="editRiskLikelihood" required>
+                    <option value="1" ${risk.likelihood === 1 ? 'selected' : ''}>1 - Very Low</option>
+                    <option value="2" ${risk.likelihood === 2 ? 'selected' : ''}>2 - Low</option>
+                    <option value="3" ${risk.likelihood === 3 ? 'selected' : ''}>3 - Medium</option>
+                    <option value="4" ${risk.likelihood === 4 ? 'selected' : ''}>4 - High</option>
+                    <option value="5" ${risk.likelihood === 5 ? 'selected' : ''}>5 - Very High</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="editRiskImpact" class="form-label">Impact (1-5)</label>
+                  <select class="form-select" id="editRiskImpact" required>
+                    <option value="1" ${risk.impact === 1 ? 'selected' : ''}>1 - Very Low</option>
+                    <option value="2" ${risk.impact === 2 ? 'selected' : ''}>2 - Low</option>
+                    <option value="3" ${risk.impact === 3 ? 'selected' : ''}>3 - Medium</option>
+                    <option value="4" ${risk.impact === 4 ? 'selected' : ''}>4 - High</option>
+                    <option value="5" ${risk.impact === 5 ? 'selected' : ''}>5 - Very High</option>
+                  </select>
+                </div>
+              </div>
+              
+              ${type === 'ai' ? `
+              <div class="mt-3">
+                <label for="editRiskRationale" class="form-label">AI Rationale</label>
+                <textarea class="form-control" id="editRiskRationale" rows="2">${risk.rationale || ''}</textarea>
+              </div>
+              ` : ''}
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" onclick="saveRiskEdit('${risk.id}', '${type}')">
+              <i class="bi bi-check-lg me-1"></i>Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  try {
+    // Remove existing modal if any
+    const existingModal = document.getElementById('editRiskModal');
+    if (existingModal) {
+      existingModal.remove();
+    }
+    
+    // Add modal to body
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    // Show modal with fallback
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+      const modal = new bootstrap.Modal(document.getElementById('editRiskModal'));
+      modal.show();
+    } else {
+      // Fallback: show modal manually
+      const modalElement = document.getElementById('editRiskModal');
+      modalElement.style.display = 'block';
+      modalElement.classList.add('show');
+      document.body.classList.add('modal-open');
+      
+      // Add backdrop
+      const backdrop = document.createElement('div');
+      backdrop.className = 'modal-backdrop fade show';
+      backdrop.id = 'editRiskBackdrop';
+      document.body.appendChild(backdrop);
+      
+      // Add close handlers
+      modalElement.querySelector('.btn-close').onclick = closeEditModal;
+      modalElement.querySelector('[data-bs-dismiss="modal"]').onclick = closeEditModal;
+      backdrop.onclick = closeEditModal;
+    }
+    
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showInfo('Edit Risk', 'Risk edit dialog opened');
+    }
+  } catch (error) {
+    console.error('Error showing edit modal:', error);
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showError('Error', 'Unable to open edit dialog. Please try again.');
+    }
+  }
+}
+
+function closeEditModal() {
+  try {
+    const modal = document.getElementById('editRiskModal');
+    const backdrop = document.getElementById('editRiskBackdrop');
+    
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.remove('show');
+      modal.remove();
+    }
+    
+    if (backdrop) {
+      backdrop.remove();
+    }
+    
+    document.body.classList.remove('modal-open');
+  } catch (error) {
+    console.error('Error closing modal:', error);
+  }
+}
+
+function saveRiskEdit(riskId, type) {
+  try {
+    const title = document.getElementById('editRiskTitle').value;
+    const category = document.getElementById('editRiskCategory').value;
+    const description = document.getElementById('editRiskDescription').value;
+    const likelihood = parseInt(document.getElementById('editRiskLikelihood').value);
+    const impact = parseInt(document.getElementById('editRiskImpact').value);
+    const rationale = document.getElementById('editRiskRationale')?.value;
+    
+    if (!title || !category || !description) {
+      if (typeof modernInteractions !== 'undefined') {
+        modernInteractions.showError('Validation Error', 'Please fill in all required fields');
+      }
+      return;
+    }
+    
+    if (type === 'existing') {
+      // Update existing risk
+      const riskIndex = riskIdentification.existingRisks.findIndex(r => r.id === riskId);
+      if (riskIndex !== -1) {
+        riskIdentification.existingRisks[riskIndex] = {
+          ...riskIdentification.existingRisks[riskIndex],
+          title,
+          category,
+          description,
+          likelihood,
+          impact
+        };
+        riskIdentification.renderExistingRisks();
+      }
+    } else if (type === 'ai') {
+      // Update AI risk
+      const riskIndex = riskIdentification.aiSuggestedRisks.findIndex(r => r.id === riskId);
+      if (riskIndex !== -1) {
+        riskIdentification.aiSuggestedRisks[riskIndex] = {
+          ...riskIdentification.aiSuggestedRisks[riskIndex],
+          title,
+          category,
+          description,
+          likelihood,
+          impact,
+          rationale
+        };
+        riskIdentification.renderAISuggestions();
+      }
+    }
+    
+    // Close modal
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+      const modal = bootstrap.Modal.getInstance(document.getElementById('editRiskModal'));
+      if (modal) {
+        modal.hide();
+      }
+    } else {
+      closeEditModal();
+    }
+    
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showSuccess('Risk Updated', `"${title}" has been updated successfully`);
+    }
+  } catch (error) {
+    console.error('Error saving risk edit:', error);
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showError('Error', 'Unable to save changes. Please try again.');
+    }
   }
 }
 
@@ -1085,4 +1444,7 @@ document.addEventListener('DOMContentLoaded', function() {
     modernInteractions.showSuccess('Page Ready', 'Enhanced Risk Identification loaded successfully!');
   }
 });
+
 </script>
+
+

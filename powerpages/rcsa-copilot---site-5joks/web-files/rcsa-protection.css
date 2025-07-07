@@ -1,0 +1,57 @@
+/*
+ * RCSA Protection CSS - CRITICAL FIXES
+ * This file contains protected styles that must never be removed
+ * These prevent recurring UX issues in the Risk Identification page
+ */
+
+/* FIX #1: Overlapping Labels - Position source badges to avoid overlap */
+body .risk-source-badge {
+  position: absolute !important;
+  top: 0.5rem !important;
+  right: 0.5rem !important;
+  font-size: 0.7rem !important;
+  padding: 0.3rem 0.6rem !important;
+  border-radius: 12px !important;
+  z-index: 20 !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3px !important;
+  margin: 0 !important;
+}
+
+/* FIX #2: Remove AI Card Color Stripe */
+body .risk-card.ai,
+body .risk-card.ai::before,
+body .risk-card.ai::after {
+  border-left: none !important;
+  border-image: none !important;
+  border-left-color: transparent !important;
+  border-left-width: 0 !important;
+}
+
+/* FIX #3: Prevent Category Badge Overlap with Source Badge */
+body .risk-card .badge:not(.risk-source-badge) {
+  margin-top: 2.5rem !important;
+  position: relative !important;
+  z-index: 5 !important;
+}
+
+/* FIX #4: Proper Card Spacing */
+body .risk-card {
+  padding-top: 2rem !important;
+  position: relative !important;
+}
+
+body .risk-card .card-body,
+body .risk-card > .d-flex:first-child {
+  margin-top: 1rem !important;
+}
+
+/* FIX #5: Card Separation Reinforcement */
+body .risk-card {
+  margin-bottom: 1.5rem !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+} 

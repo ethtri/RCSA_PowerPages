@@ -920,3 +920,138 @@ body {
     color: var(--fcb-white) !important;
   }
 } 
+
+/* ============================================================================ */
+/* PERMANENT CARD SEPARATION STYLES - DO NOT REMOVE */
+/* These styles ensure proper visual separation of risk cards */
+/* Added to prevent recurring issues with card separation */
+/* ============================================================================ */
+
+/* Enhanced Card Visual Separation - Maximum Specificity */
+.container .section-card .section-body .risk-card.existing {
+  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.12) !important;
+  border: 1px solid rgba(25, 118, 210, 0.1) !important;
+  background: #ffffff !important;
+  margin-bottom: 1.5rem !important;
+  border-radius: 12px !important;
+}
+
+.container .section-card .section-body .risk-card.ai {
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.12) !important;
+  border: 1px solid rgba(76, 175, 80, 0.1) !important;
+  background: #ffffff !important;
+  margin-bottom: 1.5rem !important;
+  border-radius: 12px !important;
+}
+
+.container .section-card .section-body .risk-card.custom {
+  box-shadow: 0 8px 25px rgba(245, 124, 0, 0.12) !important;
+  border: 1px solid rgba(245, 124, 0, 0.1) !important;
+  background: #ffffff !important;
+  margin-bottom: 1.5rem !important;
+  border-radius: 12px !important;
+}
+
+/* Stronger Card Separation - Physical Spacing */
+.container .section-body .risk-card + .risk-card {
+  margin-top: 1.5rem !important;
+}
+
+/* Enhanced Hover Effects */
+.container .section-card .section-body .risk-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Card Content Padding and Spacing */
+.container .section-card .section-body .risk-card {
+  padding: 1.5rem !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Gradient Separator Lines Between Cards */
+.container .section-card .section-body .risk-card:not(:last-child)::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: -0.75rem !important;
+  left: 10% !important;
+  right: 10% !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, transparent, rgba(108, 117, 125, 0.2), transparent) !important;
+  border-radius: 1px !important;
+}
+
+/* Force card separation with body-level styles */
+body .risk-card {
+  margin-bottom: 1.5rem !important;
+}
+
+body .risk-card:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  padding-bottom: 1.5rem !important;
+}
+
+/* ============================================================================ */
+/* END PERMANENT CARD SEPARATION STYLES */
+/* ============================================================================ */ 
+
+/* ============================================================================ */
+/* CRITICAL PROTECTED FIXES - NEVER REMOVE THESE STYLES */
+/* These fixes prevent recurring UX issues in Risk Identification */
+/* Last Updated: 2024 - Comprehensive UX Issue Prevention */
+/* ============================================================================ */
+
+/* PROTECTED FIX #1: Overlapping Labels Solution - Position source badges properly */
+body .risk-source-badge {
+  position: absolute !important;
+  top: 0.5rem !important;
+  right: 0.5rem !important;
+  font-size: 0.7rem !important;
+  padding: 0.3rem 0.6rem !important;
+  border-radius: 12px !important;
+  z-index: 20 !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3px !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+/* PROTECTED FIX #2: Remove AI Card Color Stripe - Force removal */
+body .risk-card.ai,
+body .risk-card.ai::before,
+body .risk-card.ai::after {
+  border-left: none !important;
+  border-image: none !important;
+  border-left-color: transparent !important;
+  border-left-width: 0 !important;
+}
+
+/* PROTECTED FIX #3: Prevent Category Badge Overlap */
+body .risk-card .badge:not(.risk-source-badge) {
+  margin-top: 2.5rem !important;
+  position: relative !important;
+  z-index: 5 !important;
+  clear: both !important;
+  display: inline-block !important;
+}
+
+/* PROTECTED FIX #4: Proper Card Spacing for Badges */
+body .risk-card {
+  padding-top: 2rem !important;
+  position: relative !important;
+}
+
+/* PROTECTED FIX #5: Card Content Spacing */
+body .risk-card .card-body,
+body .risk-card > .d-flex:first-child,
+body .risk-card > div:first-child {
+  margin-top: 1rem !important;
+  position: relative !important;
+}
+
+/* ============================================================================ */
+/* END CRITICAL PROTECTED FIXES */
+/* ============================================================================ */ 
