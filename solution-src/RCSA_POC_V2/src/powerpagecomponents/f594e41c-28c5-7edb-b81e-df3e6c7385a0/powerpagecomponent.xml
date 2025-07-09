@@ -1,0 +1,881 @@
+<powerpagecomponent powerpagecomponentid="f594e41c-28c5-7edb-b81e-df3e6c7385a0">
+  <content>{
+  "copy": "&lt;!-- RCSA Risk Identification - CapTech Consulting --&gt;\n&lt;!-- Step 2 of 4: Identify and Assess Risks --&gt;\n\n&lt;link rel=\"stylesheet\" href=\"~/rcsa-styles.css\"&gt;\n&lt;link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css\"&gt;\n\n&lt;!-- Progress Indicator --&gt;\n&lt;div class=\"fcb-container fcb-mt-4\"&gt;\n    &lt;div class=\"fcb-progress\" role=\"progressbar\" aria-valuenow=\"2\" aria-valuemin=\"1\" aria-valuemax=\"4\"&gt;\n        &lt;div class=\"fcb-progress-step completed\"&gt;\n            &lt;div class=\"fcb-progress-number\"&gt;1&lt;/div&gt;\n            &lt;div class=\"fcb-progress-label\"&gt;Select Process&lt;/div&gt;\n        &lt;/div&gt;\n        &lt;div class=\"fcb-progress-step active\"&gt;\n            &lt;div class=\"fcb-progress-number\"&gt;2&lt;/div&gt;\n            &lt;div class=\"fcb-progress-label\"&gt;Identify Risks&lt;/div&gt;\n        &lt;/div&gt;\n        &lt;div class=\"fcb-progress-step\"&gt;\n            &lt;div class=\"fcb-progress-number\"&gt;3&lt;/div&gt;\n            &lt;div class=\"fcb-progress-label\"&gt;Map Controls&lt;/div&gt;\n        &lt;/div&gt;\n        &lt;div class=\"fcb-progress-step\"&gt;\n            &lt;div class=\"fcb-progress-number\"&gt;4&lt;/div&gt;\n            &lt;div class=\"fcb-progress-label\"&gt;Assess Risk&lt;/div&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n&lt;/div&gt;\n\n&lt;!-- Page Header --&gt;\n&lt;div class=\"rcsa-page-header\"&gt;\n    &lt;div class=\"fcb-container\"&gt;\n        &lt;div class=\"fcb-row fcb-align-center\"&gt;\n            &lt;div class=\"fcb-col-8\"&gt;\n                &lt;h1 class=\"fcb-mb-2\"&gt;\n                    &lt;i class=\"fas fa-exclamation-triangle\"&gt;&lt;/i&gt; Risk Identification\n                &lt;/h1&gt;\n                &lt;p class=\"fcb-mb-0\"&gt;\n                    Identify and assess risks for your selected process using AI-powered suggestions.\n                &lt;/p&gt;\n            &lt;/div&gt;\n            &lt;div class=\"fcb-col-4 fcb-text-right\"&gt;\n                &lt;div class=\"captech-logo-container fcb-mb-3\"&gt;\n                    &lt;img src=\"~/captech-logo.png\" alt=\"CapTech Consulting\" class=\"captech-logo\" /&gt;\n                &lt;/div&gt;\n                &lt;div class=\"fcb-badge fcb-badge-primary\" id=\"process-info\"&gt;\n                    &lt;i class=\"fas fa-cogs\"&gt;&lt;/i&gt; &lt;span id=\"selected-process\"&gt;Loading...&lt;/span&gt;\n                &lt;/div&gt;\n                &lt;br&gt;\n                &lt;small class=\"fcb-text-muted fcb-mt-2\" id=\"business-unit-info\"&gt;Loading business unit...&lt;/small&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class=\"fcb-container\"&gt;\n    &lt;!-- AI Suggestions Section --&gt;\n    &lt;div class=\"fcb-row fcb-mb-4\"&gt;\n        &lt;div class=\"fcb-col-12\"&gt;\n            &lt;div class=\"fcb-card fcb-card-primary\"&gt;\n                &lt;div class=\"fcb-card-header\"&gt;\n                    &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-center\"&gt;\n                        &lt;h2 class=\"fcb-h4 fcb-mb-0\"&gt;\n                            &lt;i class=\"fas fa-robot\"&gt;&lt;/i&gt; AI Risk Suggestions\n                        &lt;/h2&gt;\n                        &lt;button \n                            id=\"generate-ai-suggestions\" \n                            class=\"fcb-btn fcb-btn-primary fcb-btn-sm\"\n                            data-testid=\"ai-suggestions-button\"&gt;\n                            &lt;i class=\"fas fa-magic\"&gt;&lt;/i&gt; Generate AI Suggestions\n                        &lt;/button&gt;\n                    &lt;/div&gt;\n                &lt;/div&gt;\n                &lt;div class=\"fcb-card-body\"&gt;\n                    &lt;div id=\"ai-suggestions-loading\" class=\"fcb-d-none\"&gt;\n                        &lt;div class=\"rcsa-loading-spinner\"&gt;\n                            &lt;i class=\"fas fa-spinner fa-spin fa-2x fcb-text-primary\"&gt;&lt;/i&gt;\n                            &lt;p class=\"fcb-mt-3 fcb-text-muted\"&gt;\n                                AI is analyzing your process and generating risk suggestions...\n                                &lt;br&gt;&lt;small&gt;This typically takes 2-3 seconds&lt;/small&gt;\n                            &lt;/p&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                    \n                    &lt;div id=\"ai-suggestions-content\" class=\"fcb-d-none\"&gt;\n                        &lt;div class=\"fcb-alert fcb-alert-info fcb-mb-3\"&gt;\n                            &lt;i class=\"fas fa-info-circle\"&gt;&lt;/i&gt;\n                            &lt;div&gt;\n                                &lt;strong&gt;AI-Generated Risk Suggestions&lt;/strong&gt;\n                                &lt;p class=\"fcb-mb-0\"&gt;Based on banking industry best practices and your selected process, here are potential risks to consider:&lt;/p&gt;\n                            &lt;/div&gt;\n                        &lt;/div&gt;\n                        \n                        &lt;div id=\"ai-suggestions-list\" class=\"fcb-row\"&gt;\n                            &lt;!-- AI suggestions will be populated here --&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                    \n                    &lt;div id=\"ai-suggestions-placeholder\"&gt;\n                        &lt;div class=\"fcb-text-center fcb-p-4\"&gt;\n                            &lt;i class=\"fas fa-lightbulb fa-3x fcb-text-muted fcb-mb-3\"&gt;&lt;/i&gt;\n                            &lt;h3 class=\"fcb-h5 fcb-mb-2\"&gt;Get AI-Powered Risk Suggestions&lt;/h3&gt;\n                            &lt;p class=\"fcb-text-muted fcb-mb-3\"&gt;\n                                Our AI assistant can analyze your selected process and suggest relevant risks based on banking industry best practices.\n                            &lt;/p&gt;\n                            &lt;button \n                                id=\"start-ai-suggestions\" \n                                class=\"fcb-btn fcb-btn-primary\"\n                                data-testid=\"start-ai-button\"&gt;\n                                &lt;i class=\"fas fa-play\"&gt;&lt;/i&gt; Start AI Analysis\n                            &lt;/button&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n\n    &lt;!-- Manual Risk Entry Section --&gt;\n    &lt;div class=\"fcb-row fcb-mb-4\"&gt;\n        &lt;div class=\"fcb-col-12\"&gt;\n            &lt;div class=\"fcb-card\"&gt;\n                &lt;div class=\"fcb-card-header\"&gt;\n                    &lt;h2 class=\"fcb-h4 fcb-mb-0\"&gt;\n                        &lt;i class=\"fas fa-plus-circle\"&gt;&lt;/i&gt; Add Custom Risk\n                    &lt;/h2&gt;\n                &lt;/div&gt;\n                &lt;div class=\"fcb-card-body\"&gt;\n                    &lt;form id=\"custom-risk-form\"&gt;\n                        &lt;div class=\"fcb-row\"&gt;\n                            &lt;div class=\"fcb-col-6\"&gt;\n                                &lt;div class=\"fcb-form-group\"&gt;\n                                    &lt;label for=\"risk-name\" class=\"fcb-form-label\"&gt;\n                                        Risk Name &lt;span class=\"fcb-text-danger\"&gt;*&lt;/span&gt;\n                                    &lt;/label&gt;\n                                    &lt;input \n                                        type=\"text\" \n                                        id=\"risk-name\" \n                                        class=\"fcb-form-control\" \n                                        placeholder=\"Enter risk name...\"\n                                        required\n                                        data-testid=\"risk-name-input\"&gt;\n                                &lt;/div&gt;\n                            &lt;/div&gt;\n                            &lt;div class=\"fcb-col-6\"&gt;\n                                &lt;div class=\"fcb-form-group\"&gt;\n                                    &lt;label for=\"risk-category\" class=\"fcb-form-label\"&gt;\n                                        Risk Category &lt;span class=\"fcb-text-danger\"&gt;*&lt;/span&gt;\n                                    &lt;/label&gt;\n                                    &lt;select \n                                        id=\"risk-category\" \n                                        class=\"fcb-form-control fcb-form-select\" \n                                        required\n                                        data-testid=\"risk-category-select\"&gt;\n                                        &lt;option value=\"\"&gt;Select category...&lt;/option&gt;\n                                        &lt;option value=\"operational\"&gt;Operational Risk&lt;/option&gt;\n                                        &lt;option value=\"credit\"&gt;Credit Risk&lt;/option&gt;\n                                        &lt;option value=\"market\"&gt;Market Risk&lt;/option&gt;\n                                        &lt;option value=\"liquidity\"&gt;Liquidity Risk&lt;/option&gt;\n                                        &lt;option value=\"compliance\"&gt;Compliance Risk&lt;/option&gt;\n                                        &lt;option value=\"technology\"&gt;Technology Risk&lt;/option&gt;\n                                        &lt;option value=\"reputation\"&gt;Reputation Risk&lt;/option&gt;\n                                        &lt;option value=\"strategic\"&gt;Strategic Risk&lt;/option&gt;\n                                    &lt;/select&gt;\n                                &lt;/div&gt;\n                            &lt;/div&gt;\n                        &lt;/div&gt;\n                        \n                        &lt;div class=\"fcb-form-group\"&gt;\n                            &lt;label for=\"risk-description\" class=\"fcb-form-label\"&gt;\n                                Risk Description &lt;span class=\"fcb-text-danger\"&gt;*&lt;/span&gt;\n                            &lt;/label&gt;\n                            &lt;textarea \n                                id=\"risk-description\" \n                                class=\"fcb-form-control\" \n                                rows=\"3\" \n                                placeholder=\"Describe the risk in detail...\"\n                                required\n                                data-testid=\"risk-description-input\"&gt;&lt;/textarea&gt;\n                        &lt;/div&gt;\n                        \n                        &lt;div class=\"fcb-row\"&gt;\n                            &lt;div class=\"fcb-col-6\"&gt;\n                                &lt;div class=\"fcb-form-group\"&gt;\n                                    &lt;label for=\"risk-likelihood\" class=\"fcb-form-label\"&gt;\n                                        Likelihood &lt;span class=\"fcb-text-danger\"&gt;*&lt;/span&gt;\n                                    &lt;/label&gt;\n                                    &lt;select \n                                        id=\"risk-likelihood\" \n                                        class=\"fcb-form-control fcb-form-select\" \n                                        required\n                                        data-testid=\"risk-likelihood-select\"&gt;\n                                        &lt;option value=\"\"&gt;Select likelihood...&lt;/option&gt;\n                                        &lt;option value=\"1\"&gt;1 - Very Low&lt;/option&gt;\n                                        &lt;option value=\"2\"&gt;2 - Low&lt;/option&gt;\n                                        &lt;option value=\"3\"&gt;3 - Medium&lt;/option&gt;\n                                        &lt;option value=\"4\"&gt;4 - High&lt;/option&gt;\n                                        &lt;option value=\"5\"&gt;5 - Very High&lt;/option&gt;\n                                    &lt;/select&gt;\n                                &lt;/div&gt;\n                            &lt;/div&gt;\n                            &lt;div class=\"fcb-col-6\"&gt;\n                                &lt;div class=\"fcb-form-group\"&gt;\n                                    &lt;label for=\"risk-impact\" class=\"fcb-form-label\"&gt;\n                                        Impact &lt;span class=\"fcb-text-danger\"&gt;*&lt;/span&gt;\n                                    &lt;/label&gt;\n                                    &lt;select \n                                        id=\"risk-impact\" \n                                        class=\"fcb-form-control fcb-form-select\" \n                                        required\n                                        data-testid=\"risk-impact-select\"&gt;\n                                        &lt;option value=\"\"&gt;Select impact...&lt;/option&gt;\n                                        &lt;option value=\"1\"&gt;1 - Very Low&lt;/option&gt;\n                                        &lt;option value=\"2\"&gt;2 - Low&lt;/option&gt;\n                                        &lt;option value=\"3\"&gt;3 - Medium&lt;/option&gt;\n                                        &lt;option value=\"4\"&gt;4 - High&lt;/option&gt;\n                                        &lt;option value=\"5\"&gt;5 - Very High&lt;/option&gt;\n                                    &lt;/select&gt;\n                                &lt;/div&gt;\n                            &lt;/div&gt;\n                        &lt;/div&gt;\n                        \n                        &lt;div class=\"fcb-d-flex fcb-justify-end\"&gt;\n                            &lt;button \n                                type=\"button\" \n                                id=\"clear-form\" \n                                class=\"fcb-btn fcb-btn-secondary fcb-me-2\"&gt;\n                                &lt;i class=\"fas fa-times\"&gt;&lt;/i&gt; Clear\n                            &lt;/button&gt;\n                            &lt;button \n                                type=\"submit\" \n                                class=\"fcb-btn fcb-btn-primary\"\n                                data-testid=\"add-risk-button\"&gt;\n                                &lt;i class=\"fas fa-plus\"&gt;&lt;/i&gt; Add Risk\n                            &lt;/button&gt;\n                        &lt;/div&gt;\n                    &lt;/form&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n\n    &lt;!-- Identified Risks List --&gt;\n    &lt;div class=\"fcb-row fcb-mb-4\"&gt;\n        &lt;div class=\"fcb-col-12\"&gt;\n            &lt;div class=\"fcb-card\"&gt;\n                &lt;div class=\"fcb-card-header\"&gt;\n                    &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-center\"&gt;\n                        &lt;h2 class=\"fcb-h4 fcb-mb-0\"&gt;\n                            &lt;i class=\"fas fa-list-alt\"&gt;&lt;/i&gt; Identified Risks\n                        &lt;/h2&gt;\n                        &lt;span class=\"fcb-badge fcb-badge-primary\" id=\"risk-count\"&gt;0 risks identified&lt;/span&gt;\n                    &lt;/div&gt;\n                &lt;/div&gt;\n                &lt;div class=\"fcb-card-body\"&gt;\n                    &lt;div id=\"identified-risks-list\"&gt;\n                        &lt;div class=\"fcb-text-center fcb-p-4\" id=\"no-risks-message\"&gt;\n                            &lt;i class=\"fas fa-clipboard-list fa-3x fcb-text-muted fcb-mb-3\"&gt;&lt;/i&gt;\n                            &lt;h3 class=\"fcb-h5 fcb-mb-2\"&gt;No Risks Identified Yet&lt;/h3&gt;\n                            &lt;p class=\"fcb-text-muted fcb-mb-0\"&gt;\n                                Use AI suggestions or add custom risks to get started.\n                            &lt;/p&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n\n    &lt;!-- Navigation --&gt;\n    &lt;div class=\"fcb-row\"&gt;\n        &lt;div class=\"fcb-col-12\"&gt;\n            &lt;div class=\"fcb-card\"&gt;\n                &lt;div class=\"fcb-card-body\"&gt;\n                    &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-center\"&gt;\n                        &lt;a href=\"/process-selection\" class=\"fcb-btn fcb-btn-secondary\"&gt;\n                            &lt;i class=\"fas fa-arrow-left\"&gt;&lt;/i&gt; Back to Process Selection\n                        &lt;/a&gt;\n                        \n                        &lt;div class=\"fcb-text-center\"&gt;\n                            &lt;small class=\"fcb-text-muted\"&gt;\n                                &lt;i class=\"fas fa-info-circle\"&gt;&lt;/i&gt; \n                                Add at least one risk to continue\n                            &lt;/small&gt;\n                        &lt;/div&gt;\n                        \n                        &lt;button \n                            id=\"continue-to-controls\" \n                            class=\"fcb-btn fcb-btn-primary fcb-btn-lg\" \n                            disabled\n                            data-testid=\"continue-button\"&gt;\n                            Continue to Control Mapping &lt;i class=\"fas fa-arrow-right\"&gt;&lt;/i&gt;\n                        &lt;/button&gt;\n                    &lt;/div&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n&lt;/div&gt;\n\n&lt;script&gt;\n// Risk Identification Logic with AI Integration\nclass RiskIdentification {\n    constructor() {\n        this.identifiedRisks = [];\n        this.selectedProcess = null;\n        this.selectedBusinessUnit = null;\n        this.init();\n    }\n\n    init() {\n        this.loadSessionData();\n        this.bindEvents();\n        this.updateUI();\n        console.log('Risk Identification initialized');\n    }\n\n    loadSessionData() {\n        this.selectedProcess = sessionStorage.getItem('rcsa_process');\n        this.selectedBusinessUnit = sessionStorage.getItem('rcsa_business_unit');\n        \n        // Update header with selected process info\n        if (this.selectedProcess) {\n            document.getElementById('selected-process').textContent = this.getProcessName(this.selectedProcess);\n        }\n        \n        if (this.selectedBusinessUnit) {\n            document.getElementById('business-unit-info').textContent = this.getBusinessUnitName(this.selectedBusinessUnit);\n        }\n    }\n\n    bindEvents() {\n        // AI Suggestions\n        document.getElementById('start-ai-suggestions')?.addEventListener('click', () =&gt; this.generateAISuggestions());\n        document.getElementById('generate-ai-suggestions')?.addEventListener('click', () =&gt; this.generateAISuggestions());\n        \n        // Custom Risk Form\n        document.getElementById('custom-risk-form')?.addEventListener('submit', (e) =&gt; this.handleCustomRiskSubmit(e));\n        document.getElementById('clear-form')?.addEventListener('click', () =&gt; this.clearForm());\n        \n        // Continue button\n        document.getElementById('continue-to-controls')?.addEventListener('click', () =&gt; this.handleContinue());\n    }\n\n    async generateAISuggestions() {\n        const loadingElement = document.getElementById('ai-suggestions-loading');\n        const contentElement = document.getElementById('ai-suggestions-content');\n        const placeholderElement = document.getElementById('ai-suggestions-placeholder');\n        \n        // Show loading state\n        placeholderElement.classList.add('fcb-d-none');\n        loadingElement.classList.remove('fcb-d-none');\n        \n        try {\n            // Simulate AI call - in production, this would call OpenAI_Personal connector\n            const suggestions = await this.callAIService();\n            \n            // Hide loading, show content\n            loadingElement.classList.add('fcb-d-none');\n            contentElement.classList.remove('fcb-d-none');\n            \n            // Render suggestions\n            this.renderAISuggestions(suggestions);\n            \n        } catch (error) {\n            console.error('AI suggestions failed:', error);\n            this.showAIError();\n        }\n    }\n\n    async callAIService() {\n        // Simulate AI service call - replace with actual OpenAI_Personal connector call\n        return new Promise((resolve) =&gt; {\n            setTimeout(() =&gt; {\n                resolve(this.getMockAISuggestions());\n            }, 2500); // Simulate 2.5 second AI response\n        });\n    }\n\n    getMockAISuggestions() {\n        const processName = this.getProcessName(this.selectedProcess);\n        const businessUnit = this.getBusinessUnitName(this.selectedBusinessUnit);\n        \n        // Mock AI suggestions based on process and business unit\n        const suggestions = {\n            'loan-origination': [\n                {\n                    name: 'Credit Risk Assessment Inadequacy',\n                    category: 'credit',\n                    description: 'Insufficient credit analysis leading to loan defaults and financial losses.',\n                    likelihood: 3,\n                    impact: 4,\n                    rationale: 'Common in loan origination processes, especially with complex financial products.'\n                },\n                {\n                    name: 'Documentation Compliance Failure',\n                    category: 'compliance',\n                    description: 'Missing or incomplete loan documentation violating regulatory requirements.',\n                    likelihood: 4,\n                    impact: 3,\n                    rationale: 'Regulatory compliance is critical in banking, with frequent documentation requirements.'\n                },\n                {\n                    name: 'Identity Verification Bypass',\n                    category: 'operational',\n                    description: 'Fraudulent applications due to inadequate identity verification processes.',\n                    likelihood: 2,\n                    impact: 4,\n                    rationale: 'Identity fraud is a persistent threat in financial services.'\n                }\n            ],\n            'account-opening': [\n                {\n                    name: 'KYC Process Failure',\n                    category: 'compliance',\n                    description: 'Inadequate Know Your Customer procedures leading to regulatory violations.',\n                    likelihood: 3,\n                    impact: 4,\n                    rationale: 'KYC is fundamental to banking compliance and anti-money laundering efforts.'\n                },\n                {\n                    name: 'System Integration Errors',\n                    category: 'technology',\n                    description: 'Data synchronization issues between account opening and core banking systems.',\n                    likelihood: 3,\n                    impact: 3,\n                    rationale: 'Complex system integrations often have failure points.'\n                }\n            ],\n            'default': [\n                {\n                    name: 'Operational Process Breakdown',\n                    category: 'operational',\n                    description: 'Process inefficiencies leading to service disruptions and customer dissatisfaction.',\n                    likelihood: 3,\n                    impact: 3,\n                    rationale: 'Common operational risk across all banking processes.'\n                },\n                {\n                    name: 'Regulatory Compliance Gap',\n                    category: 'compliance',\n                    description: 'Failure to meet regulatory requirements resulting in penalties and sanctions.',\n                    likelihood: 2,\n                    impact: 4,\n                    rationale: 'Banking industry faces extensive regulatory oversight.'\n                }\n            ]\n        };\n        \n        return suggestions[this.selectedProcess] || suggestions['default'];\n    }\n\n    renderAISuggestions(suggestions) {\n        const container = document.getElementById('ai-suggestions-list');\n        \n        container.innerHTML = suggestions.map((suggestion, index) =&gt; `\n            &lt;div class=\"fcb-col-12 fcb-mb-3\"&gt;\n                &lt;div class=\"fcb-card rcsa-ai-suggestion\" data-suggestion-index=\"${index}\"&gt;\n                    &lt;div class=\"fcb-card-body\"&gt;\n                        &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-start fcb-mb-2\"&gt;\n                            &lt;div class=\"fcb-flex-grow-1\"&gt;\n                                &lt;h4 class=\"fcb-h6 fcb-mb-1\"&gt;${suggestion.name}&lt;/h4&gt;\n                                &lt;span class=\"fcb-badge rcsa-category-${suggestion.category}\"&gt;${this.getCategoryLabel(suggestion.category)}&lt;/span&gt;\n                            &lt;/div&gt;\n                            &lt;button \n                                class=\"fcb-btn fcb-btn-sm fcb-btn-primary add-ai-risk\"\n                                data-suggestion-index=\"${index}\"\n                                data-testid=\"add-ai-risk-${index}\"&gt;\n                                &lt;i class=\"fas fa-plus\"&gt;&lt;/i&gt; Add Risk\n                            &lt;/button&gt;\n                        &lt;/div&gt;\n                        \n                        &lt;p class=\"fcb-text-muted fcb-mb-2\"&gt;${suggestion.description}&lt;/p&gt;\n                        \n                        &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-center fcb-mb-2\"&gt;\n                            &lt;div&gt;\n                                &lt;small class=\"fcb-text-muted\"&gt;\n                                    &lt;strong&gt;Likelihood:&lt;/strong&gt; ${suggestion.likelihood}/5 | \n                                    &lt;strong&gt;Impact:&lt;/strong&gt; ${suggestion.impact}/5\n                                &lt;/small&gt;\n                            &lt;/div&gt;\n                            &lt;div&gt;\n                                &lt;span class=\"fcb-badge rcsa-risk-score-${this.getRiskLevel(suggestion.likelihood * suggestion.impact)}\"&gt;\n                                    Risk Score: ${suggestion.likelihood * suggestion.impact}\n                                &lt;/span&gt;\n                            &lt;/div&gt;\n                        &lt;/div&gt;\n                        \n                        &lt;div class=\"fcb-alert fcb-alert-info fcb-p-2\"&gt;\n                            &lt;small&gt;\n                                &lt;i class=\"fas fa-lightbulb\"&gt;&lt;/i&gt; \n                                &lt;strong&gt;AI Rationale:&lt;/strong&gt; ${suggestion.rationale}\n                            &lt;/small&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        `).join('');\n        \n        // Add click handlers for AI suggestions\n        container.querySelectorAll('.add-ai-risk').forEach(button =&gt; {\n            button.addEventListener('click', (e) =&gt; {\n                const index = parseInt(e.target.dataset.suggestionIndex);\n                this.addAISuggestion(suggestions[index]);\n            });\n        });\n    }\n\n    addAISuggestion(suggestion) {\n        const risk = {\n            id: Date.now(),\n            name: suggestion.name,\n            category: suggestion.category,\n            description: suggestion.description,\n            likelihood: suggestion.likelihood,\n            impact: suggestion.impact,\n            source: 'ai',\n            timestamp: new Date().toISOString()\n        };\n        \n        this.identifiedRisks.push(risk);\n        this.updateRisksList();\n        this.updateContinueButton();\n        \n        // Show success message\n        this.showSuccessMessage(`AI risk \"${suggestion.name}\" added successfully!`);\n    }\n\n    handleCustomRiskSubmit(event) {\n        event.preventDefault();\n        \n        const formData = new FormData(event.target);\n        const risk = {\n            id: Date.now(),\n            name: document.getElementById('risk-name').value,\n            category: document.getElementById('risk-category').value,\n            description: document.getElementById('risk-description').value,\n            likelihood: parseInt(document.getElementById('risk-likelihood').value),\n            impact: parseInt(document.getElementById('risk-impact').value),\n            source: 'manual',\n            timestamp: new Date().toISOString()\n        };\n        \n        this.identifiedRisks.push(risk);\n        this.updateRisksList();\n        this.updateContinueButton();\n        this.clearForm();\n        \n        // Show success message\n        this.showSuccessMessage(`Custom risk \"${risk.name}\" added successfully!`);\n    }\n\n    updateRisksList() {\n        const container = document.getElementById('identified-risks-list');\n        const noRisksMessage = document.getElementById('no-risks-message');\n        const riskCount = document.getElementById('risk-count');\n        \n        if (this.identifiedRisks.length === 0) {\n            noRisksMessage.style.display = 'block';\n            container.innerHTML = '';\n            container.appendChild(noRisksMessage);\n        } else {\n            noRisksMessage.style.display = 'none';\n            container.innerHTML = this.identifiedRisks.map((risk, index) =&gt; `\n                &lt;div class=\"rcsa-risk-item\" data-risk-id=\"${risk.id}\"&gt;\n                    &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-start\"&gt;\n                        &lt;div class=\"fcb-flex-grow-1\"&gt;\n                            &lt;h5 class=\"fcb-h6 fcb-mb-1\"&gt;${risk.name}&lt;/h5&gt;\n                            &lt;div class=\"fcb-mb-2\"&gt;\n                                &lt;span class=\"fcb-badge rcsa-category-${risk.category}\"&gt;${this.getCategoryLabel(risk.category)}&lt;/span&gt;\n                                &lt;span class=\"fcb-badge ${risk.source === 'ai' ? 'fcb-badge-info' : 'fcb-badge-secondary'}\"&gt;\n                                    &lt;i class=\"fas fa-${risk.source === 'ai' ? 'robot' : 'user'}\"&gt;&lt;/i&gt; ${risk.source === 'ai' ? 'AI Generated' : 'Manual Entry'}\n                                &lt;/span&gt;\n                            &lt;/div&gt;\n                            &lt;p class=\"fcb-text-muted fcb-mb-2\"&gt;${risk.description}&lt;/p&gt;\n                            &lt;div class=\"fcb-d-flex fcb-align-center\"&gt;\n                                &lt;small class=\"fcb-text-muted fcb-me-3\"&gt;\n                                    &lt;strong&gt;Likelihood:&lt;/strong&gt; ${risk.likelihood}/5\n                                &lt;/small&gt;\n                                &lt;small class=\"fcb-text-muted fcb-me-3\"&gt;\n                                    &lt;strong&gt;Impact:&lt;/strong&gt; ${risk.impact}/5\n                                &lt;/small&gt;\n                                &lt;span class=\"fcb-badge rcsa-risk-score-${this.getRiskLevel(risk.likelihood * risk.impact)}\"&gt;\n                                    Risk Score: ${risk.likelihood * risk.impact}\n                                &lt;/span&gt;\n                            &lt;/div&gt;\n                        &lt;/div&gt;\n                        &lt;div class=\"fcb-d-flex fcb-gap-2\"&gt;\n                            &lt;button \n                                class=\"fcb-btn fcb-btn-sm fcb-btn-outline-primary edit-risk\"\n                                data-risk-id=\"${risk.id}\"\n                                data-testid=\"edit-risk-${index}\"&gt;\n                                &lt;i class=\"fas fa-edit\"&gt;&lt;/i&gt;\n                            &lt;/button&gt;\n                            &lt;button \n                                class=\"fcb-btn fcb-btn-sm fcb-btn-outline-danger remove-risk\"\n                                data-risk-id=\"${risk.id}\"\n                                data-testid=\"remove-risk-${index}\"&gt;\n                                &lt;i class=\"fas fa-trash\"&gt;&lt;/i&gt;\n                            &lt;/button&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                &lt;/div&gt;\n            `).join('');\n            \n            // Add event listeners for edit/remove buttons\n            container.querySelectorAll('.remove-risk').forEach(button =&gt; {\n                button.addEventListener('click', (e) =&gt; {\n                    const riskId = parseInt(e.target.dataset.riskId);\n                    this.removeRisk(riskId);\n                });\n            });\n        }\n        \n        // Update risk count\n        riskCount.textContent = `${this.identifiedRisks.length} risk${this.identifiedRisks.length !== 1 ? 's' : ''} identified`;\n    }\n\n    removeRisk(riskId) {\n        this.identifiedRisks = this.identifiedRisks.filter(risk =&gt; risk.id !== riskId);\n        this.updateRisksList();\n        this.updateContinueButton();\n    }\n\n    updateContinueButton() {\n        const continueBtn = document.getElementById('continue-to-controls');\n        if (continueBtn) {\n            const hasRisks = this.identifiedRisks.length &gt; 0;\n            continueBtn.disabled = !hasRisks;\n            continueBtn.classList.toggle('fcb-btn-secondary', !hasRisks);\n            continueBtn.classList.toggle('fcb-btn-primary', hasRisks);\n        }\n    }\n\n    clearForm() {\n        document.getElementById('custom-risk-form').reset();\n    }\n\n    handleContinue() {\n        if (this.identifiedRisks.length === 0) {\n            this.showErrorMessage('Please add at least one risk before continuing.');\n            return;\n        }\n        \n        // Store risks for next step\n        sessionStorage.setItem('rcsa_identified_risks', JSON.stringify(this.identifiedRisks));\n        \n        // Navigate to control mapping\n        window.location.href = '/control-mapping-overview';\n    }\n\n    // Utility methods\n    getProcessName(processId) {\n        const processNames = {\n            'loan-origination': 'Loan Origination',\n            'account-opening': 'Account Opening',\n            'payment-processing': 'Payment Processing',\n            'customer-service': 'Customer Service',\n            'commercial-lending': 'Commercial Lending',\n            'treasury-services': 'Treasury Services',\n            'trade-finance': 'Trade Finance'\n        };\n        return processNames[processId] || 'Selected Process';\n    }\n\n    getBusinessUnitName(businessUnitId) {\n        const businessUnitNames = {\n            'retail-banking': 'Retail Banking',\n            'commercial-banking': 'Commercial Banking',\n            'wealth-management': 'Wealth Management',\n            'operations': 'Operations &amp; Technology',\n            'risk-compliance': 'Risk &amp; Compliance',\n            'human-resources': 'Human Resources'\n        };\n        return businessUnitNames[businessUnitId] || 'Selected Business Unit';\n    }\n\n    getCategoryLabel(category) {\n        const categoryLabels = {\n            'operational': 'Operational',\n            'credit': 'Credit',\n            'market': 'Market',\n            'liquidity': 'Liquidity',\n            'compliance': 'Compliance',\n            'technology': 'Technology',\n            'reputation': 'Reputation',\n            'strategic': 'Strategic'\n        };\n        return categoryLabels[category] || 'Other';\n    }\n\n    getRiskLevel(score) {\n        if (score &gt;= 20) return 'critical';\n        if (score &gt;= 15) return 'high';\n        if (score &gt;= 10) return 'medium';\n        if (score &gt;= 5) return 'low';\n        return 'minimal';\n    }\n\n    showSuccessMessage(message) {\n        this.showMessage(message, 'success');\n    }\n\n    showErrorMessage(message) {\n        this.showMessage(message, 'danger');\n    }\n\n    showMessage(message, type) {\n        const alert = document.createElement('div');\n        alert.className = `fcb-alert fcb-alert-${type} fcb-mt-3`;\n        alert.innerHTML = `\n            &lt;i class=\"fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}\"&gt;&lt;/i&gt;\n            &lt;div&gt;${message}&lt;/div&gt;\n        `;\n        \n        const container = document.querySelector('.fcb-container');\n        container.insertBefore(alert, container.firstChild);\n        \n        setTimeout(() =&gt; alert.remove(), 5000);\n    }\n\n    showAIError() {\n        const loadingElement = document.getElementById('ai-suggestions-loading');\n        const placeholderElement = document.getElementById('ai-suggestions-placeholder');\n        \n        loadingElement.classList.add('fcb-d-none');\n        placeholderElement.innerHTML = `\n            &lt;div class=\"fcb-text-center fcb-p-4\"&gt;\n                &lt;i class=\"fas fa-exclamation-triangle fa-3x fcb-text-danger fcb-mb-3\"&gt;&lt;/i&gt;\n                &lt;h3 class=\"fcb-h5 fcb-mb-2\"&gt;AI Service Unavailable&lt;/h3&gt;\n                &lt;p class=\"fcb-text-muted fcb-mb-3\"&gt;\n                    Unable to generate AI suggestions at this time. Please try again later or add risks manually.\n                &lt;/p&gt;\n                &lt;button \n                    id=\"retry-ai-suggestions\" \n                    class=\"fcb-btn fcb-btn-primary fcb-me-2\"&gt;\n                    &lt;i class=\"fas fa-redo\"&gt;&lt;/i&gt; Retry AI Suggestions\n                &lt;/button&gt;\n            &lt;/div&gt;\n        `;\n        placeholderElement.classList.remove('fcb-d-none');\n        \n        // Add retry handler\n        document.getElementById('retry-ai-suggestions')?.addEventListener('click', () =&gt; this.generateAISuggestions());\n    }\n}\n\n// Initialize when DOM is ready\ndocument.addEventListener('DOMContentLoaded', () =&gt; {\n    new RiskIdentification();\n});\n&lt;/script&gt;\n\n&lt;style&gt;\n/* Risk Identification Specific Styles */\n.rcsa-ai-suggestion {\n    border-left: 4px solid var(--fcb-primary);\n    transition: all 0.3s ease;\n}\n\n.rcsa-ai-suggestion:hover {\n    transform: translateY(-2px);\n    box-shadow: var(--fcb-shadow-lg);\n}\n\n.rcsa-risk-item {\n    padding: 1rem;\n    border-bottom: 1px solid var(--fcb-border-color);\n    transition: background-color 0.2s ease;\n}\n\n.rcsa-risk-item:hover {\n    background-color: var(--fcb-gray-50);\n}\n\n.rcsa-risk-item:last-child {\n    border-bottom: none;\n}\n\n/* Category badges */\n.rcsa-category-operational { background: var(--fcb-warning); color: var(--fcb-gray-700); }\n.rcsa-category-credit { background: var(--fcb-danger); color: var(--fcb-white); }\n.rcsa-category-market { background: var(--fcb-info); color: var(--fcb-white); }\n.rcsa-category-liquidity { background: var(--fcb-primary); color: var(--fcb-white); }\n.rcsa-category-compliance { background: var(--fcb-success); color: var(--fcb-white); }\n.rcsa-category-technology { background: var(--fcb-secondary); color: var(--fcb-white); }\n.rcsa-category-reputation { background: var(--fcb-dark); color: var(--fcb-white); }\n.rcsa-category-strategic { background: var(--fcb-purple); color: var(--fcb-white); }\n\n/* Risk score badges */\n.rcsa-risk-score-critical { background: var(--fcb-danger); color: var(--fcb-white); }\n.rcsa-risk-score-high { background: var(--fcb-warning); color: var(--fcb-gray-700); }\n.rcsa-risk-score-medium { background: var(--fcb-info); color: var(--fcb-white); }\n.rcsa-risk-score-low { background: var(--fcb-success); color: var(--fcb-white); }\n.rcsa-risk-score-minimal { background: var(--fcb-light); color: var(--fcb-gray-700); }\n\n/* Loading spinner */\n.rcsa-loading-spinner {\n    text-align: center;\n    padding: 2rem;\n}\n\n@keyframes spin {\n    0% { transform: rotate(0deg); }\n    100% { transform: rotate(360deg); }\n}\n\n.fa-spin {\n    animation: spin 1s linear infinite;\n}\n\n/* Responsive adjustments */\n@media (max-width: 768px) {\n    .fcb-d-flex.fcb-justify-between {\n        flex-direction: column;\n        gap: 1rem;\n    }\n    \n    .rcsa-risk-item .fcb-d-flex.fcb-justify-between {\n        flex-direction: column;\n        align-items: flex-start;\n    }\n    \n    .rcsa-risk-item .fcb-d-flex.fcb-gap-2 {\n        margin-top: 1rem;\n        align-self: flex-end;\n    }\n}\n\n/* High contrast mode support */\n@media (prefers-contrast: high) {\n    .rcsa-ai-suggestion {\n        border-left-width: 6px;\n    }\n    \n    .rcsa-risk-item {\n        border-bottom-width: 2px;\n    }\n}\n\n/* Reduced motion support */\n@media (prefers-reduced-motion: reduce) {\n    .rcsa-ai-suggestion {\n        transition: none;\n    }\n    \n    .rcsa-ai-suggestion:hover {\n        transform: none;\n    }\n    \n    .fa-spin {\n        animation: none;\n    }\n}\n&lt;/style&gt;\n",
+  "displayorder": 9,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "hiddenfromsitemap": true,
+  "isroot": true,
+  "pagetemplateid": "7504b05c-7353-404b-af12-de2d395d7fb0",
+  "parentpageid": "439a903c-bf6a-492c-b905-cbbbce3612e3",
+  "partialurl": "Risk-ID",
+  "publishingstateid": "0c05b030-bb84-4276-94fc-ece9f13ab2e8",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;",
+  "title": "Risk Management"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Risk Identification</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <searchcontent>Risk Management&lt;!-- RCSA Risk Identification - CapTech Consulting --&gt;
+&lt;!-- Step 2 of 4: Identify and Assess Risks --&gt;
+
+&lt;link rel="stylesheet" href="~/rcsa-styles.css"&gt;
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"&gt;
+
+&lt;!-- Progress Indicator --&gt;
+&lt;div class="fcb-container fcb-mt-4"&gt;
+    &lt;div class="fcb-progress" role="progressbar" aria-valuenow="2" aria-valuemin="1" aria-valuemax="4"&gt;
+        &lt;div class="fcb-progress-step completed"&gt;
+            &lt;div class="fcb-progress-number"&gt;1&lt;/div&gt;
+            &lt;div class="fcb-progress-label"&gt;Select Process&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="fcb-progress-step active"&gt;
+            &lt;div class="fcb-progress-number"&gt;2&lt;/div&gt;
+            &lt;div class="fcb-progress-label"&gt;Identify Risks&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="fcb-progress-step"&gt;
+            &lt;div class="fcb-progress-number"&gt;3&lt;/div&gt;
+            &lt;div class="fcb-progress-label"&gt;Map Controls&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="fcb-progress-step"&gt;
+            &lt;div class="fcb-progress-number"&gt;4&lt;/div&gt;
+            &lt;div class="fcb-progress-label"&gt;Assess Risk&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Page Header --&gt;
+&lt;div class="rcsa-page-header"&gt;
+    &lt;div class="fcb-container"&gt;
+        &lt;div class="fcb-row fcb-align-center"&gt;
+            &lt;div class="fcb-col-8"&gt;
+                &lt;h1 class="fcb-mb-2"&gt;
+                    &lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt; Risk Identification
+                &lt;/h1&gt;
+                &lt;p class="fcb-mb-0"&gt;
+                    Identify and assess risks for your selected process using AI-powered suggestions.
+                &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="fcb-col-4 fcb-text-right"&gt;
+                &lt;div class="captech-logo-container fcb-mb-3"&gt;
+                    &lt;img src="~/captech-logo.png" alt="CapTech Consulting" class="captech-logo" /&gt;
+                &lt;/div&gt;
+                &lt;div class="fcb-badge fcb-badge-primary" id="process-info"&gt;
+                    &lt;i class="fas fa-cogs"&gt;&lt;/i&gt; &lt;span id="selected-process"&gt;Loading...&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;br&gt;
+                &lt;small class="fcb-text-muted fcb-mt-2" id="business-unit-info"&gt;Loading business unit...&lt;/small&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="fcb-container"&gt;
+    &lt;!-- AI Suggestions Section --&gt;
+    &lt;div class="fcb-row fcb-mb-4"&gt;
+        &lt;div class="fcb-col-12"&gt;
+            &lt;div class="fcb-card fcb-card-primary"&gt;
+                &lt;div class="fcb-card-header"&gt;
+                    &lt;div class="fcb-d-flex fcb-justify-between fcb-align-center"&gt;
+                        &lt;h2 class="fcb-h4 fcb-mb-0"&gt;
+                            &lt;i class="fas fa-robot"&gt;&lt;/i&gt; AI Risk Suggestions
+                        &lt;/h2&gt;
+                        &lt;button 
+                            id="generate-ai-suggestions" 
+                            class="fcb-btn fcb-btn-primary fcb-btn-sm"
+                            data-testid="ai-suggestions-button"&gt;
+                            &lt;i class="fas fa-magic"&gt;&lt;/i&gt; Generate AI Suggestions
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="fcb-card-body"&gt;
+                    &lt;div id="ai-suggestions-loading" class="fcb-d-none"&gt;
+                        &lt;div class="rcsa-loading-spinner"&gt;
+                            &lt;i class="fas fa-spinner fa-spin fa-2x fcb-text-primary"&gt;&lt;/i&gt;
+                            &lt;p class="fcb-mt-3 fcb-text-muted"&gt;
+                                AI is analyzing your process and generating risk suggestions...
+                                &lt;br&gt;&lt;small&gt;This typically takes 2-3 seconds&lt;/small&gt;
+                            &lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div id="ai-suggestions-content" class="fcb-d-none"&gt;
+                        &lt;div class="fcb-alert fcb-alert-info fcb-mb-3"&gt;
+                            &lt;i class="fas fa-info-circle"&gt;&lt;/i&gt;
+                            &lt;div&gt;
+                                &lt;strong&gt;AI-Generated Risk Suggestions&lt;/strong&gt;
+                                &lt;p class="fcb-mb-0"&gt;Based on banking industry best practices and your selected process, here are potential risks to consider:&lt;/p&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        
+                        &lt;div id="ai-suggestions-list" class="fcb-row"&gt;
+                            &lt;!-- AI suggestions will be populated here --&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div id="ai-suggestions-placeholder"&gt;
+                        &lt;div class="fcb-text-center fcb-p-4"&gt;
+                            &lt;i class="fas fa-lightbulb fa-3x fcb-text-muted fcb-mb-3"&gt;&lt;/i&gt;
+                            &lt;h3 class="fcb-h5 fcb-mb-2"&gt;Get AI-Powered Risk Suggestions&lt;/h3&gt;
+                            &lt;p class="fcb-text-muted fcb-mb-3"&gt;
+                                Our AI assistant can analyze your selected process and suggest relevant risks based on banking industry best practices.
+                            &lt;/p&gt;
+                            &lt;button 
+                                id="start-ai-suggestions" 
+                                class="fcb-btn fcb-btn-primary"
+                                data-testid="start-ai-button"&gt;
+                                &lt;i class="fas fa-play"&gt;&lt;/i&gt; Start AI Analysis
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Manual Risk Entry Section --&gt;
+    &lt;div class="fcb-row fcb-mb-4"&gt;
+        &lt;div class="fcb-col-12"&gt;
+            &lt;div class="fcb-card"&gt;
+                &lt;div class="fcb-card-header"&gt;
+                    &lt;h2 class="fcb-h4 fcb-mb-0"&gt;
+                        &lt;i class="fas fa-plus-circle"&gt;&lt;/i&gt; Add Custom Risk
+                    &lt;/h2&gt;
+                &lt;/div&gt;
+                &lt;div class="fcb-card-body"&gt;
+                    &lt;form id="custom-risk-form"&gt;
+                        &lt;div class="fcb-row"&gt;
+                            &lt;div class="fcb-col-6"&gt;
+                                &lt;div class="fcb-form-group"&gt;
+                                    &lt;label for="risk-name" class="fcb-form-label"&gt;
+                                        Risk Name &lt;span class="fcb-text-danger"&gt;*&lt;/span&gt;
+                                    &lt;/label&gt;
+                                    &lt;input 
+                                        type="text" 
+                                        id="risk-name" 
+                                        class="fcb-form-control" 
+                                        placeholder="Enter risk name..."
+                                        required
+                                        data-testid="risk-name-input"&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;div class="fcb-col-6"&gt;
+                                &lt;div class="fcb-form-group"&gt;
+                                    &lt;label for="risk-category" class="fcb-form-label"&gt;
+                                        Risk Category &lt;span class="fcb-text-danger"&gt;*&lt;/span&gt;
+                                    &lt;/label&gt;
+                                    &lt;select 
+                                        id="risk-category" 
+                                        class="fcb-form-control fcb-form-select" 
+                                        required
+                                        data-testid="risk-category-select"&gt;
+                                        &lt;option value=""&gt;Select category...&lt;/option&gt;
+                                        &lt;option value="operational"&gt;Operational Risk&lt;/option&gt;
+                                        &lt;option value="credit"&gt;Credit Risk&lt;/option&gt;
+                                        &lt;option value="market"&gt;Market Risk&lt;/option&gt;
+                                        &lt;option value="liquidity"&gt;Liquidity Risk&lt;/option&gt;
+                                        &lt;option value="compliance"&gt;Compliance Risk&lt;/option&gt;
+                                        &lt;option value="technology"&gt;Technology Risk&lt;/option&gt;
+                                        &lt;option value="reputation"&gt;Reputation Risk&lt;/option&gt;
+                                        &lt;option value="strategic"&gt;Strategic Risk&lt;/option&gt;
+                                    &lt;/select&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        
+                        &lt;div class="fcb-form-group"&gt;
+                            &lt;label for="risk-description" class="fcb-form-label"&gt;
+                                Risk Description &lt;span class="fcb-text-danger"&gt;*&lt;/span&gt;
+                            &lt;/label&gt;
+                            &lt;textarea 
+                                id="risk-description" 
+                                class="fcb-form-control" 
+                                rows="3" 
+                                placeholder="Describe the risk in detail..."
+                                required
+                                data-testid="risk-description-input"&gt;&lt;/textarea&gt;
+                        &lt;/div&gt;
+                        
+                        &lt;div class="fcb-row"&gt;
+                            &lt;div class="fcb-col-6"&gt;
+                                &lt;div class="fcb-form-group"&gt;
+                                    &lt;label for="risk-likelihood" class="fcb-form-label"&gt;
+                                        Likelihood &lt;span class="fcb-text-danger"&gt;*&lt;/span&gt;
+                                    &lt;/label&gt;
+                                    &lt;select 
+                                        id="risk-likelihood" 
+                                        class="fcb-form-control fcb-form-select" 
+                                        required
+                                        data-testid="risk-likelihood-select"&gt;
+                                        &lt;option value=""&gt;Select likelihood...&lt;/option&gt;
+                                        &lt;option value="1"&gt;1 - Very Low&lt;/option&gt;
+                                        &lt;option value="2"&gt;2 - Low&lt;/option&gt;
+                                        &lt;option value="3"&gt;3 - Medium&lt;/option&gt;
+                                        &lt;option value="4"&gt;4 - High&lt;/option&gt;
+                                        &lt;option value="5"&gt;5 - Very High&lt;/option&gt;
+                                    &lt;/select&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;div class="fcb-col-6"&gt;
+                                &lt;div class="fcb-form-group"&gt;
+                                    &lt;label for="risk-impact" class="fcb-form-label"&gt;
+                                        Impact &lt;span class="fcb-text-danger"&gt;*&lt;/span&gt;
+                                    &lt;/label&gt;
+                                    &lt;select 
+                                        id="risk-impact" 
+                                        class="fcb-form-control fcb-form-select" 
+                                        required
+                                        data-testid="risk-impact-select"&gt;
+                                        &lt;option value=""&gt;Select impact...&lt;/option&gt;
+                                        &lt;option value="1"&gt;1 - Very Low&lt;/option&gt;
+                                        &lt;option value="2"&gt;2 - Low&lt;/option&gt;
+                                        &lt;option value="3"&gt;3 - Medium&lt;/option&gt;
+                                        &lt;option value="4"&gt;4 - High&lt;/option&gt;
+                                        &lt;option value="5"&gt;5 - Very High&lt;/option&gt;
+                                    &lt;/select&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        
+                        &lt;div class="fcb-d-flex fcb-justify-end"&gt;
+                            &lt;button 
+                                type="button" 
+                                id="clear-form" 
+                                class="fcb-btn fcb-btn-secondary fcb-me-2"&gt;
+                                &lt;i class="fas fa-times"&gt;&lt;/i&gt; Clear
+                            &lt;/button&gt;
+                            &lt;button 
+                                type="submit" 
+                                class="fcb-btn fcb-btn-primary"
+                                data-testid="add-risk-button"&gt;
+                                &lt;i class="fas fa-plus"&gt;&lt;/i&gt; Add Risk
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Identified Risks List --&gt;
+    &lt;div class="fcb-row fcb-mb-4"&gt;
+        &lt;div class="fcb-col-12"&gt;
+            &lt;div class="fcb-card"&gt;
+                &lt;div class="fcb-card-header"&gt;
+                    &lt;div class="fcb-d-flex fcb-justify-between fcb-align-center"&gt;
+                        &lt;h2 class="fcb-h4 fcb-mb-0"&gt;
+                            &lt;i class="fas fa-list-alt"&gt;&lt;/i&gt; Identified Risks
+                        &lt;/h2&gt;
+                        &lt;span class="fcb-badge fcb-badge-primary" id="risk-count"&gt;0 risks identified&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="fcb-card-body"&gt;
+                    &lt;div id="identified-risks-list"&gt;
+                        &lt;div class="fcb-text-center fcb-p-4" id="no-risks-message"&gt;
+                            &lt;i class="fas fa-clipboard-list fa-3x fcb-text-muted fcb-mb-3"&gt;&lt;/i&gt;
+                            &lt;h3 class="fcb-h5 fcb-mb-2"&gt;No Risks Identified Yet&lt;/h3&gt;
+                            &lt;p class="fcb-text-muted fcb-mb-0"&gt;
+                                Use AI suggestions or add custom risks to get started.
+                            &lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Navigation --&gt;
+    &lt;div class="fcb-row"&gt;
+        &lt;div class="fcb-col-12"&gt;
+            &lt;div class="fcb-card"&gt;
+                &lt;div class="fcb-card-body"&gt;
+                    &lt;div class="fcb-d-flex fcb-justify-between fcb-align-center"&gt;
+                        &lt;a href="/process-selection" class="fcb-btn fcb-btn-secondary"&gt;
+                            &lt;i class="fas fa-arrow-left"&gt;&lt;/i&gt; Back to Process Selection
+                        &lt;/a&gt;
+                        
+                        &lt;div class="fcb-text-center"&gt;
+                            &lt;small class="fcb-text-muted"&gt;
+                                &lt;i class="fas fa-info-circle"&gt;&lt;/i&gt; 
+                                Add at least one risk to continue
+                            &lt;/small&gt;
+                        &lt;/div&gt;
+                        
+                        &lt;button 
+                            id="continue-to-controls" 
+                            class="fcb-btn fcb-btn-primary fcb-btn-lg" 
+                            disabled
+                            data-testid="continue-button"&gt;
+                            Continue to Control Mapping &lt;i class="fas fa-arrow-right"&gt;&lt;/i&gt;
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+// Risk Identification Logic with AI Integration
+class RiskIdentification {
+    constructor() {
+        this.identifiedRisks = [];
+        this.selectedProcess = null;
+        this.selectedBusinessUnit = null;
+        this.init();
+    }
+
+    init() {
+        this.loadSessionData();
+        this.bindEvents();
+        this.updateUI();
+        console.log('Risk Identification initialized');
+    }
+
+    loadSessionData() {
+        this.selectedProcess = sessionStorage.getItem('rcsa_process');
+        this.selectedBusinessUnit = sessionStorage.getItem('rcsa_business_unit');
+        
+        // Update header with selected process info
+        if (this.selectedProcess) {
+            document.getElementById('selected-process').textContent = this.getProcessName(this.selectedProcess);
+        }
+        
+        if (this.selectedBusinessUnit) {
+            document.getElementById('business-unit-info').textContent = this.getBusinessUnitName(this.selectedBusinessUnit);
+        }
+    }
+
+    bindEvents() {
+        // AI Suggestions
+        document.getElementById('start-ai-suggestions')?.addEventListener('click', () =&gt; this.generateAISuggestions());
+        document.getElementById('generate-ai-suggestions')?.addEventListener('click', () =&gt; this.generateAISuggestions());
+        
+        // Custom Risk Form
+        document.getElementById('custom-risk-form')?.addEventListener('submit', (e) =&gt; this.handleCustomRiskSubmit(e));
+        document.getElementById('clear-form')?.addEventListener('click', () =&gt; this.clearForm());
+        
+        // Continue button
+        document.getElementById('continue-to-controls')?.addEventListener('click', () =&gt; this.handleContinue());
+    }
+
+    async generateAISuggestions() {
+        const loadingElement = document.getElementById('ai-suggestions-loading');
+        const contentElement = document.getElementById('ai-suggestions-content');
+        const placeholderElement = document.getElementById('ai-suggestions-placeholder');
+        
+        // Show loading state
+        placeholderElement.classList.add('fcb-d-none');
+        loadingElement.classList.remove('fcb-d-none');
+        
+        try {
+            // Simulate AI call - in production, this would call OpenAI_Personal connector
+            const suggestions = await this.callAIService();
+            
+            // Hide loading, show content
+            loadingElement.classList.add('fcb-d-none');
+            contentElement.classList.remove('fcb-d-none');
+            
+            // Render suggestions
+            this.renderAISuggestions(suggestions);
+            
+        } catch (error) {
+            console.error('AI suggestions failed:', error);
+            this.showAIError();
+        }
+    }
+
+    async callAIService() {
+        // Simulate AI service call - replace with actual OpenAI_Personal connector call
+        return new Promise((resolve) =&gt; {
+            setTimeout(() =&gt; {
+                resolve(this.getMockAISuggestions());
+            }, 2500); // Simulate 2.5 second AI response
+        });
+    }
+
+    getMockAISuggestions() {
+        const processName = this.getProcessName(this.selectedProcess);
+        const businessUnit = this.getBusinessUnitName(this.selectedBusinessUnit);
+        
+        // Mock AI suggestions based on process and business unit
+        const suggestions = {
+            'loan-origination': [
+                {
+                    name: 'Credit Risk Assessment Inadequacy',
+                    category: 'credit',
+                    description: 'Insufficient credit analysis leading to loan defaults and financial losses.',
+                    likelihood: 3,
+                    impact: 4,
+                    rationale: 'Common in loan origination processes, especially with complex financial products.'
+                },
+                {
+                    name: 'Documentation Compliance Failure',
+                    category: 'compliance',
+                    description: 'Missing or incomplete loan documentation violating regulatory requirements.',
+                    likelihood: 4,
+                    impact: 3,
+                    rationale: 'Regulatory compliance is critical in banking, with frequent documentation requirements.'
+                },
+                {
+                    name: 'Identity Verification Bypass',
+                    category: 'operational',
+                    description: 'Fraudulent applications due to inadequate identity verification processes.',
+                    likelihood: 2,
+                    impact: 4,
+                    rationale: 'Identity fraud is a persistent threat in financial services.'
+                }
+            ],
+            'account-opening': [
+                {
+                    name: 'KYC Process Failure',
+                    category: 'compliance',
+                    description: 'Inadequate Know Your Customer procedures leading to regulatory violations.',
+                    likelihood: 3,
+                    impact: 4,
+                    rationale: 'KYC is fundamental to banking compliance and anti-money laundering efforts.'
+                },
+                {
+                    name: 'System Integration Errors',
+                    category: 'technology',
+                    description: 'Data synchronization issues between account opening and core banking systems.',
+                    likelihood: 3,
+                    impact: 3,
+                    rationale: 'Complex system integrations often have failure points.'
+                }
+            ],
+            'default': [
+                {
+                    name: 'Operational Process Breakdown',
+                    category: 'operational',
+                    description: 'Process inefficiencies leading to service disruptions and customer dissatisfaction.',
+                    likelihood: 3,
+                    impact: 3,
+                    rationale: 'Common operational risk across all banking processes.'
+                },
+                {
+                    name: 'Regulatory Compliance Gap',
+                    category: 'compliance',
+                    description: 'Failure to meet regulatory requirements resulting in penalties and sanctions.',
+                    likelihood: 2,
+                    impact: 4,
+                    rationale: 'Banking industry faces extensive regulatory oversight.'
+                }
+            ]
+        };
+        
+        return suggestions[this.selectedProcess] || suggestions['default'];
+    }
+
+    renderAISuggestions(suggestions) {
+        const container = document.getElementById('ai-suggestions-list');
+        
+        container.innerHTML = suggestions.map((suggestion, index) =&gt; `
+            &lt;div class="fcb-col-12 fcb-mb-3"&gt;
+                &lt;div class="fcb-card rcsa-ai-suggestion" data-suggestion-index="${index}"&gt;
+                    &lt;div class="fcb-card-body"&gt;
+                        &lt;div class="fcb-d-flex fcb-justify-between fcb-align-start fcb-mb-2"&gt;
+                            &lt;div class="fcb-flex-grow-1"&gt;
+                                &lt;h4 class="fcb-h6 fcb-mb-1"&gt;${suggestion.name}&lt;/h4&gt;
+                                &lt;span class="fcb-badge rcsa-category-${suggestion.category}"&gt;${this.getCategoryLabel(suggestion.category)}&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;button 
+                                class="fcb-btn fcb-btn-sm fcb-btn-primary add-ai-risk"
+                                data-suggestion-index="${index}"
+                                data-testid="add-ai-risk-${index}"&gt;
+                                &lt;i class="fas fa-plus"&gt;&lt;/i&gt; Add Risk
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                        
+                        &lt;p class="fcb-text-muted fcb-mb-2"&gt;${suggestion.description}&lt;/p&gt;
+                        
+                        &lt;div class="fcb-d-flex fcb-justify-between fcb-align-center fcb-mb-2"&gt;
+                            &lt;div&gt;
+                                &lt;small class="fcb-text-muted"&gt;
+                                    &lt;strong&gt;Likelihood:&lt;/strong&gt; ${suggestion.likelihood}/5 | 
+                                    &lt;strong&gt;Impact:&lt;/strong&gt; ${suggestion.impact}/5
+                                &lt;/small&gt;
+                            &lt;/div&gt;
+                            &lt;div&gt;
+                                &lt;span class="fcb-badge rcsa-risk-score-${this.getRiskLevel(suggestion.likelihood * suggestion.impact)}"&gt;
+                                    Risk Score: ${suggestion.likelihood * suggestion.impact}
+                                &lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        
+                        &lt;div class="fcb-alert fcb-alert-info fcb-p-2"&gt;
+                            &lt;small&gt;
+                                &lt;i class="fas fa-lightbulb"&gt;&lt;/i&gt; 
+                                &lt;strong&gt;AI Rationale:&lt;/strong&gt; ${suggestion.rationale}
+                            &lt;/small&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        `).join('');
+        
+        // Add click handlers for AI suggestions
+        container.querySelectorAll('.add-ai-risk').forEach(button =&gt; {
+            button.addEventListener('click', (e) =&gt; {
+                const index = parseInt(e.target.dataset.suggestionIndex);
+                this.addAISuggestion(suggestions[index]);
+            });
+        });
+    }
+
+    addAISuggestion(suggestion) {
+        const risk = {
+            id: Date.now(),
+            name: suggestion.name,
+            category: suggestion.category,
+            description: suggestion.description,
+            likelihood: suggestion.likelihood,
+            impact: suggestion.impact,
+            source: 'ai',
+            timestamp: new Date().toISOString()
+        };
+        
+        this.identifiedRisks.push(risk);
+        this.updateRisksList();
+        this.updateContinueButton();
+        
+        // Show success message
+        this.showSuccessMessage(`AI risk "${suggestion.name}" added successfully!`);
+    }
+
+    handleCustomRiskSubmit(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(event.target);
+        const risk = {
+            id: Date.now(),
+            name: document.getElementById('risk-name').value,
+            category: document.getElementById('risk-category').value,
+            description: document.getElementById('risk-description').value,
+            likelihood: parseInt(document.getElementById('risk-likelihood').value),
+            impact: parseInt(document.getElementById('risk-impact').value),
+            source: 'manual',
+            timestamp: new Date().toISOString()
+        };
+        
+        this.identifiedRisks.push(risk);
+        this.updateRisksList();
+        this.updateContinueButton();
+        this.clearForm();
+        
+        // Show success message
+        this.showSuccessMessage(`Custom risk "${risk.name}" added successfully!`);
+    }
+
+    updateRisksList() {
+        const container = document.getElementById('identified-risks-list');
+        const noRisksMessage = document.getElementById('no-risks-message');
+        const riskCount = document.getElementById('risk-count');
+        
+        if (this.identifiedRisks.length === 0) {
+            noRisksMessage.style.display = 'block';
+            container.innerHTML = '';
+            container.appendChild(noRisksMessage);
+        } else {
+            noRisksMessage.style.display = 'none';
+            container.innerHTML = this.identifiedRisks.map((risk, index) =&gt; `
+                &lt;div class="rcsa-risk-item" data-risk-id="${risk.id}"&gt;
+                    &lt;div class="fcb-d-flex fcb-justify-between fcb-align-start"&gt;
+                        &lt;div class="fcb-flex-grow-1"&gt;
+                            &lt;h5 class="fcb-h6 fcb-mb-1"&gt;${risk.name}&lt;/h5&gt;
+                            &lt;div class="fcb-mb-2"&gt;
+                                &lt;span class="fcb-badge rcsa-category-${risk.category}"&gt;${this.getCategoryLabel(risk.category)}&lt;/span&gt;
+                                &lt;span class="fcb-badge ${risk.source === 'ai' ? 'fcb-badge-info' : 'fcb-badge-secondary'}"&gt;
+                                    &lt;i class="fas fa-${risk.source === 'ai' ? 'robot' : 'user'}"&gt;&lt;/i&gt; ${risk.source === 'ai' ? 'AI Generated' : 'Manual Entry'}
+                                &lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;p class="fcb-text-muted fcb-mb-2"&gt;${risk.description}&lt;/p&gt;
+                            &lt;div class="fcb-d-flex fcb-align-center"&gt;
+                                &lt;small class="fcb-text-muted fcb-me-3"&gt;
+                                    &lt;strong&gt;Likelihood:&lt;/strong&gt; ${risk.likelihood}/5
+                                &lt;/small&gt;
+                                &lt;small class="fcb-text-muted fcb-me-3"&gt;
+                                    &lt;strong&gt;Impact:&lt;/strong&gt; ${risk.impact}/5
+                                &lt;/small&gt;
+                                &lt;span class="fcb-badge rcsa-risk-score-${this.getRiskLevel(risk.likelihood * risk.impact)}"&gt;
+                                    Risk Score: ${risk.likelihood * risk.impact}
+                                &lt;/span&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class="fcb-d-flex fcb-gap-2"&gt;
+                            &lt;button 
+                                class="fcb-btn fcb-btn-sm fcb-btn-outline-primary edit-risk"
+                                data-risk-id="${risk.id}"
+                                data-testid="edit-risk-${index}"&gt;
+                                &lt;i class="fas fa-edit"&gt;&lt;/i&gt;
+                            &lt;/button&gt;
+                            &lt;button 
+                                class="fcb-btn fcb-btn-sm fcb-btn-outline-danger remove-risk"
+                                data-risk-id="${risk.id}"
+                                data-testid="remove-risk-${index}"&gt;
+                                &lt;i class="fas fa-trash"&gt;&lt;/i&gt;
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            `).join('');
+            
+            // Add event listeners for edit/remove buttons
+            container.querySelectorAll('.remove-risk').forEach(button =&gt; {
+                button.addEventListener('click', (e) =&gt; {
+                    const riskId = parseInt(e.target.dataset.riskId);
+                    this.removeRisk(riskId);
+                });
+            });
+        }
+        
+        // Update risk count
+        riskCount.textContent = `${this.identifiedRisks.length} risk${this.identifiedRisks.length !== 1 ? 's' : ''} identified`;
+    }
+
+    removeRisk(riskId) {
+        this.identifiedRisks = this.identifiedRisks.filter(risk =&gt; risk.id !== riskId);
+        this.updateRisksList();
+        this.updateContinueButton();
+    }
+
+    updateContinueButton() {
+        const continueBtn = document.getElementById('continue-to-controls');
+        if (continueBtn) {
+            const hasRisks = this.identifiedRisks.length &gt; 0;
+            continueBtn.disabled = !hasRisks;
+            continueBtn.classList.toggle('fcb-btn-secondary', !hasRisks);
+            continueBtn.classList.toggle('fcb-btn-primary', hasRisks);
+        }
+    }
+
+    clearForm() {
+        document.getElementById('custom-risk-form').reset();
+    }
+
+    handleContinue() {
+        if (this.identifiedRisks.length === 0) {
+            this.showErrorMessage('Please add at least one risk before continuing.');
+            return;
+        }
+        
+        // Store risks for next step
+        sessionStorage.setItem('rcsa_identified_risks', JSON.stringify(this.identifiedRisks));
+        
+        // Navigate to control mapping
+        window.location.href = '/control-mapping-overview';
+    }
+
+    // Utility methods
+    getProcessName(processId) {
+        const processNames = {
+            'loan-origination': 'Loan Origination',
+            'account-opening': 'Account Opening',
+            'payment-processing': 'Payment Processing',
+            'customer-service': 'Customer Service',
+            'commercial-lending': 'Commercial Lending',
+            'treasury-services': 'Treasury Services',
+            'trade-finance': 'Trade Finance'
+        };
+        return processNames[processId] || 'Selected Process';
+    }
+
+    getBusinessUnitName(businessUnitId) {
+        const businessUnitNames = {
+            'retail-banking': 'Retail Banking',
+            'commercial-banking': 'Commercial Banking',
+            'wealth-management': 'Wealth Management',
+            'operations': 'Operations &amp; Technology',
+            'risk-compliance': 'Risk &amp; Compliance',
+            'human-resources': 'Human Resources'
+        };
+        return businessUnitNames[businessUnitId] || 'Selected Business Unit';
+    }
+
+    getCategoryLabel(category) {
+        const categoryLabels = {
+            'operational': 'Operational',
+            'credit': 'Credit',
+            'market': 'Market',
+            'liquidity': 'Liquidity',
+            'compliance': 'Compliance',
+            'technology': 'Technology',
+            'reputation': 'Reputation',
+            'strategic': 'Strategic'
+        };
+        return categoryLabels[category] || 'Other';
+    }
+
+    getRiskLevel(score) {
+        if (score &gt;= 20) return 'critical';
+        if (score &gt;= 15) return 'high';
+        if (score &gt;= 10) return 'medium';
+        if (score &gt;= 5) return 'low';
+        return 'minimal';
+    }
+
+    showSuccessMessage(message) {
+        this.showMessage(message, 'success');
+    }
+
+    showErrorMessage(message) {
+        this.showMessage(message, 'danger');
+    }
+
+    showMessage(message, type) {
+        const alert = document.createElement('div');
+        alert.className = `fcb-alert fcb-alert-${type} fcb-mt-3`;
+        alert.innerHTML = `
+            &lt;i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"&gt;&lt;/i&gt;
+            &lt;div&gt;${message}&lt;/div&gt;
+        `;
+        
+        const container = document.querySelector('.fcb-container');
+        container.insertBefore(alert, container.firstChild);
+        
+        setTimeout(() =&gt; alert.remove(), 5000);
+    }
+
+    showAIError() {
+        const loadingElement = document.getElementById('ai-suggestions-loading');
+        const placeholderElement = document.getElementById('ai-suggestions-placeholder');
+        
+        loadingElement.classList.add('fcb-d-none');
+        placeholderElement.innerHTML = `
+            &lt;div class="fcb-text-center fcb-p-4"&gt;
+                &lt;i class="fas fa-exclamation-triangle fa-3x fcb-text-danger fcb-mb-3"&gt;&lt;/i&gt;
+                &lt;h3 class="fcb-h5 fcb-mb-2"&gt;AI Service Unavailable&lt;/h3&gt;
+                &lt;p class="fcb-text-muted fcb-mb-3"&gt;
+                    Unable to generate AI suggestions at this time. Please try again later or add risks manually.
+                &lt;/p&gt;
+                &lt;button 
+                    id="retry-ai-suggestions" 
+                    class="fcb-btn fcb-btn-primary fcb-me-2"&gt;
+                    &lt;i class="fas fa-redo"&gt;&lt;/i&gt; Retry AI Suggestions
+                &lt;/button&gt;
+            &lt;/div&gt;
+        `;
+        placeholderElement.classList.remove('fcb-d-none');
+        
+        // Add retry handler
+        document.getElementById('retry-ai-suggestions')?.addEventListener('click', () =&gt; this.generateAISuggestions());
+    }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () =&gt; {
+    new RiskIdentification();
+});
+&lt;/script&gt;
+
+&lt;style&gt;
+/* Risk Identification Specific Styles */
+.rcsa-ai-suggestion {
+    border-left: 4px solid var(--fcb-primary);
+    transition: all 0.3s ease;
+}
+
+.rcsa-ai-suggestion:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--fcb-shadow-lg);
+}
+
+.rcsa-risk-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--fcb-border-color);
+    transition: background-color 0.2s ease;
+}
+
+.rcsa-risk-item:hover {
+    background-color: var(--fcb-gray-50);
+}
+
+.rcsa-risk-item:last-child {
+    border-bottom: none;
+}
+
+/* Category badges */
+.rcsa-category-operational { background: var(--fcb-warning); color: var(--fcb-gray-700); }
+.rcsa-category-credit { background: var(--fcb-danger); color: var(--fcb-white); }
+.rcsa-category-market { background: var(--fcb-info); color: var(--fcb-white); }
+.rcsa-category-liquidity { background: var(--fcb-primary); color: var(--fcb-white); }
+.rcsa-category-compliance { background: var(--fcb-success); color: var(--fcb-white); }
+.rcsa-category-technology { background: var(--fcb-secondary); color: var(--fcb-white); }
+.rcsa-category-reputation { background: var(--fcb-dark); color: var(--fcb-white); }
+.rcsa-category-strategic { background: var(--fcb-purple); color: var(--fcb-white); }
+
+/* Risk score badges */
+.rcsa-risk-score-critical { background: var(--fcb-danger); color: var(--fcb-white); }
+.rcsa-risk-score-high { background: var(--fcb-warning); color: var(--fcb-gray-700); }
+.rcsa-risk-score-medium { background: var(--fcb-info); color: var(--fcb-white); }
+.rcsa-risk-score-low { background: var(--fcb-success); color: var(--fcb-white); }
+.rcsa-risk-score-minimal { background: var(--fcb-light); color: var(--fcb-gray-700); }
+
+/* Loading spinner */
+.rcsa-loading-spinner {
+    text-align: center;
+    padding: 2rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .fcb-d-flex.fcb-justify-between {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .rcsa-risk-item .fcb-d-flex.fcb-justify-between {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .rcsa-risk-item .fcb-d-flex.fcb-gap-2 {
+        margin-top: 1rem;
+        align-self: flex-end;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .rcsa-ai-suggestion {
+        border-left-width: 6px;
+    }
+    
+    .rcsa-risk-item {
+        border-bottom-width: 2px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .rcsa-ai-suggestion {
+        transition: none;
+    }
+    
+    .rcsa-ai-suggestion:hover {
+        transform: none;
+    }
+    
+    .fa-spin {
+        animation: none;
+    }
+}
+&lt;/style&gt;
+Risk Identification</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

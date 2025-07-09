@@ -1,0 +1,66 @@
+<powerpagecomponent powerpagecomponentid="8f32432a-e266-4db6-9873-c9fc011821cf">
+  <content>{
+  "filecontent": null,
+  "copy": "&lt;div class=\"row sectionBlockLayout\" data-component-theme=\"portalThemeColor3\" style=\"display: flex; flex-wrap: wrap; height: 15px; min-height: 15px;\"&gt;\r\n&lt;/div&gt;\r\n&lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; text-align: left; min-height: auto;\"&gt;\r\n    &lt;div class=\"container\" style=\"padding: 0px; display: flex; flex-wrap: wrap;\"&gt;\r\n        &lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 300px;\"&gt;\r\n            &lt;h2&gt;Pages&lt;/h2&gt;\r\n            &lt;p&gt;This section can be used to introduce the contents of the subpages and encourage your target audience to explore those pages. If this content gets too long, consider splitting it into two smaller paragraphs.&lt;/p&gt;\r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n&lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; text-align: left; min-height: auto;\"&gt;\r\n    &lt;div class=\"container\" style=\"padding: 0px; display: flex; flex-wrap: wrap;\"&gt;\r\n        &lt;div class=\"col-lg-6 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 300px;\"&gt;&lt;img src=\"/Circle-1.png\" alt=\"\" name=\"Circle-1.png\" style=\"width: 108px; height: 108px; max-width: 100%; margin-left: auto; margin-right: auto;\"&gt;\r\n            &lt;h3 style=\"text-align: center;\"&gt;Subpage 1&lt;/h3&gt;\r\n            &lt;p style=\"text-align: center;\"&gt;Create a short description or engaging message to motivate your audience to take action&lt;/p&gt;\r\n        &lt;/div&gt;\r\n        &lt;div class=\"col-lg-6 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 300px;\"&gt;&lt;img src=\"/Circle-2.png\" alt=\"\" name=\"Circle-2.png\" style=\"width: 108px; height: 108px; max-width: 100%; margin-left: auto; margin-right: auto;\"&gt;\r\n            &lt;h3 style=\"text-align: center;\"&gt;Subpage 2&lt;/h3&gt;\r\n            &lt;p style=\"text-align: center;\"&gt;Create a short description or engaging message to motivate your audience to take action&lt;/p&gt;\r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n&lt;div class=\"row sectionBlockLayout\" data-component-theme=\"portalThemeColor1\" style=\"display: flex; flex-wrap: wrap; text-align: left; min-height: auto;\"&gt;\r\n    &lt;div class=\"container\" style=\"padding: 0px; display: flex; flex-wrap: wrap;\"&gt;\r\n        &lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 300px;\"&gt;\r\n            &lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; min-height: 120px;\"&gt;&lt;/div&gt;\r\n            &lt;h1 style=\"text-align: center;\"&gt;Introduce another idea &lt;/h1&gt;\r\n            &lt;p style=\"text-align: center;\"&gt;This section can be used to offer supporting information or introduce a new idea. It’s best to keep it relevant to the contents of the page so it doesn’t feel out of place. &lt;/p&gt;\r\n            &lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; min-height: 120px;\"&gt;&lt;/div&gt;\r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n&lt;div class=\"row sectionBlockLayout\" data-component-theme=\"portalThemeColor2\" style=\"display: flex; flex-wrap: wrap; min-height: 28px;\"&gt;&lt;/div&gt;\r\n&lt;div class=\"row sectionBlockLayout\" data-component-theme=\"portalThemeColor6\" style=\"display: flex; flex-wrap: wrap; min-height: 52px;\"&gt;&lt;/div&gt;",
+  "displayorder": 2,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "feedbackpolicy": 756150000,
+  "hiddenfromsitemap": false,
+  "isroot": false,
+  "pagetemplateid": "7504b05c-7353-404b-af12-de2d395d7fb0",
+  "parentpageid": "439a903c-bf6a-492c-b905-cbbbce3612e3",
+  "partialurl": "page",
+  "publishingstateid": "0c05b030-bb84-4276-94fc-ece9f13ab2e8",
+  "rootwebpageid": "8787c9f0-6348-406b-89ff-070c219be0e1",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This page has a full-size layout (no sidebar).&lt;/p&gt;",
+  "title": "Pages"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Dashboard-deleted</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>96e8a8c3-d5c0-4729-bbb4-36d4e809b044</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>Pages&lt;div class="row sectionBlockLayout" data-component-theme="portalThemeColor3" style="display: flex; flex-wrap: wrap; height: 15px; min-height: 15px;"&gt;
+&lt;/div&gt;
+&lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; text-align: left; min-height: auto;"&gt;
+    &lt;div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;"&gt;
+        &lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 300px;"&gt;
+            &lt;h2&gt;Pages&lt;/h2&gt;
+            &lt;p&gt;This section can be used to introduce the contents of the subpages and encourage your target audience to explore those pages. If this content gets too long, consider splitting it into two smaller paragraphs.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; text-align: left; min-height: auto;"&gt;
+    &lt;div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;"&gt;
+        &lt;div class="col-lg-6 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 300px;"&gt;&lt;img src="/Circle-1.png" alt="" name="Circle-1.png" style="width: 108px; height: 108px; max-width: 100%; margin-left: auto; margin-right: auto;"&gt;
+            &lt;h3 style="text-align: center;"&gt;Subpage 1&lt;/h3&gt;
+            &lt;p style="text-align: center;"&gt;Create a short description or engaging message to motivate your audience to take action&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="col-lg-6 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 300px;"&gt;&lt;img src="/Circle-2.png" alt="" name="Circle-2.png" style="width: 108px; height: 108px; max-width: 100%; margin-left: auto; margin-right: auto;"&gt;
+            &lt;h3 style="text-align: center;"&gt;Subpage 2&lt;/h3&gt;
+            &lt;p style="text-align: center;"&gt;Create a short description or engaging message to motivate your audience to take action&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="row sectionBlockLayout" data-component-theme="portalThemeColor1" style="display: flex; flex-wrap: wrap; text-align: left; min-height: auto;"&gt;
+    &lt;div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;"&gt;
+        &lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 300px;"&gt;
+            &lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; min-height: 120px;"&gt;&lt;/div&gt;
+            &lt;h1 style="text-align: center;"&gt;Introduce another idea &lt;/h1&gt;
+            &lt;p style="text-align: center;"&gt;This section can be used to offer supporting information or introduce a new idea. It’s best to keep it relevant to the contents of the page so it doesn’t feel out of place. &lt;/p&gt;
+            &lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; min-height: 120px;"&gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="row sectionBlockLayout" data-component-theme="portalThemeColor2" style="display: flex; flex-wrap: wrap; min-height: 28px;"&gt;&lt;/div&gt;
+&lt;div class="row sectionBlockLayout" data-component-theme="portalThemeColor6" style="display: flex; flex-wrap: wrap; min-height: 52px;"&gt;&lt;/div&gt;Dashboard-deleted</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

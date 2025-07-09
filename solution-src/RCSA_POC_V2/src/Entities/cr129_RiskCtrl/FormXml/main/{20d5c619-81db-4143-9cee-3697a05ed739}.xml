@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{20d5c619-81db-4143-9cee-3697a05ed739}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{5dafaa42-98d8-4161-bd41-828318ff13f3}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{6f516364-1285-4250-99fd-c9ec19fa66ca}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{f55b504d-8528-4fd6-a98d-a2b74b7c4381}">
+                        <labels>
+                          <label description="Risk" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_riskdescription" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cr129_riskdescription" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{16f303b1-3e6a-475a-8983-223fd8af39c7}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{9323148c-4eb1-4da8-9f98-7b0769efa2d1}">
+                        <labels>
+                          <label description="RiskTitle" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_risktitle" classid="{270bd3db-d9af-4782-9025-509e298dec0a}" datafieldname="cr129_risktitle" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{cd8e56e9-f385-4ae1-8e5d-1a1e5b5316b4}">
+                        <labels>
+                          <label description="ControlTitle" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_controltitle" classid="{270bd3db-d9af-4782-9025-509e298dec0a}" datafieldname="cr129_controltitle" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

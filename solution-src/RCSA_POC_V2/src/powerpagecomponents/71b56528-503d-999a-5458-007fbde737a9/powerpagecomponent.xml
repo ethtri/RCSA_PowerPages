@@ -1,0 +1,391 @@
+<powerpagecomponent powerpagecomponentid="71b56528-503d-999a-5458-007fbde737a9">
+  <content>{
+  "copy": "&lt;!-- RCSA Dashboard - First Citizens Bank --&gt;\n&lt;!-- Risk and Compliance Self Assessment Dashboard --&gt;\n\n&lt;link rel=\"stylesheet\" href=\"~/rcsa-styles.css\"&gt;\n\n&lt;script&gt;\n// Dynamic greeting based on time of day\nfunction getTimeBasedGreeting() {\n    const hour = new Date().getHours();\n    if (hour &lt; 12) return \"Good morning\";\n    if (hour &lt; 17) return \"Good afternoon\"; \n    return \"Good evening\";\n}\n\n// Format date for display\nfunction formatDate(date) {\n    return date.toLocaleDateString('en-US', { \n        weekday: 'long', \n        year: 'numeric', \n        month: 'long', \n        day: 'numeric' \n    });\n}\n\n// Initialize dashboard on load\ndocument.addEventListener('DOMContentLoaded', function() {\n    // Set dynamic greeting\n    const greetingElement = document.getElementById('dynamic-greeting');\n    if (greetingElement) {\n        greetingElement.textContent = getTimeBasedGreeting();\n    }\n    \n    // Set current date\n    const dateElement = document.getElementById('current-date');\n    if (dateElement) {\n        dateElement.textContent = formatDate(new Date());\n    }\n    \n    // Add click handlers for process cards\n    const processCards = document.querySelectorAll('.rcsa-process-card');\n    processCards.forEach(card =&gt; {\n        card.addEventListener('click', function() {\n            // Remove selected class from all cards\n            processCards.forEach(c =&gt; c.classList.remove('selected'));\n            // Add selected class to clicked card\n            this.classList.add('selected');\n            \n            // Enable continue button\n            const continueBtn = document.getElementById('continue-assessment');\n            if (continueBtn) {\n                continueBtn.disabled = false;\n                continueBtn.classList.remove('fcb-btn-secondary');\n                continueBtn.classList.add('fcb-btn-primary');\n            }\n        });\n    });\n});\n&lt;/script&gt;\n\n&lt;!-- Page Header --&gt;\n&lt;div class=\"rcsa-page-header\"&gt;\n    &lt;div class=\"fcb-container\"&gt;\n        &lt;div class=\"fcb-row fcb-align-center\"&gt;\n            &lt;div class=\"fcb-col-8\"&gt;\n                &lt;h1 class=\"fcb-mb-2\"&gt;\n                    &lt;span id=\"dynamic-greeting\"&gt;Good morning&lt;/span&gt;, {{ user.fullname | default: \"Risk Manager\" }}! 👋\n                &lt;/h1&gt;\n                &lt;p class=\"fcb-mb-0\"&gt;\n                    Today is &lt;span id=\"current-date\"&gt;&lt;/span&gt;. Let's ensure our risks are well managed.\n                &lt;/p&gt;\n            &lt;/div&gt;\n            &lt;div class=\"fcb-col-4 fcb-text-right\"&gt;\n                &lt;div class=\"captech-logo-container fcb-mb-3\"&gt;\n                    &lt;img src=\"~/captech-logo.png\" alt=\"CapTech Consulting\" class=\"captech-logo\" /&gt;\n                &lt;/div&gt;\n                &lt;div class=\"fcb-badge fcb-badge-success fcb-mb-2\"&gt;\n                    &lt;i class=\"fas fa-shield-alt\"&gt;&lt;/i&gt; Risk Management Portal\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class=\"fcb-container\"&gt;\n    &lt;!-- Alert for Pending Assessments --&gt;\n    {% assign pending_assessments = entities['cr129_assess'] | where: 'statecode', 0 %}\n    {% assign pending_count = pending_assessments | size %}\n    \n    {% if pending_count &gt; 0 %}\n    &lt;div class=\"fcb-alert fcb-alert-warning fcb-mb-4\"&gt;\n        &lt;i class=\"fas fa-exclamation-triangle\"&gt;&lt;/i&gt;\n        &lt;div&gt;\n            &lt;strong&gt;Action Required:&lt;/strong&gt; You have {{ pending_count }} pending assessment{{ pending_count | pluralize: '', 's' }} that require your attention.\n            &lt;a href=\"/process-selection\" class=\"fcb-btn fcb-btn-sm fcb-btn-primary fcb-mt-2\"&gt;\n                Start Assessment &lt;i class=\"fas fa-arrow-right\"&gt;&lt;/i&gt;\n            &lt;/a&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n    {% endif %}\n\n    &lt;!-- Metrics Cards Row --&gt;\n    &lt;div class=\"fcb-row fcb-mb-5\"&gt;\n        &lt;div class=\"fcb-col-4\"&gt;\n            &lt;div class=\"fcb-card fcb-card-primary\"&gt;\n                &lt;div class=\"fcb-card-body rcsa-metric-card\"&gt;\n                    {% assign completed_assessments = entities['cr129_assess'] | where: 'statecode', 1 %}\n                    &lt;div class=\"rcsa-metric-number\"&gt;{{ completed_assessments | size | default: 0 }}&lt;/div&gt;\n                    &lt;div class=\"rcsa-metric-label\"&gt;Completed Assessments&lt;/div&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n        &lt;div class=\"fcb-col-4\"&gt;\n            &lt;div class=\"fcb-card fcb-card-warning\"&gt;\n                &lt;div class=\"fcb-card-body rcsa-metric-card\"&gt;\n                    {% assign in_progress_assessments = entities['cr129_assess'] | where: 'statecode', 0 %}\n                    &lt;div class=\"rcsa-metric-number\"&gt;{{ in_progress_assessments | size | default: 0 }}&lt;/div&gt;\n                    &lt;div class=\"rcsa-metric-label\"&gt;In Progress&lt;/div&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n        &lt;div class=\"fcb-col-4\"&gt;\n            &lt;div class=\"fcb-card fcb-card-success\"&gt;\n                &lt;div class=\"fcb-card-body rcsa-metric-card\"&gt;\n                    &lt;div class=\"rcsa-metric-number\"&gt;8.5&lt;/div&gt;\n                    &lt;div class=\"rcsa-metric-label\"&gt;Avg Time (Minutes)&lt;/div&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n\n    &lt;!-- Main Content Row --&gt;\n    &lt;div class=\"fcb-row\"&gt;\n        &lt;!-- Recent Assessments --&gt;\n        &lt;div class=\"fcb-col-8\"&gt;\n            &lt;div class=\"fcb-card fcb-mb-4\"&gt;\n                &lt;div class=\"fcb-card-header\"&gt;\n                    &lt;h3 class=\"fcb-h4 fcb-mb-0\"&gt;\n                        &lt;i class=\"fas fa-list-alt\"&gt;&lt;/i&gt; Recent Assessments\n                    &lt;/h3&gt;\n                &lt;/div&gt;\n                &lt;div class=\"fcb-card-body fcb-p-0\"&gt;\n                    {% assign recent_assessments = entities['cr129_assess'] | sort: 'modifiedon' | reverse | limit: 5 %}\n                    {% if recent_assessments.size &gt; 0 %}\n                        {% for assessment in recent_assessments %}\n                        &lt;div class=\"rcsa-assessment-item\"&gt;\n                            &lt;div&gt;\n                                &lt;strong&gt;{{ assessment.cr129_name | default: \"Assessment #\" | append: forloop.index }}&lt;/strong&gt;\n                                &lt;br&gt;\n                                &lt;small class=\"fcb-text-muted\"&gt;\n                                    {% assign bu_lookup = assessment.cr129_businessunit %}\n                                    {% if bu_lookup %}\n                                        {% assign business_unit = entities['cr129_bu'] | where: 'cr129_buid', bu_lookup.id | first %}\n                                        {{ business_unit.cr129_name | default: \"Business Unit\" }}\n                                    {% else %}\n                                        Business Unit TBD\n                                    {% endif %}\n                                &lt;/small&gt;\n                            &lt;/div&gt;\n                            &lt;div&gt;\n                                {% case assessment.statecode %}\n                                    {% when 0 %}\n                                        &lt;span class=\"fcb-badge fcb-badge-warning\"&gt;In Progress&lt;/span&gt;\n                                    {% when 1 %}\n                                        &lt;span class=\"fcb-badge fcb-badge-success\"&gt;Completed&lt;/span&gt;\n                                    {% else %}\n                                        &lt;span class=\"fcb-badge fcb-badge-secondary\"&gt;Draft&lt;/span&gt;\n                                {% endcase %}\n                                &lt;br&gt;\n                                &lt;small class=\"fcb-text-muted\"&gt;\n                                    {{ assessment.modifiedon | date: \"%m/%d/%Y\" | default: \"Recent\" }}\n                                &lt;/small&gt;\n                            &lt;/div&gt;\n                        &lt;/div&gt;\n                        {% endfor %}\n                    {% else %}\n                        &lt;div class=\"fcb-p-4 fcb-text-center fcb-text-muted\"&gt;\n                            &lt;i class=\"fas fa-clipboard-list fa-3x fcb-mb-3\"&gt;&lt;/i&gt;\n                            &lt;p&gt;No assessments found. Start your first assessment to see it here.&lt;/p&gt;\n                            &lt;a href=\"/process-selection\" class=\"fcb-btn fcb-btn-primary\"&gt;\n                                &lt;i class=\"fas fa-plus\"&gt;&lt;/i&gt; Start New Assessment\n                            &lt;/a&gt;\n                        &lt;/div&gt;\n                    {% endif %}\n                &lt;/div&gt;\n                {% if recent_assessments.size &gt; 0 %}\n                &lt;div class=\"fcb-card-footer fcb-text-center\"&gt;\n                    &lt;a href=\"/alldatatables\" class=\"fcb-btn fcb-btn-outline-primary fcb-btn-sm\"&gt;\n                        View All Assessments &lt;i class=\"fas fa-arrow-right\"&gt;&lt;/i&gt;\n                    &lt;/a&gt;\n                &lt;/div&gt;\n                {% endif %}\n            &lt;/div&gt;\n        &lt;/div&gt;\n\n        &lt;!-- Quick Actions Sidebar --&gt;\n        &lt;div class=\"fcb-col-4\"&gt;\n            &lt;div class=\"fcb-card fcb-mb-4\"&gt;\n                &lt;div class=\"fcb-card-header\"&gt;\n                    &lt;h3 class=\"fcb-h5 fcb-mb-0\"&gt;\n                        &lt;i class=\"fas fa-bolt\"&gt;&lt;/i&gt; Quick Actions\n                    &lt;/h3&gt;\n                &lt;/div&gt;\n                &lt;div class=\"fcb-card-body\"&gt;\n                    &lt;div class=\"fcb-d-grid fcb-gap-3\"&gt;\n                        &lt;a href=\"/process-selection\" class=\"fcb-btn fcb-btn-primary\"&gt;\n                            &lt;i class=\"fas fa-play\"&gt;&lt;/i&gt; Start New Assessment\n                        &lt;/a&gt;\n                        &lt;a href=\"/risk-identification\" class=\"fcb-btn fcb-btn-outline-primary\"&gt;\n                            &lt;i class=\"fas fa-exclamation-triangle\"&gt;&lt;/i&gt; Identify Risks\n                        &lt;/a&gt;\n                        &lt;a href=\"/control-mapping-overview\" class=\"fcb-btn fcb-btn-outline-primary\"&gt;\n                            &lt;i class=\"fas fa-shield-alt\"&gt;&lt;/i&gt; Map Controls\n                        &lt;/a&gt;\n                        &lt;a href=\"/residual-risk-assessment\" class=\"fcb-btn fcb-btn-outline-primary\"&gt;\n                            &lt;i class=\"fas fa-chart-line\"&gt;&lt;/i&gt; Assess Residual Risk\n                        &lt;/a&gt;\n                    &lt;/div&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n\n            &lt;!-- System Status Card --&gt;\n            &lt;div class=\"fcb-card\"&gt;\n                &lt;div class=\"fcb-card-header\"&gt;\n                    &lt;h3 class=\"fcb-h5 fcb-mb-0\"&gt;\n                        &lt;i class=\"fas fa-info-circle\"&gt;&lt;/i&gt; System Status\n                    &lt;/h3&gt;\n                &lt;/div&gt;\n                &lt;div class=\"fcb-card-body\"&gt;\n                    &lt;div class=\"fcb-mb-3\"&gt;\n                        &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-center fcb-mb-1\"&gt;\n                            &lt;span&gt;Data Tables&lt;/span&gt;\n                            &lt;span class=\"fcb-badge fcb-badge-success\"&gt;\n                                &lt;i class=\"fas fa-check\"&gt;&lt;/i&gt; Online\n                            &lt;/span&gt;\n                        &lt;/div&gt;\n                        &lt;small class=\"fcb-text-muted\"&gt;All 9 Dataverse tables accessible&lt;/small&gt;\n                    &lt;/div&gt;\n                    \n                    &lt;div class=\"fcb-mb-3\"&gt;\n                        &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-center fcb-mb-1\"&gt;\n                            &lt;span&gt;AI Services&lt;/span&gt;\n                            &lt;span class=\"fcb-badge fcb-badge-success\"&gt;\n                                &lt;i class=\"fas fa-check\"&gt;&lt;/i&gt; Ready\n                            &lt;/span&gt;\n                        &lt;/div&gt;\n                        &lt;small class=\"fcb-text-muted\"&gt;OpenAI connector available&lt;/small&gt;\n                    &lt;/div&gt;\n                    \n                    &lt;div class=\"fcb-mb-0\"&gt;\n                        &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-center fcb-mb-1\"&gt;\n                            &lt;span&gt;Performance&lt;/span&gt;\n                            &lt;span class=\"fcb-badge fcb-badge-success\"&gt;\n                                &lt;i class=\"fas fa-tachometer-alt\"&gt;&lt;/i&gt; Optimal\n                            &lt;/span&gt;\n                        &lt;/div&gt;\n                        &lt;small class=\"fcb-text-muted\"&gt;Average load time: &amp;lt;2 seconds&lt;/small&gt;\n                    &lt;/div&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n\n    &lt;!-- Business Units Overview --&gt;\n    &lt;div class=\"fcb-row fcb-mt-5\"&gt;\n        &lt;div class=\"fcb-col-12\"&gt;\n            &lt;div class=\"fcb-card\"&gt;\n                &lt;div class=\"fcb-card-header\"&gt;\n                    &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-center\"&gt;\n                        &lt;h3 class=\"fcb-h4 fcb-mb-0\"&gt;\n                            &lt;i class=\"fas fa-building\"&gt;&lt;/i&gt; Business Units Overview\n                        &lt;/h3&gt;\n                        &lt;a href=\"/alldatatables\" class=\"fcb-btn fcb-btn-sm fcb-btn-outline-primary\"&gt;\n                            View All Data &lt;i class=\"fas fa-external-link-alt\"&gt;&lt;/i&gt;\n                        &lt;/a&gt;\n                    &lt;/div&gt;\n                &lt;/div&gt;\n                &lt;div class=\"fcb-card-body\"&gt;\n                    {% assign business_units = entities['cr129_bu'] | limit: 6 %}\n                    {% if business_units.size &gt; 0 %}\n                        &lt;div class=\"fcb-row\"&gt;\n                            {% for bu in business_units %}\n                            &lt;div class=\"fcb-col-4 fcb-mb-3\"&gt;\n                                &lt;div class=\"fcb-card fcb-card-secondary rcsa-process-card\"&gt;\n                                    &lt;div class=\"fcb-card-body fcb-text-center\"&gt;\n                                        &lt;h4 class=\"fcb-h6 fcb-mb-2\"&gt;{{ bu.cr129_name | default: \"Business Unit\" }}&lt;/h4&gt;\n                                        &lt;div class=\"fcb-badge fcb-badge-primary fcb-mb-2\"&gt;\n                                            {% assign bu_assessments = entities['cr129_assess'] | where: 'cr129_businessunit.id', bu.cr129_buid %}\n                                            {{ bu_assessments | size | default: 0 }} Assessments\n                                        &lt;/div&gt;\n                                        &lt;small class=\"fcb-text-muted\"&gt;\n                                            {{ bu.cr129_description | default: \"Risk assessment and compliance monitoring\" | truncate: 60 }}\n                                        &lt;/small&gt;\n                                    &lt;/div&gt;\n                                &lt;/div&gt;\n                            &lt;/div&gt;\n                            {% endfor %}\n                        &lt;/div&gt;\n                    {% else %}\n                        &lt;div class=\"fcb-text-center fcb-p-4\"&gt;\n                            &lt;i class=\"fas fa-building fa-3x fcb-text-muted fcb-mb-3\"&gt;&lt;/i&gt;\n                            &lt;p class=\"fcb-text-muted\"&gt;No business units configured yet. Business units will appear here once they are added to the system.&lt;/p&gt;\n                            &lt;a href=\"/alldatatables\" class=\"fcb-btn fcb-btn-outline-primary\"&gt;\n                                &lt;i class=\"fas fa-cog\"&gt;&lt;/i&gt; View Data Configuration\n                            &lt;/a&gt;\n                        &lt;/div&gt;\n                    {% endif %}\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n&lt;/div&gt;\n\n&lt;!-- Add Font Awesome for icons --&gt;\n&lt;link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css\"&gt;\n\n&lt;style&gt;\n/* Dashboard-specific styles */\n.rcsa-assessment-item:last-child {\n    border-bottom: none;\n}\n\n.rcsa-process-card {\n    transition: all 0.2s ease-in-out;\n    cursor: pointer;\n    height: 100%;\n}\n\n.rcsa-process-card:hover {\n    transform: translateY(-2px);\n    box-shadow: var(--fcb-shadow-lg);\n}\n\n.rcsa-process-card.selected {\n    border-color: var(--fcb-primary);\n    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);\n}\n\n/* Ensure consistent card heights */\n.fcb-row .fcb-card {\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n}\n\n.fcb-card-body {\n    flex-grow: 1;\n}\n\n/* Responsive adjustments */\n@media (max-width: 768px) {\n    .rcsa-page-header h1 {\n        font-size: 1.5rem;\n    }\n    \n    .rcsa-metric-number {\n        font-size: 2rem;\n    }\n    \n    .fcb-col-8, .fcb-col-4 {\n        flex: 0 0 100%;\n        max-width: 100%;\n    }\n}\n&lt;/style&gt;\n",
+  "displayorder": 2,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "hiddenfromsitemap": true,
+  "isroot": true,
+  "pagetemplateid": "7504b05c-7353-404b-af12-de2d395d7fb0",
+  "parentpageid": "439a903c-bf6a-492c-b905-cbbbce3612e3",
+  "partialurl": "Dashboard",
+  "publishingstateid": "0c05b030-bb84-4276-94fc-ece9f13ab2e8",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;",
+  "title": "Assessment Dashboard"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Dashboard</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <searchcontent>Assessment Dashboard&lt;!-- RCSA Dashboard - First Citizens Bank --&gt;
+&lt;!-- Risk and Compliance Self Assessment Dashboard --&gt;
+
+&lt;link rel="stylesheet" href="~/rcsa-styles.css"&gt;
+
+&lt;script&gt;
+// Dynamic greeting based on time of day
+function getTimeBasedGreeting() {
+    const hour = new Date().getHours();
+    if (hour &lt; 12) return "Good morning";
+    if (hour &lt; 17) return "Good afternoon"; 
+    return "Good evening";
+}
+
+// Format date for display
+function formatDate(date) {
+    return date.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+}
+
+// Initialize dashboard on load
+document.addEventListener('DOMContentLoaded', function() {
+    // Set dynamic greeting
+    const greetingElement = document.getElementById('dynamic-greeting');
+    if (greetingElement) {
+        greetingElement.textContent = getTimeBasedGreeting();
+    }
+    
+    // Set current date
+    const dateElement = document.getElementById('current-date');
+    if (dateElement) {
+        dateElement.textContent = formatDate(new Date());
+    }
+    
+    // Add click handlers for process cards
+    const processCards = document.querySelectorAll('.rcsa-process-card');
+    processCards.forEach(card =&gt; {
+        card.addEventListener('click', function() {
+            // Remove selected class from all cards
+            processCards.forEach(c =&gt; c.classList.remove('selected'));
+            // Add selected class to clicked card
+            this.classList.add('selected');
+            
+            // Enable continue button
+            const continueBtn = document.getElementById('continue-assessment');
+            if (continueBtn) {
+                continueBtn.disabled = false;
+                continueBtn.classList.remove('fcb-btn-secondary');
+                continueBtn.classList.add('fcb-btn-primary');
+            }
+        });
+    });
+});
+&lt;/script&gt;
+
+&lt;!-- Page Header --&gt;
+&lt;div class="rcsa-page-header"&gt;
+    &lt;div class="fcb-container"&gt;
+        &lt;div class="fcb-row fcb-align-center"&gt;
+            &lt;div class="fcb-col-8"&gt;
+                &lt;h1 class="fcb-mb-2"&gt;
+                    &lt;span id="dynamic-greeting"&gt;Good morning&lt;/span&gt;, {{ user.fullname | default: "Risk Manager" }}! 👋
+                &lt;/h1&gt;
+                &lt;p class="fcb-mb-0"&gt;
+                    Today is &lt;span id="current-date"&gt;&lt;/span&gt;. Let's ensure our risks are well managed.
+                &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="fcb-col-4 fcb-text-right"&gt;
+                &lt;div class="captech-logo-container fcb-mb-3"&gt;
+                    &lt;img src="~/captech-logo.png" alt="CapTech Consulting" class="captech-logo" /&gt;
+                &lt;/div&gt;
+                &lt;div class="fcb-badge fcb-badge-success fcb-mb-2"&gt;
+                    &lt;i class="fas fa-shield-alt"&gt;&lt;/i&gt; Risk Management Portal
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="fcb-container"&gt;
+    &lt;!-- Alert for Pending Assessments --&gt;
+    {% assign pending_assessments = entities['cr129_assess'] | where: 'statecode', 0 %}
+    {% assign pending_count = pending_assessments | size %}
+    
+    {% if pending_count &gt; 0 %}
+    &lt;div class="fcb-alert fcb-alert-warning fcb-mb-4"&gt;
+        &lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt;
+        &lt;div&gt;
+            &lt;strong&gt;Action Required:&lt;/strong&gt; You have {{ pending_count }} pending assessment{{ pending_count | pluralize: '', 's' }} that require your attention.
+            &lt;a href="/process-selection" class="fcb-btn fcb-btn-sm fcb-btn-primary fcb-mt-2"&gt;
+                Start Assessment &lt;i class="fas fa-arrow-right"&gt;&lt;/i&gt;
+            &lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    {% endif %}
+
+    &lt;!-- Metrics Cards Row --&gt;
+    &lt;div class="fcb-row fcb-mb-5"&gt;
+        &lt;div class="fcb-col-4"&gt;
+            &lt;div class="fcb-card fcb-card-primary"&gt;
+                &lt;div class="fcb-card-body rcsa-metric-card"&gt;
+                    {% assign completed_assessments = entities['cr129_assess'] | where: 'statecode', 1 %}
+                    &lt;div class="rcsa-metric-number"&gt;{{ completed_assessments | size | default: 0 }}&lt;/div&gt;
+                    &lt;div class="rcsa-metric-label"&gt;Completed Assessments&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="fcb-col-4"&gt;
+            &lt;div class="fcb-card fcb-card-warning"&gt;
+                &lt;div class="fcb-card-body rcsa-metric-card"&gt;
+                    {% assign in_progress_assessments = entities['cr129_assess'] | where: 'statecode', 0 %}
+                    &lt;div class="rcsa-metric-number"&gt;{{ in_progress_assessments | size | default: 0 }}&lt;/div&gt;
+                    &lt;div class="rcsa-metric-label"&gt;In Progress&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="fcb-col-4"&gt;
+            &lt;div class="fcb-card fcb-card-success"&gt;
+                &lt;div class="fcb-card-body rcsa-metric-card"&gt;
+                    &lt;div class="rcsa-metric-number"&gt;8.5&lt;/div&gt;
+                    &lt;div class="rcsa-metric-label"&gt;Avg Time (Minutes)&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Main Content Row --&gt;
+    &lt;div class="fcb-row"&gt;
+        &lt;!-- Recent Assessments --&gt;
+        &lt;div class="fcb-col-8"&gt;
+            &lt;div class="fcb-card fcb-mb-4"&gt;
+                &lt;div class="fcb-card-header"&gt;
+                    &lt;h3 class="fcb-h4 fcb-mb-0"&gt;
+                        &lt;i class="fas fa-list-alt"&gt;&lt;/i&gt; Recent Assessments
+                    &lt;/h3&gt;
+                &lt;/div&gt;
+                &lt;div class="fcb-card-body fcb-p-0"&gt;
+                    {% assign recent_assessments = entities['cr129_assess'] | sort: 'modifiedon' | reverse | limit: 5 %}
+                    {% if recent_assessments.size &gt; 0 %}
+                        {% for assessment in recent_assessments %}
+                        &lt;div class="rcsa-assessment-item"&gt;
+                            &lt;div&gt;
+                                &lt;strong&gt;{{ assessment.cr129_name | default: "Assessment #" | append: forloop.index }}&lt;/strong&gt;
+                                &lt;br&gt;
+                                &lt;small class="fcb-text-muted"&gt;
+                                    {% assign bu_lookup = assessment.cr129_businessunit %}
+                                    {% if bu_lookup %}
+                                        {% assign business_unit = entities['cr129_bu'] | where: 'cr129_buid', bu_lookup.id | first %}
+                                        {{ business_unit.cr129_name | default: "Business Unit" }}
+                                    {% else %}
+                                        Business Unit TBD
+                                    {% endif %}
+                                &lt;/small&gt;
+                            &lt;/div&gt;
+                            &lt;div&gt;
+                                {% case assessment.statecode %}
+                                    {% when 0 %}
+                                        &lt;span class="fcb-badge fcb-badge-warning"&gt;In Progress&lt;/span&gt;
+                                    {% when 1 %}
+                                        &lt;span class="fcb-badge fcb-badge-success"&gt;Completed&lt;/span&gt;
+                                    {% else %}
+                                        &lt;span class="fcb-badge fcb-badge-secondary"&gt;Draft&lt;/span&gt;
+                                {% endcase %}
+                                &lt;br&gt;
+                                &lt;small class="fcb-text-muted"&gt;
+                                    {{ assessment.modifiedon | date: "%m/%d/%Y" | default: "Recent" }}
+                                &lt;/small&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        {% endfor %}
+                    {% else %}
+                        &lt;div class="fcb-p-4 fcb-text-center fcb-text-muted"&gt;
+                            &lt;i class="fas fa-clipboard-list fa-3x fcb-mb-3"&gt;&lt;/i&gt;
+                            &lt;p&gt;No assessments found. Start your first assessment to see it here.&lt;/p&gt;
+                            &lt;a href="/process-selection" class="fcb-btn fcb-btn-primary"&gt;
+                                &lt;i class="fas fa-plus"&gt;&lt;/i&gt; Start New Assessment
+                            &lt;/a&gt;
+                        &lt;/div&gt;
+                    {% endif %}
+                &lt;/div&gt;
+                {% if recent_assessments.size &gt; 0 %}
+                &lt;div class="fcb-card-footer fcb-text-center"&gt;
+                    &lt;a href="/alldatatables" class="fcb-btn fcb-btn-outline-primary fcb-btn-sm"&gt;
+                        View All Assessments &lt;i class="fas fa-arrow-right"&gt;&lt;/i&gt;
+                    &lt;/a&gt;
+                &lt;/div&gt;
+                {% endif %}
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Quick Actions Sidebar --&gt;
+        &lt;div class="fcb-col-4"&gt;
+            &lt;div class="fcb-card fcb-mb-4"&gt;
+                &lt;div class="fcb-card-header"&gt;
+                    &lt;h3 class="fcb-h5 fcb-mb-0"&gt;
+                        &lt;i class="fas fa-bolt"&gt;&lt;/i&gt; Quick Actions
+                    &lt;/h3&gt;
+                &lt;/div&gt;
+                &lt;div class="fcb-card-body"&gt;
+                    &lt;div class="fcb-d-grid fcb-gap-3"&gt;
+                        &lt;a href="/process-selection" class="fcb-btn fcb-btn-primary"&gt;
+                            &lt;i class="fas fa-play"&gt;&lt;/i&gt; Start New Assessment
+                        &lt;/a&gt;
+                        &lt;a href="/risk-identification" class="fcb-btn fcb-btn-outline-primary"&gt;
+                            &lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt; Identify Risks
+                        &lt;/a&gt;
+                        &lt;a href="/control-mapping-overview" class="fcb-btn fcb-btn-outline-primary"&gt;
+                            &lt;i class="fas fa-shield-alt"&gt;&lt;/i&gt; Map Controls
+                        &lt;/a&gt;
+                        &lt;a href="/residual-risk-assessment" class="fcb-btn fcb-btn-outline-primary"&gt;
+                            &lt;i class="fas fa-chart-line"&gt;&lt;/i&gt; Assess Residual Risk
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;!-- System Status Card --&gt;
+            &lt;div class="fcb-card"&gt;
+                &lt;div class="fcb-card-header"&gt;
+                    &lt;h3 class="fcb-h5 fcb-mb-0"&gt;
+                        &lt;i class="fas fa-info-circle"&gt;&lt;/i&gt; System Status
+                    &lt;/h3&gt;
+                &lt;/div&gt;
+                &lt;div class="fcb-card-body"&gt;
+                    &lt;div class="fcb-mb-3"&gt;
+                        &lt;div class="fcb-d-flex fcb-justify-between fcb-align-center fcb-mb-1"&gt;
+                            &lt;span&gt;Data Tables&lt;/span&gt;
+                            &lt;span class="fcb-badge fcb-badge-success"&gt;
+                                &lt;i class="fas fa-check"&gt;&lt;/i&gt; Online
+                            &lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;small class="fcb-text-muted"&gt;All 9 Dataverse tables accessible&lt;/small&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div class="fcb-mb-3"&gt;
+                        &lt;div class="fcb-d-flex fcb-justify-between fcb-align-center fcb-mb-1"&gt;
+                            &lt;span&gt;AI Services&lt;/span&gt;
+                            &lt;span class="fcb-badge fcb-badge-success"&gt;
+                                &lt;i class="fas fa-check"&gt;&lt;/i&gt; Ready
+                            &lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;small class="fcb-text-muted"&gt;OpenAI connector available&lt;/small&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div class="fcb-mb-0"&gt;
+                        &lt;div class="fcb-d-flex fcb-justify-between fcb-align-center fcb-mb-1"&gt;
+                            &lt;span&gt;Performance&lt;/span&gt;
+                            &lt;span class="fcb-badge fcb-badge-success"&gt;
+                                &lt;i class="fas fa-tachometer-alt"&gt;&lt;/i&gt; Optimal
+                            &lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;small class="fcb-text-muted"&gt;Average load time: &amp;lt;2 seconds&lt;/small&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Business Units Overview --&gt;
+    &lt;div class="fcb-row fcb-mt-5"&gt;
+        &lt;div class="fcb-col-12"&gt;
+            &lt;div class="fcb-card"&gt;
+                &lt;div class="fcb-card-header"&gt;
+                    &lt;div class="fcb-d-flex fcb-justify-between fcb-align-center"&gt;
+                        &lt;h3 class="fcb-h4 fcb-mb-0"&gt;
+                            &lt;i class="fas fa-building"&gt;&lt;/i&gt; Business Units Overview
+                        &lt;/h3&gt;
+                        &lt;a href="/alldatatables" class="fcb-btn fcb-btn-sm fcb-btn-outline-primary"&gt;
+                            View All Data &lt;i class="fas fa-external-link-alt"&gt;&lt;/i&gt;
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="fcb-card-body"&gt;
+                    {% assign business_units = entities['cr129_bu'] | limit: 6 %}
+                    {% if business_units.size &gt; 0 %}
+                        &lt;div class="fcb-row"&gt;
+                            {% for bu in business_units %}
+                            &lt;div class="fcb-col-4 fcb-mb-3"&gt;
+                                &lt;div class="fcb-card fcb-card-secondary rcsa-process-card"&gt;
+                                    &lt;div class="fcb-card-body fcb-text-center"&gt;
+                                        &lt;h4 class="fcb-h6 fcb-mb-2"&gt;{{ bu.cr129_name | default: "Business Unit" }}&lt;/h4&gt;
+                                        &lt;div class="fcb-badge fcb-badge-primary fcb-mb-2"&gt;
+                                            {% assign bu_assessments = entities['cr129_assess'] | where: 'cr129_businessunit.id', bu.cr129_buid %}
+                                            {{ bu_assessments | size | default: 0 }} Assessments
+                                        &lt;/div&gt;
+                                        &lt;small class="fcb-text-muted"&gt;
+                                            {{ bu.cr129_description | default: "Risk assessment and compliance monitoring" | truncate: 60 }}
+                                        &lt;/small&gt;
+                                    &lt;/div&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            {% endfor %}
+                        &lt;/div&gt;
+                    {% else %}
+                        &lt;div class="fcb-text-center fcb-p-4"&gt;
+                            &lt;i class="fas fa-building fa-3x fcb-text-muted fcb-mb-3"&gt;&lt;/i&gt;
+                            &lt;p class="fcb-text-muted"&gt;No business units configured yet. Business units will appear here once they are added to the system.&lt;/p&gt;
+                            &lt;a href="/alldatatables" class="fcb-btn fcb-btn-outline-primary"&gt;
+                                &lt;i class="fas fa-cog"&gt;&lt;/i&gt; View Data Configuration
+                            &lt;/a&gt;
+                        &lt;/div&gt;
+                    {% endif %}
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Add Font Awesome for icons --&gt;
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"&gt;
+
+&lt;style&gt;
+/* Dashboard-specific styles */
+.rcsa-assessment-item:last-child {
+    border-bottom: none;
+}
+
+.rcsa-process-card {
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    height: 100%;
+}
+
+.rcsa-process-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--fcb-shadow-lg);
+}
+
+.rcsa-process-card.selected {
+    border-color: var(--fcb-primary);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);
+}
+
+/* Ensure consistent card heights */
+.fcb-row .fcb-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.fcb-card-body {
+    flex-grow: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .rcsa-page-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .rcsa-metric-number {
+        font-size: 2rem;
+    }
+    
+    .fcb-col-8, .fcb-col-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+&lt;/style&gt;
+Dashboard</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

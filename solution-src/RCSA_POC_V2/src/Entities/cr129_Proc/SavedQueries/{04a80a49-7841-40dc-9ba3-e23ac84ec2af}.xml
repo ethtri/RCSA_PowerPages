@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>1</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{04a80a49-7841-40dc-9ba3-e23ac84ec2af}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cr129_processname" select="1" icon="1" preview="1">
+        <row name="result" id="cr129_procid">
+          <cell name="cr129_processname" width="300" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>4</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cr129_proc">
+          <attribute name="cr129_procid" />
+          <attribute name="cr129_processname" />
+          <attribute name="createdon" />
+          <order attribute="cr129_processname" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <filter type="or" isquickfindfields="1">
+            <condition attribute="cr129_processname" operator="like" value="{0}" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Quick Find Active Procs" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

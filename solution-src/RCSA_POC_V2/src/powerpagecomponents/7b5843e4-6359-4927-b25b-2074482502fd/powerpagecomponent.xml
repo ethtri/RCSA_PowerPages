@@ -1,0 +1,35 @@
+<powerpagecomponent powerpagecomponentid="7b5843e4-6359-4927-b25b-2074482502fd">
+  <content>{"copy":"&lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; text-align: left; min-height: 150px; padding: 8px; margin: 0px;\"&gt;\r\n    &lt;div class=\"container\" style=\"display: flex; flex-wrap: wrap;\"&gt;\r\n        &lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; min-width: 300px; display: flex; flex-direction: column; margin: 50px 0px;\"&gt;\r\n            &lt;h1 style=\"font-size: 28px; margin: 0px auto 7px; font-family: 'Segoe UI'; line-height: 37px; color: rgb(0, 0, 0); outline: rgb(255, 255, 255) solid 1.5px; text-align: center;\"&gt;\r\n                You’re not connected to the internet\r\n            &lt;/h1&gt;\r\n            &lt;p style=\"text-align: center;\"&gt;\r\n                &lt;span style=\"font-family: 'Segoe UI'; font-size: 14px; text-align: center; position: relative;\"&gt;\r\n                    Check your connection settings to browse this site\r\n                &lt;/span&gt;\r\n            &lt;/p&gt;\r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\r\n    &lt;div class=\"container\" style=\"padding: 0px; display: flex; flex-wrap: wrap; column-gap: 0px;\"&gt;\r\n        &lt;div class=\"col-lg-4 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 300px; margin: 0px; width: calc(33.3333% - 0px);\"&gt;&lt;/div&gt;\r\n        &lt;div class=\"col-lg-4 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 300px; margin: 0px; width: calc(33.3333% - 0px);\"&gt;&lt;img src=\"/OfflinePage.png\" alt=\"\" name=\"OfflinePage.png\" style=\"width: 100%; height: auto; max-width: 100%;\"&gt;&lt;/div&gt;\r\n        &lt;div class=\"col-lg-4 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 300px; margin: 0px; width: calc(33.3333% - 0px);\"&gt;&lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;","enablerating":false,"enabletracking":false,"excludefromsearch":false,"feedbackpolicy":756150000,"hiddenfromsitemap":false,"isroot":false,"pagetemplateid":"7504b05c-7353-404b-af12-de2d395d7fb0","parentpageid":"439a903c-bf6a-492c-b905-cbbbce3612e3","partialurl":"default-offline-page","publishingstateid":"0c05b030-bb84-4276-94fc-ece9f13ab2e8","rootwebpageid":"8458ee77-c431-481d-9c0f-df60f18835fd","sharedpageconfiguration":true,"summary":"&lt;p&gt;Offline error page&lt;/p&gt;","title":"Default Offline Page"}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Default Offline Page</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>96e8a8c3-d5c0-4729-bbb4-36d4e809b044</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>Default Offline Page&lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; text-align: left; min-height: 150px; padding: 8px; margin: 0px;"&gt;
+    &lt;div class="container" style="display: flex; flex-wrap: wrap;"&gt;
+        &lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; min-width: 300px; display: flex; flex-direction: column; margin: 50px 0px;"&gt;
+            &lt;h1 style="font-size: 28px; margin: 0px auto 7px; font-family: 'Segoe UI'; line-height: 37px; color: rgb(0, 0, 0); outline: rgb(255, 255, 255) solid 1.5px; text-align: center;"&gt;
+                You’re not connected to the internet
+            &lt;/h1&gt;
+            &lt;p style="text-align: center;"&gt;
+                &lt;span style="font-family: 'Segoe UI'; font-size: 14px; text-align: center; position: relative;"&gt;
+                    Check your connection settings to browse this site
+                &lt;/span&gt;
+            &lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+    &lt;div class="container" style="padding: 0px; display: flex; flex-wrap: wrap; column-gap: 0px;"&gt;
+        &lt;div class="col-lg-4 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 300px; margin: 0px; width: calc(33.3333% - 0px);"&gt;&lt;/div&gt;
+        &lt;div class="col-lg-4 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 300px; margin: 0px; width: calc(33.3333% - 0px);"&gt;&lt;img src="/OfflinePage.png" alt="" name="OfflinePage.png" style="width: 100%; height: auto; max-width: 100%;"&gt;&lt;/div&gt;
+        &lt;div class="col-lg-4 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 300px; margin: 0px; width: calc(33.3333% - 0px);"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;Default Offline Page</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

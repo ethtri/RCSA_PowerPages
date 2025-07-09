@@ -1,0 +1,11 @@
+<powerpagecomponent powerpagecomponentid="7504b05c-7353-404b-af12-de2d395d7fb0">
+  <content>{"description":"Default studio template. Please do not modify.","entityname":"adx_webpage","isdefault":false,"type":756150001,"usewebsiteheaderandfooter":true,"webtemplateid":"4c52b861-0cb3-47fb-b5ae-0b4d1e417606"}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Default studio template</name>
+  <powerpagecomponenttype>6</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

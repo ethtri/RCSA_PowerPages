@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml version="9.2.25061.218" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.25061.218" OrganizationSchemaType="Full" CRMServerServiceabilityVersion="9.2.25061.00218">
+  <SolutionManifest>
+    <UniqueName>RCSA_POC_V2</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="RCSA_POC_V7" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="RCSA V8 - Complete Risk Control Self-Assessment Solution with Comprehensive Canvas App Logic" languagecode="1033" />
+    </Descriptions>
+    <Version>7.0.3.1</Version>
+    <Managed>2</Managed>
+    <Publisher>
+      <UniqueName>Cr6a46f</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="CDS Default Publisher" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>cr129</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>79806</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode xsi:nil="true"></AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode xsi:nil="true"></ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode xsi:nil="true"></AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode xsi:nil="true"></ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="1" schemaName="account" behavior="1" />
+      <RootComponent type="1" schemaName="applicationuser" behavior="1" />
+      <RootComponent type="1" schemaName="contact" behavior="1" />
+      <RootComponent type="1" schemaName="contract" behavior="1" />
+      <RootComponent type="1" schemaName="cr129_actionstep" behavior="0" />
+      <RootComponent type="1" schemaName="cr129_assess" behavior="0" />
+      <RootComponent type="1" schemaName="cr129_bu" behavior="0" />
+      <RootComponent type="1" schemaName="cr129_control" behavior="0" />
+      <RootComponent type="1" schemaName="cr129_issue" behavior="0" />
+      <RootComponent type="1" schemaName="cr129_kri" behavior="0" />
+      <RootComponent type="1" schemaName="cr129_proc" behavior="0" />
+      <RootComponent type="1" schemaName="cr129_risk" behavior="0" />
+      <RootComponent type="1" schemaName="cr129_riskctrl" behavior="0" />
+      <RootComponent type="1" schemaName="cr129_scale" behavior="0" />
+      <RootComponent type="1" schemaName="systemuser" behavior="1" />
+      <RootComponent type="372" id="{6e8518b1-1c6f-42c2-b1d6-31f080737b42}" schemaName="cr129_openai-5fpersonal" behavior="0" />
+      <RootComponent type="9" schemaName="cr129_accesslevel" behavior="0" />
+      <RootComponent type="9" schemaName="cr129_actionstatus" behavior="0" />
+      <RootComponent type="9" schemaName="cr129_controltype" behavior="0" />
+      <RootComponent type="9" schemaName="cr129_processcriticality" behavior="0" />
+      <RootComponent type="9" schemaName="cr129_riskcategory" behavior="0" />
+      <RootComponent type="9" schemaName="cr129_rootcause" behavior="0" />
+      <RootComponent type="9" schemaName="cr129_userrole" behavior="0" />
+    </RootComponents>
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="applicationuser" displayName="ApplicationUser" solution="ApplicationUserSolution (1.0.1.4)">
+          <package appName="Microsoft S2SCDSCoreApplication Package" version="1.0.1.28">MicrosoftS2SApplicationIdentitiesCoreTst (1.0.1.28)</package>
+        </Required>
+        <Dependent type="1" schemaName="applicationuser" displayName="ApplicationUser" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="contract" displayName="Contract" solution="msdynce_Service (9.0.5.56)">
+          <package appName="msdynce_Service" version="9.0.25054.1011">msdynce_ServiceAnchor (9.0.25054.1011)</package>
+        </Required>
+        <Dependent type="1" schemaName="contract" displayName="Contract" />
+      </MissingDependency>
+    </MissingDependencies>
+  </SolutionManifest>
+</ImportExportXml>

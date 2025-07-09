@@ -1,0 +1,24 @@
+<powerpagecomponent powerpagecomponentid="a3b65605-b25b-f011-bec1-7c1e521687a7">
+  <content>{
+  "entityname": "cr129_bu",
+  "entitypermissionsenabled": true,
+  "filter_enabled": false,
+  "idquerystringparametername": "id",
+  "map_distancevalues": "5,10,25,50,100",
+  "map_infoboxoffsety": 46,
+  "map_pushpinheight": 39,
+  "map_resturl": "https://dev.virtualearth.net/REST/v1/Locations",
+  "map_zoom": 12,
+  "pagesize": 10,
+  "searchenabled": true,
+  "view": ""
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>BU</name>
+  <powerpagecomponenttype>17</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

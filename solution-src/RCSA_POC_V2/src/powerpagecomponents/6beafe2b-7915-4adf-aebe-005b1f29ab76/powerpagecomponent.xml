@@ -1,0 +1,11 @@
+<powerpagecomponent powerpagecomponentid="6beafe2b-7915-4adf-aebe-005b1f29ab76">
+  <content>{"source":"&lt;div class=\"wrapper-body\"&gt;\r\n    &lt;div class=\"container\" role=\"main\"&gt;\r\n        &lt;div class=\"page-heading\"&gt;\r\n            {% block breadcrumbs %}\r\n            {% include 'Breadcrumbs' %}\r\n            {% endblock %}\r\n            {% block title %}\r\n            {% include 'Page Header' %}\r\n            {% endblock %}\r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n    &lt;div id=\"mainContent\"&gt;\r\n    {% block main %}\r\n    {% include 'Page Copy' %}\r\n    {% endblock %}\r\n    &lt;/div&gt;\r\n    &lt;div class=\"push\"&gt;&lt;/div&gt;\r\n&lt;/div&gt;"}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Full Page without Child Links</name>
+  <powerpagecomponenttype>8</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

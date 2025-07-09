@@ -1,0 +1,17 @@
+adx_accountrelationship: 
+adx_append: false
+adx_appendto: false
+adx_childTablePermissions: []
+adx_contactrelationship: 
+adx_create: false
+adx_delete: false
+adx_entitylogicalname: cr129_scale
+adx_entityname: Scale Read Access
+adx_entitypermission_webrole:
+- b912c42b-d467-42b7-88c9-2427536440e4
+adx_entitypermissionid: e2447bea-c145-4778-a183-1249a2fdbb12
+adx_parententitypermission: 
+adx_parentrelationship: 
+adx_read: true
+adx_scope: 756150000
+adx_write: false

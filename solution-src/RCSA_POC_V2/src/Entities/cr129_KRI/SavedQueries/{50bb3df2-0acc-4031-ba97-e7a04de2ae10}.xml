@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{50bb3df2-0acc-4031-ba97-e7a04de2ae10}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cr129_metricname" select="1" icon="1" preview="1">
+        <row name="result" id="cr129_kriid">
+          <cell name="cr129_metricname" width="300" />
+          <cell name="cr129_risktitle" width="150" />
+          <cell name="cr129_currentvalue" width="150" />
+          <cell name="cr129_amberthreshold" width="150" />
+          <cell name="cr129_redthreshold" width="150" />
+          <cell name="cr129_lastupdated" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cr129_kri">
+          <attribute name="cr129_kriid" />
+          <attribute name="cr129_metricname" />
+          <attribute name="createdon" />
+          <order attribute="cr129_metricname" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cr129_risktitle" />
+          <attribute name="cr129_currentvalue" />
+          <attribute name="cr129_amberthreshold" />
+          <attribute name="cr129_redthreshold" />
+          <attribute name="cr129_lastupdated" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active KRIS" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

@@ -1,0 +1,14 @@
+adx_entitylistid: fef48794-935b-f011-bec1-000d3a4ecbd7
+adx_entityname: cr129_bu
+adx_entitypermissionsenabled: true
+adx_filter_enabled: false
+adx_idquerystringparametername: id
+adx_map_distancevalues: 5,10,25,50,100
+adx_map_infoboxoffsety: 46
+adx_map_pushpinheight: 39
+adx_map_resturl: https://dev.virtualearth.net/REST/v1/Locations
+adx_map_zoom: 12
+adx_name: BU
+adx_pagesize: 10
+adx_searchenabled: true
+adx_view: ''

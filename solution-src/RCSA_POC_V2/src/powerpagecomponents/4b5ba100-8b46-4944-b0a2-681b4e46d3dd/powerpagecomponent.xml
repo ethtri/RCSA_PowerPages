@@ -1,0 +1,11 @@
+<powerpagecomponent powerpagecomponentid="4b5ba100-8b46-4944-b0a2-681b4e46d3dd">
+  <content>{"adddescription":false,"attributelogicalname":"adx_createdbycontact","descriptionposition":100000000,"entityform":"fbfc0b60-cacf-4207-96b3-70dc85564e53","fieldisrequired":true,"ignoredefaultvalue":false,"onsavetype":100000000,"randomizeoptionsetvalues":false,"setvalueonsave":false,"type":100000000,"useattributedescriptionproperty":true}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>simple contact us form adx_createdbycontact</name>
+  <powerpagecomponenttype>16</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

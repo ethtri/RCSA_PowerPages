@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{7c97a7c8-a035-4a68-82e3-0badbab7ccc8}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{86f0e478-7aa2-489f-bb38-8aa6fb43c9dc}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{f4cd2221-c01e-4eec-9090-909dc5f4de0c}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{7e6ba5a7-f271-4641-95fb-09c02f660dd2}">
+                        <labels>
+                          <label description="Description" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_riskdescription" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cr129_riskdescription" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{44ab9bfe-90c0-447e-9d5a-b776971d1b4c}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{f074d946-df67-4669-af6b-4d2dd7a60284}">
+                        <labels>
+                          <label description="Score" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_riskscore" classid="{c6d124ca-7eda-4a60-aea9-7fb8d318b68f}" datafieldname="cr129_riskscore" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{586fe5d9-6ca2-4a6e-b98c-ea61ff01f0f3}">
+                        <labels>
+                          <label description="LikelihoodDesc" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_likelihooddescription" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="cr129_likelihooddescription" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1bd335c3-7c84-477a-85ce-2272e7726bb2}">
+                        <labels>
+                          <label description="ImpactDesc" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_impactdescription" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="cr129_impactdescription" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{6bad541e-436b-4ec2-9875-1be3e1c66ac3}">
+                        <labels>
+                          <label description="Color" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_riskcolor" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="cr129_riskcolor" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

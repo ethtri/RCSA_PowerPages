@@ -1,0 +1,20 @@
+<powerpagecomponent powerpagecomponentid="344b9479-26f6-4501-48af-c4da54f5dbcf">
+  <content>{
+  "displayimageonly": false,
+  "displayorder": 7,
+  "displaypagechildlinks": false,
+  "openinnewwindow": false,
+  "pageid": "88854515-a062-1600-ccd3-703b86de4f95",
+  "publishingstateid": "0c05b030-bb84-4276-94fc-ece9f13ab2e8",
+  "robotsfollowlink": true,
+  "weblinksetid": "8f14c53a-3a7c-4edf-9c89-8b1a9edb8d9d"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Process Selection</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>1</statecode>
+  <statuscode>2</statuscode>
+</powerpagecomponent>

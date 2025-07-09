@@ -1,0 +1,1057 @@
+/* RCSA Power Pages Design System */
+/* CapTech Risk and Compliance Assessment */
+
+/* ============================================
+   CSS VARIABLES - Design Tokens
+   ============================================ */
+:root {
+  /* Primary Colors - CapTech Branding */
+  --captech-primary: #FEA002;
+  --captech-primary-light: #FFB347;
+  --captech-primary-dark: #E6900A;
+  
+  /* Legacy FCB variables for compatibility */
+  --fcb-primary: #FEA002;
+  --fcb-primary-light: #FFB347;
+  --fcb-primary-dark: #E6900A;
+  
+  /* Status Colors */
+  --fcb-success: #28A745;
+  --fcb-warning: #FFC107;
+  --fcb-danger: #DC3545;
+  --fcb-info: #17A2B8;
+  
+  /* Neutral Colors */
+  --fcb-gray-50: #F8F9FA;
+  --fcb-gray-100: #E9ECEF;
+  --fcb-gray-200: #DEE2E6;
+  --fcb-gray-300: #CED4DA;
+  --fcb-gray-400: #6C757D;
+  --fcb-gray-500: #495057;
+  --fcb-gray-600: #343A40;
+  --fcb-gray-700: #212529;
+  --fcb-white: #FFFFFF;
+  
+  /* Typography */
+  --fcb-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --fcb-font-size-xs: 0.75rem;
+  --fcb-font-size-sm: 0.875rem;
+  --fcb-font-size-base: 1rem;
+  --fcb-font-size-lg: 1.125rem;
+  --fcb-font-size-xl: 1.25rem;
+  --fcb-font-size-2xl: 1.5rem;
+  --fcb-font-size-3xl: 1.875rem;
+  --fcb-font-size-4xl: 2.25rem;
+  
+  /* Spacing */
+  --fcb-spacing-xs: 0.25rem;
+  --fcb-spacing-sm: 0.5rem;
+  --fcb-spacing-md: 1rem;
+  --fcb-spacing-lg: 1.5rem;
+  --fcb-spacing-xl: 2rem;
+  --fcb-spacing-2xl: 3rem;
+  --fcb-spacing-3xl: 4rem;
+  
+  /* Border Radius */
+  --fcb-radius-sm: 0.25rem;
+  --fcb-radius-md: 0.375rem;
+  --fcb-radius-lg: 0.5rem;
+  --fcb-radius-xl: 0.75rem;
+  
+  /* Shadows */
+  --fcb-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --fcb-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --fcb-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  /* Transitions */
+  --fcb-transition: all 0.2s ease-in-out;
+}
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--fcb-font-family);
+  font-size: var(--fcb-font-size-base);
+  line-height: 1.6;
+  color: var(--fcb-gray-700);
+  background-color: var(--fcb-gray-50);
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================
+   LAYOUT SYSTEM
+   ============================================ */
+.fcb-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--fcb-spacing-md);
+}
+
+.fcb-container-fluid {
+  width: 100%;
+  padding: 0 var(--fcb-spacing-md);
+}
+
+.fcb-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 calc(-1 * var(--fcb-spacing-md));
+}
+
+.fcb-col {
+  flex: 1;
+  padding: 0 var(--fcb-spacing-md);
+}
+
+.fcb-col-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+.fcb-col-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+.fcb-col-3 { flex: 0 0 25%; max-width: 25%; }
+.fcb-col-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+.fcb-col-6 { flex: 0 0 50%; max-width: 50%; }
+.fcb-col-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+.fcb-col-9 { flex: 0 0 75%; max-width: 75%; }
+.fcb-col-12 { flex: 0 0 100%; max-width: 100%; }
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+.fcb-h1, .fcb-h2, .fcb-h3, .fcb-h4, .fcb-h5, .fcb-h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: var(--fcb-spacing-md);
+  color: var(--fcb-gray-700);
+}
+
+.fcb-h1 { font-size: var(--fcb-font-size-4xl); }
+.fcb-h2 { font-size: var(--fcb-font-size-3xl); }
+.fcb-h3 { font-size: var(--fcb-font-size-2xl); }
+.fcb-h4 { font-size: var(--fcb-font-size-xl); }
+.fcb-h5 { font-size: var(--fcb-font-size-lg); }
+.fcb-h6 { font-size: var(--fcb-font-size-base); }
+
+.fcb-text-primary { color: var(--fcb-primary); }
+.fcb-text-success { color: var(--fcb-success); }
+.fcb-text-warning { color: var(--fcb-warning); }
+.fcb-text-danger { color: var(--fcb-danger); }
+.fcb-text-muted { color: var(--fcb-gray-400); }
+
+.fcb-text-center { text-align: center; }
+.fcb-text-left { text-align: left; }
+.fcb-text-right { text-align: right; }
+
+/* ============================================
+   CARD SYSTEM
+   ============================================ */
+.fcb-card {
+  background: var(--fcb-white);
+  border-radius: var(--fcb-radius-lg);
+  box-shadow: var(--fcb-shadow-md);
+  overflow: hidden;
+  transition: var(--fcb-transition);
+  border: 1px solid var(--fcb-gray-200);
+}
+
+.fcb-card:hover {
+  box-shadow: var(--fcb-shadow-lg);
+  transform: translateY(-2px);
+}
+
+.fcb-card-header {
+  padding: var(--fcb-spacing-lg);
+  background: var(--fcb-gray-50);
+  border-bottom: 1px solid var(--fcb-gray-200);
+}
+
+.fcb-card-body {
+  padding: var(--fcb-spacing-lg);
+}
+
+.fcb-card-footer {
+  padding: var(--fcb-spacing-lg);
+  background: var(--fcb-gray-50);
+  border-top: 1px solid var(--fcb-gray-200);
+}
+
+/* Card Variants */
+.fcb-card-primary {
+  border-left: 4px solid var(--fcb-primary);
+}
+
+.fcb-card-success {
+  border-left: 4px solid var(--fcb-success);
+}
+
+.fcb-card-warning {
+  border-left: 4px solid var(--fcb-warning);
+}
+
+.fcb-card-danger {
+  border-left: 4px solid var(--fcb-danger);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.fcb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--fcb-spacing-sm) var(--fcb-spacing-lg);
+  font-size: var(--fcb-font-size-base);
+  font-weight: 500;
+  line-height: 1.5;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: var(--fcb-radius-md);
+  cursor: pointer;
+  transition: var(--fcb-transition);
+  min-height: 44px;
+  gap: var(--fcb-spacing-sm);
+}
+
+.fcb-btn:hover {
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.fcb-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);
+}
+
+.fcb-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button Variants */
+.fcb-btn-primary {
+  background: var(--fcb-primary);
+  color: var(--fcb-white);
+  border-color: var(--fcb-primary);
+}
+
+.fcb-btn-primary:hover {
+  background: var(--fcb-primary-dark);
+  border-color: var(--fcb-primary-dark);
+  color: var(--fcb-white);
+}
+
+.fcb-btn-secondary {
+  background: var(--fcb-gray-100);
+  color: var(--fcb-gray-700);
+  border-color: var(--fcb-gray-300);
+}
+
+.fcb-btn-secondary:hover {
+  background: var(--fcb-gray-200);
+  border-color: var(--fcb-gray-400);
+  color: var(--fcb-gray-700);
+}
+
+.fcb-btn-success {
+  background: var(--fcb-success);
+  color: var(--fcb-white);
+  border-color: var(--fcb-success);
+}
+
+.fcb-btn-success:hover {
+  background: #218838;
+  border-color: #1e7e34;
+  color: var(--fcb-white);
+}
+
+.fcb-btn-outline-primary {
+  background: transparent;
+  color: var(--fcb-primary);
+  border-color: var(--fcb-primary);
+}
+
+.fcb-btn-outline-primary:hover {
+  background: var(--fcb-primary);
+  color: var(--fcb-white);
+}
+
+/* Button Sizes */
+.fcb-btn-sm {
+  padding: var(--fcb-spacing-xs) var(--fcb-spacing-md);
+  font-size: var(--fcb-font-size-sm);
+  min-height: 36px;
+}
+
+.fcb-btn-lg {
+  padding: var(--fcb-spacing-md) var(--fcb-spacing-xl);
+  font-size: var(--fcb-font-size-lg);
+  min-height: 52px;
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+.fcb-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--fcb-spacing-xs) var(--fcb-spacing-sm);
+  font-size: var(--fcb-font-size-xs);
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  border-radius: var(--fcb-radius-sm);
+  gap: var(--fcb-spacing-xs);
+}
+
+.fcb-badge-primary {
+  background: var(--fcb-primary);
+  color: var(--fcb-white);
+}
+
+.fcb-badge-success {
+  background: var(--fcb-success);
+  color: var(--fcb-white);
+}
+
+.fcb-badge-warning {
+  background: var(--fcb-warning);
+  color: var(--fcb-gray-700);
+}
+
+.fcb-badge-danger {
+  background: var(--fcb-danger);
+  color: var(--fcb-white);
+}
+
+.fcb-badge-secondary {
+  background: var(--fcb-gray-100);
+  color: var(--fcb-gray-700);
+}
+
+/* ============================================
+   PROGRESS INDICATORS
+   ============================================ */
+.fcb-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--fcb-spacing-xl);
+  padding: var(--fcb-spacing-lg) 0;
+}
+
+.fcb-progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 1;
+}
+
+.fcb-progress-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  right: -50%;
+  height: 2px;
+  background: var(--fcb-gray-200);
+  z-index: 1;
+}
+
+.fcb-progress-step.active:not(:last-child)::after {
+  background: var(--fcb-primary);
+}
+
+.fcb-progress-number {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--fcb-gray-200);
+  color: var(--fcb-gray-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: var(--fcb-font-size-sm);
+  position: relative;
+  z-index: 2;
+  margin-bottom: var(--fcb-spacing-sm);
+}
+
+.fcb-progress-step.active .fcb-progress-number {
+  background: var(--fcb-primary);
+  color: var(--fcb-white);
+}
+
+.fcb-progress-step.completed .fcb-progress-number {
+  background: var(--fcb-success);
+  color: var(--fcb-white);
+}
+
+.fcb-progress-label {
+  font-size: var(--fcb-font-size-sm);
+  font-weight: 500;
+  color: var(--fcb-gray-500);
+  text-align: center;
+}
+
+.fcb-progress-step.active .fcb-progress-label {
+  color: var(--fcb-primary);
+}
+
+.fcb-progress-step.completed .fcb-progress-label {
+  color: var(--fcb-success);
+}
+
+/* ============================================
+   HEAT MAP
+   ============================================ */
+.fcb-heat-map {
+  display: grid;
+  grid-template-columns: auto repeat(5, 1fr);
+  grid-template-rows: auto repeat(5, 1fr);
+  gap: 1px;
+  background: var(--fcb-gray-300);
+  border: 1px solid var(--fcb-gray-300);
+  border-radius: var(--fcb-radius-md);
+  overflow: hidden;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.fcb-heat-map-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: var(--fcb-font-size-sm);
+  cursor: pointer;
+  transition: var(--fcb-transition);
+  min-height: 60px;
+}
+
+.fcb-heat-map-cell:hover {
+  transform: scale(1.05);
+  z-index: 10;
+  box-shadow: var(--fcb-shadow-lg);
+}
+
+.fcb-heat-map-header {
+  background: var(--fcb-gray-100);
+  color: var(--fcb-gray-700);
+  font-weight: 600;
+}
+
+.fcb-heat-map-label {
+  background: var(--fcb-gray-100);
+  color: var(--fcb-gray-700);
+  font-weight: 600;
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+}
+
+/* Heat Map Risk Levels */
+.fcb-heat-low {
+  background: #D4EDDA;
+  color: #155724;
+}
+
+.fcb-heat-medium {
+  background: #FFF3CD;
+  color: #856404;
+}
+
+.fcb-heat-high {
+  background: #F8D7DA;
+  color: #721C24;
+}
+
+.fcb-heat-extreme {
+  background: #721C24;
+  color: var(--fcb-white);
+}
+
+/* ============================================
+   FORMS
+   ============================================ */
+.fcb-form-group {
+  margin-bottom: var(--fcb-spacing-lg);
+}
+
+.fcb-form-label {
+  display: block;
+  margin-bottom: var(--fcb-spacing-sm);
+  font-weight: 500;
+  color: var(--fcb-gray-700);
+}
+
+.fcb-form-control {
+  display: block;
+  width: 100%;
+  padding: var(--fcb-spacing-sm) var(--fcb-spacing-md);
+  font-size: var(--fcb-font-size-base);
+  line-height: 1.5;
+  color: var(--fcb-gray-700);
+  background: var(--fcb-white);
+  border: 1px solid var(--fcb-gray-300);
+  border-radius: var(--fcb-radius-md);
+  transition: var(--fcb-transition);
+  min-height: 44px;
+}
+
+.fcb-form-control:focus {
+  outline: none;
+  border-color: var(--fcb-primary);
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);
+}
+
+.fcb-form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  padding-right: 2.5rem;
+}
+
+/* ============================================
+   ALERTS
+   ============================================ */
+.fcb-alert {
+  padding: var(--fcb-spacing-lg);
+  margin-bottom: var(--fcb-spacing-lg);
+  border: 1px solid transparent;
+  border-radius: var(--fcb-radius-md);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fcb-spacing-md);
+}
+
+.fcb-alert-primary {
+  background: rgba(0, 102, 204, 0.1);
+  border-color: rgba(0, 102, 204, 0.2);
+  color: var(--fcb-primary-dark);
+}
+
+.fcb-alert-success {
+  background: rgba(40, 167, 69, 0.1);
+  border-color: rgba(40, 167, 69, 0.2);
+  color: #155724;
+}
+
+.fcb-alert-warning {
+  background: rgba(255, 193, 7, 0.1);
+  border-color: rgba(255, 193, 7, 0.2);
+  color: #856404;
+}
+
+.fcb-alert-danger {
+  background: rgba(220, 53, 69, 0.1);
+  border-color: rgba(220, 53, 69, 0.2);
+  color: #721C24;
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+.fcb-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--fcb-spacing-lg);
+  background: var(--fcb-white);
+  border-radius: var(--fcb-radius-md);
+  overflow: hidden;
+  box-shadow: var(--fcb-shadow-sm);
+}
+
+.fcb-table th,
+.fcb-table td {
+  padding: var(--fcb-spacing-md);
+  text-align: left;
+  border-bottom: 1px solid var(--fcb-gray-200);
+}
+
+.fcb-table th {
+  background: var(--fcb-gray-50);
+  font-weight: 600;
+  color: var(--fcb-gray-700);
+}
+
+.fcb-table tbody tr:hover {
+  background: var(--fcb-gray-50);
+}
+
+.fcb-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+.fcb-mb-0 { margin-bottom: 0; }
+.fcb-mb-1 { margin-bottom: var(--fcb-spacing-xs); }
+.fcb-mb-2 { margin-bottom: var(--fcb-spacing-sm); }
+.fcb-mb-3 { margin-bottom: var(--fcb-spacing-md); }
+.fcb-mb-4 { margin-bottom: var(--fcb-spacing-lg); }
+.fcb-mb-5 { margin-bottom: var(--fcb-spacing-xl); }
+
+.fcb-mt-0 { margin-top: 0; }
+.fcb-mt-1 { margin-top: var(--fcb-spacing-xs); }
+.fcb-mt-2 { margin-top: var(--fcb-spacing-sm); }
+.fcb-mt-3 { margin-top: var(--fcb-spacing-md); }
+.fcb-mt-4 { margin-top: var(--fcb-spacing-lg); }
+.fcb-mt-5 { margin-top: var(--fcb-spacing-xl); }
+
+.fcb-p-0 { padding: 0; }
+.fcb-p-1 { padding: var(--fcb-spacing-xs); }
+.fcb-p-2 { padding: var(--fcb-spacing-sm); }
+.fcb-p-3 { padding: var(--fcb-spacing-md); }
+.fcb-p-4 { padding: var(--fcb-spacing-lg); }
+.fcb-p-5 { padding: var(--fcb-spacing-xl); }
+
+.fcb-d-none { display: none; }
+.fcb-d-block { display: block; }
+.fcb-d-flex { display: flex; }
+.fcb-d-grid { display: grid; }
+
+.fcb-justify-center { justify-content: center; }
+.fcb-justify-between { justify-content: space-between; }
+.fcb-justify-end { justify-content: flex-end; }
+
+.fcb-align-center { align-items: center; }
+.fcb-align-start { align-items: flex-start; }
+.fcb-align-end { align-items: flex-end; }
+
+.fcb-gap-1 { gap: var(--fcb-spacing-xs); }
+.fcb-gap-2 { gap: var(--fcb-spacing-sm); }
+.fcb-gap-3 { gap: var(--fcb-spacing-md); }
+.fcb-gap-4 { gap: var(--fcb-spacing-lg); }
+
+.fcb-w-full { width: 100%; }
+.fcb-h-full { height: 100%; }
+
+.fcb-shadow-sm { box-shadow: var(--fcb-shadow-sm); }
+.fcb-shadow-md { box-shadow: var(--fcb-shadow-md); }
+.fcb-shadow-lg { box-shadow: var(--fcb-shadow-lg); }
+
+.fcb-rounded { border-radius: var(--fcb-radius-md); }
+.fcb-rounded-lg { border-radius: var(--fcb-radius-lg); }
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+  .fcb-container {
+    padding: 0 var(--fcb-spacing-sm);
+  }
+  
+  .fcb-row {
+    margin: 0 calc(-1 * var(--fcb-spacing-sm));
+  }
+  
+  .fcb-col {
+    padding: 0 var(--fcb-spacing-sm);
+  }
+  
+  .fcb-col-sm-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .fcb-card-body {
+    padding: var(--fcb-spacing-md);
+  }
+  
+  .fcb-progress {
+    flex-direction: column;
+    gap: var(--fcb-spacing-md);
+  }
+  
+  .fcb-progress-step:not(:last-child)::after {
+    display: none;
+  }
+  
+  .fcb-heat-map {
+    grid-template-columns: auto repeat(3, 1fr);
+    grid-template-rows: auto repeat(3, 1fr);
+  }
+  
+  .fcb-heat-map-cell {
+    min-height: 50px;
+    font-size: var(--fcb-font-size-xs);
+  }
+  
+  .fcb-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .fcb-btn + .fcb-btn {
+    margin-top: var(--fcb-spacing-sm);
+  }
+}
+
+/* ============================================
+   POWER PAGES SPECIFIC OVERRIDES
+   ============================================ */
+.page-content {
+  padding: var(--fcb-spacing-xl) 0;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  color: var(--fcb-primary) !important;
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+  transition: var(--fcb-transition);
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--fcb-primary) !important;
+}
+
+/* Entity List Styling */
+.entity-list {
+  background: var(--fcb-white);
+  border-radius: var(--fcb-radius-lg);
+  box-shadow: var(--fcb-shadow-md);
+  overflow: hidden;
+}
+
+.entity-list .view-toolbar {
+  background: var(--fcb-gray-50);
+  border-bottom: 1px solid var(--fcb-gray-200);
+  padding: var(--fcb-spacing-md);
+}
+
+.entity-list .view-grid table {
+  margin-bottom: 0;
+}
+
+.entity-list .view-grid th {
+  background: var(--fcb-gray-50);
+  font-weight: 600;
+  color: var(--fcb-gray-700);
+  border-bottom: 2px solid var(--fcb-gray-200);
+}
+
+.entity-list .view-grid td {
+  border-bottom: 1px solid var(--fcb-gray-200);
+}
+
+.entity-list .view-grid tbody tr:hover {
+  background: var(--fcb-gray-50);
+}
+
+/* Form Styling */
+.entity-form {
+  background: var(--fcb-white);
+  border-radius: var(--fcb-radius-lg);
+  box-shadow: var(--fcb-shadow-md);
+  padding: var(--fcb-spacing-xl);
+}
+
+.entity-form .form-group label {
+  font-weight: 500;
+  color: var(--fcb-gray-700);
+  margin-bottom: var(--fcb-spacing-sm);
+}
+
+.entity-form .form-control {
+  border: 1px solid var(--fcb-gray-300);
+  border-radius: var(--fcb-radius-md);
+  padding: var(--fcb-spacing-sm) var(--fcb-spacing-md);
+  transition: var(--fcb-transition);
+}
+
+.entity-form .form-control:focus {
+  border-color: var(--fcb-primary);
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);
+}
+
+/* CapTech Branding */
+.captech-logo-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.captech-logo {
+  max-height: 60px;
+  max-width: 200px;
+  height: auto;
+  width: auto;
+  filter: brightness(0) invert(1); /* Makes logo white for dark backgrounds */
+}
+
+.captech-logo-dark {
+  filter: none; /* Normal logo for light backgrounds */
+}
+
+/* Custom RCSA Page Styles */
+.rcsa-page-header {
+  background: linear-gradient(135deg, var(--fcb-primary), var(--fcb-primary-light));
+  color: var(--fcb-white);
+  padding: var(--fcb-spacing-2xl) 0;
+  margin-bottom: var(--fcb-spacing-xl);
+}
+
+.rcsa-page-header h1 {
+  margin-bottom: var(--fcb-spacing-sm);
+  font-size: var(--fcb-font-size-3xl);
+}
+
+.rcsa-page-header p {
+  font-size: var(--fcb-font-size-lg);
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+.rcsa-metric-card {
+  text-align: center;
+  padding: var(--fcb-spacing-xl);
+}
+
+.rcsa-metric-number {
+  font-size: var(--fcb-font-size-4xl);
+  font-weight: 700;
+  color: var(--fcb-primary);
+  margin-bottom: var(--fcb-spacing-sm);
+}
+
+.rcsa-metric-label {
+  font-size: var(--fcb-font-size-sm);
+  color: var(--fcb-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.rcsa-assessment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--fcb-spacing-md);
+  border-bottom: 1px solid var(--fcb-gray-200);
+  transition: var(--fcb-transition);
+}
+
+.rcsa-assessment-item:hover {
+  background: var(--fcb-gray-50);
+}
+
+.rcsa-assessment-item:last-child {
+  border-bottom: none;
+}
+
+.rcsa-process-card {
+  cursor: pointer;
+  transition: var(--fcb-transition);
+  height: 100%;
+}
+
+.rcsa-process-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--fcb-shadow-lg);
+}
+
+.rcsa-process-card.selected {
+  border-color: var(--fcb-primary);
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);
+}
+
+.rcsa-criticality-high {
+  background: var(--fcb-danger);
+  color: var(--fcb-white);
+}
+
+.rcsa-criticality-medium {
+  background: var(--fcb-warning);
+  color: var(--fcb-gray-700);
+}
+
+.rcsa-criticality-low {
+  background: var(--fcb-success);
+  color: var(--fcb-white);
+}
+
+/* Loading States */
+.rcsa-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--fcb-spacing-2xl);
+  color: var(--fcb-gray-500);
+}
+
+.rcsa-loading::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--fcb-gray-200);
+  border-top: 2px solid var(--fcb-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: var(--fcb-spacing-sm);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Print Styles */
+@media print {
+  .fcb-btn,
+  .fcb-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .rcsa-page-header {
+    background: var(--fcb-primary) !important;
+    color: var(--fcb-white) !important;
+  }
+} 
+
+/* ============================================================================ */
+/* PERMANENT CARD SEPARATION STYLES - DO NOT REMOVE */
+/* These styles ensure proper visual separation of risk cards */
+/* Added to prevent recurring issues with card separation */
+/* ============================================================================ */
+
+/* Enhanced Card Visual Separation - Maximum Specificity */
+.container .section-card .section-body .risk-card.existing {
+  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.12) !important;
+  border: 1px solid rgba(25, 118, 210, 0.1) !important;
+  background: #ffffff !important;
+  margin-bottom: 1.5rem !important;
+  border-radius: 12px !important;
+}
+
+.container .section-card .section-body .risk-card.ai {
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.12) !important;
+  border: 1px solid rgba(76, 175, 80, 0.1) !important;
+  background: #ffffff !important;
+  margin-bottom: 1.5rem !important;
+  border-radius: 12px !important;
+}
+
+.container .section-card .section-body .risk-card.custom {
+  box-shadow: 0 8px 25px rgba(245, 124, 0, 0.12) !important;
+  border: 1px solid rgba(245, 124, 0, 0.1) !important;
+  background: #ffffff !important;
+  margin-bottom: 1.5rem !important;
+  border-radius: 12px !important;
+}
+
+/* Stronger Card Separation - Physical Spacing */
+.container .section-body .risk-card + .risk-card {
+  margin-top: 1.5rem !important;
+}
+
+/* Enhanced Hover Effects */
+.container .section-card .section-body .risk-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Card Content Padding and Spacing */
+.container .section-card .section-body .risk-card {
+  padding: 1.5rem !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Gradient Separator Lines Between Cards */
+.container .section-card .section-body .risk-card:not(:last-child)::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: -0.75rem !important;
+  left: 10% !important;
+  right: 10% !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, transparent, rgba(108, 117, 125, 0.2), transparent) !important;
+  border-radius: 1px !important;
+}
+
+/* Force card separation with body-level styles */
+body .risk-card {
+  margin-bottom: 1.5rem !important;
+}
+
+body .risk-card:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  padding-bottom: 1.5rem !important;
+}
+
+/* ============================================================================ */
+/* END PERMANENT CARD SEPARATION STYLES */
+/* ============================================================================ */ 
+
+/* ============================================================================ */
+/* CRITICAL PROTECTED FIXES - NEVER REMOVE THESE STYLES */
+/* These fixes prevent recurring UX issues in Risk Identification */
+/* Last Updated: 2024 - Comprehensive UX Issue Prevention */
+/* ============================================================================ */
+
+/* PROTECTED FIX #1: Overlapping Labels Solution - Position source badges properly */
+body .risk-source-badge {
+  position: absolute !important;
+  top: 0.5rem !important;
+  right: 0.5rem !important;
+  font-size: 0.7rem !important;
+  padding: 0.3rem 0.6rem !important;
+  border-radius: 12px !important;
+  z-index: 20 !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3px !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+/* PROTECTED FIX #2: Remove AI Card Color Stripe - Force removal */
+body .risk-card.ai,
+body .risk-card.ai::before,
+body .risk-card.ai::after {
+  border-left: none !important;
+  border-image: none !important;
+  border-left-color: transparent !important;
+  border-left-width: 0 !important;
+}
+
+/* PROTECTED FIX #3: Prevent Category Badge Overlap */
+body .risk-card .badge:not(.risk-source-badge) {
+  margin-top: 2.5rem !important;
+  position: relative !important;
+  z-index: 5 !important;
+  clear: both !important;
+  display: inline-block !important;
+}
+
+/* PROTECTED FIX #4: Proper Card Spacing for Badges */
+body .risk-card {
+  padding-top: 2rem !important;
+  position: relative !important;
+}
+
+/* PROTECTED FIX #5: Card Content Spacing */
+body .risk-card .card-body,
+body .risk-card > .d-flex:first-child,
+body .risk-card > div:first-child {
+  margin-top: 1rem !important;
+  position: relative !important;
+}
+
+/* ============================================================================ */
+/* END CRITICAL PROTECTED FIXES */
+/* ============================================================================ */ 

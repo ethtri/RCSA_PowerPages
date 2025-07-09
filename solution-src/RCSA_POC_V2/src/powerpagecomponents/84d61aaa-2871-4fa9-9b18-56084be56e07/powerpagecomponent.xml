@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="84d61aaa-2871-4fa9-9b18-56084be56e07">
+  <content>{
+  "filecontent": null,
+  "value": "https://login.windows.net/ae9d6e9a-cc18-4204-ac29-43a0ccb860e8/"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Authentication/Registration/LoginButtonAuthenticationType</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

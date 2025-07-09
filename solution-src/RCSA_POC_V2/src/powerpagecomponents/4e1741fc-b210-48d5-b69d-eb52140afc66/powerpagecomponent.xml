@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="4e1741fc-b210-48d5-b69d-eb52140afc66">
+  <content>{
+  "filecontent": null,
+  "value": ""
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Authentication/OpenIdConnect/AAD-B2C_1/Authority</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>1</statecode>
+  <statuscode>2</statuscode>
+</powerpagecomponent>

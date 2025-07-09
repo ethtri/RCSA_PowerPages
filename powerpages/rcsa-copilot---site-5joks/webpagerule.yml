@@ -1,0 +1,18 @@
+- adx_name: Grant Change to Content
+  adx_right: 1
+  adx_scope: 1
+  adx_webpageaccesscontrolruleid: 729eb32c-3f6a-41b1-b185-9b9ae22ecb31
+- adx_name: Grant Change to Administrators
+  adx_right: 1
+  adx_scope: 1
+  adx_webpageaccesscontrolrule_webrole:
+  - a3f35e16-a398-428c-b9db-986df58ce13e
+  adx_webpageaccesscontrolruleid: ca2bf8d2-2540-42a0-9dfc-6a7f339e59f2
+  adx_webpageid: 439a903c-bf6a-492c-b905-cbbbce3612e3
+- adx_name: Restrict Read on Process Selection
+  adx_right: 2
+  adx_scope: 1
+  adx_webpageaccesscontrolrule_webrole:
+  - b912c42b-d467-42b7-88c9-2427536440e4
+  adx_webpageaccesscontrolruleid: e7928d2c-55b2-2868-fab8-b54240095c1a
+  adx_webpageid: 88854515-a062-1600-ccd3-703b86de4f95

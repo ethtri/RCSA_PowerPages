@@ -1,0 +1,632 @@
+<powerpagecomponent powerpagecomponentid="88854515-a062-1600-ccd3-703b86de4f95">
+  <content>{
+  "copy": "&lt;!-- RCSA Process Selection - CapTech Consulting --&gt;\r\n&lt;!-- Step 1 of 4: Select Business Unit and Process --&gt;\r\n\r\n&lt;link rel=\"stylesheet\" href=\"~/rcsa-styles.css\"&gt;\r\n&lt;link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css\"&gt;\r\n\r\n&lt;!-- Progress Indicator --&gt;\r\n&lt;div class=\"fcb-container fcb-mt-4\"&gt;\r\n    &lt;div class=\"fcb-progress\" role=\"progressbar\" aria-valuenow=\"1\" aria-valuemin=\"1\" aria-valuemax=\"4\"&gt;\r\n        &lt;div class=\"fcb-progress-step active\"&gt;\r\n            &lt;div class=\"fcb-progress-number\"&gt;1&lt;/div&gt;\r\n            &lt;div class=\"fcb-progress-label\"&gt;Select Process&lt;/div&gt;\r\n        &lt;/div&gt;\r\n        &lt;div class=\"fcb-progress-step\"&gt;\r\n            &lt;div class=\"fcb-progress-number\"&gt;2&lt;/div&gt;\r\n            &lt;div class=\"fcb-progress-label\"&gt;Identify Risks&lt;/div&gt;\r\n        &lt;/div&gt;\r\n        &lt;div class=\"fcb-progress-step\"&gt;\r\n            &lt;div class=\"fcb-progress-number\"&gt;3&lt;/div&gt;\r\n            &lt;div class=\"fcb-progress-label\"&gt;Map Controls&lt;/div&gt;\r\n        &lt;/div&gt;\r\n        &lt;div class=\"fcb-progress-step\"&gt;\r\n            &lt;div class=\"fcb-progress-number\"&gt;4&lt;/div&gt;\r\n            &lt;div class=\"fcb-progress-label\"&gt;Assess Risk&lt;/div&gt;\r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;!-- Page Header --&gt;\r\n&lt;div class=\"rcsa-page-header\"&gt;\r\n    &lt;div class=\"fcb-container\"&gt;\r\n        &lt;div class=\"fcb-row fcb-align-center\"&gt;\r\n            &lt;div class=\"fcb-col-8\"&gt;\r\n                &lt;h1 class=\"fcb-mb-2\"&gt;\r\n                    &lt;i class=\"fas fa-play-circle\"&gt;&lt;/i&gt; Start Risk Assessment\r\n                &lt;/h1&gt;\r\n                &lt;p class=\"fcb-mb-0\"&gt;\r\n                    Select your business unit and process to begin the risk and compliance assessment.\r\n                &lt;/p&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"fcb-col-4 fcb-text-right\"&gt;\r\n                &lt;div class=\"captech-logo-container fcb-mb-3\"&gt;\r\n                    &lt;img src=\"~/captech-logo.png\" alt=\"CapTech Consulting\" class=\"captech-logo\" /&gt;\r\n                &lt;/div&gt;\r\n                &lt;div class=\"fcb-badge fcb-badge-primary\"&gt;\r\n                    &lt;i class=\"fas fa-clock\"&gt;&lt;/i&gt; ~8 minutes\r\n                &lt;/div&gt;\r\n                &lt;br&gt;\r\n                &lt;small class=\"fcb-text-muted fcb-mt-2\"&gt;Average completion time&lt;/small&gt;\r\n            &lt;/div&gt;\r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;div class=\"fcb-container\"&gt;\r\n    &lt;div class=\"fcb-row fcb-justify-center\"&gt;\r\n        &lt;div class=\"fcb-col-10\"&gt;\r\n            &lt;!-- Business Unit Selection --&gt;\r\n            &lt;div class=\"fcb-card fcb-mb-5\" id=\"business-unit-section\"&gt;\r\n                &lt;div class=\"fcb-card-header\"&gt;\r\n                    &lt;h2 class=\"fcb-h4 fcb-mb-1\"&gt;\r\n                        &lt;i class=\"fas fa-building\"&gt;&lt;/i&gt; Step 1: Select Your Business Unit\r\n                    &lt;/h2&gt;\r\n                    &lt;p class=\"fcb-text-muted fcb-mb-0\"&gt;Choose the business unit you're conducting the assessment for.&lt;/p&gt;\r\n                &lt;/div&gt;\r\n                &lt;div class=\"fcb-card-body\"&gt;\r\n                    &lt;div class=\"fcb-form-group\"&gt;\r\n                        &lt;label for=\"business-unit-select\" class=\"fcb-form-label\"&gt;\r\n                            Business Unit &lt;span class=\"fcb-text-danger\"&gt;*&lt;/span&gt;\r\n                        &lt;/label&gt;\r\n                        &lt;select \r\n                            id=\"business-unit-select\" \r\n                            class=\"fcb-form-control fcb-form-select\" \r\n                            required\r\n                            aria-describedby=\"business-unit-help\"\r\n                            data-testid=\"business-unit-dropdown\"&gt;\r\n                            &lt;option value=\"\"&gt;Select a business unit...&lt;/option&gt;\r\n                            {% assign business_units = entities['cr129_bu'] | sort: 'cr129_name' %}\r\n                            {% if business_units.size &gt; 0 %}\r\n                                {% for bu in business_units %}\r\n                                &lt;option value=\"{{ bu.cr129_buid }}\" data-description=\"{{ bu.cr129_description | default: '' }}\"&gt;\r\n                                    {{ bu.cr129_name | default: \"Business Unit\" }}\r\n                                &lt;/option&gt;\r\n                                {% endfor %}\r\n                            {% else %}\r\n                                &lt;!-- Fallback options for testing when no data exists --&gt;\r\n                                &lt;option value=\"consulting-services\" data-description=\"Client consulting and advisory services\"&gt;Consulting Services&lt;/option&gt;\r\n                                &lt;option value=\"technology-solutions\" data-description=\"Technology implementation and digital transformation\"&gt;Technology Solutions&lt;/option&gt;\r\n                                &lt;option value=\"data-analytics\" data-description=\"Data science and analytics consulting\"&gt;Data &amp; Analytics&lt;/option&gt;\r\n                                &lt;option value=\"operations\" data-description=\"Internal operations and support functions\"&gt;Operations &amp; Technology&lt;/option&gt;\r\n                                &lt;option value=\"risk-compliance\" data-description=\"Risk management and regulatory compliance\"&gt;Risk &amp; Compliance&lt;/option&gt;\r\n                                &lt;option value=\"human-resources\" data-description=\"Talent management and organizational development\"&gt;Human Resources&lt;/option&gt;\r\n                            {% endif %}\r\n                        &lt;/select&gt;\r\n                        &lt;small id=\"business-unit-help\" class=\"fcb-text-muted\"&gt;\r\n                            Select the business unit that best represents your area of responsibility.\r\n                        &lt;/small&gt;\r\n                    &lt;/div&gt;\r\n                    \r\n                    &lt;!-- Business Unit Description --&gt;\r\n                    &lt;div id=\"bu-description\" class=\"fcb-alert fcb-alert-primary fcb-d-none\" role=\"region\" aria-live=\"polite\"&gt;\r\n                        &lt;i class=\"fas fa-info-circle\"&gt;&lt;/i&gt;\r\n                        &lt;div&gt;\r\n                            &lt;strong&gt;About this Business Unit:&lt;/strong&gt;\r\n                            &lt;p id=\"bu-description-text\" class=\"fcb-mb-0\"&gt;&lt;/p&gt;\r\n                        &lt;/div&gt;\r\n                    &lt;/div&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n\r\n            &lt;!-- Process Selection --&gt;\r\n            &lt;div class=\"fcb-card fcb-mb-5\" id=\"process-section\" style=\"opacity: 0.5; pointer-events: none;\"&gt;\r\n                &lt;div class=\"fcb-card-header\"&gt;\r\n                    &lt;h2 class=\"fcb-h4 fcb-mb-1\"&gt;\r\n                        &lt;i class=\"fas fa-cogs\"&gt;&lt;/i&gt; Step 2: Select Process to Assess\r\n                    &lt;/h2&gt;\r\n                    &lt;p class=\"fcb-text-muted fcb-mb-0\"&gt;Choose the specific process you want to assess for risks and controls.&lt;/p&gt;\r\n                &lt;/div&gt;\r\n                &lt;div class=\"fcb-card-body\"&gt;\r\n                    &lt;div id=\"process-loading\" class=\"rcsa-loading fcb-d-none\"&gt;\r\n                        Loading processes for selected business unit...\r\n                    &lt;/div&gt;\r\n                    \r\n                    &lt;div id=\"process-grid\" class=\"fcb-row\"&gt;\r\n                        &lt;!-- Processes will be populated based on business unit selection --&gt;\r\n                    &lt;/div&gt;\r\n                    \r\n                    &lt;div id=\"no-processes\" class=\"fcb-text-center fcb-p-4 fcb-d-none\"&gt;\r\n                        &lt;i class=\"fas fa-exclamation-circle fa-2x fcb-text-warning fcb-mb-3\"&gt;&lt;/i&gt;\r\n                        &lt;p class=\"fcb-text-muted\"&gt;No processes found for the selected business unit.&lt;/p&gt;\r\n                        &lt;p class=\"fcb-text-muted fcb-mb-0\"&gt;Please contact your administrator to set up processes for this business unit.&lt;/p&gt;\r\n                    &lt;/div&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n\r\n            &lt;!-- Action Buttons --&gt;\r\n            &lt;div class=\"fcb-card\"&gt;\r\n                &lt;div class=\"fcb-card-body fcb-text-center\"&gt;\r\n                    &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-center\"&gt;\r\n                        &lt;a href=\"/dashboard\" class=\"fcb-btn fcb-btn-secondary\"&gt;\r\n                            &lt;i class=\"fas fa-arrow-left\"&gt;&lt;/i&gt; Back to Dashboard\r\n                        &lt;/a&gt;\r\n                        \r\n                        &lt;button \r\n                            id=\"continue-assessment\" \r\n                            class=\"fcb-btn fcb-btn-primary fcb-btn-lg\" \r\n                            disabled\r\n                            data-testid=\"continue-button\"&gt;\r\n                            Continue to Risk Identification &lt;i class=\"fas fa-arrow-right\"&gt;&lt;/i&gt;\r\n                        &lt;/button&gt;\r\n                    &lt;/div&gt;\r\n                    \r\n                    &lt;div class=\"fcb-mt-3\"&gt;\r\n                        &lt;small class=\"fcb-text-muted\"&gt;\r\n                            &lt;i class=\"fas fa-shield-alt\"&gt;&lt;/i&gt; \r\n                            Your assessment data is automatically saved and encrypted.\r\n                        &lt;/small&gt;\r\n                    &lt;/div&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;script&gt;\r\n// Process Selection Logic with comprehensive error handling and accessibility\r\nclass ProcessSelection {\r\n    constructor() {\r\n        this.selectedBusinessUnit = null;\r\n        this.selectedProcess = null;\r\n        this.processes = this.getProcessData();\r\n        this.init();\r\n    }\r\n\r\n    init() {\r\n        this.bindEvents();\r\n        this.setupAccessibility();\r\n        console.log('Process Selection initialized');\r\n    }\r\n\r\n    bindEvents() {\r\n        const buSelect = document.getElementById('business-unit-select');\r\n        const continueBtn = document.getElementById('continue-assessment');\r\n        \r\n        if (buSelect) {\r\n            buSelect.addEventListener('change', (e) =&gt; this.handleBusinessUnitChange(e));\r\n        }\r\n        \r\n        if (continueBtn) {\r\n            continueBtn.addEventListener('click', (e) =&gt; this.handleContinue(e));\r\n        }\r\n    }\r\n\r\n    setupAccessibility() {\r\n        // Add keyboard navigation for process cards\r\n        document.addEventListener('keydown', (e) =&gt; {\r\n            if (e.key === 'Enter' || e.key === ' ') {\r\n                const target = e.target;\r\n                if (target.classList.contains('rcsa-process-card')) {\r\n                    e.preventDefault();\r\n                    this.selectProcess(target);\r\n                }\r\n            }\r\n        });\r\n    }\r\n\r\n    handleBusinessUnitChange(event) {\r\n        const selectedValue = event.target.value;\r\n        const selectedOption = event.target.options[event.target.selectedIndex];\r\n        \r\n        if (selectedValue) {\r\n            this.selectedBusinessUnit = selectedValue;\r\n            this.showBusinessUnitDescription(selectedOption);\r\n            this.enableProcessSection();\r\n            this.loadProcesses(selectedValue);\r\n        } else {\r\n            this.selectedBusinessUnit = null;\r\n            this.hideBusinessUnitDescription();\r\n            this.disableProcessSection();\r\n        }\r\n        \r\n        this.updateContinueButton();\r\n    }\r\n\r\n    showBusinessUnitDescription(option) {\r\n        const description = option.dataset.description;\r\n        if (description) {\r\n            const descElement = document.getElementById('bu-description');\r\n            const textElement = document.getElementById('bu-description-text');\r\n            \r\n            if (descElement &amp;&amp; textElement) {\r\n                textElement.textContent = description;\r\n                descElement.classList.remove('fcb-d-none');\r\n            }\r\n        }\r\n    }\r\n\r\n    hideBusinessUnitDescription() {\r\n        const descElement = document.getElementById('bu-description');\r\n        if (descElement) {\r\n            descElement.classList.add('fcb-d-none');\r\n        }\r\n    }\r\n\r\n    enableProcessSection() {\r\n        const section = document.getElementById('process-section');\r\n        if (section) {\r\n            section.style.opacity = '1';\r\n            section.style.pointerEvents = 'auto';\r\n            section.setAttribute('aria-disabled', 'false');\r\n        }\r\n    }\r\n\r\n    disableProcessSection() {\r\n        const section = document.getElementById('process-section');\r\n        if (section) {\r\n            section.style.opacity = '0.5';\r\n            section.style.pointerEvents = 'none';\r\n            section.setAttribute('aria-disabled', 'true');\r\n        }\r\n        this.selectedProcess = null;\r\n    }\r\n\r\n    loadProcesses(businessUnit) {\r\n        const grid = document.getElementById('process-grid');\r\n        const loading = document.getElementById('process-loading');\r\n        const noProcesses = document.getElementById('no-processes');\r\n        \r\n        if (!grid) return;\r\n\r\n        // Show loading state\r\n        if (loading) loading.classList.remove('fcb-d-none');\r\n        if (noProcesses) noProcesses.classList.add('fcb-d-none');\r\n        grid.innerHTML = '';\r\n\r\n        // Simulate loading delay for better UX\r\n        setTimeout(() =&gt; {\r\n            const processes = this.processes[businessUnit] || this.processes['default'];\r\n            \r\n            if (loading) loading.classList.add('fcb-d-none');\r\n            \r\n            if (processes &amp;&amp; processes.length &gt; 0) {\r\n                this.renderProcesses(processes, grid);\r\n            } else {\r\n                if (noProcesses) noProcesses.classList.remove('fcb-d-none');\r\n            }\r\n        }, 800);\r\n    }\r\n\r\n    renderProcesses(processes, container) {\r\n        container.innerHTML = processes.map((process, index) =&gt; `\r\n            &lt;div class=\"fcb-col-6 fcb-mb-3\"&gt;\r\n                &lt;div class=\"fcb-card rcsa-process-card\" \r\n                     data-process-id=\"${process.id}\"\r\n                     data-testid=\"process-card-${index}\"\r\n                     tabindex=\"0\"\r\n                     role=\"button\"\r\n                     aria-pressed=\"false\"&gt;\r\n                    &lt;div class=\"fcb-card-body\"&gt;\r\n                        &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-start fcb-mb-2\"&gt;\r\n                            &lt;h3 class=\"fcb-h6 fcb-mb-0\"&gt;${process.name}&lt;/h3&gt;\r\n                            &lt;span class=\"fcb-badge rcsa-criticality-${process.criticality.toLowerCase()}\"&gt;\r\n                                ${process.criticality}\r\n                            &lt;/span&gt;\r\n                        &lt;/div&gt;\r\n                        &lt;p class=\"fcb-text-muted fcb-mb-3\"&gt;${process.description}&lt;/p&gt;\r\n                        &lt;div class=\"fcb-d-flex fcb-justify-between fcb-align-center\"&gt;\r\n                            &lt;small class=\"fcb-text-muted\"&gt;\r\n                                &lt;i class=\"fas fa-clock\"&gt;&lt;/i&gt; ~${process.estimatedTime} min\r\n                            &lt;/small&gt;\r\n                            &lt;small class=\"fcb-text-muted\"&gt;\r\n                                &lt;i class=\"fas fa-exclamation-triangle\"&gt;&lt;/i&gt; ${process.riskCount} known risks\r\n                            &lt;/small&gt;\r\n                        &lt;/div&gt;\r\n                    &lt;/div&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n        `).join('');\r\n\r\n        // Add click handlers to new cards\r\n        container.querySelectorAll('.rcsa-process-card').forEach(card =&gt; {\r\n            card.addEventListener('click', () =&gt; this.selectProcess(card));\r\n        });\r\n    }\r\n\r\n    selectProcess(card) {\r\n        // Remove selection from all cards\r\n        document.querySelectorAll('.rcsa-process-card').forEach(c =&gt; {\r\n            c.classList.remove('selected');\r\n            c.setAttribute('aria-pressed', 'false');\r\n        });\r\n        \r\n        // Select this card\r\n        card.classList.add('selected');\r\n        card.setAttribute('aria-pressed', 'true');\r\n        this.selectedProcess = card.dataset.processId;\r\n        \r\n        // Announce selection to screen readers\r\n        const processName = card.querySelector('.fcb-h6').textContent;\r\n        this.announceToScreenReader(`Selected process: ${processName}`);\r\n        \r\n        this.updateContinueButton();\r\n    }\r\n\r\n    updateContinueButton() {\r\n        const continueBtn = document.getElementById('continue-assessment');\r\n        if (continueBtn) {\r\n            const canContinue = this.selectedBusinessUnit &amp;&amp; this.selectedProcess;\r\n            continueBtn.disabled = !canContinue;\r\n            continueBtn.classList.toggle('fcb-btn-secondary', !canContinue);\r\n            continueBtn.classList.toggle('fcb-btn-primary', canContinue);\r\n        }\r\n    }\r\n\r\n    handleContinue(event) {\r\n        if (!this.selectedBusinessUnit || !this.selectedProcess) {\r\n            event.preventDefault();\r\n            this.showValidationError();\r\n            return;\r\n        }\r\n\r\n        // Store selections for next step\r\n        sessionStorage.setItem('rcsa_business_unit', this.selectedBusinessUnit);\r\n        sessionStorage.setItem('rcsa_process', this.selectedProcess);\r\n        \r\n        // Navigate to next step\r\n        window.location.href = '/risk-identification';\r\n    }\r\n\r\n    showValidationError() {\r\n        const errorMsg = document.createElement('div');\r\n        errorMsg.className = 'fcb-alert fcb-alert-danger fcb-mt-3';\r\n        errorMsg.innerHTML = `\r\n            &lt;i class=\"fas fa-exclamation-triangle\"&gt;&lt;/i&gt;\r\n            &lt;div&gt;Please select both a business unit and process before continuing.&lt;/div&gt;\r\n        `;\r\n        \r\n        const container = document.querySelector('.fcb-card:last-child .fcb-card-body');\r\n        if (container) {\r\n            container.appendChild(errorMsg);\r\n            setTimeout(() =&gt; errorMsg.remove(), 5000);\r\n        }\r\n    }\r\n\r\n    announceToScreenReader(message) {\r\n        const announcement = document.createElement('div');\r\n        announcement.setAttribute('aria-live', 'polite');\r\n        announcement.setAttribute('aria-atomic', 'true');\r\n        announcement.className = 'sr-only';\r\n        announcement.textContent = message;\r\n        document.body.appendChild(announcement);\r\n        setTimeout(() =&gt; announcement.remove(), 1000);\r\n    }\r\n\r\n    getProcessData() {\r\n        // This would typically come from Dataverse, but providing fallback data for testing\r\n        return {\r\n            'consulting-services': [\r\n                {\r\n                    id: 'client-onboarding',\r\n                    name: 'Client Onboarding',\r\n                    description: 'End-to-end client intake, assessment, and project initiation process',\r\n                    criticality: 'High',\r\n                    estimatedTime: 12,\r\n                    riskCount: 8\r\n                },\r\n                {\r\n                    id: 'project-delivery',\r\n                    name: 'Project Delivery',\r\n                    description: 'Project execution, milestone tracking, and deliverable management',\r\n                    criticality: 'High',\r\n                    estimatedTime: 15,\r\n                    riskCount: 10\r\n                },\r\n                {\r\n                    id: 'knowledge-transfer',\r\n                    name: 'Knowledge Transfer',\r\n                    description: 'Client training and knowledge handover procedures',\r\n                    criticality: 'Medium',\r\n                    estimatedTime: 8,\r\n                    riskCount: 5\r\n                },\r\n                {\r\n                    id: 'client-support',\r\n                    name: 'Client Support',\r\n                    description: 'Ongoing client support and issue resolution processes',\r\n                    criticality: 'Medium',\r\n                    estimatedTime: 6,\r\n                    riskCount: 4\r\n                }\r\n            ],\r\n            'technology-solutions': [\r\n                {\r\n                    id: 'solution-architecture',\r\n                    name: 'Solution Architecture',\r\n                    description: 'Technology solution design and architecture planning',\r\n                    criticality: 'High',\r\n                    estimatedTime: 15,\r\n                    riskCount: 10\r\n                },\r\n                {\r\n                    id: 'system-integration',\r\n                    name: 'System Integration',\r\n                    description: 'Integration of technology systems and data migration',\r\n                    criticality: 'High',\r\n                    estimatedTime: 18,\r\n                    riskCount: 12\r\n                },\r\n                {\r\n                    id: 'deployment-management',\r\n                    name: 'Deployment Management',\r\n                    description: 'Software deployment and go-live support processes',\r\n                    criticality: 'High',\r\n                    estimatedTime: 14,\r\n                    riskCount: 9\r\n                }\r\n            ],\r\n            'default': [\r\n                {\r\n                    id: 'general-process',\r\n                    name: 'General Business Process',\r\n                    description: 'Standard business process assessment',\r\n                    criticality: 'Medium',\r\n                    estimatedTime: 8,\r\n                    riskCount: 5\r\n                }\r\n            ]\r\n        };\r\n    }\r\n}\r\n\r\n// Initialize when DOM is ready\r\ndocument.addEventListener('DOMContentLoaded', () =&gt; {\r\n    new ProcessSelection();\r\n});\r\n&lt;/script&gt;\r\n\r\n&lt;style&gt;\r\n/* Process Selection Specific Styles */\r\n.rcsa-process-card {\r\n    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\r\n    cursor: pointer;\r\n    border: 2px solid transparent;\r\n    position: relative;\r\n}\r\n\r\n.rcsa-process-card:hover {\r\n    transform: translateY(-4px);\r\n    box-shadow: 0 8px 25px rgba(0, 102, 204, 0.15);\r\n}\r\n\r\n.rcsa-process-card:focus {\r\n    outline: none;\r\n    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);\r\n}\r\n\r\n.rcsa-process-card.selected {\r\n    border-color: var(--fcb-primary);\r\n    background: linear-gradient(135deg, rgba(0, 102, 204, 0.05), rgba(0, 102, 204, 0.02));\r\n}\r\n\r\n.rcsa-process-card.selected::before {\r\n    content: '\\f00c';\r\n    font-family: 'Font Awesome 6 Free';\r\n    font-weight: 900;\r\n    position: absolute;\r\n    top: 10px;\r\n    right: 10px;\r\n    background: var(--fcb-primary);\r\n    color: white;\r\n    width: 24px;\r\n    height: 24px;\r\n    border-radius: 50%;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    font-size: 12px;\r\n    z-index: 2;\r\n}\r\n\r\n/* Criticality badges */\r\n.rcsa-criticality-high {\r\n    background: var(--fcb-danger);\r\n    color: var(--fcb-white);\r\n}\r\n\r\n.rcsa-criticality-medium {\r\n    background: var(--fcb-warning);\r\n    color: var(--fcb-gray-700);\r\n}\r\n\r\n.rcsa-criticality-low {\r\n    background: var(--fcb-success);\r\n    color: var(--fcb-white);\r\n}\r\n\r\n/* Form enhancements */\r\n.fcb-form-select:focus {\r\n    border-color: var(--fcb-primary);\r\n    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);\r\n}\r\n\r\n/* Loading animation */\r\n@keyframes pulse {\r\n    0%, 100% { opacity: 1; }\r\n    50% { opacity: 0.5; }\r\n}\r\n\r\n.rcsa-loading {\r\n    animation: pulse 1.5s ease-in-out infinite;\r\n}\r\n\r\n/* Screen reader only content */\r\n.sr-only {\r\n    position: absolute;\r\n    width: 1px;\r\n    height: 1px;\r\n    padding: 0;\r\n    margin: -1px;\r\n    overflow: hidden;\r\n    clip: rect(0, 0, 0, 0);\r\n    white-space: nowrap;\r\n    border: 0;\r\n}\r\n\r\n/* Responsive adjustments */\r\n@media (max-width: 768px) {\r\n    .fcb-col-6 {\r\n        flex: 0 0 100%;\r\n        max-width: 100%;\r\n    }\r\n    \r\n    .fcb-d-flex.fcb-justify-between {\r\n        flex-direction: column;\r\n        gap: 1rem;\r\n    }\r\n    \r\n    .fcb-btn-lg {\r\n        width: 100%;\r\n    }\r\n}\r\n\r\n/* High contrast mode support */\r\n@media (prefers-contrast: high) {\r\n    .rcsa-process-card {\r\n        border: 2px solid currentColor;\r\n    }\r\n    \r\n    .rcsa-process-card.selected {\r\n        background: highlight;\r\n        color: highlighttext;\r\n    }\r\n}\r\n\r\n/* Reduced motion support */\r\n@media (prefers-reduced-motion: reduce) {\r\n    .rcsa-process-card {\r\n        transition: none;\r\n    }\r\n    \r\n    .rcsa-process-card:hover {\r\n        transform: none;\r\n    }\r\n}\r\n&lt;/style&gt;\r\n",
+  "displayorder": 7,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "hiddenfromsitemap": true,
+  "isroot": true,
+  "pagetemplateid": "7504b05c-7353-404b-af12-de2d395d7fb0",
+  "parentpageid": "439a903c-bf6a-492c-b905-cbbbce3612e3",
+  "partialurl": "Process-Selection",
+  "publishingstateid": "0c05b030-bb84-4276-94fc-ece9f13ab2e8",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;",
+  "title": "Process Selection"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Process Selection</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <searchcontent>Process Selection&lt;!-- RCSA Process Selection - CapTech Consulting --&gt;
+&lt;!-- Step 1 of 4: Select Business Unit and Process --&gt;
+
+&lt;link rel="stylesheet" href="~/rcsa-styles.css"&gt;
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"&gt;
+
+&lt;!-- Progress Indicator --&gt;
+&lt;div class="fcb-container fcb-mt-4"&gt;
+    &lt;div class="fcb-progress" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="4"&gt;
+        &lt;div class="fcb-progress-step active"&gt;
+            &lt;div class="fcb-progress-number"&gt;1&lt;/div&gt;
+            &lt;div class="fcb-progress-label"&gt;Select Process&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="fcb-progress-step"&gt;
+            &lt;div class="fcb-progress-number"&gt;2&lt;/div&gt;
+            &lt;div class="fcb-progress-label"&gt;Identify Risks&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="fcb-progress-step"&gt;
+            &lt;div class="fcb-progress-number"&gt;3&lt;/div&gt;
+            &lt;div class="fcb-progress-label"&gt;Map Controls&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="fcb-progress-step"&gt;
+            &lt;div class="fcb-progress-number"&gt;4&lt;/div&gt;
+            &lt;div class="fcb-progress-label"&gt;Assess Risk&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Page Header --&gt;
+&lt;div class="rcsa-page-header"&gt;
+    &lt;div class="fcb-container"&gt;
+        &lt;div class="fcb-row fcb-align-center"&gt;
+            &lt;div class="fcb-col-8"&gt;
+                &lt;h1 class="fcb-mb-2"&gt;
+                    &lt;i class="fas fa-play-circle"&gt;&lt;/i&gt; Start Risk Assessment
+                &lt;/h1&gt;
+                &lt;p class="fcb-mb-0"&gt;
+                    Select your business unit and process to begin the risk and compliance assessment.
+                &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="fcb-col-4 fcb-text-right"&gt;
+                &lt;div class="captech-logo-container fcb-mb-3"&gt;
+                    &lt;img src="~/captech-logo.png" alt="CapTech Consulting" class="captech-logo" /&gt;
+                &lt;/div&gt;
+                &lt;div class="fcb-badge fcb-badge-primary"&gt;
+                    &lt;i class="fas fa-clock"&gt;&lt;/i&gt; ~8 minutes
+                &lt;/div&gt;
+                &lt;br&gt;
+                &lt;small class="fcb-text-muted fcb-mt-2"&gt;Average completion time&lt;/small&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="fcb-container"&gt;
+    &lt;div class="fcb-row fcb-justify-center"&gt;
+        &lt;div class="fcb-col-10"&gt;
+            &lt;!-- Business Unit Selection --&gt;
+            &lt;div class="fcb-card fcb-mb-5" id="business-unit-section"&gt;
+                &lt;div class="fcb-card-header"&gt;
+                    &lt;h2 class="fcb-h4 fcb-mb-1"&gt;
+                        &lt;i class="fas fa-building"&gt;&lt;/i&gt; Step 1: Select Your Business Unit
+                    &lt;/h2&gt;
+                    &lt;p class="fcb-text-muted fcb-mb-0"&gt;Choose the business unit you're conducting the assessment for.&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class="fcb-card-body"&gt;
+                    &lt;div class="fcb-form-group"&gt;
+                        &lt;label for="business-unit-select" class="fcb-form-label"&gt;
+                            Business Unit &lt;span class="fcb-text-danger"&gt;*&lt;/span&gt;
+                        &lt;/label&gt;
+                        &lt;select 
+                            id="business-unit-select" 
+                            class="fcb-form-control fcb-form-select" 
+                            required
+                            aria-describedby="business-unit-help"
+                            data-testid="business-unit-dropdown"&gt;
+                            &lt;option value=""&gt;Select a business unit...&lt;/option&gt;
+                            {% assign business_units = entities['cr129_bu'] | sort: 'cr129_name' %}
+                            {% if business_units.size &gt; 0 %}
+                                {% for bu in business_units %}
+                                &lt;option value="{{ bu.cr129_buid }}" data-description="{{ bu.cr129_description | default: '' }}"&gt;
+                                    {{ bu.cr129_name | default: "Business Unit" }}
+                                &lt;/option&gt;
+                                {% endfor %}
+                            {% else %}
+                                &lt;!-- Fallback options for testing when no data exists --&gt;
+                                &lt;option value="consulting-services" data-description="Client consulting and advisory services"&gt;Consulting Services&lt;/option&gt;
+                                &lt;option value="technology-solutions" data-description="Technology implementation and digital transformation"&gt;Technology Solutions&lt;/option&gt;
+                                &lt;option value="data-analytics" data-description="Data science and analytics consulting"&gt;Data &amp; Analytics&lt;/option&gt;
+                                &lt;option value="operations" data-description="Internal operations and support functions"&gt;Operations &amp; Technology&lt;/option&gt;
+                                &lt;option value="risk-compliance" data-description="Risk management and regulatory compliance"&gt;Risk &amp; Compliance&lt;/option&gt;
+                                &lt;option value="human-resources" data-description="Talent management and organizational development"&gt;Human Resources&lt;/option&gt;
+                            {% endif %}
+                        &lt;/select&gt;
+                        &lt;small id="business-unit-help" class="fcb-text-muted"&gt;
+                            Select the business unit that best represents your area of responsibility.
+                        &lt;/small&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;!-- Business Unit Description --&gt;
+                    &lt;div id="bu-description" class="fcb-alert fcb-alert-primary fcb-d-none" role="region" aria-live="polite"&gt;
+                        &lt;i class="fas fa-info-circle"&gt;&lt;/i&gt;
+                        &lt;div&gt;
+                            &lt;strong&gt;About this Business Unit:&lt;/strong&gt;
+                            &lt;p id="bu-description-text" class="fcb-mb-0"&gt;&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Process Selection --&gt;
+            &lt;div class="fcb-card fcb-mb-5" id="process-section" style="opacity: 0.5; pointer-events: none;"&gt;
+                &lt;div class="fcb-card-header"&gt;
+                    &lt;h2 class="fcb-h4 fcb-mb-1"&gt;
+                        &lt;i class="fas fa-cogs"&gt;&lt;/i&gt; Step 2: Select Process to Assess
+                    &lt;/h2&gt;
+                    &lt;p class="fcb-text-muted fcb-mb-0"&gt;Choose the specific process you want to assess for risks and controls.&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class="fcb-card-body"&gt;
+                    &lt;div id="process-loading" class="rcsa-loading fcb-d-none"&gt;
+                        Loading processes for selected business unit...
+                    &lt;/div&gt;
+                    
+                    &lt;div id="process-grid" class="fcb-row"&gt;
+                        &lt;!-- Processes will be populated based on business unit selection --&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div id="no-processes" class="fcb-text-center fcb-p-4 fcb-d-none"&gt;
+                        &lt;i class="fas fa-exclamation-circle fa-2x fcb-text-warning fcb-mb-3"&gt;&lt;/i&gt;
+                        &lt;p class="fcb-text-muted"&gt;No processes found for the selected business unit.&lt;/p&gt;
+                        &lt;p class="fcb-text-muted fcb-mb-0"&gt;Please contact your administrator to set up processes for this business unit.&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Action Buttons --&gt;
+            &lt;div class="fcb-card"&gt;
+                &lt;div class="fcb-card-body fcb-text-center"&gt;
+                    &lt;div class="fcb-d-flex fcb-justify-between fcb-align-center"&gt;
+                        &lt;a href="/dashboard" class="fcb-btn fcb-btn-secondary"&gt;
+                            &lt;i class="fas fa-arrow-left"&gt;&lt;/i&gt; Back to Dashboard
+                        &lt;/a&gt;
+                        
+                        &lt;button 
+                            id="continue-assessment" 
+                            class="fcb-btn fcb-btn-primary fcb-btn-lg" 
+                            disabled
+                            data-testid="continue-button"&gt;
+                            Continue to Risk Identification &lt;i class="fas fa-arrow-right"&gt;&lt;/i&gt;
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div class="fcb-mt-3"&gt;
+                        &lt;small class="fcb-text-muted"&gt;
+                            &lt;i class="fas fa-shield-alt"&gt;&lt;/i&gt; 
+                            Your assessment data is automatically saved and encrypted.
+                        &lt;/small&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+// Process Selection Logic with comprehensive error handling and accessibility
+class ProcessSelection {
+    constructor() {
+        this.selectedBusinessUnit = null;
+        this.selectedProcess = null;
+        this.processes = this.getProcessData();
+        this.init();
+    }
+
+    init() {
+        this.bindEvents();
+        this.setupAccessibility();
+        console.log('Process Selection initialized');
+    }
+
+    bindEvents() {
+        const buSelect = document.getElementById('business-unit-select');
+        const continueBtn = document.getElementById('continue-assessment');
+        
+        if (buSelect) {
+            buSelect.addEventListener('change', (e) =&gt; this.handleBusinessUnitChange(e));
+        }
+        
+        if (continueBtn) {
+            continueBtn.addEventListener('click', (e) =&gt; this.handleContinue(e));
+        }
+    }
+
+    setupAccessibility() {
+        // Add keyboard navigation for process cards
+        document.addEventListener('keydown', (e) =&gt; {
+            if (e.key === 'Enter' || e.key === ' ') {
+                const target = e.target;
+                if (target.classList.contains('rcsa-process-card')) {
+                    e.preventDefault();
+                    this.selectProcess(target);
+                }
+            }
+        });
+    }
+
+    handleBusinessUnitChange(event) {
+        const selectedValue = event.target.value;
+        const selectedOption = event.target.options[event.target.selectedIndex];
+        
+        if (selectedValue) {
+            this.selectedBusinessUnit = selectedValue;
+            this.showBusinessUnitDescription(selectedOption);
+            this.enableProcessSection();
+            this.loadProcesses(selectedValue);
+        } else {
+            this.selectedBusinessUnit = null;
+            this.hideBusinessUnitDescription();
+            this.disableProcessSection();
+        }
+        
+        this.updateContinueButton();
+    }
+
+    showBusinessUnitDescription(option) {
+        const description = option.dataset.description;
+        if (description) {
+            const descElement = document.getElementById('bu-description');
+            const textElement = document.getElementById('bu-description-text');
+            
+            if (descElement &amp;&amp; textElement) {
+                textElement.textContent = description;
+                descElement.classList.remove('fcb-d-none');
+            }
+        }
+    }
+
+    hideBusinessUnitDescription() {
+        const descElement = document.getElementById('bu-description');
+        if (descElement) {
+            descElement.classList.add('fcb-d-none');
+        }
+    }
+
+    enableProcessSection() {
+        const section = document.getElementById('process-section');
+        if (section) {
+            section.style.opacity = '1';
+            section.style.pointerEvents = 'auto';
+            section.setAttribute('aria-disabled', 'false');
+        }
+    }
+
+    disableProcessSection() {
+        const section = document.getElementById('process-section');
+        if (section) {
+            section.style.opacity = '0.5';
+            section.style.pointerEvents = 'none';
+            section.setAttribute('aria-disabled', 'true');
+        }
+        this.selectedProcess = null;
+    }
+
+    loadProcesses(businessUnit) {
+        const grid = document.getElementById('process-grid');
+        const loading = document.getElementById('process-loading');
+        const noProcesses = document.getElementById('no-processes');
+        
+        if (!grid) return;
+
+        // Show loading state
+        if (loading) loading.classList.remove('fcb-d-none');
+        if (noProcesses) noProcesses.classList.add('fcb-d-none');
+        grid.innerHTML = '';
+
+        // Simulate loading delay for better UX
+        setTimeout(() =&gt; {
+            const processes = this.processes[businessUnit] || this.processes['default'];
+            
+            if (loading) loading.classList.add('fcb-d-none');
+            
+            if (processes &amp;&amp; processes.length &gt; 0) {
+                this.renderProcesses(processes, grid);
+            } else {
+                if (noProcesses) noProcesses.classList.remove('fcb-d-none');
+            }
+        }, 800);
+    }
+
+    renderProcesses(processes, container) {
+        container.innerHTML = processes.map((process, index) =&gt; `
+            &lt;div class="fcb-col-6 fcb-mb-3"&gt;
+                &lt;div class="fcb-card rcsa-process-card" 
+                     data-process-id="${process.id}"
+                     data-testid="process-card-${index}"
+                     tabindex="0"
+                     role="button"
+                     aria-pressed="false"&gt;
+                    &lt;div class="fcb-card-body"&gt;
+                        &lt;div class="fcb-d-flex fcb-justify-between fcb-align-start fcb-mb-2"&gt;
+                            &lt;h3 class="fcb-h6 fcb-mb-0"&gt;${process.name}&lt;/h3&gt;
+                            &lt;span class="fcb-badge rcsa-criticality-${process.criticality.toLowerCase()}"&gt;
+                                ${process.criticality}
+                            &lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;p class="fcb-text-muted fcb-mb-3"&gt;${process.description}&lt;/p&gt;
+                        &lt;div class="fcb-d-flex fcb-justify-between fcb-align-center"&gt;
+                            &lt;small class="fcb-text-muted"&gt;
+                                &lt;i class="fas fa-clock"&gt;&lt;/i&gt; ~${process.estimatedTime} min
+                            &lt;/small&gt;
+                            &lt;small class="fcb-text-muted"&gt;
+                                &lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt; ${process.riskCount} known risks
+                            &lt;/small&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        `).join('');
+
+        // Add click handlers to new cards
+        container.querySelectorAll('.rcsa-process-card').forEach(card =&gt; {
+            card.addEventListener('click', () =&gt; this.selectProcess(card));
+        });
+    }
+
+    selectProcess(card) {
+        // Remove selection from all cards
+        document.querySelectorAll('.rcsa-process-card').forEach(c =&gt; {
+            c.classList.remove('selected');
+            c.setAttribute('aria-pressed', 'false');
+        });
+        
+        // Select this card
+        card.classList.add('selected');
+        card.setAttribute('aria-pressed', 'true');
+        this.selectedProcess = card.dataset.processId;
+        
+        // Announce selection to screen readers
+        const processName = card.querySelector('.fcb-h6').textContent;
+        this.announceToScreenReader(`Selected process: ${processName}`);
+        
+        this.updateContinueButton();
+    }
+
+    updateContinueButton() {
+        const continueBtn = document.getElementById('continue-assessment');
+        if (continueBtn) {
+            const canContinue = this.selectedBusinessUnit &amp;&amp; this.selectedProcess;
+            continueBtn.disabled = !canContinue;
+            continueBtn.classList.toggle('fcb-btn-secondary', !canContinue);
+            continueBtn.classList.toggle('fcb-btn-primary', canContinue);
+        }
+    }
+
+    handleContinue(event) {
+        if (!this.selectedBusinessUnit || !this.selectedProcess) {
+            event.preventDefault();
+            this.showValidationError();
+            return;
+        }
+
+        // Store selections for next step
+        sessionStorage.setItem('rcsa_business_unit', this.selectedBusinessUnit);
+        sessionStorage.setItem('rcsa_process', this.selectedProcess);
+        
+        // Navigate to next step
+        window.location.href = '/risk-identification';
+    }
+
+    showValidationError() {
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'fcb-alert fcb-alert-danger fcb-mt-3';
+        errorMsg.innerHTML = `
+            &lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt;
+            &lt;div&gt;Please select both a business unit and process before continuing.&lt;/div&gt;
+        `;
+        
+        const container = document.querySelector('.fcb-card:last-child .fcb-card-body');
+        if (container) {
+            container.appendChild(errorMsg);
+            setTimeout(() =&gt; errorMsg.remove(), 5000);
+        }
+    }
+
+    announceToScreenReader(message) {
+        const announcement = document.createElement('div');
+        announcement.setAttribute('aria-live', 'polite');
+        announcement.setAttribute('aria-atomic', 'true');
+        announcement.className = 'sr-only';
+        announcement.textContent = message;
+        document.body.appendChild(announcement);
+        setTimeout(() =&gt; announcement.remove(), 1000);
+    }
+
+    getProcessData() {
+        // This would typically come from Dataverse, but providing fallback data for testing
+        return {
+            'consulting-services': [
+                {
+                    id: 'client-onboarding',
+                    name: 'Client Onboarding',
+                    description: 'End-to-end client intake, assessment, and project initiation process',
+                    criticality: 'High',
+                    estimatedTime: 12,
+                    riskCount: 8
+                },
+                {
+                    id: 'project-delivery',
+                    name: 'Project Delivery',
+                    description: 'Project execution, milestone tracking, and deliverable management',
+                    criticality: 'High',
+                    estimatedTime: 15,
+                    riskCount: 10
+                },
+                {
+                    id: 'knowledge-transfer',
+                    name: 'Knowledge Transfer',
+                    description: 'Client training and knowledge handover procedures',
+                    criticality: 'Medium',
+                    estimatedTime: 8,
+                    riskCount: 5
+                },
+                {
+                    id: 'client-support',
+                    name: 'Client Support',
+                    description: 'Ongoing client support and issue resolution processes',
+                    criticality: 'Medium',
+                    estimatedTime: 6,
+                    riskCount: 4
+                }
+            ],
+            'technology-solutions': [
+                {
+                    id: 'solution-architecture',
+                    name: 'Solution Architecture',
+                    description: 'Technology solution design and architecture planning',
+                    criticality: 'High',
+                    estimatedTime: 15,
+                    riskCount: 10
+                },
+                {
+                    id: 'system-integration',
+                    name: 'System Integration',
+                    description: 'Integration of technology systems and data migration',
+                    criticality: 'High',
+                    estimatedTime: 18,
+                    riskCount: 12
+                },
+                {
+                    id: 'deployment-management',
+                    name: 'Deployment Management',
+                    description: 'Software deployment and go-live support processes',
+                    criticality: 'High',
+                    estimatedTime: 14,
+                    riskCount: 9
+                }
+            ],
+            'default': [
+                {
+                    id: 'general-process',
+                    name: 'General Business Process',
+                    description: 'Standard business process assessment',
+                    criticality: 'Medium',
+                    estimatedTime: 8,
+                    riskCount: 5
+                }
+            ]
+        };
+    }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () =&gt; {
+    new ProcessSelection();
+});
+&lt;/script&gt;
+
+&lt;style&gt;
+/* Process Selection Specific Styles */
+.rcsa-process-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.rcsa-process-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 102, 204, 0.15);
+}
+
+.rcsa-process-card:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);
+}
+
+.rcsa-process-card.selected {
+    border-color: var(--fcb-primary);
+    background: linear-gradient(135deg, rgba(0, 102, 204, 0.05), rgba(0, 102, 204, 0.02));
+}
+
+.rcsa-process-card.selected::before {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--fcb-primary);
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    z-index: 2;
+}
+
+/* Criticality badges */
+.rcsa-criticality-high {
+    background: var(--fcb-danger);
+    color: var(--fcb-white);
+}
+
+.rcsa-criticality-medium {
+    background: var(--fcb-warning);
+    color: var(--fcb-gray-700);
+}
+
+.rcsa-criticality-low {
+    background: var(--fcb-success);
+    color: var(--fcb-white);
+}
+
+/* Form enhancements */
+.fcb-form-select:focus {
+    border-color: var(--fcb-primary);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.25);
+}
+
+/* Loading animation */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.rcsa-loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .fcb-col-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .fcb-d-flex.fcb-justify-between {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .fcb-btn-lg {
+        width: 100%;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .rcsa-process-card {
+        border: 2px solid currentColor;
+    }
+    
+    .rcsa-process-card.selected {
+        background: highlight;
+        color: highlighttext;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .rcsa-process-card {
+        transition: none;
+    }
+    
+    .rcsa-process-card:hover {
+        transform: none;
+    }
+}
+&lt;/style&gt;
+Process Selection</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

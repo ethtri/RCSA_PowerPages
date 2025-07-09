@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Connector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <connectorid>6e8518b1-1c6f-42c2-b1d6-31f080737b42</connectorid>
+  <description></description>
+  <displayname>OpenAI_personal</displayname>
+  <iconbrandcolor>#007ee5</iconbrandcolor>
+  <name>cr129_openai-5fpersonal</name>
+  <connectortype>1</connectortype>
+  <openapidefinition>/Connector/cr129_openai-5fpersonal_openapidefinition.json</openapidefinition>
+  <connectionparameters>/Connector/cr129_openai-5fpersonal_connectionparameters.json</connectionparameters>
+  <policytemplateinstances>/Connector/cr129_openai-5fpersonal_policytemplateinstances.json</policytemplateinstances>
+  <iconblob>/Connector/cr129_openai-5fpersonal_iconblob.Png</iconblob>
+</Connector>

@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="0ed8fcfd-fef7-43c4-b3bb-bd7efb9529b1">
+  <content>{
+  "filecontent": null,
+  "value": ""
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Authentication/OpenIdConnect/AAD-B2C_1/AllowContactMappingWithEmail</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>1</statecode>
+  <statuscode>2</statuscode>
+</powerpagecomponent>

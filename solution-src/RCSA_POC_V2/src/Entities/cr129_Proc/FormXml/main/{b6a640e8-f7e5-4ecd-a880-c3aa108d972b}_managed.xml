@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{b6a640e8-f7e5-4ecd-a880-c3aa108d972b}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{e9381e95-a89c-4ccb-b97a-b74ef4fd5658}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{ae63b4ba-4164-418e-8987-9b6c2494ede3}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{4235915d-8c6b-4a46-8522-cea32b555b5a}">
+                        <labels>
+                          <label description="ProcessName" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_processname" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cr129_processname" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e4c7a279-0cbc-47e2-bb10-607eedd2afd4}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{923d53ea-a1c6-43ab-85ab-19cbf4bf3264}">
+                        <labels>
+                          <label description="ProcessID" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_processid" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="cr129_processid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{41aaed7f-0d81-4449-9a26-b05236605fc7}">
+                        <labels>
+                          <label description="BUName" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_businessunitname" classid="{270bd3db-d9af-4782-9025-509e298dec0a}" datafieldname="cr129_businessunitname" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{992e1de1-8262-433c-894b-4ccc57d5e06a}">
+                        <labels>
+                          <label description="ProcessCriticality" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_processcriticality" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="cr129_processcriticality" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

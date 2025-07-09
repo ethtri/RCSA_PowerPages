@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{f6525348-3a58-4e1b-8d0f-3363944842ff}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cr129_processname" select="1" icon="1" preview="1">
+        <row name="result" id="cr129_procid">
+          <cell name="cr129_processname" width="300" />
+          <cell name="cr129_processid" width="150" />
+          <cell name="cr129_businessunitname" width="150" />
+          <cell name="cr129_processcriticality" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cr129_proc">
+          <attribute name="cr129_procid" />
+          <attribute name="cr129_processname" />
+          <attribute name="createdon" />
+          <order attribute="cr129_processname" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cr129_processid" />
+          <attribute name="cr129_businessunitname" />
+          <attribute name="cr129_processcriticality" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Procs" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

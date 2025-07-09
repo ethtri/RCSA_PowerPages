@@ -1,0 +1,462 @@
+<powerpagecomponent powerpagecomponentid="8563dea4-03c0-ae98-2a29-e25891479ea4">
+  <content>{
+  "copy": "&lt;!-- Include Bootstrap 5 and Modern Enhancements --&gt;\n&lt;link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css\" rel=\"stylesheet\"&gt;\n&lt;link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css\" rel=\"stylesheet\"&gt;\n&lt;link rel=\"stylesheet\" href=\"/bootstrap-5-upgrades.css\"&gt;\n&lt;script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js\"&gt;&lt;/script&gt;\n&lt;script src=\"/modern-interactions.js\"&gt;&lt;/script&gt;\n\n&lt;style&gt;\n/* Clean Process Selection Styles */\n.process-header {\n  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);\n  color: white;\n  padding: 3rem 0;\n  margin-bottom: 2rem;\n}\n\n.step-indicator {\n  background: rgba(255, 255, 255, 0.2);\n  padding: 0.5rem 1rem;\n  border-radius: 20px;\n  font-size: 0.875rem;\n}\n\n.selection-card {\n  background: white;\n  border-radius: 12px;\n  padding: 2rem;\n  box-shadow: 0 4px 16px rgba(0,0,0,0.1);\n  margin-bottom: 2rem;\n}\n\n.process-card {\n  background: white;\n  border: 2px solid #e9ecef;\n  border-radius: 12px;\n  padding: 1.5rem;\n  margin-bottom: 1rem;\n  transition: all 0.3s ease;\n  cursor: pointer;\n}\n\n.process-card:hover {\n  border-color: #28a745;\n  transform: translateY(-2px);\n  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);\n}\n\n.process-card.selected {\n  border-color: #28a745;\n  background: #f8fff9;\n  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);\n}\n\n.risk-badge {\n  padding: 0.25rem 0.75rem;\n  border-radius: 20px;\n  font-size: 0.75rem;\n  font-weight: 600;\n  text-transform: uppercase;\n}\n\n.risk-badge.critical { background: #fee2e2; color: #dc2626; }\n.risk-badge.high { background: #fef3c7; color: #d97706; }\n.risk-badge.medium { background: #dbeafe; color: #2563eb; }\n.risk-badge.low { background: #d1fae5; color: #059669; }\n\n@media (max-width: 768px) {\n  .process-header {\n    padding: 2rem 0;\n  }\n  \n  .selection-card {\n    padding: 1.5rem;\n  }\n}\n&lt;/style&gt;\n\n&lt;!-- USER CONTEXT MVP - No Dropdown Needed --&gt;\n&lt;div class=\"container-fluid py-4\"&gt;\n  \n  &lt;!-- User Context Header --&gt;\n  &lt;div class=\"row mb-4\"&gt;\n    &lt;div class=\"col-12\"&gt;\n      &lt;div class=\"card border-0 shadow-sm\"&gt;\n        &lt;div class=\"card-body\"&gt;\n          {% if user %}\n            &lt;div class=\"d-flex align-items-center justify-content-between\"&gt;\n              &lt;div&gt;\n                &lt;h2 class=\"h3 mb-1\"&gt;Welcome, {{ user.fullname | escape }}&lt;/h2&gt;\n                &lt;div class=\"user-context-info\"&gt;\n                  &lt;span class=\"badge bg-primary me-2\"&gt;{{ user.jobtitle | default: \"User\" | escape }}&lt;/span&gt;\n                  {% if user.parentcustomerid %}\n                    &lt;span class=\"badge bg-info me-2\"&gt;{{ user.parentcustomerid.name | escape }}&lt;/span&gt;\n                  {% endif %}\n                  {% if user.cr129_userrole %}\n                    &lt;span class=\"badge bg-warning me-2\"&gt;{{ user.cr129_userrole.label | escape }}&lt;/span&gt;\n                  {% endif %}\n                  {% if user.cr129_businessunitname %}\n                    &lt;span class=\"badge bg-secondary me-2\"&gt;{{ user.cr129_businessunitname.name | escape }}&lt;/span&gt;\n                  {% endif %}\n                  &lt;span class=\"badge bg-success\"&gt;Authenticated&lt;/span&gt;\n                &lt;/div&gt;\n              &lt;/div&gt;\n              &lt;div class=\"text-end\"&gt;\n                &lt;small class=\"text-muted\"&gt;\n                  Last login: {{ user.lastusedincampaign | default: \"First time\" | escape }}&lt;br&gt;\n                  User ID: {{ user.contactid | escape }}\n                &lt;/small&gt;\n              &lt;/div&gt;\n            &lt;/div&gt;\n          {% else %}\n            &lt;div class=\"alert alert-warning\"&gt;\n              &lt;h4&gt;Authentication Required&lt;/h4&gt;\n              &lt;p&gt;Please &lt;a href=\"/signin\" class=\"btn btn-primary\"&gt;Sign In&lt;/a&gt; to access your processes.&lt;/p&gt;\n            &lt;/div&gt;\n          {% endif %}\n        &lt;/div&gt;\n      &lt;/div&gt;\n    &lt;/div&gt;\n  &lt;/div&gt;\n\n  {% if user %}\n    &lt;!-- Process Selection Based on User Context --&gt;\n    &lt;div class=\"row\"&gt;\n      &lt;div class=\"col-12\"&gt;\n        &lt;div class=\"card border-0 shadow-sm\"&gt;\n          &lt;div class=\"card-header bg-light\"&gt;\n            &lt;h3 class=\"h4 mb-0\"&gt;Your Available Processes&lt;/h3&gt;\n            &lt;small class=\"text-muted\"&gt;Processes you can access based on your role and permissions&lt;/small&gt;\n          &lt;/div&gt;\n          &lt;div class=\"card-body\"&gt;\n            \n            &lt;!-- Enhanced User Context with Role Information --&gt;\n            &lt;div class=\"alert alert-info mb-4\"&gt;\n              &lt;h5&gt;Debug: User Context &amp; Role Information&lt;/h5&gt;\n              &lt;div class=\"row\"&gt;\n                &lt;div class=\"col-md-6\"&gt;\n                  &lt;strong&gt;User Details:&lt;/strong&gt;&lt;br&gt;\n                  • Full Name: {{ user.fullname | escape }}&lt;br&gt;\n                  • Email: {{ user.emailaddress1 | escape }}&lt;br&gt;\n                  • Job Title: {{ user.jobtitle | default: \"Not specified\" | escape }}&lt;br&gt;\n                  • Contact ID: {{ user.contactid | escape }}\n                &lt;/div&gt;\n                &lt;div class=\"col-md-6\"&gt;\n                  &lt;strong&gt;Organization &amp; Access:&lt;/strong&gt;&lt;br&gt;\n                  {% if user.parentcustomerid %}\n                    • Organization: {{ user.parentcustomerid.name | escape }}&lt;br&gt;\n                    • Org ID: {{ user.parentcustomerid.accountid | escape }}&lt;br&gt;\n                  {% else %}\n                    • No organization assigned&lt;br&gt;\n                  {% endif %}\n                  \n                  &lt;!-- Role-based Information --&gt;\n                  {% if user.cr129_businessunitname %}\n                    • Business Unit: {{ user.cr129_businessunitname.name | escape }}&lt;br&gt;\n                    • BU ID: {{ user.cr129_businessunitname.cr129_buid | escape }}&lt;br&gt;\n                  {% else %}\n                    • &lt;span class=\"text-warning\"&gt;No Business Unit assigned&lt;/span&gt;&lt;br&gt;\n                  {% endif %}\n                  \n                  {% if user.cr129_userrole %}\n                    • User Role: {{ user.cr129_userrole.label | escape }}&lt;br&gt;\n                    • Role Value: {{ user.cr129_userrole.value | escape }}&lt;br&gt;\n                  {% else %}\n                    • &lt;span class=\"text-warning\"&gt;No User Role assigned&lt;/span&gt;&lt;br&gt;\n                  {% endif %}\n                  \n                  {% if user.cr129_accesslevel %}\n                    • Access Level: {{ user.cr129_accesslevel.label | escape }}&lt;br&gt;\n                  {% else %}\n                    • &lt;span class=\"text-warning\"&gt;No Access Level assigned&lt;/span&gt;&lt;br&gt;\n                  {% endif %}\n                &lt;/div&gt;\n              &lt;/div&gt;\n              \n              &lt;!-- Role-based Process Filtering Status --&gt;\n              &lt;div class=\"mt-3 p-3 bg-light rounded\"&gt;\n                &lt;h6&gt;Process Filtering Status:&lt;/h6&gt;\n                {% if user.cr129_businessunitname and user.cr129_userrole %}\n                  &lt;span class=\"badge bg-success\"&gt;✅ Role-based filtering enabled&lt;/span&gt;\n                  &lt;small class=\"text-muted ms-2\"&gt;\n                    Showing processes for: {{ user.cr129_businessunitname.name | escape }} \n                    ({{ user.cr129_userrole.label | escape }})\n                  &lt;/small&gt;\n                {% else %}\n                  &lt;span class=\"badge bg-warning\"&gt;⚠️ Role-based filtering disabled&lt;/span&gt;\n                  &lt;small class=\"text-muted ms-2\"&gt;\n                    Showing all processes (no role/BU assigned)\n                  &lt;/small&gt;\n                {% endif %}\n              &lt;/div&gt;\n            &lt;/div&gt;\n\n            &lt;!-- Enhanced Process Fetching with Role-based Filtering --&gt;\n            {% comment %}\n            Enhanced FetchXML with role-based filtering logic\n            {% endcomment %}\n            \n            {% if user.cr129_businessunitname and user.cr129_userrole %}\n              &lt;!-- Role-based Filtered Query --&gt;\n              {% fetchxml userProcesses %}\n                &lt;fetch version=\"1.0\" output-format=\"xml-platform\" mapping=\"logical\" distinct=\"false\"&gt;\n                  &lt;entity name=\"cr129_proc\"&gt;\n                    &lt;attribute name=\"cr129_processname\" /&gt;\n                    &lt;attribute name=\"cr129_procid\" /&gt;\n                    &lt;attribute name=\"cr129_businessunitname\" /&gt;\n                    &lt;attribute name=\"modifiedon\" /&gt;\n                    &lt;attribute name=\"createdon\" /&gt;\n                    &lt;filter type=\"and\"&gt;\n                      &lt;condition attribute=\"statecode\" operator=\"eq\" value=\"0\" /&gt;\n                      \n                      &lt;!-- Business Unit Filtering --&gt;\n                      {% if user.cr129_userrole.value == 100000000 %}\n                        &lt;!-- Executive: Can see all processes in their BU --&gt;\n                        &lt;condition attribute=\"cr129_businessunitname\" operator=\"eq\" value=\"{{ user.cr129_businessunitname.cr129_buid }}\" /&gt;\n                      {% elsif user.cr129_userrole.value == 100000001 %}\n                        &lt;!-- Manager: Can see all processes in their BU --&gt;\n                        &lt;condition attribute=\"cr129_businessunitname\" operator=\"eq\" value=\"{{ user.cr129_businessunitname.cr129_buid }}\" /&gt;\n                      {% elsif user.cr129_userrole.value == 100000002 %}\n                        &lt;!-- Analyst: Can see only assigned processes (for now, same as Manager) --&gt;\n                        &lt;condition attribute=\"cr129_businessunitname\" operator=\"eq\" value=\"{{ user.cr129_businessunitname.cr129_buid }}\" /&gt;\n                      {% endif %}\n                      \n                    &lt;/filter&gt;\n                    &lt;order attribute=\"modifiedon\" descending=\"true\" /&gt;\n                  &lt;/entity&gt;\n                &lt;/fetch&gt;\n              {% endfetchxml %}\n            {% else %}\n              &lt;!-- Fallback: Show all processes if no role assigned --&gt;\n              {% fetchxml userProcesses %}\n                &lt;fetch version=\"1.0\" output-format=\"xml-platform\" mapping=\"logical\" distinct=\"false\"&gt;\n                  &lt;entity name=\"cr129_proc\"&gt;\n                    &lt;attribute name=\"cr129_processname\" /&gt;\n                    &lt;attribute name=\"cr129_procid\" /&gt;\n                    &lt;attribute name=\"cr129_businessunitname\" /&gt;\n                    &lt;attribute name=\"modifiedon\" /&gt;\n                    &lt;attribute name=\"createdon\" /&gt;\n                    &lt;filter type=\"and\"&gt;\n                      &lt;condition attribute=\"statecode\" operator=\"eq\" value=\"0\" /&gt;\n                    &lt;/filter&gt;\n                    &lt;order attribute=\"modifiedon\" descending=\"true\" /&gt;\n                  &lt;/entity&gt;\n                &lt;/fetch&gt;\n              {% endfetchxml %}\n            {% endif %}\n\n            &lt;!-- Process Grid --&gt;\n            {% if userProcesses.results.entities.size &gt; 0 %}\n              &lt;div class=\"row\"&gt;\n                {% for process in userProcesses.results.entities %}\n                  &lt;div class=\"col-md-6 col-lg-4 mb-3\"&gt;\n                    &lt;div class=\"card h-100 border-light\"&gt;\n                      &lt;div class=\"card-body\"&gt;\n                        &lt;h5 class=\"card-title\"&gt;{{ process.cr129_processname | escape }}&lt;/h5&gt;\n                        &lt;div class=\"card-text\"&gt;\n                          &lt;small class=\"text-muted\"&gt;\n                            {% if process.cr129_businessunitname %}\n                              Business Unit: {{ process.cr129_businessunitname.name | escape }}&lt;br&gt;\n                            {% endif %}\n                            Last Updated: {{ process.modifiedon | date: \"MM/dd/yyyy\" }}&lt;br&gt;\n                            Process ID: {{ process.cr129_procid | escape }}\n                          &lt;/small&gt;\n                        &lt;/div&gt;\n                      &lt;/div&gt;\n                      &lt;div class=\"card-footer bg-transparent border-top-0\"&gt;\n                        &lt;button type=\"button\" \n                                class=\"btn btn-primary w-100\" \n                                onclick=\"selectProcess('{{ process.cr129_procid | escape }}', '{{ process.cr129_processname | escape | replace: \"'\", \"\\'\" }}')\"&gt;\n                          &lt;i class=\"fas fa-play-circle me-2\"&gt;&lt;/i&gt;Start Assessment\n                        &lt;/button&gt;\n                      &lt;/div&gt;\n                    &lt;/div&gt;\n                  &lt;/div&gt;\n                {% endfor %}\n              &lt;/div&gt;\n              \n              &lt;!-- Process Count Summary --&gt;\n              &lt;div class=\"alert alert-success mt-4\"&gt;\n                &lt;i class=\"fas fa-check-circle me-2\"&gt;&lt;/i&gt;\n                &lt;strong&gt;{{ userProcesses.results.entities.size }} process(es) available&lt;/strong&gt; \n                based on your current access level.\n              &lt;/div&gt;\n              \n            {% else %}\n              &lt;!-- No Processes Found --&gt;\n              &lt;div class=\"alert alert-warning\"&gt;\n                &lt;h5&gt;&lt;i class=\"fas fa-exclamation-triangle me-2\"&gt;&lt;/i&gt;No Processes Available&lt;/h5&gt;\n                &lt;p&gt;No processes are currently available for your user account. This could be because:&lt;/p&gt;\n                &lt;ul class=\"mb-3\"&gt;\n                  &lt;li&gt;No processes have been assigned to your role&lt;/li&gt;\n                  &lt;li&gt;Your user account needs additional permissions&lt;/li&gt;\n                  &lt;li&gt;No processes exist in the system yet&lt;/li&gt;\n                &lt;/ul&gt;\n                &lt;p class=\"mb-0\"&gt;Please contact your administrator for assistance.&lt;/p&gt;\n              &lt;/div&gt;\n            {% endif %}\n\n            &lt;!-- Debug: Raw Query Results --&gt;\n            &lt;div class=\"mt-4\"&gt;\n              &lt;button type=\"button\" class=\"btn btn-outline-secondary btn-sm\" data-bs-toggle=\"collapse\" data-bs-target=\"#debugResults\"&gt;\n                Show Debug Results\n              &lt;/button&gt;\n              &lt;div class=\"collapse mt-2\" id=\"debugResults\"&gt;\n                &lt;div class=\"alert alert-light\"&gt;\n                  &lt;h6&gt;Debug: FetchXML Query Results&lt;/h6&gt;\n                  &lt;pre class=\"small\"&gt;\nTotal Records: {{ userProcesses.results.entities.size }}\nMore Records Available: {{ userProcesses.results.morerecords }}\nEntity Name: {{ userProcesses.results.entityname }}\n                  &lt;/pre&gt;\n                  \n                  {% if userProcesses.results.entities.size &gt; 0 %}\n                    &lt;h6 class=\"mt-3\"&gt;First Process Details:&lt;/h6&gt;\n                    &lt;pre class=\"small\"&gt;\n{% assign firstProcess = userProcesses.results.entities[0] %}\nName: {{ firstProcess.cr129_processname | escape }}\nID: {{ firstProcess.cr129_procid | escape }}\nBU: {{ firstProcess.cr129_businessunitname.name | default: \"No BU assigned\" | escape }}\nCreated: {{ firstProcess.createdon | date: \"MM/dd/yyyy HH:mm\" }}\nModified: {{ firstProcess.modifiedon | date: \"MM/dd/yyyy HH:mm\" }}\n                    &lt;/pre&gt;\n                  {% endif %}\n                &lt;/div&gt;\n              &lt;/div&gt;\n            &lt;/div&gt;\n\n          &lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n    &lt;/div&gt;\n  {% endif %}\n\n&lt;/div&gt;\n\n&lt;!-- JavaScript for Process Selection --&gt;\n&lt;script&gt;\n// Global function to handle process selection\nfunction selectProcess(processId, processName) {\n  console.log('Process selected:', {\n    id: processId,\n    name: processName,\n    user: '{{ user.fullname | escape }}',\n    timestamp: new Date().toISOString()\n  });\n  \n  // Store selection in session storage\n  sessionStorage.setItem('selectedProcessId', processId);\n  sessionStorage.setItem('selectedProcessName', processName);\n  sessionStorage.setItem('selectedByUser', '{{ user.fullname | escape }}');\n  sessionStorage.setItem('selectionTimestamp', new Date().toISOString());\n  \n  // Show confirmation\n  const confirmMessage = `Process Selected: \"${processName}\"\\n\\nReady to start assessment?`;\n  \n  if (confirm(confirmMessage)) {\n    // Redirect to assessment page (modify URL as needed)\n    // For now, just show success message\n    alert(`Assessment started for \"${processName}\"!\\n\\nProcess ID: ${processId}`);\n    \n    // TODO: Redirect to actual assessment page\n    // window.location.href = '/assessment?processId=' + encodeURIComponent(processId);\n  }\n}\n\n// Initialize page\ndocument.addEventListener('DOMContentLoaded', function() {\n  console.log('User Context page loaded');\n  \n  // Check if user is authenticated\n  {% if user %}\n    console.log('User authenticated:', {\n      name: '{{ user.fullname | escape }}',\n      email: '{{ user.emailaddress1 | escape }}',\n      id: '{{ user.contactid | escape }}'\n    });\n  {% else %}\n    console.log('User not authenticated - showing login prompt');\n  {% endif %}\n  \n  // Auto-expand debug info if no processes found\n  {% if userProcesses.results.entities.size == 0 %}\n    const debugCollapse = document.getElementById('debugResults');\n    if (debugCollapse) {\n      debugCollapse.classList.add('show');\n    }\n  {% endif %}\n});\n&lt;/script&gt;\n\n&lt;!-- Additional CSS for better styling --&gt;\n&lt;style&gt;\n.user-context-info .badge {\n  font-size: 0.75rem;\n}\n\n.card {\n  transition: transform 0.2s ease-in-out;\n}\n\n.card:hover {\n  transform: translateY(-2px);\n}\n\n.process-card .btn {\n  transition: all 0.2s ease-in-out;\n}\n\n.process-card .btn:hover {\n  transform: scale(1.02);\n}\n\n.debug-section {\n  background-color: #f8f9fa;\n  border-left: 4px solid #007bff;\n  padding: 1rem;\n  margin: 1rem 0;\n}\n\n.alert-success {\n  border-left: 4px solid #28a745;\n}\n\n.alert-warning {\n  border-left: 4px solid #ffc107;\n}\n\n.alert-info {\n  border-left: 4px solid #17a2b8;\n}\n&lt;/style&gt;\n",
+  "displayorder": 7,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "7504b05c-7353-404b-af12-de2d395d7fb0",
+  "parentpageid": "439a903c-bf6a-492c-b905-cbbbce3612e3",
+  "partialurl": "Process-Selection",
+  "publishingstateid": "0c05b030-bb84-4276-94fc-ece9f13ab2e8",
+  "rootwebpageid": "88854515-a062-1600-ccd3-703b86de4f95",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;",
+  "title": "Process Selection"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Process Selection</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>96e8a8c3-d5c0-4729-bbb4-36d4e809b044</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>Process Selection&lt;!-- Include Bootstrap 5 and Modern Enhancements --&gt;
+&lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet"&gt;
+&lt;link rel="stylesheet" href="/bootstrap-5-upgrades.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
+&lt;script src="/modern-interactions.js"&gt;&lt;/script&gt;
+
+&lt;style&gt;
+/* Clean Process Selection Styles */
+.process-header {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+}
+
+.step-indicator {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+}
+
+.selection-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.process-card {
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.process-card:hover {
+  border-color: #28a745;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+}
+
+.process-card.selected {
+  border-color: #28a745;
+  background: #f8fff9;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+}
+
+.risk-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.risk-badge.critical { background: #fee2e2; color: #dc2626; }
+.risk-badge.high { background: #fef3c7; color: #d97706; }
+.risk-badge.medium { background: #dbeafe; color: #2563eb; }
+.risk-badge.low { background: #d1fae5; color: #059669; }
+
+@media (max-width: 768px) {
+  .process-header {
+    padding: 2rem 0;
+  }
+  
+  .selection-card {
+    padding: 1.5rem;
+  }
+}
+&lt;/style&gt;
+
+&lt;!-- USER CONTEXT MVP - No Dropdown Needed --&gt;
+&lt;div class="container-fluid py-4"&gt;
+  
+  &lt;!-- User Context Header --&gt;
+  &lt;div class="row mb-4"&gt;
+    &lt;div class="col-12"&gt;
+      &lt;div class="card border-0 shadow-sm"&gt;
+        &lt;div class="card-body"&gt;
+          {% if user %}
+            &lt;div class="d-flex align-items-center justify-content-between"&gt;
+              &lt;div&gt;
+                &lt;h2 class="h3 mb-1"&gt;Welcome, {{ user.fullname | escape }}&lt;/h2&gt;
+                &lt;div class="user-context-info"&gt;
+                  &lt;span class="badge bg-primary me-2"&gt;{{ user.jobtitle | default: "User" | escape }}&lt;/span&gt;
+                  {% if user.parentcustomerid %}
+                    &lt;span class="badge bg-info me-2"&gt;{{ user.parentcustomerid.name | escape }}&lt;/span&gt;
+                  {% endif %}
+                  {% if user.cr129_userrole %}
+                    &lt;span class="badge bg-warning me-2"&gt;{{ user.cr129_userrole.label | escape }}&lt;/span&gt;
+                  {% endif %}
+                  {% if user.cr129_businessunitname %}
+                    &lt;span class="badge bg-secondary me-2"&gt;{{ user.cr129_businessunitname.name | escape }}&lt;/span&gt;
+                  {% endif %}
+                  &lt;span class="badge bg-success"&gt;Authenticated&lt;/span&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class="text-end"&gt;
+                &lt;small class="text-muted"&gt;
+                  Last login: {{ user.lastusedincampaign | default: "First time" | escape }}&lt;br&gt;
+                  User ID: {{ user.contactid | escape }}
+                &lt;/small&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          {% else %}
+            &lt;div class="alert alert-warning"&gt;
+              &lt;h4&gt;Authentication Required&lt;/h4&gt;
+              &lt;p&gt;Please &lt;a href="/signin" class="btn btn-primary"&gt;Sign In&lt;/a&gt; to access your processes.&lt;/p&gt;
+            &lt;/div&gt;
+          {% endif %}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  {% if user %}
+    &lt;!-- Process Selection Based on User Context --&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="col-12"&gt;
+        &lt;div class="card border-0 shadow-sm"&gt;
+          &lt;div class="card-header bg-light"&gt;
+            &lt;h3 class="h4 mb-0"&gt;Your Available Processes&lt;/h3&gt;
+            &lt;small class="text-muted"&gt;Processes you can access based on your role and permissions&lt;/small&gt;
+          &lt;/div&gt;
+          &lt;div class="card-body"&gt;
+            
+            &lt;!-- Enhanced User Context with Role Information --&gt;
+            &lt;div class="alert alert-info mb-4"&gt;
+              &lt;h5&gt;Debug: User Context &amp; Role Information&lt;/h5&gt;
+              &lt;div class="row"&gt;
+                &lt;div class="col-md-6"&gt;
+                  &lt;strong&gt;User Details:&lt;/strong&gt;&lt;br&gt;
+                  • Full Name: {{ user.fullname | escape }}&lt;br&gt;
+                  • Email: {{ user.emailaddress1 | escape }}&lt;br&gt;
+                  • Job Title: {{ user.jobtitle | default: "Not specified" | escape }}&lt;br&gt;
+                  • Contact ID: {{ user.contactid | escape }}
+                &lt;/div&gt;
+                &lt;div class="col-md-6"&gt;
+                  &lt;strong&gt;Organization &amp; Access:&lt;/strong&gt;&lt;br&gt;
+                  {% if user.parentcustomerid %}
+                    • Organization: {{ user.parentcustomerid.name | escape }}&lt;br&gt;
+                    • Org ID: {{ user.parentcustomerid.accountid | escape }}&lt;br&gt;
+                  {% else %}
+                    • No organization assigned&lt;br&gt;
+                  {% endif %}
+                  
+                  &lt;!-- Role-based Information --&gt;
+                  {% if user.cr129_businessunitname %}
+                    • Business Unit: {{ user.cr129_businessunitname.name | escape }}&lt;br&gt;
+                    • BU ID: {{ user.cr129_businessunitname.cr129_buid | escape }}&lt;br&gt;
+                  {% else %}
+                    • &lt;span class="text-warning"&gt;No Business Unit assigned&lt;/span&gt;&lt;br&gt;
+                  {% endif %}
+                  
+                  {% if user.cr129_userrole %}
+                    • User Role: {{ user.cr129_userrole.label | escape }}&lt;br&gt;
+                    • Role Value: {{ user.cr129_userrole.value | escape }}&lt;br&gt;
+                  {% else %}
+                    • &lt;span class="text-warning"&gt;No User Role assigned&lt;/span&gt;&lt;br&gt;
+                  {% endif %}
+                  
+                  {% if user.cr129_accesslevel %}
+                    • Access Level: {{ user.cr129_accesslevel.label | escape }}&lt;br&gt;
+                  {% else %}
+                    • &lt;span class="text-warning"&gt;No Access Level assigned&lt;/span&gt;&lt;br&gt;
+                  {% endif %}
+                &lt;/div&gt;
+              &lt;/div&gt;
+              
+              &lt;!-- Role-based Process Filtering Status --&gt;
+              &lt;div class="mt-3 p-3 bg-light rounded"&gt;
+                &lt;h6&gt;Process Filtering Status:&lt;/h6&gt;
+                {% if user.cr129_businessunitname and user.cr129_userrole %}
+                  &lt;span class="badge bg-success"&gt;✅ Role-based filtering enabled&lt;/span&gt;
+                  &lt;small class="text-muted ms-2"&gt;
+                    Showing processes for: {{ user.cr129_businessunitname.name | escape }} 
+                    ({{ user.cr129_userrole.label | escape }})
+                  &lt;/small&gt;
+                {% else %}
+                  &lt;span class="badge bg-warning"&gt;⚠️ Role-based filtering disabled&lt;/span&gt;
+                  &lt;small class="text-muted ms-2"&gt;
+                    Showing all processes (no role/BU assigned)
+                  &lt;/small&gt;
+                {% endif %}
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Enhanced Process Fetching with Role-based Filtering --&gt;
+            {% comment %}
+            Enhanced FetchXML with role-based filtering logic
+            {% endcomment %}
+            
+            {% if user.cr129_businessunitname and user.cr129_userrole %}
+              &lt;!-- Role-based Filtered Query --&gt;
+              {% fetchxml userProcesses %}
+                &lt;fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false"&gt;
+                  &lt;entity name="cr129_proc"&gt;
+                    &lt;attribute name="cr129_processname" /&gt;
+                    &lt;attribute name="cr129_procid" /&gt;
+                    &lt;attribute name="cr129_businessunitname" /&gt;
+                    &lt;attribute name="modifiedon" /&gt;
+                    &lt;attribute name="createdon" /&gt;
+                    &lt;filter type="and"&gt;
+                      &lt;condition attribute="statecode" operator="eq" value="0" /&gt;
+                      
+                      &lt;!-- Business Unit Filtering --&gt;
+                      {% if user.cr129_userrole.value == 100000000 %}
+                        &lt;!-- Executive: Can see all processes in their BU --&gt;
+                        &lt;condition attribute="cr129_businessunitname" operator="eq" value="{{ user.cr129_businessunitname.cr129_buid }}" /&gt;
+                      {% elsif user.cr129_userrole.value == 100000001 %}
+                        &lt;!-- Manager: Can see all processes in their BU --&gt;
+                        &lt;condition attribute="cr129_businessunitname" operator="eq" value="{{ user.cr129_businessunitname.cr129_buid }}" /&gt;
+                      {% elsif user.cr129_userrole.value == 100000002 %}
+                        &lt;!-- Analyst: Can see only assigned processes (for now, same as Manager) --&gt;
+                        &lt;condition attribute="cr129_businessunitname" operator="eq" value="{{ user.cr129_businessunitname.cr129_buid }}" /&gt;
+                      {% endif %}
+                      
+                    &lt;/filter&gt;
+                    &lt;order attribute="modifiedon" descending="true" /&gt;
+                  &lt;/entity&gt;
+                &lt;/fetch&gt;
+              {% endfetchxml %}
+            {% else %}
+              &lt;!-- Fallback: Show all processes if no role assigned --&gt;
+              {% fetchxml userProcesses %}
+                &lt;fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false"&gt;
+                  &lt;entity name="cr129_proc"&gt;
+                    &lt;attribute name="cr129_processname" /&gt;
+                    &lt;attribute name="cr129_procid" /&gt;
+                    &lt;attribute name="cr129_businessunitname" /&gt;
+                    &lt;attribute name="modifiedon" /&gt;
+                    &lt;attribute name="createdon" /&gt;
+                    &lt;filter type="and"&gt;
+                      &lt;condition attribute="statecode" operator="eq" value="0" /&gt;
+                    &lt;/filter&gt;
+                    &lt;order attribute="modifiedon" descending="true" /&gt;
+                  &lt;/entity&gt;
+                &lt;/fetch&gt;
+              {% endfetchxml %}
+            {% endif %}
+
+            &lt;!-- Process Grid --&gt;
+            {% if userProcesses.results.entities.size &gt; 0 %}
+              &lt;div class="row"&gt;
+                {% for process in userProcesses.results.entities %}
+                  &lt;div class="col-md-6 col-lg-4 mb-3"&gt;
+                    &lt;div class="card h-100 border-light"&gt;
+                      &lt;div class="card-body"&gt;
+                        &lt;h5 class="card-title"&gt;{{ process.cr129_processname | escape }}&lt;/h5&gt;
+                        &lt;div class="card-text"&gt;
+                          &lt;small class="text-muted"&gt;
+                            {% if process.cr129_businessunitname %}
+                              Business Unit: {{ process.cr129_businessunitname.name | escape }}&lt;br&gt;
+                            {% endif %}
+                            Last Updated: {{ process.modifiedon | date: "MM/dd/yyyy" }}&lt;br&gt;
+                            Process ID: {{ process.cr129_procid | escape }}
+                          &lt;/small&gt;
+                        &lt;/div&gt;
+                      &lt;/div&gt;
+                      &lt;div class="card-footer bg-transparent border-top-0"&gt;
+                        &lt;button type="button" 
+                                class="btn btn-primary w-100" 
+                                onclick="selectProcess('{{ process.cr129_procid | escape }}', '{{ process.cr129_processname | escape | replace: "'", "\'" }}')"&gt;
+                          &lt;i class="fas fa-play-circle me-2"&gt;&lt;/i&gt;Start Assessment
+                        &lt;/button&gt;
+                      &lt;/div&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                {% endfor %}
+              &lt;/div&gt;
+              
+              &lt;!-- Process Count Summary --&gt;
+              &lt;div class="alert alert-success mt-4"&gt;
+                &lt;i class="fas fa-check-circle me-2"&gt;&lt;/i&gt;
+                &lt;strong&gt;{{ userProcesses.results.entities.size }} process(es) available&lt;/strong&gt; 
+                based on your current access level.
+              &lt;/div&gt;
+              
+            {% else %}
+              &lt;!-- No Processes Found --&gt;
+              &lt;div class="alert alert-warning"&gt;
+                &lt;h5&gt;&lt;i class="fas fa-exclamation-triangle me-2"&gt;&lt;/i&gt;No Processes Available&lt;/h5&gt;
+                &lt;p&gt;No processes are currently available for your user account. This could be because:&lt;/p&gt;
+                &lt;ul class="mb-3"&gt;
+                  &lt;li&gt;No processes have been assigned to your role&lt;/li&gt;
+                  &lt;li&gt;Your user account needs additional permissions&lt;/li&gt;
+                  &lt;li&gt;No processes exist in the system yet&lt;/li&gt;
+                &lt;/ul&gt;
+                &lt;p class="mb-0"&gt;Please contact your administrator for assistance.&lt;/p&gt;
+              &lt;/div&gt;
+            {% endif %}
+
+            &lt;!-- Debug: Raw Query Results --&gt;
+            &lt;div class="mt-4"&gt;
+              &lt;button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#debugResults"&gt;
+                Show Debug Results
+              &lt;/button&gt;
+              &lt;div class="collapse mt-2" id="debugResults"&gt;
+                &lt;div class="alert alert-light"&gt;
+                  &lt;h6&gt;Debug: FetchXML Query Results&lt;/h6&gt;
+                  &lt;pre class="small"&gt;
+Total Records: {{ userProcesses.results.entities.size }}
+More Records Available: {{ userProcesses.results.morerecords }}
+Entity Name: {{ userProcesses.results.entityname }}
+                  &lt;/pre&gt;
+                  
+                  {% if userProcesses.results.entities.size &gt; 0 %}
+                    &lt;h6 class="mt-3"&gt;First Process Details:&lt;/h6&gt;
+                    &lt;pre class="small"&gt;
+{% assign firstProcess = userProcesses.results.entities[0] %}
+Name: {{ firstProcess.cr129_processname | escape }}
+ID: {{ firstProcess.cr129_procid | escape }}
+BU: {{ firstProcess.cr129_businessunitname.name | default: "No BU assigned" | escape }}
+Created: {{ firstProcess.createdon | date: "MM/dd/yyyy HH:mm" }}
+Modified: {{ firstProcess.modifiedon | date: "MM/dd/yyyy HH:mm" }}
+                    &lt;/pre&gt;
+                  {% endif %}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  {% endif %}
+
+&lt;/div&gt;
+
+&lt;!-- JavaScript for Process Selection --&gt;
+&lt;script&gt;
+// Global function to handle process selection
+function selectProcess(processId, processName) {
+  console.log('Process selected:', {
+    id: processId,
+    name: processName,
+    user: '{{ user.fullname | escape }}',
+    timestamp: new Date().toISOString()
+  });
+  
+  // Store selection in session storage
+  sessionStorage.setItem('selectedProcessId', processId);
+  sessionStorage.setItem('selectedProcessName', processName);
+  sessionStorage.setItem('selectedByUser', '{{ user.fullname | escape }}');
+  sessionStorage.setItem('selectionTimestamp', new Date().toISOString());
+  
+  // Show confirmation
+  const confirmMessage = `Process Selected: "${processName}"\n\nReady to start assessment?`;
+  
+  if (confirm(confirmMessage)) {
+    // Redirect to assessment page (modify URL as needed)
+    // For now, just show success message
+    alert(`Assessment started for "${processName}"!\n\nProcess ID: ${processId}`);
+    
+    // TODO: Redirect to actual assessment page
+    // window.location.href = '/assessment?processId=' + encodeURIComponent(processId);
+  }
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('User Context page loaded');
+  
+  // Check if user is authenticated
+  {% if user %}
+    console.log('User authenticated:', {
+      name: '{{ user.fullname | escape }}',
+      email: '{{ user.emailaddress1 | escape }}',
+      id: '{{ user.contactid | escape }}'
+    });
+  {% else %}
+    console.log('User not authenticated - showing login prompt');
+  {% endif %}
+  
+  // Auto-expand debug info if no processes found
+  {% if userProcesses.results.entities.size == 0 %}
+    const debugCollapse = document.getElementById('debugResults');
+    if (debugCollapse) {
+      debugCollapse.classList.add('show');
+    }
+  {% endif %}
+});
+&lt;/script&gt;
+
+&lt;!-- Additional CSS for better styling --&gt;
+&lt;style&gt;
+.user-context-info .badge {
+  font-size: 0.75rem;
+}
+
+.card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.process-card .btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.process-card .btn:hover {
+  transform: scale(1.02);
+}
+
+.debug-section {
+  background-color: #f8f9fa;
+  border-left: 4px solid #007bff;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.alert-success {
+  border-left: 4px solid #28a745;
+}
+
+.alert-warning {
+  border-left: 4px solid #ffc107;
+}
+
+.alert-info {
+  border-left: 4px solid #17a2b8;
+}
+&lt;/style&gt;
+Process Selection</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

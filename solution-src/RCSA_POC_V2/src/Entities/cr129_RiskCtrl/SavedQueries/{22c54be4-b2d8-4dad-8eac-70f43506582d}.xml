@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{22c54be4-b2d8-4dad-8eac-70f43506582d}</savedqueryid>
+    <layoutxml>
+      <grid name="cr129_riskctrls" jump="cr129_riskdescription" select="1" icon="1" preview="1">
+        <row name="cr129_riskctrl" id="cr129_riskctrlid">
+          <cell name="cr129_riskdescription" width="300" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>2</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cr129_riskctrl">
+          <attribute name="cr129_riskctrlid" />
+          <attribute name="cr129_riskdescription" />
+          <attribute name="createdon" />
+          <order attribute="cr129_riskdescription" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="RiskCtrl Associated View" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

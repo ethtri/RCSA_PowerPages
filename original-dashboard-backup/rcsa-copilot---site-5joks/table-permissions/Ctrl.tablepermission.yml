@@ -1,0 +1,16 @@
+adx_accountrelationship: 
+adx_append: false
+adx_appendto: false
+adx_childTablePermissions: []
+adx_contactrelationship: 
+adx_create: false
+adx_delete: false
+adx_entitylogicalname: cr129_control
+adx_entityname: Ctrl
+adx_entitypermission_webrole: []
+adx_entitypermissionid: db49d0bd-e78b-4002-976f-b69f2a33dd3d
+adx_parententitypermission: 
+adx_parentrelationship: 
+adx_read: true
+adx_scope: 756150000
+adx_write: false

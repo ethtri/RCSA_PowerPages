@@ -1,0 +1,605 @@
+<!-- Include Bootstrap 5 and Modern Enhancements -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="/bootstrap-5-upgrades.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/modern-interactions.js"></script>
+
+<style>
+/* Clean Success Page Styles */
+.success-header {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  padding: 4rem 0;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.success-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: celebrate 3s ease-in-out infinite;
+}
+
+@keyframes celebrate {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(180deg); }
+}
+
+.success-animation {
+  margin-bottom: 2rem;
+}
+
+.checkmark-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.checkmark {
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.checkmark::before {
+  content: '✓';
+  font-size: 4rem;
+  color: white;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.achievement-badge {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  padding: 0.75rem 1.5rem;
+  display: inline-block;
+  margin-top: 1rem;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+  to { box-shadow: 0 0 30px rgba(255,255,255,0.5); }
+}
+
+.summary-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.summary-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.15);
+}
+
+.summary-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: white;
+}
+
+.summary-icon.bg-primary { background: linear-gradient(45deg, #0d6efd, #6610f2); }
+.summary-icon.bg-warning { background: linear-gradient(45deg, #ffc107, #fd7e14); }
+.summary-icon.bg-success { background: linear-gradient(45deg, #28a745, #20c997); }
+.summary-icon.bg-info { background: linear-gradient(45deg, #17a2b8, #6f42c1); }
+
+.results-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.risk-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.risk-indicator.critical { background: #dc3545; }
+.risk-indicator.high { background: #fd7e14; }
+.risk-indicator.medium { background: #ffc107; }
+.risk-indicator.low { background: #28a745; }
+
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  transition: background 0.3s ease;
+}
+
+.achievement-item:hover {
+  background: #e9ecef;
+}
+
+.achievement-item:last-child {
+  margin-bottom: 0;
+}
+
+.achievement-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.next-steps-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid #dee2e6;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.action-btn {
+  border-radius: 25px;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0.5rem;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #ffc107;
+  animation: confetti-fall 3s linear infinite;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .success-header {
+    padding: 2rem 0;
+  }
+  
+  .checkmark-circle {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .checkmark::before {
+    font-size: 2.5rem;
+  }
+  
+  .summary-card {
+    padding: 1.5rem;
+  }
+}
+</style>
+
+<!-- Clean Bootstrap 5 Success Page -->
+<div class="container-fluid">
+  
+  <!-- Success Header -->
+  <div class="success-header">
+    <div class="container">
+      <div class="text-center">
+        
+        <!-- Success Animation -->
+        <div class="success-animation">
+          <div class="checkmark-circle">
+            <div class="checkmark"></div>
+          </div>
+        </div>
+        
+        <h1 class="display-3 fw-bold mb-4">🎉 Assessment Complete!</h1>
+        <p class="lead mb-4">
+          Congratulations! Your RCSA has been successfully completed in 
+          <span class="fw-bold" id="completionTime">8 minutes and 42 seconds</span>.
+        </p>
+        
+        <!-- Achievement Badge -->
+        <div class="achievement-badge">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-trophy-fill"></i>
+            <span class="fw-bold">🏆 Target Achieved: Under 10 Minutes!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assessment Summary Cards -->
+  <div class="container">
+    <div class="row g-4 mb-5">
+      <div class="col-md-6 col-lg-3">
+        <div class="summary-card text-center">
+          <div class="summary-icon bg-primary">
+            <i class="bi bi-clipboard-data"></i>
+          </div>
+          <div class="h2 fw-bold text-dark mb-1" id="processName">Financial Reporting</div>
+          <div class="text-muted">Process Assessed</div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="summary-card text-center">
+          <div class="summary-icon bg-warning">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+          <div class="h2 fw-bold text-dark mb-1" id="risksCount">5</div>
+          <div class="text-muted">Risks Identified</div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="summary-card text-center">
+          <div class="summary-icon bg-success">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <div class="h2 fw-bold text-dark mb-1" id="controlsMapped">12</div>
+          <div class="text-muted">Controls Mapped</div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="summary-card text-center">
+          <div class="summary-icon bg-info">
+            <i class="bi bi-stopwatch"></i>
+          </div>
+          <div class="h2 fw-bold text-dark mb-1" id="timeSpent">8:42</div>
+          <div class="text-muted">Time Spent</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Results -->
+  <div class="container">
+    <div class="row g-4 mb-5">
+      
+      <!-- Risk Distribution -->
+      <div class="col-lg-6">
+        <div class="results-card">
+          <h3 class="h4 fw-bold mb-4">
+            <i class="bi bi-pie-chart me-2 text-primary"></i>
+            Risk Distribution
+          </h3>
+          <div class="risk-summary">
+            <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+              <div class="d-flex align-items-center gap-2">
+                <div class="risk-indicator critical"></div>
+                <span class="fw-semibold">Critical</span>
+              </div>
+              <span class="badge bg-danger fs-6" id="criticalCount">0</span>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+              <div class="d-flex align-items-center gap-2">
+                <div class="risk-indicator high"></div>
+                <span class="fw-semibold">High</span>
+              </div>
+              <span class="badge bg-warning fs-6" id="highCount">2</span>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+              <div class="d-flex align-items-center gap-2">
+                <div class="risk-indicator medium"></div>
+                <span class="fw-semibold">Medium</span>
+              </div>
+              <span class="badge bg-warning fs-6" id="mediumCount">2</span>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+              <div class="d-flex align-items-center gap-2">
+                <div class="risk-indicator low"></div>
+                <span class="fw-semibold">Low</span>
+              </div>
+              <span class="badge bg-success fs-6" id="lowCount">1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Achievements -->
+      <div class="col-lg-6">
+        <div class="results-card">
+          <h3 class="h4 fw-bold mb-4">
+            <i class="bi bi-award me-2 text-success"></i>
+            Key Achievements
+          </h3>
+          <div class="achievements-list">
+            <div class="achievement-item">
+              <div class="achievement-icon bg-success">
+                <i class="bi bi-check-circle"></i>
+              </div>
+              <div>
+                <div class="fw-semibold">Completed Under Target Time</div>
+                <div class="text-muted small">Finished in 8:42 (target: under 10 minutes)</div>
+              </div>
+            </div>
+            
+            <div class="achievement-item">
+              <div class="achievement-icon bg-info">
+                <i class="bi bi-bullseye"></i>
+              </div>
+              <div>
+                <div class="fw-semibold">Comprehensive Risk Coverage</div>
+                <div class="text-muted small">Identified 5 risks across all major categories</div>
+              </div>
+            </div>
+            
+            <div class="achievement-item">
+              <div class="achievement-icon bg-warning">
+                <i class="bi bi-shield-fill-check"></i>
+              </div>
+              <div>
+                <div class="fw-semibold">Effective Control Mapping</div>
+                <div class="text-muted small">Mapped 12 controls with 85% effectiveness</div>
+              </div>
+            </div>
+            
+            <div class="achievement-item">
+              <div class="achievement-icon bg-primary">
+                <i class="bi bi-file-earmark-text"></i>
+              </div>
+              <div>
+                <div class="fw-semibold">Detailed Documentation</div>
+                <div class="text-muted small">Provided comprehensive rationale and evidence</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next Steps -->
+  <div class="container">
+    <div class="next-steps-card">
+      <div class="text-center">
+        <h3 class="h4 fw-bold mb-4">
+          <i class="bi bi-arrow-right-circle me-2 text-primary"></i>
+          What's Next?
+        </h3>
+        <p class="lead mb-4">
+          Your risk assessment is complete! Here are your next steps:
+        </p>
+        
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+          <a href="#" class="action-btn btn btn-primary btn-lg" onclick="downloadReport()">
+            <i class="bi bi-download me-2"></i>
+            Download Report
+          </a>
+          <a href="#" class="action-btn btn btn-success btn-lg" onclick="shareResults()">
+            <i class="bi bi-share me-2"></i>
+            Share Results
+          </a>
+          <a href="/dashboard" class="action-btn btn btn-outline-primary btn-lg">
+            <i class="bi bi-house me-2"></i>
+            Return to Dashboard
+          </a>
+          <a href="/process-selection" class="action-btn btn btn-outline-secondary btn-lg">
+            <i class="bi bi-plus-circle me-2"></i>
+            Start New Assessment
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="container">
+    <div class="text-center py-5">
+      <p class="text-muted">
+        <i class="bi bi-shield-check me-2"></i>
+        Assessment completed on <span id="completionDate"></span>
+      </p>
+      <p class="text-muted small">
+        Powered by AI-Enhanced RCSA Platform • Risk and Compliance Assessment Suite
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Confetti Animation -->
+<div class="confetti" id="confetti"></div>
+
+<!-- Clean JavaScript -->
+<script>
+// Success page functionality
+function createConfetti() {
+  const confetti = document.getElementById('confetti');
+  const colors = ['#ffc107', '#28a745', '#17a2b8', '#dc3545', '#6f42c1'];
+  
+  for (let i = 0; i < 50; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = Math.random() * 3 + 's';
+    piece.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    confetti.appendChild(piece);
+  }
+  
+  // Remove confetti after animation
+  setTimeout(() => {
+    confetti.innerHTML = '';
+  }, 5000);
+}
+
+function downloadReport() {
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showInfo('Generating Report', 'Preparing your RCSA report for download...');
+  }
+  
+  // Simulate report generation
+  setTimeout(() => {
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showSuccess('Report Ready', 'Your RCSA report has been generated successfully!');
+    }
+    
+    // Create a simple report download
+    const reportData = {
+      process: document.getElementById('processName').textContent,
+      risks: document.getElementById('risksCount').textContent,
+      controls: document.getElementById('controlsMapped').textContent,
+      time: document.getElementById('timeSpent').textContent,
+      completionDate: new Date().toLocaleDateString(),
+      riskDistribution: {
+        critical: document.getElementById('criticalCount').textContent,
+        high: document.getElementById('highCount').textContent,
+        medium: document.getElementById('mediumCount').textContent,
+        low: document.getElementById('lowCount').textContent
+      }
+    };
+    
+    const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `RCSA_Report_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, 2000);
+}
+
+function shareResults() {
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showInfo('Sharing Results', 'Preparing results for sharing...');
+  }
+  
+  const shareData = {
+    title: 'RCSA Assessment Complete',
+    text: `I just completed an RCSA assessment in ${document.getElementById('timeSpent').textContent}! 🎉`,
+    url: window.location.href
+  };
+  
+  if (navigator.share) {
+    navigator.share(shareData);
+  } else {
+    // Fallback: copy to clipboard
+    const shareText = `${shareData.title}\n${shareData.text}\n${shareData.url}`;
+    navigator.clipboard.writeText(shareText).then(() => {
+      if (typeof modernInteractions !== 'undefined') {
+        modernInteractions.showSuccess('Copied to Clipboard', 'Results copied to clipboard for sharing!');
+      }
+    });
+  }
+}
+
+function updateCompletionStats() {
+  // Update completion date
+  const now = new Date();
+  document.getElementById('completionDate').textContent = now.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  
+  // Animate counters
+  animateCounter('risksCount', 5);
+  animateCounter('controlsMapped', 12);
+  animateCounter('criticalCount', 0);
+  animateCounter('highCount', 2);
+  animateCounter('mediumCount', 2);
+  animateCounter('lowCount', 1);
+}
+
+function animateCounter(elementId, targetValue) {
+  const element = document.getElementById(elementId);
+  const startValue = 0;
+  const duration = 2000;
+  const startTime = performance.now();
+  
+  function updateCounter(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const currentValue = Math.floor(startValue + (targetValue - startValue) * progress);
+    
+    element.textContent = currentValue;
+    
+    if (progress < 1) {
+      requestAnimationFrame(updateCounter);
+    }
+  }
+  
+  requestAnimationFrame(updateCounter);
+}
+
+// Initialize success page
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('✅ Success Page loaded with clean Bootstrap 5');
+  
+  // Create confetti celebration
+  createConfetti();
+  
+  // Update completion stats
+  updateCompletionStats();
+  
+  // Show success message
+  if (typeof modernInteractions !== 'undefined') {
+    setTimeout(() => {
+      modernInteractions.showSuccess('🎉 Congratulations!', 'Your RCSA assessment is complete!');
+    }, 1000);
+  }
+});
+</script>

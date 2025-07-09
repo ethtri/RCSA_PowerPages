@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{54b20d39-beba-4c55-a749-862ea1958322}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cr129_risktitle" select="1" icon="1" preview="1">
+        <row name="result" id="cr129_riskid">
+          <cell name="cr129_risktitle" width="300" />
+          <cell name="cr129_processname" width="150" />
+          <cell name="cr129_riskcategory" width="150" />
+          <cell name="cr129_inherentlikelihood" width="150" />
+          <cell name="cr129_inherentimpact" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cr129_risk">
+          <attribute name="cr129_riskid" />
+          <attribute name="cr129_risktitle" />
+          <attribute name="createdon" />
+          <order attribute="cr129_risktitle" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cr129_processname" />
+          <attribute name="cr129_riskcategory" />
+          <attribute name="cr129_inherentlikelihood" />
+          <attribute name="cr129_inherentimpact" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Risks" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

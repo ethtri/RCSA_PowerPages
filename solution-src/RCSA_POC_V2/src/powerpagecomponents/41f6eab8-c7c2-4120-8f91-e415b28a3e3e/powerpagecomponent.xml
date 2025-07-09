@@ -1,0 +1,13 @@
+<powerpagecomponent powerpagecomponentid="41f6eab8-c7c2-4120-8f91-e415b28a3e3e">
+  <content>{
+  "value": "emailaddress1=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Authentication/OpenIdConnect/AzureAD/LoginClaimsMapping</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{b4a435a4-f429-4aef-856d-2ef58c0c85f6}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cr129_actiontitle" select="1" icon="1" preview="1">
+        <row name="result" id="cr129_actionstepid">
+          <cell name="cr129_actiontitle" width="300" />
+          <cell name="cr129_duedate" width="150" />
+          <cell name="cr129_status" width="150" />
+          <cell name="cr129_issuetitle" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cr129_actionstep">
+          <attribute name="cr129_actionstepid" />
+          <attribute name="cr129_actiontitle" />
+          <attribute name="createdon" />
+          <order attribute="cr129_actiontitle" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cr129_duedate" />
+          <attribute name="cr129_status" />
+          <attribute name="cr129_issuetitle" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active ActionSteps" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

@@ -1,0 +1,11 @@
+<powerpagecomponent powerpagecomponentid="fbfc0b60-cacf-4207-96b3-70dc85564e53">
+  <content>{"appendquerystring":false,"associatecurrentportaluser":false,"attachfile":false,"attachfileallowmultiple":false,"attachfilerequired":false,"attachfilerestrictaccept":false,"autogeneratesteps":false,"captcharequired":false,"entityname":"feedback","entitypermissionsenabled":true,"forceallfieldsrequired":false,"formname":"simple contact us form","geolocation_displaymap":false,"geolocation_enabled":false,"geolocation_maptype":756150000,"hideformonsuccess":true,"mode":100000000,"onsuccess":756150000,"populatereferenceentitylookupfield":false,"portaluserlookupattributeisactivityparty":false,"recommendedfieldsrequired":false,"recordsourceallowcreateonnull":false,"redirecturlappendentityidquerystring":false,"referenceentityshowreadonlyform":false,"referencequerystringisprimarykey":true,"renderwebresourcesinline":false,"setentityreference":false,"showcaptchaforauthenticatedusers":false,"showownerfields":false,"showunsupportedfields":false,"tooltipenabled":false,"validationsummarylinksenabled":true}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>simple contact us form</name>
+  <powerpagecomponenttype>15</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

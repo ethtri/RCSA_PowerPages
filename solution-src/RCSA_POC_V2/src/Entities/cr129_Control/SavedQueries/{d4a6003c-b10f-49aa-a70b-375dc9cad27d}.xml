@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{d4a6003c-b10f-49aa-a70b-375dc9cad27d}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cr129_controltitle" select="1" icon="1" preview="1">
+        <row name="result" id="cr129_controlid">
+          <cell name="cr129_controltitle" width="300" />
+          <cell name="cr129_controltype" width="150" />
+          <cell name="cr129_isautomated" width="150" />
+          <cell name="cr129_designefficiency" width="150" />
+          <cell name="cr129_operationalefficiency" width="150" />
+          <cell name="cr129_controlowner" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cr129_control">
+          <attribute name="cr129_controlid" />
+          <attribute name="cr129_controltitle" />
+          <attribute name="createdon" />
+          <order attribute="cr129_controltitle" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cr129_controltype" />
+          <attribute name="cr129_isautomated" />
+          <attribute name="cr129_designefficiency" />
+          <attribute name="cr129_operationalefficiency" />
+          <attribute name="cr129_controlowner" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Controls" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

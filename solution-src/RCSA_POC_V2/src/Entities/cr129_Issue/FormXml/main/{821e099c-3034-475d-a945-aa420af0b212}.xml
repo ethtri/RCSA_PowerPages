@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{821e099c-3034-475d-a945-aa420af0b212}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{d1e72551-39ed-44f1-b343-c345907cfde7}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{e70fbd76-e974-447a-956c-feffdc4246c6}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{e8d26445-b7b8-431f-9e3a-01707d24283d}">
+                        <labels>
+                          <label description="IssueTitle" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_issuetitle" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cr129_issuetitle" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c39047cc-4578-4ee9-be53-b58547a7f3d3}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0095cec6-1296-4985-b720-5c8f8a54a497}">
+                        <labels>
+                          <label description="RiskTitle" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_risktitle" classid="{270bd3db-d9af-4782-9025-509e298dec0a}" datafieldname="cr129_risktitle" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{471917f2-e3d1-4b81-a0a9-727af68c99a2}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_owneremail" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="cr129_owneremail" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3305fb07-45a7-48fc-976c-dd49455ba890}">
+                        <labels>
+                          <label description="TargetDate" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_targetdate" classid="{5b773807-9fb2-42db-97c3-7a91eff8adff}" datafieldname="cr129_targetdate" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{32db00f2-24c8-455b-a5c0-3ce59ee24104}">
+                        <labels>
+                          <label description="Status" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_currentstatus" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="cr129_currentstatus" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{690acaac-9bfe-4779-a76a-1c552b642f2f}">
+                        <labels>
+                          <label description="Severity" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_severitylevel" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="cr129_severitylevel" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d69c098d-a2e5-4719-b9a9-3663f087cd11}">
+                        <labels>
+                          <label description="IssueRootCause" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_rootcause" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="cr129_rootcause" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

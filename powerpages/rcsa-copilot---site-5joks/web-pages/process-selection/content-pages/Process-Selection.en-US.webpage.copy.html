@@ -1,0 +1,523 @@
+<!-- RCSA Process Selection - Clean Modern Design -->
+<!-- Built with CapTech UX/CX Standards -->
+
+<style>
+  /* CapTech Design System Variables */
+  :root {
+    --captech-primary: #0066CC;
+    --captech-secondary: #004499;
+    --captech-success: #28a745;
+    --captech-warning: #ffc107;
+    --captech-danger: #dc3545;
+    --captech-light: #f8f9fa;
+    --captech-dark: #343a40;
+    --captech-gray-100: #f8f9fa;
+    --captech-gray-200: #e9ecef;
+    --captech-gray-300: #dee2e6;
+    --captech-gray-600: #6c757d;
+    --captech-gray-700: #495057;
+    --captech-gray-800: #343a40;
+    --captech-gray-900: #212529;
+  }
+
+  /* Modern Card Styling */
+  .process-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 102, 204, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--captech-gray-200);
+    overflow: hidden;
+  }
+
+  .process-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 102, 204, 0.15);
+    border-color: var(--captech-primary);
+  }
+
+  .process-card.selected {
+    border-color: var(--captech-primary);
+    background: linear-gradient(135deg, rgba(0, 102, 204, 0.03), rgba(0, 102, 204, 0.01));
+  }
+
+  .process-card.selected::before {
+    content: '✓';
+    position: absolute;
+    top: 50px;
+    right: 15px;
+    background: var(--captech-primary);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
+  }
+
+  .process-header {
+    background: linear-gradient(135deg, var(--captech-primary) 0%, var(--captech-secondary) 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+  }
+
+  .criticality-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .criticality-high { background: #dc3545; color: white; }
+  .criticality-medium { background: #ffc107; color: #212529; }
+  .criticality-low { background: #17a2b8; color: white; }
+  
+  /* Ensure criticality badge is positioned correctly */
+  .criticality-badge {
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-primary {
+    background: var(--captech-primary);
+    border-color: var(--captech-primary);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background: var(--captech-secondary);
+    border-color: var(--captech-secondary);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: var(--captech-gray-600);
+    border-color: var(--captech-gray-600);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary:hover {
+    background: var(--captech-gray-700);
+    border-color: var(--captech-gray-700);
+    transform: translateY(-1px);
+  }
+
+  .debug-panel {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+  }
+
+  .no-processes {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--captech-gray-600);
+  }
+
+  .no-processes i {
+    font-size: 3rem;
+    color: var(--captech-warning);
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .process-header {
+      padding: 1.5rem 0;
+    }
+    
+    .process-card {
+      margin-bottom: 1rem;
+    }
+  }
+</style>
+
+<div class="container-fluid">
+  <!-- Page Header - CapTech CX/UX Standards -->
+  <div class="process-header" role="banner">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="display-5 fw-bold mb-2" id="page-title">
+            Process Selection
+          </h1>
+          <p class="lead mb-0">
+            Select a process to begin your Risk and Compliance Assessment
+          </p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <div class="bg-white bg-opacity-25 rounded-pill px-3 py-1 d-inline-block">
+            <i class="fas fa-list-ol me-2" aria-hidden="true"></i>
+            Step 1 of 4
+          </div>
+          <div class="h5 mt-2 mb-0">Process Selection</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- User Context & Debug Information -->
+    <div class="debug-panel">
+      <strong>Debug Info:</strong> 
+      Contact ID: {{ user.contactid | escape }} | 
+      Role: {{ user.cr129_userrole.label | default: "None" | escape }} ({{ user.cr129_userrole.value | default: "N/A" }}) | 
+      BU: {{ user.cr129_businessunitname.name | default: "None" | escape }} | 
+      Access Level: {{ user.cr129_accesslevel.label | default: "None" | escape }}
+    </div>
+
+    <!-- Process Data Fetching with Enhanced Fields -->
+    {% fetchxml userProcesses %}
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="cr129_proc">
+          <attribute name="cr129_processname" />
+          <attribute name="cr129_procid" />
+          <attribute name="cr129_processid" />
+          <attribute name="cr129_processowner" />
+          <attribute name="cr129_processcriticality" />
+          <attribute name="cr129_businessunitname" />
+          <attribute name="modifiedon" />
+          <attribute name="createdon" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+            <condition attribute="cr129_processowner" operator="eq" value="{{ user.contactid }}" />
+          </filter>
+          <order attribute="cr129_processname" descending="false" />
+        </entity>
+      </fetch>
+    {% endfetchxml %}
+
+    <!-- Process Count and Status -->
+    {% assign totalProcesses = userProcesses.results.entities.size %}
+    
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="alert alert-info">
+          <i class="fas fa-info-circle me-2"></i>
+          <strong>{{ totalProcesses }} process(es) available</strong> based on your role and permissions.
+          <small class="d-block mt-1">Showing processes where you are the assigned owner.</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Process Grid -->
+    {% if totalProcesses > 0 %}
+      <div class="row">
+        {% for process in userProcesses.results.entities %}
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="process-card position-relative" 
+                 data-process-id="{{ process.cr129_procid }}"
+                 data-process-name="{{ process.cr129_processname | escape }}"
+                 onclick="selectProcess(this)">
+              
+                             <div class="card-body p-3">
+                 <!-- Process Header with Criticality Badge -->
+                 <div class="d-flex justify-content-between align-items-start mb-3">
+                   <h5 class="card-title mb-0 flex-grow-1">
+                     {{ process.cr129_processname | escape }}
+                   </h5>
+                   {% if process.cr129_processcriticality %}
+                     {% assign criticalityClass = "low" %}
+                     {% assign criticalityIcon = "fas fa-info-circle" %}
+                     {% assign criticalityValue = process.cr129_processcriticality.value %}
+                     
+                     {% comment %} Debug the actual value {% endcomment %}
+                     {% if criticalityValue == 100000000 %}
+                       {% assign criticalityClass = "low" %}
+                       {% assign criticalityIcon = "fas fa-info-circle" %}
+                     {% elsif criticalityValue == 100000001 %}
+                       {% assign criticalityClass = "medium" %}
+                       {% assign criticalityIcon = "fas fa-exclamation-circle" %}
+                     {% elsif criticalityValue == 100000002 %}
+                       {% assign criticalityClass = "high" %}
+                       {% assign criticalityIcon = "fas fa-exclamation-triangle" %}
+                     {% else %}
+                       {% comment %} Try string comparison as fallback {% endcomment %}
+                       {% if process.cr129_processcriticality.label contains "Standard" or process.cr129_processcriticality.label contains "Low" %}
+                         {% assign criticalityClass = "low" %}
+                         {% assign criticalityIcon = "fas fa-info-circle" %}
+                       {% elsif process.cr129_processcriticality.label contains "High" %}
+                         {% assign criticalityClass = "medium" %}
+                         {% assign criticalityIcon = "fas fa-exclamation-circle" %}
+                       {% elsif process.cr129_processcriticality.label contains "Critical" %}
+                         {% assign criticalityClass = "high" %}
+                         {% assign criticalityIcon = "fas fa-exclamation-triangle" %}
+                       {% endif %}
+                     {% endif %}
+                     
+                     <span class="criticality-badge criticality-{{ criticalityClass }}" 
+                           role="img" 
+                           aria-label="Process criticality: {{ process.cr129_processcriticality.label | escape }}"
+                           title="Value: {{ criticalityValue | escape }} | Class: {{ criticalityClass | escape }}">
+                       <i class="{{ criticalityIcon }} me-1" aria-hidden="true"></i>
+                       {{ process.cr129_processcriticality.label | escape }}
+                     </span>
+                   {% endif %}
+                 </div>
+
+                 <!-- Process Details -->
+                 <div class="small text-muted">
+                   {% if process.cr129_businessunitname %}
+                     <div class="mb-1">
+                       <i class="fas fa-building me-1" aria-hidden="true"></i>
+                       <span class="fw-medium">Business Unit:</span> {{ process.cr129_businessunitname.name | escape }}
+                     </div>
+                   {% endif %}
+                   
+                   <div class="mb-1">
+                     <i class="fas fa-user me-1" aria-hidden="true"></i>
+                     <span class="fw-medium">Owner:</span> 
+                     {% if process.cr129_processowner.fullname %}
+                       {{ process.cr129_processowner.fullname | escape }}
+                     {% elsif process.cr129_processowner.name %}
+                       {{ process.cr129_processowner.name | escape }}
+                     {% elsif process.cr129_processowner %}
+                       {{ process.cr129_processowner | escape }}
+                     {% else %}
+                       <span class="text-warning">Not assigned</span>
+                     {% endif %}
+                   </div>
+                   
+                   <div class="mb-1">
+                     <i class="fas fa-hashtag me-1" aria-hidden="true"></i>
+                     <span class="fw-medium">Process ID:</span> 
+                     {% if process.cr129_processid %}
+                       {{ process.cr129_processid | escape }}
+                     {% else %}
+                       {{ process.cr129_procid | escape }}
+                     {% endif %}
+                   </div>
+                   
+                   <div class="mb-1">
+                     <i class="fas fa-clock me-1" aria-hidden="true"></i>
+                     <span class="fw-medium">Updated:</span> {{ process.modifiedon | date: "M/d/yyyy" }}
+                   </div>
+                 </div>
+               </div>
+
+                             <!-- Select Button -->
+               <div class="card-footer bg-light border-0 p-3">
+                 <button type="button" 
+                         class="btn btn-outline-primary w-100"
+                         aria-label="Select {{ process.cr129_processname | escape }} process">
+                   <i class="fas fa-arrow-right me-2" aria-hidden="true"></i>
+                   Select Process
+                 </button>
+               </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Continue Button -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="d-flex justify-content-between align-items-center">
+            <a href="/dashboard" 
+               class="btn btn-secondary"
+               aria-label="Return to dashboard">
+              <i class="fas fa-arrow-left me-2" aria-hidden="true"></i>
+              Back to Dashboard
+            </a>
+            
+            <button id="continueBtn" 
+                    class="btn btn-primary btn-lg" 
+                    disabled
+                    onclick="continueToRiskIdentification()"
+                    aria-label="Continue to risk identification step">
+              Continue to Risk Identification
+              <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    {% else %}
+      <!-- No Processes Found -->
+      <div class="row">
+        <div class="col-12">
+          <div class="no-processes">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>No Processes Available</h3>
+            <p class="mb-4">
+              No processes are currently available for your account. This could be because:
+            </p>
+            <ul class="list-unstyled mb-4">
+              <li class="mb-2">• No processes have been assigned to you as owner</li>
+              <li class="mb-2">• Your role doesn't have access to processes in your business unit</li>
+              <li class="mb-2">• No processes exist in the system yet</li>
+            </ul>
+            <a href="/dashboard" class="btn btn-secondary">
+              <i class="fas fa-arrow-left me-2"></i>
+              Back to Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Debug Information -->
+    <div class="mt-5">
+      <details class="debug-panel">
+        <summary class="fw-bold mb-2">Debug Information</summary>
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Query Results:</strong><br>
+            Total Records: {{ totalProcesses }}<br>
+            Entity Name: {{ userProcesses.results.entityname }}<br>
+            More Records: {{ userProcesses.results.morerecords }}<br>
+          </div>
+          <div class="col-md-6">
+            <strong>User Context:</strong><br>
+            Contact ID: {{ user.contactid | escape }}<br>
+            Role Value: {{ user.cr129_userrole.value | default: "N/A" }}<br>
+            BU ID: {{ user.cr129_businessunitname.cr129_buid | default: "N/A" }}<br>
+            Access Level: {{ user.cr129_accesslevel.value | default: "N/A" }}<br>
+          </div>
+        </div>
+        
+                 {% if totalProcesses > 0 %}
+           <div class="mt-3">
+             <strong>Sample Process Data:</strong><br>
+             {% assign firstProcess = userProcesses.results.entities[0] %}
+             Name: {{ firstProcess.cr129_processname | escape }}<br>
+             Record ID: {{ firstProcess.cr129_procid | escape }}<br>
+             Process ID: {{ firstProcess.cr129_processid | default: "Using Record ID instead" | escape }}<br>
+             Owner: {{ firstProcess.cr129_processowner.fullname | default: "No owner" | escape }}<br>
+             Business Unit: {{ firstProcess.cr129_businessunitname.name | default: "No BU" | escape }}<br>
+             Criticality Label: {{ firstProcess.cr129_processcriticality.label | default: "Not set" | escape }}<br>
+             Criticality Value (raw): {{ firstProcess.cr129_processcriticality.value | default: "No value" | escape }}<br>
+             Criticality Full Object: {{ firstProcess.cr129_processcriticality | default: "No criticality object" | escape }}<br>
+             Expected: Standard=100000000, High=100000001, Critical=100000002<br>
+             Created: {{ firstProcess.createdon | date: "M/d/yyyy" }}<br>
+             Modified: {{ firstProcess.modifiedon | date: "M/d/yyyy" }}<br>
+           </div>
+         {% endif %}
+      </details>
+    </div>
+  </div>
+</div>
+
+<script>
+// Process Selection Logic
+let selectedProcessId = null;
+let selectedProcessName = null;
+
+function selectProcess(card) {
+  // Remove selection from all cards
+  document.querySelectorAll('.process-card').forEach(c => {
+    c.classList.remove('selected');
+    c.setAttribute('aria-pressed', 'false');
+    
+    // Reset button in previously selected card
+    const btn = c.querySelector('.btn');
+    if (btn) {
+      btn.innerHTML = '<i class="fas fa-arrow-right me-2" aria-hidden="true"></i>Select Process';
+      btn.classList.remove('btn-primary');
+      btn.classList.add('btn-outline-primary');
+    }
+  });
+  
+  // Select this card
+  card.classList.add('selected');
+  card.setAttribute('aria-pressed', 'true');
+  
+  // Store selection data
+  selectedProcessId = card.dataset.processId;
+  selectedProcessName = card.dataset.processName;
+  
+  // Enable continue button
+  const continueBtn = document.getElementById('continueBtn');
+  if (continueBtn) {
+    continueBtn.disabled = false;
+  }
+  
+  // Update button text in selected card
+  const button = card.querySelector('.btn');
+  if (button) {
+    button.innerHTML = '<i class="fas fa-check me-2" aria-hidden="true"></i>Selected';
+    button.classList.remove('btn-outline-primary');
+    button.classList.add('btn-primary');
+  }
+  
+  // Announce selection to screen readers
+  const announcement = document.createElement('div');
+  announcement.setAttribute('aria-live', 'polite');
+  announcement.setAttribute('aria-atomic', 'true');
+  announcement.className = 'sr-only';
+  announcement.textContent = `${selectedProcessName} process selected`;
+  document.body.appendChild(announcement);
+  setTimeout(() => announcement.remove(), 1000);
+  
+  console.log('Process selected:', {
+    id: selectedProcessId,
+    name: selectedProcessName
+  });
+}
+
+function continueToRiskIdentification() {
+  if (!selectedProcessId || !selectedProcessName) {
+    alert('Please select a process first.');
+    return;
+  }
+  
+  // Store selection in session storage
+  sessionStorage.setItem('rcsa_selected_process_id', selectedProcessId);
+  sessionStorage.setItem('rcsa_selected_process_name', selectedProcessName);
+  sessionStorage.setItem('rcsa_selection_timestamp', new Date().toISOString());
+  
+  // Navigate to risk identification page
+  window.location.href = '/Risk-ID';
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Process Selection page loaded');
+  
+  // Add keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      if (e.target.classList.contains('process-card')) {
+        e.preventDefault();
+        selectProcess(e.target);
+      }
+    }
+  });
+  
+  // Make cards focusable and accessible
+  document.querySelectorAll('.process-card').forEach(card => {
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', `Select process: ${card.dataset.processName}`);
+    card.setAttribute('aria-pressed', 'false');
+    
+    // Add focus indicator
+    card.addEventListener('focus', function() {
+      this.style.outline = '3px solid var(--captech-primary)';
+      this.style.outlineOffset = '2px';
+    });
+    
+    card.addEventListener('blur', function() {
+      this.style.outline = 'none';
+    });
+  });
+});
+</script>

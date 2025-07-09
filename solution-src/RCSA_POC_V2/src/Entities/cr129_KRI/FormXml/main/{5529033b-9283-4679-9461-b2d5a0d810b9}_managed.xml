@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{5529033b-9283-4679-9461-b2d5a0d810b9}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{c2298ea4-8ae8-495b-9c35-fcb6d22c0f3d}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{82dce3ed-d795-4522-b7a9-2345062a04f1}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{622f780b-7f56-4958-98be-6d287b5634b3}">
+                        <labels>
+                          <label description="MetricName" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_metricname" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cr129_metricname" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d2249634-f0e5-4240-8791-6398fb693a69}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{aa713c8f-b723-4cec-8407-41e385b1669d}">
+                        <labels>
+                          <label description="RiskTitle" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_risktitle" classid="{270bd3db-d9af-4782-9025-509e298dec0a}" datafieldname="cr129_risktitle" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7943c0f9-359c-431c-b4ed-caced69f8fe9}">
+                        <labels>
+                          <label description="CurrentVal" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_currentvalue" classid="{c3efe0c3-0ec6-42be-8349-cbd9079dfd8e}" datafieldname="cr129_currentvalue" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c622e667-39d2-47f0-823a-46998cd7c5c9}">
+                        <labels>
+                          <label description="AmberThres" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_amberthreshold" classid="{c3efe0c3-0ec6-42be-8349-cbd9079dfd8e}" datafieldname="cr129_amberthreshold" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{82b9b269-28f1-4729-9a01-fbb76169a50f}">
+                        <labels>
+                          <label description="RedThres" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_redthreshold" classid="{c3efe0c3-0ec6-42be-8349-cbd9079dfd8e}" datafieldname="cr129_redthreshold" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1d5c0305-115a-4d70-8dcf-de1bce0b3dfc}">
+                        <labels>
+                          <label description="LastUpdated" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_lastupdated" classid="{5b773807-9fb2-42db-97c3-7a91eff8adff}" datafieldname="cr129_lastupdated" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

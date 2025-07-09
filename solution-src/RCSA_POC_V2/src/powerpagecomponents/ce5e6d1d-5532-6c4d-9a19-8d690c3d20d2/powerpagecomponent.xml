@@ -1,0 +1,405 @@
+<powerpagecomponent powerpagecomponentid="ce5e6d1d-5532-6c4d-9a19-8d690c3d20d2">
+  <content>{
+  "filecontent": null,
+  "copy": "&lt;!-- Include Bootstrap 5 and Modern Enhancements --&gt;&lt;link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css\" rel=\"stylesheet\" /&gt;&lt;link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css\" rel=\"stylesheet\" /&gt;&lt;link rel=\"stylesheet\" href=\"/bootstrap-5-upgrades.css\" /&gt;\n&lt;script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js\"&gt;&lt;/script&gt;\n&lt;script src=\"/modern-interactions.js\"&gt;&lt;/script&gt;\n&lt;!-- Clean Bootstrap 5 Control Mapping Page --&gt;\n&lt;div class=\"container-fluid\"&gt;\n  &lt;!-- Page Header --&gt;\n  &lt;div class=\"control-header\" style=\"background-image: linear-gradient(135deg, rgb(253, 126, 20) 0%, rgb(255, 193, 7) 100%); background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: initial; color: white; padding-top: 3rem; padding-right: 0px; padding-bottom: 3rem; padding-left: 0px; margin-bottom: 2rem;\"&gt;\n    &lt;div class=\"container\"&gt;\n      &lt;div class=\"row align-items-center\"&gt;\n        &lt;div class=\"col-md-8\"&gt;\n          &lt;h1 class=\"display-5 fw-bold mb-2\"&gt;Control Mapping&lt;/h1&gt;\n          &lt;p class=\"lead mb-0\"&gt;Link mitigating controls to identified risks across your organization&lt;/p&gt;\n        &lt;/div&gt;\n        &lt;div class=\"col-md-4 text-md-end\"&gt;\n          &lt;div class=\"step-indicator bg-white bg-opacity-25 rounded-pill px-3 py-1\"&gt;\n            &lt;i class=\"bi bi-3-circle me-2\"&gt;&lt;/i&gt;\n            Step 3 of 5\n          &lt;/div&gt;\n          &lt;div class=\"h5 mt-2 mb-0\"&gt;Control Mapping&lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n    &lt;/div&gt;\n  &lt;/div&gt;\n  &lt;!-- Progress Summary --&gt;\n  &lt;div class=\"container\"&gt;\n    &lt;div class=\"progress-card\" style=\"background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 2rem; padding-right: 2rem; padding-bottom: 2rem; padding-left: 2rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 16px; margin-bottom: 2rem;\"&gt;\n      &lt;div class=\"row align-items-center\"&gt;\n        &lt;div class=\"col-md-2\"&gt;&lt;div id=\"progressCircle\" class=\"progress-circle mx-auto\" style=\"width: 80px; height: 80px; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(45deg, rgb(253, 126, 20), rgb(255, 193, 7)); background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: initial; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;\"&gt;0/3&lt;/div&gt;&lt;/div&gt;\n        &lt;div class=\"col-md-6\"&gt;\n          &lt;h4 class=\"fw-bold mb-2\"&gt;Mapping Progress&lt;/h4&gt;\n          &lt;p class=\"text-muted mb-0\"&gt;Track your control mapping completion across all identified risks&lt;/p&gt;\n        &lt;/div&gt;\n        &lt;div class=\"col-md-4\"&gt;\n          &lt;div class=\"row text-center\"&gt;\n            &lt;div class=\"col-4\"&gt;\n              &lt;div id=\"totalRisks\" class=\"h3 fw-bold text-primary\"&gt;3&lt;/div&gt;\n              &lt;div class=\"small text-muted\"&gt;Total Risks&lt;/div&gt;\n            &lt;/div&gt;\n            &lt;div class=\"col-4\"&gt;\n              &lt;div id=\"mappedRisks\" class=\"h3 fw-bold text-success\"&gt;0&lt;/div&gt;\n              &lt;div class=\"small text-muted\"&gt;Mapped&lt;/div&gt;\n            &lt;/div&gt;\n            &lt;div class=\"col-4\"&gt;\n              &lt;div id=\"unmappedRisks\" class=\"h3 fw-bold text-warning\"&gt;3&lt;/div&gt;\n              &lt;div class=\"small text-muted\"&gt;Unmapped&lt;/div&gt;\n            &lt;/div&gt;\n          &lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n    &lt;/div&gt;\n  &lt;/div&gt;\n  &lt;!-- Filter Tabs --&gt;\n  &lt;div class=\"container\"&gt;\n    &lt;div class=\"filter-tabs text-center\" style=\"background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 0.5rem; padding-right: 0.5rem; padding-bottom: 0.5rem; padding-left: 0.5rem; margin-bottom: 2rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px;\"&gt;\n      &lt;button onclick=\"filterRisks('all')\" id=\"filterAll\" class=\"filter-tab active\" style=\"padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(253, 126, 20); color: white;\"&gt;&lt;i class=\"bi bi-list me-1\"&gt;&lt;/i&gt;All Risks&lt;/button&gt;&lt;button onclick=\"filterRisks('unmapped')\" id=\"filterUnmapped\" class=\"filter-tab\" style=\"padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem;\"&gt;&lt;i class=\"bi bi-exclamation-triangle me-1\"&gt;&lt;/i&gt;Unmapped&lt;/button&gt;&lt;button onclick=\"filterRisks('mapped')\" id=\"filterMapped\" class=\"filter-tab\" style=\"padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem;\"&gt;&lt;i class=\"bi bi-check-circle me-1\"&gt;&lt;/i&gt;Mapped&lt;/button&gt;&lt;button onclick=\"filterRisks('high')\" id=\"filterHigh\" class=\"filter-tab\" style=\"padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem;\"&gt;&lt;i class=\"bi bi-shield-exclamation me-1\"&gt;&lt;/i&gt;High Risk&lt;/button&gt;\n    &lt;/div&gt;\n  &lt;/div&gt;\n  &lt;!-- Risk Cards Grid --&gt;\n  &lt;div class=\"container\"&gt;\n    &lt;div id=\"riskCardsGrid\" class=\"row g-4\"&gt;\n      &lt;!-- Risk 1 --&gt;\n      &lt;div class=\"col-lg-4\"&gt;\n        &lt;div data-risk-id=\"risk-1\" data-risk-level=\"critical\" class=\"risk-card unmapped\" style=\"border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; margin-bottom: 1.5rem; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; position: relative; border-top-color: rgb(255, 193, 7); border-right-color: rgb(255, 193, 7); border-bottom-color: rgb(255, 193, 7); border-left-color: rgb(255, 193, 7); background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 251, 240);\"&gt;\n          &lt;div class=\"d-flex justify-content-between align-items-start mb-3\"&gt;\n            &lt;h5 class=\"fw-bold mb-0\"&gt;Credit Default Risk&lt;/h5&gt;\n            &lt;span class=\"badge bg-danger\"&gt;Critical&lt;/span&gt;\n          &lt;/div&gt;\n          &lt;p class=\"text-muted mb-3\"&gt;Risk of borrower defaulting on loan obligations due to inadequate credit assessment processes.&lt;/p&gt;\n          &lt;div class=\"mb-3\"&gt;\n            &lt;div class=\"small fw-bold mb-2\"&gt;Mapped Controls:&lt;/div&gt;\n            &lt;div id=\"controls-risk-1\" class=\"controls-container\"&gt;&lt;div class=\"text-muted small\"&gt;No controls mapped yet&lt;/div&gt;&lt;/div&gt;\n          &lt;/div&gt;\n          &lt;div class=\"d-grid\"&gt;\n            &lt;button onclick=\"openControlMapping('risk-1', 'Credit Default Risk')\" class=\"btn btn-outline-primary\"&gt;\n              &lt;i class=\"bi bi-plus-circle me-2\"&gt;&lt;/i&gt;\n              Map Controls\n            &lt;/button&gt;\n          &lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n      &lt;!-- Risk 2 --&gt;\n      &lt;div class=\"col-lg-4\"&gt;\n        &lt;div data-risk-id=\"risk-2\" data-risk-level=\"high\" class=\"risk-card unmapped\" style=\"border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; margin-bottom: 1.5rem; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; position: relative; border-top-color: rgb(255, 193, 7); border-right-color: rgb(255, 193, 7); border-bottom-color: rgb(255, 193, 7); border-left-color: rgb(255, 193, 7); background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 251, 240);\"&gt;\n          &lt;div class=\"d-flex justify-content-between align-items-start mb-3\"&gt;\n            &lt;h5 class=\"fw-bold mb-0\"&gt;Operational Process Failure&lt;/h5&gt;\n            &lt;span class=\"badge bg-warning\"&gt;High&lt;/span&gt;\n          &lt;/div&gt;\n          &lt;p class=\"text-muted mb-3\"&gt;Risk of system failures or human errors disrupting critical business operations and service delivery.&lt;/p&gt;\n          &lt;div class=\"mb-3\"&gt;\n            &lt;div class=\"small fw-bold mb-2\"&gt;Mapped Controls:&lt;/div&gt;\n            &lt;div id=\"controls-risk-2\" class=\"controls-container\"&gt;&lt;div class=\"text-muted small\"&gt;No controls mapped yet&lt;/div&gt;&lt;/div&gt;\n          &lt;/div&gt;\n          &lt;div class=\"d-grid\"&gt;\n            &lt;button onclick=\"openControlMapping('risk-2', 'Operational Process Failure')\" class=\"btn btn-outline-primary\"&gt;\n              &lt;i class=\"bi bi-plus-circle me-2\"&gt;&lt;/i&gt;\n              Map Controls\n            &lt;/button&gt;\n          &lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n      &lt;!-- Risk 3 --&gt;\n      &lt;div class=\"col-lg-4\"&gt;\n        &lt;div data-risk-id=\"risk-3\" data-risk-level=\"medium\" class=\"risk-card unmapped\" style=\"border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; margin-bottom: 1.5rem; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; position: relative; border-top-color: rgb(255, 193, 7); border-right-color: rgb(255, 193, 7); border-bottom-color: rgb(255, 193, 7); border-left-color: rgb(255, 193, 7); background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 251, 240);\"&gt;\n          &lt;div class=\"d-flex justify-content-between align-items-start mb-3\"&gt;\n            &lt;h5 class=\"fw-bold mb-0\"&gt;Regulatory Compliance Gap&lt;/h5&gt;\n            &lt;span class=\"badge bg-info\"&gt;Medium&lt;/span&gt;\n          &lt;/div&gt;\n          &lt;p class=\"text-muted mb-3\"&gt;Risk of non-compliance with regulatory requirements leading to penalties and reputational damage.&lt;/p&gt;\n          &lt;div class=\"mb-3\"&gt;\n            &lt;div class=\"small fw-bold mb-2\"&gt;Mapped Controls:&lt;/div&gt;\n            &lt;div id=\"controls-risk-3\" class=\"controls-container\"&gt;&lt;div class=\"text-muted small\"&gt;No controls mapped yet&lt;/div&gt;&lt;/div&gt;\n          &lt;/div&gt;\n          &lt;div class=\"d-grid\"&gt;\n            &lt;button onclick=\"openControlMapping('risk-3', 'Regulatory Compliance Gap')\" class=\"btn btn-outline-primary\"&gt;\n              &lt;i class=\"bi bi-plus-circle me-2\"&gt;&lt;/i&gt;\n              Map Controls\n            &lt;/button&gt;\n          &lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n    &lt;/div&gt;\n  &lt;/div&gt;\n  &lt;!-- Action Buttons --&gt;\n  &lt;div class=\"container\"&gt;\n    &lt;div class=\"row mt-4 mb-4\"&gt;\n      &lt;div class=\"col-12\"&gt;\n        &lt;div class=\"d-flex justify-content-between align-items-center\"&gt;\n          &lt;button onclick=\"goBack()\" class=\"btn btn-outline-secondary btn-lg\"&gt;\n            &lt;i class=\"bi bi-arrow-left me-2\"&gt;&lt;/i&gt;\n            Back to Risk Identification&lt;/button\n          &gt;&lt;button id=\"continueBtn\" onclick=\"continueToNextStep()\" disabled=\"\" class=\"btn btn-warning btn-lg\"&gt;\n            Continue to Residual Assessment\n            &lt;i class=\"bi bi-arrow-right ms-2\"&gt;&lt;/i&gt;\n          &lt;/button&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n    &lt;/div&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n&lt;!-- Control Selection Modal --&gt;\n&lt;div id=\"controlMappingModal\" class=\"modal fade\"&gt;\n  &lt;div class=\"modal-dialog modal-lg\"&gt;\n    &lt;div class=\"modal-content\"&gt;\n      &lt;div class=\"modal-header\"&gt;\n        &lt;h5 class=\"modal-title\"&gt;Map Controls to Risk&lt;/h5&gt;\n        &lt;button type=\"button\" data-bs-dismiss=\"modal\" class=\"btn-close\"&gt;&lt;/button&gt;\n      &lt;/div&gt;\n      &lt;div class=\"modal-body\"&gt;\n        &lt;div class=\"mb-3\"&gt;\n          &lt;h6 id=\"modalRiskTitle\" class=\"fw-bold\"&gt;Risk Title&lt;/h6&gt;\n          &lt;p id=\"modalRiskDescription\" class=\"text-muted\"&gt;Risk description&lt;/p&gt;\n        &lt;/div&gt;\n        &lt;div class=\"mb-3\"&gt;&lt;input type=\"text\" placeholder=\"Search available controls...\" id=\"controlSearch\" class=\"form-control\" /&gt;&lt;/div&gt;\n        &lt;div id=\"controlOptions\" class=\"control-options\"&gt;\n          &lt;div data-control-id=\"ctrl-1\" class=\"control-option\" style=\"background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;\"&gt;\n            &lt;div class=\"form-check\"&gt;\n              &lt;input type=\"checkbox\" id=\"ctrl-1\" class=\"form-check-input\" /&gt;&lt;label for=\"ctrl-1\" class=\"form-check-label\"&gt;&lt;strong&gt;Segregation of Duties&lt;/strong&gt;&lt;br /&gt;&lt;small class=\"text-muted\"&gt;Ensures critical processes require multiple approvals&lt;/small&gt;&lt;/label&gt;\n            &lt;/div&gt;\n          &lt;/div&gt;\n          &lt;div data-control-id=\"ctrl-2\" class=\"control-option\" style=\"background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;\"&gt;\n            &lt;div class=\"form-check\"&gt;\n              &lt;input type=\"checkbox\" id=\"ctrl-2\" class=\"form-check-input\" /&gt;&lt;label for=\"ctrl-2\" class=\"form-check-label\"&gt;&lt;strong&gt;Regular System Backups&lt;/strong&gt;&lt;br /&gt;&lt;small class=\"text-muted\"&gt;Automated daily backups of critical systems and data&lt;/small&gt;&lt;/label&gt;\n            &lt;/div&gt;\n          &lt;/div&gt;\n          &lt;div data-control-id=\"ctrl-3\" class=\"control-option\" style=\"background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;\"&gt;\n            &lt;div class=\"form-check\"&gt;\n              &lt;input type=\"checkbox\" id=\"ctrl-3\" class=\"form-check-input\" /&gt;&lt;label for=\"ctrl-3\" class=\"form-check-label\"&gt;&lt;strong&gt;Compliance Monitoring&lt;/strong&gt;&lt;br /&gt;&lt;small class=\"text-muted\"&gt;Regular audits and compliance checks&lt;/small&gt;&lt;/label&gt;\n            &lt;/div&gt;\n          &lt;/div&gt;\n          &lt;div data-control-id=\"ctrl-4\" class=\"control-option\" style=\"background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;\"&gt;\n            &lt;div class=\"form-check\"&gt;\n              &lt;input type=\"checkbox\" id=\"ctrl-4\" class=\"form-check-input\" /&gt;&lt;label for=\"ctrl-4\" class=\"form-check-label\"&gt;&lt;strong&gt;Access Controls&lt;/strong&gt;&lt;br /&gt;&lt;small class=\"text-muted\"&gt;Role-based access to sensitive systems and data&lt;/small&gt;&lt;/label&gt;\n            &lt;/div&gt;\n          &lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n      &lt;div class=\"modal-footer\"&gt;&lt;button type=\"button\" data-bs-dismiss=\"modal\" class=\"btn btn-secondary\"&gt;Cancel&lt;/button&gt;&lt;button type=\"button\" onclick=\"saveControlMapping()\" class=\"btn btn-primary\"&gt;Save Mapping&lt;/button&gt;&lt;/div&gt;\n    &lt;/div&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n&lt;!-- Clean JavaScript --&gt;\n&lt;script&gt;\n  let currentRiskId = null;\n  let riskMappings = {};\n\n  const controlData = {\n    'ctrl-1': { name: 'Segregation of Duties', description: 'Ensures critical processes require multiple approvals' },\n    'ctrl-2': { name: 'Regular System Backups', description: 'Automated daily backups of critical systems and data' },\n    'ctrl-3': { name: 'Compliance Monitoring', description: 'Regular audits and compliance checks' },\n    'ctrl-4': { name: 'Access Controls', description: 'Role-based access to sensitive systems and data' }\n  };\n\n  function openControlMapping(riskId, riskTitle) {\n    currentRiskId = riskId;\n    document.getElementById('modalRiskTitle').textContent = riskTitle;\n\n    // Clear previous selections\n    document.querySelectorAll('#controlOptions input[type=\"checkbox\"]').forEach(cb =&gt; {\n      cb.checked = false;\n    });\n\n    // Check already mapped controls\n    if (riskMappings[riskId]) {\n      riskMappings[riskId].forEach(controlId =&gt; {\n        const checkbox = document.getElementById(controlId);\n        if (checkbox) checkbox.checked = true;\n      });\n    }\n\n    const modal = new bootstrap.Modal(document.getElementById('controlMappingModal'));\n    modal.show();\n  }\n\n  function saveControlMapping() {\n    if (!currentRiskId) return;\n\n    const selectedControls = [];\n    document.querySelectorAll('#controlOptions input[type=\"checkbox\"]:checked').forEach(cb =&gt; {\n      selectedControls.push(cb.id);\n    });\n\n    riskMappings[currentRiskId] = selectedControls;\n    updateRiskCard(currentRiskId, selectedControls);\n    updateProgress();\n\n    const modal = bootstrap.Modal.getInstance(document.getElementById('controlMappingModal'));\n    modal.hide();\n\n    if (typeof modernInteractions !== 'undefined') {\n      modernInteractions.showSuccess('Controls Mapped', `Mapped ${selectedControls.length} controls to risk`);\n    }\n  }\n\n  function updateRiskCard(riskId, controlIds) {\n    const riskCard = document.querySelector(`[data-risk-id=\"${riskId}\"]`);\n    const controlsContainer = document.getElementById(`controls-${riskId}`);\n\n    if (controlIds.length === 0) {\n      controlsContainer.innerHTML = '&lt;div class=\"text-muted small\"&gt;No controls mapped yet&lt;/div&gt;';\n      riskCard.classList.remove('mapped');\n      riskCard.classList.add('unmapped');\n    } else {\n      let controlsHtml = '';\n      controlIds.forEach(controlId =&gt; {\n        const control = controlData[controlId];\n        if (control) {\n          controlsHtml += `\n            &lt;span class=\"control-chip\"&gt;\n              ${control.name}\n              &lt;span class=\"remove-control\" onclick=\"removeControl('${riskId}', '${controlId}')\"&gt;&amp;times;&lt;/span&gt;\n            &lt;/span&gt;\n          `;\n        }\n      });\n      controlsContainer.innerHTML = controlsHtml;\n      riskCard.classList.remove('unmapped');\n      riskCard.classList.add('mapped');\n    }\n  }\n\n  function removeControl(riskId, controlId) {\n    if (riskMappings[riskId]) {\n      riskMappings[riskId] = riskMappings[riskId].filter(id =&gt; id !== controlId);\n      updateRiskCard(riskId, riskMappings[riskId]);\n      updateProgress();\n\n      if (typeof modernInteractions !== 'undefined') {\n        modernInteractions.showInfo('Control Removed', 'Control mapping removed');\n      }\n    }\n  }\n\n  function updateProgress() {\n    const totalRisks = 3;\n    const mappedCount = Object.keys(riskMappings).filter(riskId =&gt; riskMappings[riskId].length &gt; 0).length;\n    const unmappedCount = totalRisks - mappedCount;\n\n    document.getElementById('progressCircle').textContent = `${mappedCount}/${totalRisks}`;\n    document.getElementById('mappedRisks').textContent = mappedCount;\n    document.getElementById('unmappedRisks').textContent = unmappedCount;\n\n    // Enable continue button if all risks are mapped\n    const continueBtn = document.getElementById('continueBtn');\n    continueBtn.disabled = mappedCount &lt; totalRisks;\n\n    if (mappedCount === totalRisks) {\n      continueBtn.classList.remove('btn-warning');\n      continueBtn.classList.add('btn-success');\n    } else {\n      continueBtn.classList.remove('btn-success');\n      continueBtn.classList.add('btn-warning');\n    }\n  }\n\n  function filterRisks(filter) {\n    // Update active tab\n    document.querySelectorAll('.filter-tab').forEach(tab =&gt; tab.classList.remove('active'));\n    document.getElementById(`filter${filter.charAt(0).toUpperCase() + filter.slice(1)}`).classList.add('active');\n\n    // Filter risk cards\n    document.querySelectorAll('.risk-card').forEach(card =&gt; {\n      const riskId = card.dataset.riskId;\n      const riskLevel = card.dataset.riskLevel;\n      const isMapped = riskMappings[riskId] &amp;&amp; riskMappings[riskId].length &gt; 0;\n\n      let show = false;\n      switch(filter) {\n        case 'all':\n          show = true;\n          break;\n        case 'mapped':\n          show = isMapped;\n          break;\n        case 'unmapped':\n          show = !isMapped;\n          break;\n        case 'high':\n          show = riskLevel === 'critical' || riskLevel === 'high';\n          break;\n      }\n\n      card.closest('.col-lg-4').style.display = show ? 'block' : 'none';\n    });\n  }\n\n  function continueToNextStep() {\n    const mappedCount = Object.keys(riskMappings).filter(riskId =&gt; riskMappings[riskId].length &gt; 0).length;\n\n    if (mappedCount &lt; 3) {\n      if (typeof modernInteractions !== 'undefined') {\n        modernInteractions.showError('Incomplete Mapping', 'Please map controls to all risks before continuing');\n      }\n      return;\n    }\n\n    // Show loading state\n    const btn = document.getElementById('continueBtn');\n    const originalText = btn.innerHTML;\n    btn.innerHTML = '&lt;span class=\"spinner-border spinner-border-sm me-2\"&gt;&lt;/span&gt;Loading...';\n    btn.disabled = true;\n\n    if (typeof modernInteractions !== 'undefined') {\n      modernInteractions.showSuccess('Proceeding', 'Moving to Residual Risk Assessment...');\n    }\n\n    setTimeout(() =&gt; {\n      window.location.href = '/Residual-Assessment';\n    }, 2000);\n  }\n\n  function goBack() {\n    if (typeof modernInteractions !== 'undefined') {\n      modernInteractions.showInfo('Returning to Risk Identification', 'Redirecting...');\n    }\n\n    setTimeout(() =&gt; {\n      window.location.href = '/Risk-ID';\n    }, 1000);\n  }\n\n  // Initialize\n  document.addEventListener('DOMContentLoaded', function() {\n    console.log('✅ Control Mapping loaded with clean Bootstrap 5');\n    updateProgress();\n\n    if (typeof modernInteractions !== 'undefined') {\n      modernInteractions.showSuccess('Control Mapping Ready', 'Map controls to identified risks to proceed');\n    }\n  });\n&lt;/script&gt;\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n  &lt;div class=\"container\" style=\"padding: 0px; display: flex; flex-wrap: wrap;\"&gt;&lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;\"&gt;&lt;/div&gt;&lt;/div&gt;\n&lt;/div&gt;\n",
+  "displayorder": 8,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "7504b05c-7353-404b-af12-de2d395d7fb0",
+  "parentpageid": "439a903c-bf6a-492c-b905-cbbbce3612e3",
+  "partialurl": "Control-Mapping-Overview",
+  "publishingstateid": "0c05b030-bb84-4276-94fc-ece9f13ab2e8",
+  "rootwebpageid": "5c2dcb7a-39c6-6f2c-ab3a-962d26e2568c",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;",
+  "title": "Control Mapping Overview"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Control Mapping Overview</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>96e8a8c3-d5c0-4729-bbb4-36d4e809b044</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>Control Mapping Overview&lt;!-- Include Bootstrap 5 and Modern Enhancements --&gt;&lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" /&gt;&lt;link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" /&gt;&lt;link rel="stylesheet" href="/bootstrap-5-upgrades.css" /&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
+&lt;script src="/modern-interactions.js"&gt;&lt;/script&gt;
+&lt;!-- Clean Bootstrap 5 Control Mapping Page --&gt;
+&lt;div class="container-fluid"&gt;
+  &lt;!-- Page Header --&gt;
+  &lt;div class="control-header" style="background-image: linear-gradient(135deg, rgb(253, 126, 20) 0%, rgb(255, 193, 7) 100%); background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: initial; color: white; padding-top: 3rem; padding-right: 0px; padding-bottom: 3rem; padding-left: 0px; margin-bottom: 2rem;"&gt;
+    &lt;div class="container"&gt;
+      &lt;div class="row align-items-center"&gt;
+        &lt;div class="col-md-8"&gt;
+          &lt;h1 class="display-5 fw-bold mb-2"&gt;Control Mapping&lt;/h1&gt;
+          &lt;p class="lead mb-0"&gt;Link mitigating controls to identified risks across your organization&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="col-md-4 text-md-end"&gt;
+          &lt;div class="step-indicator bg-white bg-opacity-25 rounded-pill px-3 py-1"&gt;
+            &lt;i class="bi bi-3-circle me-2"&gt;&lt;/i&gt;
+            Step 3 of 5
+          &lt;/div&gt;
+          &lt;div class="h5 mt-2 mb-0"&gt;Control Mapping&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- Progress Summary --&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="progress-card" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 2rem; padding-right: 2rem; padding-bottom: 2rem; padding-left: 2rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 16px; margin-bottom: 2rem;"&gt;
+      &lt;div class="row align-items-center"&gt;
+        &lt;div class="col-md-2"&gt;&lt;div id="progressCircle" class="progress-circle mx-auto" style="width: 80px; height: 80px; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(45deg, rgb(253, 126, 20), rgb(255, 193, 7)); background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: initial; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;"&gt;0/3&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="col-md-6"&gt;
+          &lt;h4 class="fw-bold mb-2"&gt;Mapping Progress&lt;/h4&gt;
+          &lt;p class="text-muted mb-0"&gt;Track your control mapping completion across all identified risks&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="col-md-4"&gt;
+          &lt;div class="row text-center"&gt;
+            &lt;div class="col-4"&gt;
+              &lt;div id="totalRisks" class="h3 fw-bold text-primary"&gt;3&lt;/div&gt;
+              &lt;div class="small text-muted"&gt;Total Risks&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="col-4"&gt;
+              &lt;div id="mappedRisks" class="h3 fw-bold text-success"&gt;0&lt;/div&gt;
+              &lt;div class="small text-muted"&gt;Mapped&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="col-4"&gt;
+              &lt;div id="unmappedRisks" class="h3 fw-bold text-warning"&gt;3&lt;/div&gt;
+              &lt;div class="small text-muted"&gt;Unmapped&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- Filter Tabs --&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="filter-tabs text-center" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 0.5rem; padding-right: 0.5rem; padding-bottom: 0.5rem; padding-left: 0.5rem; margin-bottom: 2rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px;"&gt;
+      &lt;button onclick="filterRisks('all')" id="filterAll" class="filter-tab active" style="padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(253, 126, 20); color: white;"&gt;&lt;i class="bi bi-list me-1"&gt;&lt;/i&gt;All Risks&lt;/button&gt;&lt;button onclick="filterRisks('unmapped')" id="filterUnmapped" class="filter-tab" style="padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem;"&gt;&lt;i class="bi bi-exclamation-triangle me-1"&gt;&lt;/i&gt;Unmapped&lt;/button&gt;&lt;button onclick="filterRisks('mapped')" id="filterMapped" class="filter-tab" style="padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem;"&gt;&lt;i class="bi bi-check-circle me-1"&gt;&lt;/i&gt;Mapped&lt;/button&gt;&lt;button onclick="filterRisks('high')" id="filterHigh" class="filter-tab" style="padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem;"&gt;&lt;i class="bi bi-shield-exclamation me-1"&gt;&lt;/i&gt;High Risk&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- Risk Cards Grid --&gt;
+  &lt;div class="container"&gt;
+    &lt;div id="riskCardsGrid" class="row g-4"&gt;
+      &lt;!-- Risk 1 --&gt;
+      &lt;div class="col-lg-4"&gt;
+        &lt;div data-risk-id="risk-1" data-risk-level="critical" class="risk-card unmapped" style="border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; margin-bottom: 1.5rem; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; position: relative; border-top-color: rgb(255, 193, 7); border-right-color: rgb(255, 193, 7); border-bottom-color: rgb(255, 193, 7); border-left-color: rgb(255, 193, 7); background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 251, 240);"&gt;
+          &lt;div class="d-flex justify-content-between align-items-start mb-3"&gt;
+            &lt;h5 class="fw-bold mb-0"&gt;Credit Default Risk&lt;/h5&gt;
+            &lt;span class="badge bg-danger"&gt;Critical&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;p class="text-muted mb-3"&gt;Risk of borrower defaulting on loan obligations due to inadequate credit assessment processes.&lt;/p&gt;
+          &lt;div class="mb-3"&gt;
+            &lt;div class="small fw-bold mb-2"&gt;Mapped Controls:&lt;/div&gt;
+            &lt;div id="controls-risk-1" class="controls-container"&gt;&lt;div class="text-muted small"&gt;No controls mapped yet&lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="d-grid"&gt;
+            &lt;button onclick="openControlMapping('risk-1', 'Credit Default Risk')" class="btn btn-outline-primary"&gt;
+              &lt;i class="bi bi-plus-circle me-2"&gt;&lt;/i&gt;
+              Map Controls
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- Risk 2 --&gt;
+      &lt;div class="col-lg-4"&gt;
+        &lt;div data-risk-id="risk-2" data-risk-level="high" class="risk-card unmapped" style="border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; margin-bottom: 1.5rem; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; position: relative; border-top-color: rgb(255, 193, 7); border-right-color: rgb(255, 193, 7); border-bottom-color: rgb(255, 193, 7); border-left-color: rgb(255, 193, 7); background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 251, 240);"&gt;
+          &lt;div class="d-flex justify-content-between align-items-start mb-3"&gt;
+            &lt;h5 class="fw-bold mb-0"&gt;Operational Process Failure&lt;/h5&gt;
+            &lt;span class="badge bg-warning"&gt;High&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;p class="text-muted mb-3"&gt;Risk of system failures or human errors disrupting critical business operations and service delivery.&lt;/p&gt;
+          &lt;div class="mb-3"&gt;
+            &lt;div class="small fw-bold mb-2"&gt;Mapped Controls:&lt;/div&gt;
+            &lt;div id="controls-risk-2" class="controls-container"&gt;&lt;div class="text-muted small"&gt;No controls mapped yet&lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="d-grid"&gt;
+            &lt;button onclick="openControlMapping('risk-2', 'Operational Process Failure')" class="btn btn-outline-primary"&gt;
+              &lt;i class="bi bi-plus-circle me-2"&gt;&lt;/i&gt;
+              Map Controls
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- Risk 3 --&gt;
+      &lt;div class="col-lg-4"&gt;
+        &lt;div data-risk-id="risk-3" data-risk-level="medium" class="risk-card unmapped" style="border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; margin-bottom: 1.5rem; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; position: relative; border-top-color: rgb(255, 193, 7); border-right-color: rgb(255, 193, 7); border-bottom-color: rgb(255, 193, 7); border-left-color: rgb(255, 193, 7); background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 251, 240);"&gt;
+          &lt;div class="d-flex justify-content-between align-items-start mb-3"&gt;
+            &lt;h5 class="fw-bold mb-0"&gt;Regulatory Compliance Gap&lt;/h5&gt;
+            &lt;span class="badge bg-info"&gt;Medium&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;p class="text-muted mb-3"&gt;Risk of non-compliance with regulatory requirements leading to penalties and reputational damage.&lt;/p&gt;
+          &lt;div class="mb-3"&gt;
+            &lt;div class="small fw-bold mb-2"&gt;Mapped Controls:&lt;/div&gt;
+            &lt;div id="controls-risk-3" class="controls-container"&gt;&lt;div class="text-muted small"&gt;No controls mapped yet&lt;/div&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="d-grid"&gt;
+            &lt;button onclick="openControlMapping('risk-3', 'Regulatory Compliance Gap')" class="btn btn-outline-primary"&gt;
+              &lt;i class="bi bi-plus-circle me-2"&gt;&lt;/i&gt;
+              Map Controls
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- Action Buttons --&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="row mt-4 mb-4"&gt;
+      &lt;div class="col-12"&gt;
+        &lt;div class="d-flex justify-content-between align-items-center"&gt;
+          &lt;button onclick="goBack()" class="btn btn-outline-secondary btn-lg"&gt;
+            &lt;i class="bi bi-arrow-left me-2"&gt;&lt;/i&gt;
+            Back to Risk Identification&lt;/button
+          &gt;&lt;button id="continueBtn" onclick="continueToNextStep()" disabled="" class="btn btn-warning btn-lg"&gt;
+            Continue to Residual Assessment
+            &lt;i class="bi bi-arrow-right ms-2"&gt;&lt;/i&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Control Selection Modal --&gt;
+&lt;div id="controlMappingModal" class="modal fade"&gt;
+  &lt;div class="modal-dialog modal-lg"&gt;
+    &lt;div class="modal-content"&gt;
+      &lt;div class="modal-header"&gt;
+        &lt;h5 class="modal-title"&gt;Map Controls to Risk&lt;/h5&gt;
+        &lt;button type="button" data-bs-dismiss="modal" class="btn-close"&gt;&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="modal-body"&gt;
+        &lt;div class="mb-3"&gt;
+          &lt;h6 id="modalRiskTitle" class="fw-bold"&gt;Risk Title&lt;/h6&gt;
+          &lt;p id="modalRiskDescription" class="text-muted"&gt;Risk description&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="mb-3"&gt;&lt;input type="text" placeholder="Search available controls..." id="controlSearch" class="form-control" /&gt;&lt;/div&gt;
+        &lt;div id="controlOptions" class="control-options"&gt;
+          &lt;div data-control-id="ctrl-1" class="control-option" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;"&gt;
+            &lt;div class="form-check"&gt;
+              &lt;input type="checkbox" id="ctrl-1" class="form-check-input" /&gt;&lt;label for="ctrl-1" class="form-check-label"&gt;&lt;strong&gt;Segregation of Duties&lt;/strong&gt;&lt;br /&gt;&lt;small class="text-muted"&gt;Ensures critical processes require multiple approvals&lt;/small&gt;&lt;/label&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div data-control-id="ctrl-2" class="control-option" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;"&gt;
+            &lt;div class="form-check"&gt;
+              &lt;input type="checkbox" id="ctrl-2" class="form-check-input" /&gt;&lt;label for="ctrl-2" class="form-check-label"&gt;&lt;strong&gt;Regular System Backups&lt;/strong&gt;&lt;br /&gt;&lt;small class="text-muted"&gt;Automated daily backups of critical systems and data&lt;/small&gt;&lt;/label&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div data-control-id="ctrl-3" class="control-option" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;"&gt;
+            &lt;div class="form-check"&gt;
+              &lt;input type="checkbox" id="ctrl-3" class="form-check-input" /&gt;&lt;label for="ctrl-3" class="form-check-label"&gt;&lt;strong&gt;Compliance Monitoring&lt;/strong&gt;&lt;br /&gt;&lt;small class="text-muted"&gt;Regular audits and compliance checks&lt;/small&gt;&lt;/label&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div data-control-id="ctrl-4" class="control-option" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;"&gt;
+            &lt;div class="form-check"&gt;
+              &lt;input type="checkbox" id="ctrl-4" class="form-check-input" /&gt;&lt;label for="ctrl-4" class="form-check-label"&gt;&lt;strong&gt;Access Controls&lt;/strong&gt;&lt;br /&gt;&lt;small class="text-muted"&gt;Role-based access to sensitive systems and data&lt;/small&gt;&lt;/label&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="modal-footer"&gt;&lt;button type="button" data-bs-dismiss="modal" class="btn btn-secondary"&gt;Cancel&lt;/button&gt;&lt;button type="button" onclick="saveControlMapping()" class="btn btn-primary"&gt;Save Mapping&lt;/button&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Clean JavaScript --&gt;
+&lt;script&gt;
+  let currentRiskId = null;
+  let riskMappings = {};
+
+  const controlData = {
+    'ctrl-1': { name: 'Segregation of Duties', description: 'Ensures critical processes require multiple approvals' },
+    'ctrl-2': { name: 'Regular System Backups', description: 'Automated daily backups of critical systems and data' },
+    'ctrl-3': { name: 'Compliance Monitoring', description: 'Regular audits and compliance checks' },
+    'ctrl-4': { name: 'Access Controls', description: 'Role-based access to sensitive systems and data' }
+  };
+
+  function openControlMapping(riskId, riskTitle) {
+    currentRiskId = riskId;
+    document.getElementById('modalRiskTitle').textContent = riskTitle;
+
+    // Clear previous selections
+    document.querySelectorAll('#controlOptions input[type="checkbox"]').forEach(cb =&gt; {
+      cb.checked = false;
+    });
+
+    // Check already mapped controls
+    if (riskMappings[riskId]) {
+      riskMappings[riskId].forEach(controlId =&gt; {
+        const checkbox = document.getElementById(controlId);
+        if (checkbox) checkbox.checked = true;
+      });
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('controlMappingModal'));
+    modal.show();
+  }
+
+  function saveControlMapping() {
+    if (!currentRiskId) return;
+
+    const selectedControls = [];
+    document.querySelectorAll('#controlOptions input[type="checkbox"]:checked').forEach(cb =&gt; {
+      selectedControls.push(cb.id);
+    });
+
+    riskMappings[currentRiskId] = selectedControls;
+    updateRiskCard(currentRiskId, selectedControls);
+    updateProgress();
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById('controlMappingModal'));
+    modal.hide();
+
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showSuccess('Controls Mapped', `Mapped ${selectedControls.length} controls to risk`);
+    }
+  }
+
+  function updateRiskCard(riskId, controlIds) {
+    const riskCard = document.querySelector(`[data-risk-id="${riskId}"]`);
+    const controlsContainer = document.getElementById(`controls-${riskId}`);
+
+    if (controlIds.length === 0) {
+      controlsContainer.innerHTML = '&lt;div class="text-muted small"&gt;No controls mapped yet&lt;/div&gt;';
+      riskCard.classList.remove('mapped');
+      riskCard.classList.add('unmapped');
+    } else {
+      let controlsHtml = '';
+      controlIds.forEach(controlId =&gt; {
+        const control = controlData[controlId];
+        if (control) {
+          controlsHtml += `
+            &lt;span class="control-chip"&gt;
+              ${control.name}
+              &lt;span class="remove-control" onclick="removeControl('${riskId}', '${controlId}')"&gt;&amp;times;&lt;/span&gt;
+            &lt;/span&gt;
+          `;
+        }
+      });
+      controlsContainer.innerHTML = controlsHtml;
+      riskCard.classList.remove('unmapped');
+      riskCard.classList.add('mapped');
+    }
+  }
+
+  function removeControl(riskId, controlId) {
+    if (riskMappings[riskId]) {
+      riskMappings[riskId] = riskMappings[riskId].filter(id =&gt; id !== controlId);
+      updateRiskCard(riskId, riskMappings[riskId]);
+      updateProgress();
+
+      if (typeof modernInteractions !== 'undefined') {
+        modernInteractions.showInfo('Control Removed', 'Control mapping removed');
+      }
+    }
+  }
+
+  function updateProgress() {
+    const totalRisks = 3;
+    const mappedCount = Object.keys(riskMappings).filter(riskId =&gt; riskMappings[riskId].length &gt; 0).length;
+    const unmappedCount = totalRisks - mappedCount;
+
+    document.getElementById('progressCircle').textContent = `${mappedCount}/${totalRisks}`;
+    document.getElementById('mappedRisks').textContent = mappedCount;
+    document.getElementById('unmappedRisks').textContent = unmappedCount;
+
+    // Enable continue button if all risks are mapped
+    const continueBtn = document.getElementById('continueBtn');
+    continueBtn.disabled = mappedCount &lt; totalRisks;
+
+    if (mappedCount === totalRisks) {
+      continueBtn.classList.remove('btn-warning');
+      continueBtn.classList.add('btn-success');
+    } else {
+      continueBtn.classList.remove('btn-success');
+      continueBtn.classList.add('btn-warning');
+    }
+  }
+
+  function filterRisks(filter) {
+    // Update active tab
+    document.querySelectorAll('.filter-tab').forEach(tab =&gt; tab.classList.remove('active'));
+    document.getElementById(`filter${filter.charAt(0).toUpperCase() + filter.slice(1)}`).classList.add('active');
+
+    // Filter risk cards
+    document.querySelectorAll('.risk-card').forEach(card =&gt; {
+      const riskId = card.dataset.riskId;
+      const riskLevel = card.dataset.riskLevel;
+      const isMapped = riskMappings[riskId] &amp;&amp; riskMappings[riskId].length &gt; 0;
+
+      let show = false;
+      switch(filter) {
+        case 'all':
+          show = true;
+          break;
+        case 'mapped':
+          show = isMapped;
+          break;
+        case 'unmapped':
+          show = !isMapped;
+          break;
+        case 'high':
+          show = riskLevel === 'critical' || riskLevel === 'high';
+          break;
+      }
+
+      card.closest('.col-lg-4').style.display = show ? 'block' : 'none';
+    });
+  }
+
+  function continueToNextStep() {
+    const mappedCount = Object.keys(riskMappings).filter(riskId =&gt; riskMappings[riskId].length &gt; 0).length;
+
+    if (mappedCount &lt; 3) {
+      if (typeof modernInteractions !== 'undefined') {
+        modernInteractions.showError('Incomplete Mapping', 'Please map controls to all risks before continuing');
+      }
+      return;
+    }
+
+    // Show loading state
+    const btn = document.getElementById('continueBtn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '&lt;span class="spinner-border spinner-border-sm me-2"&gt;&lt;/span&gt;Loading...';
+    btn.disabled = true;
+
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showSuccess('Proceeding', 'Moving to Residual Risk Assessment...');
+    }
+
+    setTimeout(() =&gt; {
+      window.location.href = '/Residual-Assessment';
+    }, 2000);
+  }
+
+  function goBack() {
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showInfo('Returning to Risk Identification', 'Redirecting...');
+    }
+
+    setTimeout(() =&gt; {
+      window.location.href = '/Risk-ID';
+    }, 1000);
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ Control Mapping loaded with clean Bootstrap 5');
+    updateProgress();
+
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showSuccess('Control Mapping Ready', 'Map controls to identified risks to proceed');
+    }
+  });
+&lt;/script&gt;
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+  &lt;div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;"&gt;&lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;"&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+Control Mapping Overview</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

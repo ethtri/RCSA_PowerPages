@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="20cb4561-fb84-4d6e-b1a9-62118bb16f2c">
+  <content>{
+  "filecontent": null,
+  "value": ""
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Authentication/OpenIdConnect/AAD-B2C_1/Caption</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>1</statecode>
+  <statuscode>2</statuscode>
+</powerpagecomponent>

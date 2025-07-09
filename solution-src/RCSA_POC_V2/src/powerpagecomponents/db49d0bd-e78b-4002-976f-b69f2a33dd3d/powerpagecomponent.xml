@@ -1,0 +1,27 @@
+<powerpagecomponent powerpagecomponentid="db49d0bd-e78b-4002-976f-b69f2a33dd3d">
+  <content>{
+  "entityname": "Ctrl",
+  "entitylogicalname": "cr129_control",
+  "scope": 756150000,
+  "append": false,
+  "appendto": false,
+  "delete": false,
+  "read": true,
+  "create": false,
+  "write": false,
+  "parentrelationship": null,
+  "parententitypermission": null,
+  "contactrelationship": null,
+  "accountrelationship": null,
+  "childTablePermissions": [],
+  "adx_entitypermission_webrole": []
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Ctrl</name>
+  <powerpagecomponenttype>18</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

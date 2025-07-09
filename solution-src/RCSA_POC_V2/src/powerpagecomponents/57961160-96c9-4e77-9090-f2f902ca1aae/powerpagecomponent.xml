@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="57961160-96c9-4e77-9090-f2f902ca1aae">
+  <content>{"display_name":"Header","type":756150000,"value":"&lt;h3&gt;&lt;a href=\"~/\"&gt;Starter Portal&lt;/a&gt;&lt;/h3&gt;"}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Header</name>
+  <powerpagecomponenttype>7</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>96e8a8c3-d5c0-4729-bbb4-36d4e809b044</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

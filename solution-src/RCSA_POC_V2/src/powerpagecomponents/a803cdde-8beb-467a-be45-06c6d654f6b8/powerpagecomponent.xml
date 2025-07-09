@@ -1,0 +1,27 @@
+<powerpagecomponent powerpagecomponentid="a803cdde-8beb-467a-be45-06c6d654f6b8">
+  <content>{
+  "filecontent": null,
+  "displayorder": 5,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "feedbackpolicy": 756150000,
+  "hiddenfromsitemap": false,
+  "isroot": true,
+  "pagetemplateid": "7504b05c-7353-404b-af12-de2d395d7fb0",
+  "parentpageid": "439a903c-bf6a-492c-b905-cbbbce3612e3",
+  "partialurl": "subpage-1-deleted",
+  "publishingstateid": "0c05b030-bb84-4276-94fc-ece9f13ab2e8",
+  "sharedpageconfiguration": false,
+  "title": "Subpage 1"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Subpage 1-deleted</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <searchcontent>Subpage 1Subpage 1-deleted</searchcontent>
+  <statecode>1</statecode>
+  <statuscode>2</statuscode>
+</powerpagecomponent>

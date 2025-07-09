@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{0569d42e-3675-4fd1-a800-9eb23776c3f8}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{9c8b1b76-bfad-4546-933a-2f5349045e44}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{845a21b1-279a-43dc-b847-15723c1e9704}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{39fdbc83-8ea1-4177-af4e-52e8aa01f417}">
+                        <labels>
+                          <label description="AssessmentName" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_assessmentname" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cr129_assessmentname" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3b7a524f-1d82-4069-a8f9-6af1404afa2d}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{50e6b9be-d2ce-4a77-b89c-c7af1964fc8d}">
+                        <labels>
+                          <label description="RiskTitle" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_risktitle" classid="{270bd3db-d9af-4782-9025-509e298dec0a}" datafieldname="cr129_risktitle" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b1ac1b05-128c-4968-942c-f605bc02a5dd}">
+                        <labels>
+                          <label description="Assessor" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_assessoremail" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="cr129_assessoremail" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{44b1518d-ca5c-4457-92d9-128a9714a563}">
+                        <labels>
+                          <label description="AssmntDate" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_assessmentdate" classid="{5b773807-9fb2-42db-97c3-7a91eff8adff}" datafieldname="cr129_assessmentdate" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{5cc9cbe2-c74f-4991-9900-1c71915ddec7}">
+                        <labels>
+                          <label description="ResidualL" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_residuallikelihood" classid="{c6d124ca-7eda-4a60-aea9-7fb8d318b68f}" datafieldname="cr129_residuallikelihood" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4cca77f3-aee8-4929-8e65-a394a5db93cc}">
+                        <labels>
+                          <label description="ResidualI" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_residualimpact" classid="{c6d124ca-7eda-4a60-aea9-7fb8d318b68f}" datafieldname="cr129_residualimpact" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8d1e9b11-472d-4f32-adcf-ad3d029b16c8}">
+                        <labels>
+                          <label description="Rationale" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_rationale" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="cr129_rationale" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c6807fe5-4b79-4920-b160-6b5c6aa1e547}">
+                        <labels>
+                          <label description="AssessmentStatus" languagecode="1033" />
+                        </labels>
+                        <control id="cr129_assessmentstatus" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="cr129_assessmentstatus" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

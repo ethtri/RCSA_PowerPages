@@ -1,0 +1,373 @@
+<!-- Include Bootstrap 5 and Modern Enhancements --><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" /><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" /><link rel="stylesheet" href="/bootstrap-5-upgrades.css" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/modern-interactions.js"></script>
+<!-- Clean Bootstrap 5 Control Mapping Page -->
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="control-header" style="background-image: linear-gradient(135deg, rgb(253, 126, 20) 0%, rgb(255, 193, 7) 100%); background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: initial; color: white; padding-top: 3rem; padding-right: 0px; padding-bottom: 3rem; padding-left: 0px; margin-bottom: 2rem;">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="display-5 fw-bold mb-2">Control Mapping</h1>
+          <p class="lead mb-0">Link mitigating controls to identified risks across your organization</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <div class="step-indicator bg-white bg-opacity-25 rounded-pill px-3 py-1">
+            <i class="bi bi-3-circle me-2"></i>
+            Step 3 of 5
+          </div>
+          <div class="h5 mt-2 mb-0">Control Mapping</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Progress Summary -->
+  <div class="container">
+    <div class="progress-card" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 2rem; padding-right: 2rem; padding-bottom: 2rem; padding-left: 2rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 16px; margin-bottom: 2rem;">
+      <div class="row align-items-center">
+        <div class="col-md-2"><div id="progressCircle" class="progress-circle mx-auto" style="width: 80px; height: 80px; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(45deg, rgb(253, 126, 20), rgb(255, 193, 7)); background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: initial; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;">0/3</div></div>
+        <div class="col-md-6">
+          <h4 class="fw-bold mb-2">Mapping Progress</h4>
+          <p class="text-muted mb-0">Track your control mapping completion across all identified risks</p>
+        </div>
+        <div class="col-md-4">
+          <div class="row text-center">
+            <div class="col-4">
+              <div id="totalRisks" class="h3 fw-bold text-primary">3</div>
+              <div class="small text-muted">Total Risks</div>
+            </div>
+            <div class="col-4">
+              <div id="mappedRisks" class="h3 fw-bold text-success">0</div>
+              <div class="small text-muted">Mapped</div>
+            </div>
+            <div class="col-4">
+              <div id="unmappedRisks" class="h3 fw-bold text-warning">3</div>
+              <div class="small text-muted">Unmapped</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Filter Tabs -->
+  <div class="container">
+    <div class="filter-tabs text-center" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 0.5rem; padding-right: 0.5rem; padding-bottom: 0.5rem; padding-left: 0.5rem; margin-bottom: 2rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px;">
+      <button onclick="filterRisks('all')" id="filterAll" class="filter-tab active" style="padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(253, 126, 20); color: white;"><i class="bi bi-list me-1"></i>All Risks</button><button onclick="filterRisks('unmapped')" id="filterUnmapped" class="filter-tab" style="padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem;"><i class="bi bi-exclamation-triangle me-1"></i>Unmapped</button><button onclick="filterRisks('mapped')" id="filterMapped" class="filter-tab" style="padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem;"><i class="bi bi-check-circle me-1"></i>Mapped</button><button onclick="filterRisks('high')" id="filterHigh" class="filter-tab" style="padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem;"><i class="bi bi-shield-exclamation me-1"></i>High Risk</button>
+    </div>
+  </div>
+  <!-- Risk Cards Grid -->
+  <div class="container">
+    <div id="riskCardsGrid" class="row g-4">
+      <!-- Risk 1 -->
+      <div class="col-lg-4">
+        <div data-risk-id="risk-1" data-risk-level="critical" class="risk-card unmapped" style="border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; margin-bottom: 1.5rem; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; position: relative; border-top-color: rgb(255, 193, 7); border-right-color: rgb(255, 193, 7); border-bottom-color: rgb(255, 193, 7); border-left-color: rgb(255, 193, 7); background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 251, 240);">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="fw-bold mb-0">Credit Default Risk</h5>
+            <span class="badge bg-danger">Critical</span>
+          </div>
+          <p class="text-muted mb-3">Risk of borrower defaulting on loan obligations due to inadequate credit assessment processes.</p>
+          <div class="mb-3">
+            <div class="small fw-bold mb-2">Mapped Controls:</div>
+            <div id="controls-risk-1" class="controls-container"><div class="text-muted small">No controls mapped yet</div></div>
+          </div>
+          <div class="d-grid">
+            <button onclick="openControlMapping('risk-1', 'Credit Default Risk')" class="btn btn-outline-primary">
+              <i class="bi bi-plus-circle me-2"></i>
+              Map Controls
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Risk 2 -->
+      <div class="col-lg-4">
+        <div data-risk-id="risk-2" data-risk-level="high" class="risk-card unmapped" style="border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; margin-bottom: 1.5rem; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; position: relative; border-top-color: rgb(255, 193, 7); border-right-color: rgb(255, 193, 7); border-bottom-color: rgb(255, 193, 7); border-left-color: rgb(255, 193, 7); background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 251, 240);">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="fw-bold mb-0">Operational Process Failure</h5>
+            <span class="badge bg-warning">High</span>
+          </div>
+          <p class="text-muted mb-3">Risk of system failures or human errors disrupting critical business operations and service delivery.</p>
+          <div class="mb-3">
+            <div class="small fw-bold mb-2">Mapped Controls:</div>
+            <div id="controls-risk-2" class="controls-container"><div class="text-muted small">No controls mapped yet</div></div>
+          </div>
+          <div class="d-grid">
+            <button onclick="openControlMapping('risk-2', 'Operational Process Failure')" class="btn btn-outline-primary">
+              <i class="bi bi-plus-circle me-2"></i>
+              Map Controls
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Risk 3 -->
+      <div class="col-lg-4">
+        <div data-risk-id="risk-3" data-risk-level="medium" class="risk-card unmapped" style="border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; margin-bottom: 1.5rem; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; position: relative; border-top-color: rgb(255, 193, 7); border-right-color: rgb(255, 193, 7); border-bottom-color: rgb(255, 193, 7); border-left-color: rgb(255, 193, 7); background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 251, 240);">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="fw-bold mb-0">Regulatory Compliance Gap</h5>
+            <span class="badge bg-info">Medium</span>
+          </div>
+          <p class="text-muted mb-3">Risk of non-compliance with regulatory requirements leading to penalties and reputational damage.</p>
+          <div class="mb-3">
+            <div class="small fw-bold mb-2">Mapped Controls:</div>
+            <div id="controls-risk-3" class="controls-container"><div class="text-muted small">No controls mapped yet</div></div>
+          </div>
+          <div class="d-grid">
+            <button onclick="openControlMapping('risk-3', 'Regulatory Compliance Gap')" class="btn btn-outline-primary">
+              <i class="bi bi-plus-circle me-2"></i>
+              Map Controls
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Action Buttons -->
+  <div class="container">
+    <div class="row mt-4 mb-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+          <button onclick="goBack()" class="btn btn-outline-secondary btn-lg">
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Risk Identification</button
+          ><button id="continueBtn" onclick="continueToNextStep()" disabled="" class="btn btn-warning btn-lg">
+            Continue to Residual Assessment
+            <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Control Selection Modal -->
+<div id="controlMappingModal" class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Map Controls to Risk</h5>
+        <button type="button" data-bs-dismiss="modal" class="btn-close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <h6 id="modalRiskTitle" class="fw-bold">Risk Title</h6>
+          <p id="modalRiskDescription" class="text-muted">Risk description</p>
+        </div>
+        <div class="mb-3"><input type="text" placeholder="Search available controls..." id="controlSearch" class="form-control" /></div>
+        <div id="controlOptions" class="control-options">
+          <div data-control-id="ctrl-1" class="control-option" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
+            <div class="form-check">
+              <input type="checkbox" id="ctrl-1" class="form-check-input" /><label for="ctrl-1" class="form-check-label"><strong>Segregation of Duties</strong><br /><small class="text-muted">Ensures critical processes require multiple approvals</small></label>
+            </div>
+          </div>
+          <div data-control-id="ctrl-2" class="control-option" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
+            <div class="form-check">
+              <input type="checkbox" id="ctrl-2" class="form-check-input" /><label for="ctrl-2" class="form-check-label"><strong>Regular System Backups</strong><br /><small class="text-muted">Automated daily backups of critical systems and data</small></label>
+            </div>
+          </div>
+          <div data-control-id="ctrl-3" class="control-option" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
+            <div class="form-check">
+              <input type="checkbox" id="ctrl-3" class="form-check-input" /><label for="ctrl-3" class="form-check-label"><strong>Compliance Monitoring</strong><br /><small class="text-muted">Regular audits and compliance checks</small></label>
+            </div>
+          </div>
+          <div data-control-id="ctrl-4" class="control-option" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
+            <div class="form-check">
+              <input type="checkbox" id="ctrl-4" class="form-check-input" /><label for="ctrl-4" class="form-check-label"><strong>Access Controls</strong><br /><small class="text-muted">Role-based access to sensitive systems and data</small></label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cancel</button><button type="button" onclick="saveControlMapping()" class="btn btn-primary">Save Mapping</button></div>
+    </div>
+  </div>
+</div>
+<!-- Clean JavaScript -->
+<script>
+  let currentRiskId = null;
+  let riskMappings = {};
+
+  const controlData = {
+    'ctrl-1': { name: 'Segregation of Duties', description: 'Ensures critical processes require multiple approvals' },
+    'ctrl-2': { name: 'Regular System Backups', description: 'Automated daily backups of critical systems and data' },
+    'ctrl-3': { name: 'Compliance Monitoring', description: 'Regular audits and compliance checks' },
+    'ctrl-4': { name: 'Access Controls', description: 'Role-based access to sensitive systems and data' }
+  };
+
+  function openControlMapping(riskId, riskTitle) {
+    currentRiskId = riskId;
+    document.getElementById('modalRiskTitle').textContent = riskTitle;
+
+    // Clear previous selections
+    document.querySelectorAll('#controlOptions input[type="checkbox"]').forEach(cb => {
+      cb.checked = false;
+    });
+
+    // Check already mapped controls
+    if (riskMappings[riskId]) {
+      riskMappings[riskId].forEach(controlId => {
+        const checkbox = document.getElementById(controlId);
+        if (checkbox) checkbox.checked = true;
+      });
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('controlMappingModal'));
+    modal.show();
+  }
+
+  function saveControlMapping() {
+    if (!currentRiskId) return;
+
+    const selectedControls = [];
+    document.querySelectorAll('#controlOptions input[type="checkbox"]:checked').forEach(cb => {
+      selectedControls.push(cb.id);
+    });
+
+    riskMappings[currentRiskId] = selectedControls;
+    updateRiskCard(currentRiskId, selectedControls);
+    updateProgress();
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById('controlMappingModal'));
+    modal.hide();
+
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showSuccess('Controls Mapped', `Mapped ${selectedControls.length} controls to risk`);
+    }
+  }
+
+  function updateRiskCard(riskId, controlIds) {
+    const riskCard = document.querySelector(`[data-risk-id="${riskId}"]`);
+    const controlsContainer = document.getElementById(`controls-${riskId}`);
+
+    if (controlIds.length === 0) {
+      controlsContainer.innerHTML = '<div class="text-muted small">No controls mapped yet</div>';
+      riskCard.classList.remove('mapped');
+      riskCard.classList.add('unmapped');
+    } else {
+      let controlsHtml = '';
+      controlIds.forEach(controlId => {
+        const control = controlData[controlId];
+        if (control) {
+          controlsHtml += `
+            <span class="control-chip">
+              ${control.name}
+              <span class="remove-control" onclick="removeControl('${riskId}', '${controlId}')">&times;</span>
+            </span>
+          `;
+        }
+      });
+      controlsContainer.innerHTML = controlsHtml;
+      riskCard.classList.remove('unmapped');
+      riskCard.classList.add('mapped');
+    }
+  }
+
+  function removeControl(riskId, controlId) {
+    if (riskMappings[riskId]) {
+      riskMappings[riskId] = riskMappings[riskId].filter(id => id !== controlId);
+      updateRiskCard(riskId, riskMappings[riskId]);
+      updateProgress();
+
+      if (typeof modernInteractions !== 'undefined') {
+        modernInteractions.showInfo('Control Removed', 'Control mapping removed');
+      }
+    }
+  }
+
+  function updateProgress() {
+    const totalRisks = 3;
+    const mappedCount = Object.keys(riskMappings).filter(riskId => riskMappings[riskId].length > 0).length;
+    const unmappedCount = totalRisks - mappedCount;
+
+    document.getElementById('progressCircle').textContent = `${mappedCount}/${totalRisks}`;
+    document.getElementById('mappedRisks').textContent = mappedCount;
+    document.getElementById('unmappedRisks').textContent = unmappedCount;
+
+    // Enable continue button if all risks are mapped
+    const continueBtn = document.getElementById('continueBtn');
+    continueBtn.disabled = mappedCount < totalRisks;
+
+    if (mappedCount === totalRisks) {
+      continueBtn.classList.remove('btn-warning');
+      continueBtn.classList.add('btn-success');
+    } else {
+      continueBtn.classList.remove('btn-success');
+      continueBtn.classList.add('btn-warning');
+    }
+  }
+
+  function filterRisks(filter) {
+    // Update active tab
+    document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+    document.getElementById(`filter${filter.charAt(0).toUpperCase() + filter.slice(1)}`).classList.add('active');
+
+    // Filter risk cards
+    document.querySelectorAll('.risk-card').forEach(card => {
+      const riskId = card.dataset.riskId;
+      const riskLevel = card.dataset.riskLevel;
+      const isMapped = riskMappings[riskId] && riskMappings[riskId].length > 0;
+
+      let show = false;
+      switch(filter) {
+        case 'all':
+          show = true;
+          break;
+        case 'mapped':
+          show = isMapped;
+          break;
+        case 'unmapped':
+          show = !isMapped;
+          break;
+        case 'high':
+          show = riskLevel === 'critical' || riskLevel === 'high';
+          break;
+      }
+
+      card.closest('.col-lg-4').style.display = show ? 'block' : 'none';
+    });
+  }
+
+  function continueToNextStep() {
+    const mappedCount = Object.keys(riskMappings).filter(riskId => riskMappings[riskId].length > 0).length;
+
+    if (mappedCount < 3) {
+      if (typeof modernInteractions !== 'undefined') {
+        modernInteractions.showError('Incomplete Mapping', 'Please map controls to all risks before continuing');
+      }
+      return;
+    }
+
+    // Show loading state
+    const btn = document.getElementById('continueBtn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
+    btn.disabled = true;
+
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showSuccess('Proceeding', 'Moving to Residual Risk Assessment...');
+    }
+
+    setTimeout(() => {
+      window.location.href = '/Residual-Assessment';
+    }, 2000);
+  }
+
+  function goBack() {
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showInfo('Returning to Risk Identification', 'Redirecting...');
+    }
+
+    setTimeout(() => {
+      window.location.href = '/Risk-ID';
+    }, 1000);
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ Control Mapping loaded with clean Bootstrap 5');
+    updateProgress();
+
+    if (typeof modernInteractions !== 'undefined') {
+      modernInteractions.showSuccess('Control Mapping Ready', 'Map controls to identified risks to proceed');
+    }
+  });
+</script>
+<div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;">
+  <div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;"><div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;"></div></div>
+</div>

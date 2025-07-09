@@ -1,0 +1,11 @@
+<powerpagecomponent powerpagecomponentid="7a1910a5-38f5-4a98-8aba-10d441fc2548">
+  <content>{"entityname":"adx_webpage","isdefault":false,"rewriteurl":"~/Pages/FullPage.aspx","type":756150000,"usewebsiteheaderandfooter":true}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Full Page</name>
+  <powerpagecomponenttype>6</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>aa7d49af-363f-41d3-b99d-bdd5ad5694d8</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

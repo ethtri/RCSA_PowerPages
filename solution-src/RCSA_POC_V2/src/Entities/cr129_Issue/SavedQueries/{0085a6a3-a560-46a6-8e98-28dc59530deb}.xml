@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{0085a6a3-a560-46a6-8e98-28dc59530deb}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cr129_issuetitle" select="1" icon="1" preview="1">
+        <row name="result" id="cr129_issueid">
+          <cell name="cr129_issuetitle" width="300" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>1</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cr129_issue">
+          <attribute name="cr129_issueid" />
+          <attribute name="cr129_issuetitle" />
+          <attribute name="createdon" />
+          <order attribute="cr129_issuetitle" descending="false" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Issue Advanced Find View" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>
