@@ -24,6 +24,11 @@
   </fetch>
 {% endfetchxml %}
 
+<!-- ANTI-FORGERY TOKEN: Hidden form for Web API authentication -->
+<form id="antiForgerForm" style="display: none;">
+  {% antiforgerytoken %}
+</form>
+
 <!-- DEBUG: User and Risk Data Information -->
 <div class="alert alert-info mt-3" id="debugInfo" style="display: none;">
   <h6><i class="bi bi-info-circle me-2"></i>Debug Information</h6>
@@ -1768,10 +1773,52 @@ function closeEditModal() {
   }
 }
 
+// Helper function to get anti-forgery token
+function getAntiForgeryToken() {
+  try {
+    // Method 1: Check for token in meta tag
+    const metaToken = document.querySelector('input[name="__RequestVerificationToken"]');
+    if (metaToken) {
+      console.log('🔍 DEBUG: Found anti-forgery token in input field');
+      return metaToken.value;
+    }
+    
+    // Method 2: Check for token in form
+    const formToken = document.querySelector('form input[name="__RequestVerificationToken"]');
+    if (formToken) {
+      console.log('🔍 DEBUG: Found anti-forgery token in form');
+      return formToken.value;
+    }
+    
+    // Method 3: Check for token in hidden field
+    const hiddenToken = document.querySelector('input[type="hidden"][name="__RequestVerificationToken"]');
+    if (hiddenToken) {
+      console.log('🔍 DEBUG: Found anti-forgery token in hidden field');
+      return hiddenToken.value;
+    }
+    
+    // Method 4: Check if Power Pages has exposed it globally
+    if (window.__RequestVerificationToken) {
+      console.log('🔍 DEBUG: Found anti-forgery token in window object');
+      return window.__RequestVerificationToken;
+    }
+    
+    console.log('⚠️ DEBUG: No anti-forgery token found');
+    return null;
+  } catch (error) {
+    console.error('❌ Error getting anti-forgery token:', error);
+    return null;
+  }
+}
+
 async function saveRiskToDataverse(riskId, riskData) {
   console.log('🔍 DEBUG: Starting saveRiskToDataverse', { riskId, riskData });
   
   try {
+    // Get anti-forgery token
+    const token = getAntiForgeryToken();
+    console.log('🔍 DEBUG: Anti-forgery token:', token ? 'Found' : 'Not found');
+    
     const requestBody = {
       'cr129_risktitle': riskData.title,
       'cr129_description': riskData.description,
@@ -1783,15 +1830,24 @@ async function saveRiskToDataverse(riskId, riskData) {
     console.log('🔍 DEBUG: Request body:', requestBody);
     console.log('🔍 DEBUG: API URL:', `/_api/cr129_risks(${riskId})`);
     
+    // Build headers with anti-forgery token
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'OData-MaxVersion': '4.0',
+      'OData-Version': '4.0'
+    };
+    
+    if (token) {
+      headers['__RequestVerificationToken'] = token;
+    }
+    
+    console.log('🔍 DEBUG: Request headers:', headers);
+    
     // Use Power Pages Web API to update the risk record
     const response = await fetch(`/_api/cr129_risks(${riskId})`, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'OData-MaxVersion': '4.0',
-        'OData-Version': '4.0'
-      },
+      headers: headers,
       body: JSON.stringify(requestBody)
     });
 
@@ -2081,15 +2137,28 @@ async function unlinkRiskFromProcess(riskId, riskTitle) {
       console.log('🔍 DEBUG: Unlink request body:', requestBody);
       console.log('🔍 DEBUG: Unlink API URL:', `/_api/cr129_risks(${riskId})`);
       
+      // Get anti-forgery token
+      const token = getAntiForgeryToken();
+      console.log('🔍 DEBUG: Unlink anti-forgery token:', token ? 'Found' : 'Not found');
+      
+      // Build headers with anti-forgery token
+      const headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'OData-MaxVersion': '4.0',
+        'OData-Version': '4.0'
+      };
+      
+      if (token) {
+        headers['__RequestVerificationToken'] = token;
+      }
+      
+      console.log('🔍 DEBUG: Unlink request headers:', headers);
+      
       // Use Power Pages Web API to clear the process lookup
       const response = await fetch(`/_api/cr129_risks(${riskId})`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'OData-MaxVersion': '4.0',
-          'OData-Version': '4.0'
-        },
+        headers: headers,
         body: JSON.stringify(requestBody)
       });
 
