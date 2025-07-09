@@ -25,9 +25,7 @@
 {% endfetchxml %}
 
 <!-- ANTI-FORGERY TOKEN: Hidden form for Web API authentication -->
-<form id="antiForgerForm" style="display: none;">
-  {% antiforgerytoken %}
-</form>
+<!-- Note: Power Pages generates anti-forgery tokens automatically in forms -->
 
 <!-- DEBUG: User and Risk Data Information -->
 <div class="alert alert-info mt-3" id="debugInfo" style="display: none;">
@@ -1776,34 +1774,37 @@ function closeEditModal() {
 // Helper function to get anti-forgery token
 function getAntiForgeryToken() {
   try {
-    // Method 1: Check for token in meta tag
-    const metaToken = document.querySelector('input[name="__RequestVerificationToken"]');
-    if (metaToken) {
+    // Power Pages typically includes the token in existing forms or as a hidden field
+    // Method 1: Check all input fields for the token
+    const tokenInputs = document.querySelectorAll('input[name="__RequestVerificationToken"]');
+    if (tokenInputs.length > 0) {
       console.log('🔍 DEBUG: Found anti-forgery token in input field');
-      return metaToken.value;
+      return tokenInputs[0].value;
     }
     
-    // Method 2: Check for token in form
-    const formToken = document.querySelector('form input[name="__RequestVerificationToken"]');
-    if (formToken) {
-      console.log('🔍 DEBUG: Found anti-forgery token in form');
-      return formToken.value;
+    // Method 2: Check meta tags
+    const metaToken = document.querySelector('meta[name="__RequestVerificationToken"]');
+    if (metaToken) {
+      console.log('🔍 DEBUG: Found anti-forgery token in meta tag');
+      return metaToken.content;
     }
     
-    // Method 3: Check for token in hidden field
-    const hiddenToken = document.querySelector('input[type="hidden"][name="__RequestVerificationToken"]');
-    if (hiddenToken) {
-      console.log('🔍 DEBUG: Found anti-forgery token in hidden field');
-      return hiddenToken.value;
+    // Method 3: Check if it's in the page's JavaScript context
+    if (typeof __RequestVerificationToken !== 'undefined') {
+      console.log('🔍 DEBUG: Found anti-forgery token in global variable');
+      return __RequestVerificationToken;
     }
     
-    // Method 4: Check if Power Pages has exposed it globally
-    if (window.__RequestVerificationToken) {
-      console.log('🔍 DEBUG: Found anti-forgery token in window object');
-      return window.__RequestVerificationToken;
+    // Method 4: Try to get from shell API if available
+    if (window.shell && window.shell.getTokenDeferred) {
+      console.log('🔍 DEBUG: Attempting to get token from shell API');
+      const tokenDeferred = window.shell.getTokenDeferred();
+      if (tokenDeferred && tokenDeferred.promise) {
+        return tokenDeferred.promise();
+      }
     }
     
-    console.log('⚠️ DEBUG: No anti-forgery token found');
+    console.log('⚠️ DEBUG: No anti-forgery token found - Web API calls may fail');
     return null;
   } catch (error) {
     console.error('❌ Error getting anti-forgery token:', error);
