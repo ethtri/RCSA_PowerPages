@@ -14,4 +14,4 @@ adx_parententitypermission:
 adx_parentrelationship: 
 adx_read: true
 adx_scope: 756150000
-adx_write: false
+adx_write: true

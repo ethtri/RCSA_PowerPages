@@ -3,6 +3,51 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- DATAVERSE INTEGRATION: FetchXML for Existing Risks -->
+<!-- SIMPLIFIED: Basic fields only to avoid Liquid errors -->
+{% fetchxml existingRisks %}
+  <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+    <entity name="cr129_risk">
+      <attribute name="cr129_riskid" />
+      <attribute name="cr129_risktitle" />
+      <attribute name="cr129_riskcategory" />
+      <attribute name="cr129_processname" />
+      <attribute name="cr129_description" />
+      <attribute name="cr129_inherentlikelihood" />
+      <attribute name="cr129_inherentimpact" />
+      <attribute name="modifiedon" />
+      <filter type="and">
+        <condition attribute="statecode" operator="eq" value="0" />
+      </filter>
+      <order attribute="cr129_risktitle" descending="false" />
+    </entity>
+  </fetch>
+{% endfetchxml %}
+
+<!-- DEBUG: User and Risk Data Information -->
+<div class="alert alert-info mt-3" id="debugInfo" style="display: none;">
+  <h6><i class="bi bi-info-circle me-2"></i>Debug Information</h6>
+  <div class="row">
+    <div class="col-md-6">
+      <strong>User Context:</strong><br>
+      Contact ID: {{ user.contactid }}<br>
+      Role: {{ user.cr129_userrole.label | default: "Not set" }} ({{ user.cr129_userrole.value | default: "N/A" }})<br>
+      Business Unit: {{ user.cr129_businessunitname.name | default: "Not set" }}<br>
+    </div>
+    <div class="col-md-6">
+      <strong>Risk Data:</strong><br>
+      Total Risks Found: {{ existingRisks.results.entities.size | default: 0 }}<br>
+      {% if existingRisks.results.entities.size > 0 %}
+        First Risk: {{ existingRisks.results.entities[0].cr129_risktitle | default: "N/A" }}<br>
+        First Risk Category: {{ existingRisks.results.entities[0].cr129_riskcategory.label | default: "No category" }}<br>
+        First Risk Process: {{ existingRisks.results.entities[0].cr129_processname.name | default: "No process" }}<br>
+        First Risk Process ID: {{ existingRisks.results.entities[0].cr129_processname.id | default: "No ID" }}<br>
+      {% endif %}
+    </div>
+  </div>
+  <button class="btn btn-sm btn-outline-secondary mt-2" onclick="document.getElementById('debugInfo').style.display='none'">Hide Debug</button>
+</div>
+
 <style>
 /* ========================================
    RISK IDENTIFICATION ENHANCED STYLES v2.1
@@ -193,6 +238,126 @@
 }
 
 /* === END ENHANCED CARD SEPARATION === */
+
+/* Enhanced Risk Card Components */
+.risk-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.risk-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.risk-card-description {
+  color: #6c757d;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.risk-metrics {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.risk-metrics-header {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.risk-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.risk-metric-item {
+  text-align: center;
+}
+
+.risk-metric-label {
+  font-size: 0.75rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.risk-metric-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.risk-score-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.risk-score-1, .risk-score-2 { background: linear-gradient(135deg, #28a745, #20c997); }
+.risk-score-3, .risk-score-4, .risk-score-5, .risk-score-6 { background: linear-gradient(135deg, #ffc107, #fd7e14); }
+.risk-score-7, .risk-score-8, .risk-score-9, .risk-score-10 { background: linear-gradient(135deg, #fd7e14, #dc3545); }
+.risk-score-11, .risk-score-12, .risk-score-13, .risk-score-14, .risk-score-15 { background: linear-gradient(135deg, #dc3545, #6f42c1); }
+.risk-score-16, .risk-score-17, .risk-score-18, .risk-score-19, .risk-score-20, .risk-score-21, .risk-score-22, .risk-score-23, .risk-score-24, .risk-score-25 { background: linear-gradient(135deg, #6f42c1, #495057); }
+
+.risk-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.risk-card-metadata {
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.risk-card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Category badges with better colors */
+.risk-category-badge {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.risk-category-operational { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+.risk-category-technology { background: #f3e5f5; color: #7b1fa2; border: 1px solid #ce93d8; }
+.risk-category-fraud { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+.risk-category-compliance { background: #e8f5e8; color: #2e7d32; border: 1px solid #c8e6c9; }
+.risk-category-credit { background: #fff3e0; color: #ef6c00; border: 1px solid #ffcc02; }
 
 /* Risk source badge positioning - Simple fix */
 .risk-source-badge {
@@ -430,6 +595,21 @@
       <!-- Main Content -->
       <div class="col-lg-8">
         
+        <!-- Debug Toggle -->
+        <div class="mb-3">
+          <button class="btn btn-info btn-sm" onclick="testWebAPIConnectivity()">
+            <i class="bi bi-wifi me-1"></i>Test Web API
+          </button>
+        </div>
+        <div class="mb-3">
+          <button class="btn btn-sm btn-outline-info" onclick="document.getElementById('debugInfo').style.display='block'">
+            <i class="bi bi-bug me-1"></i>Show Debug Info
+          </button>
+          <button class="btn btn-sm btn-outline-warning ms-2" onclick="testWebAPIConnectivity()">
+            <i class="bi bi-wifi me-1"></i>Test Web API
+          </button>
+        </div>
+        
         <!-- Section 1: Existing Risks -->
         <div class="section-card">
           <div class="section-header existing">
@@ -446,11 +626,32 @@
           </div>
           <div class="section-body">
             <div id="existingRisksContainer">
-              <div class="loading-placeholder">
-                <div class="spinner-border text-primary mb-3" role="status">
-                  <span class="visually-hidden">Loading...</span>
+              <!-- All risks loaded - will be filtered by JavaScript -->
+              <div id="allRisksData" style="display: none;">
+                {% for risk in existingRisks.results.entities %}
+                  <div class="risk-data" 
+                       data-risk-id="{{ risk.cr129_riskid }}"
+                       data-risk-title="{{ risk.cr129_risktitle | escape }}"
+                       data-risk-category="{{ risk.cr129_riskcategory.label | default: 'Not categorized' | escape }}"
+                       data-risk-category-value="{{ risk.cr129_riskcategory.value | default: '' }}"
+                       data-risk-description="{{ risk.cr129_description | default: 'No description available' | escape }}"
+                       data-risk-likelihood="{{ risk.cr129_inherentlikelihood | default: '' }}"
+                       data-risk-impact="{{ risk.cr129_inherentimpact | default: '' }}"
+                       data-risk-modified="{{ risk.modifiedon | date: '%Y-%m-%d' | default: '' }}"
+                       data-process-id="{{ risk.cr129_processname.id | default: '' }}"
+                       data-process-name="{{ risk.cr129_processname.name | default: 'Unknown Process' | escape }}">
+                    </div>
+                  {% endfor %}
+              </div>
+              
+              <!-- Filtered risks will be displayed here by JavaScript -->
+              <div id="filteredRisksContainer">
+                <div class="loading-placeholder">
+                  <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <p>Loading and filtering risks for selected process...</p>
                 </div>
-                <p>Loading existing risks from database...</p>
               </div>
             </div>
           </div>
@@ -656,7 +857,9 @@ class EnhancedRiskIdentification {
     this.customRisks = [];
     this.acceptedAiRisks = [];
     this.selectedProcess = null;
+    this.selectedProcessId = null;
     this.selectedBusinessUnit = null;
+    this.selectedBusinessUnitId = null;
     this.init();
   }
 
@@ -670,35 +873,34 @@ class EnhancedRiskIdentification {
   }
 
   loadSessionData() {
-    // Get process selection from previous step
-    this.selectedProcess = sessionStorage.getItem('rcsa_process') || 'loan-origination';
-    this.selectedBusinessUnit = sessionStorage.getItem('rcsa_business_unit') || 'commercial';
+    // Get process selection from previous step - CORRECTED KEYS
+    this.selectedProcessId = sessionStorage.getItem('rcsa_selected_process_id');
+    this.selectedProcess = sessionStorage.getItem('rcsa_selected_process_name');
+    this.selectedBusinessUnit = sessionStorage.getItem('rcsa_selected_business_unit');
+    this.selectedBusinessUnitId = sessionStorage.getItem('rcsa_selected_business_unit_id');
+    
+    console.log('📋 Session data loaded:', {
+      processId: this.selectedProcessId,
+      processName: this.selectedProcess,
+      businessUnit: this.selectedBusinessUnit,
+      businessUnitId: this.selectedBusinessUnitId
+    });
     
     // Update UI with process info
     this.updateProcessInfo();
   }
 
   updateProcessInfo() {
-    const processNames = {
-      'loan-origination': 'Loan Origination',
-      'credit-assessment': 'Credit Assessment',
-      'account-opening': 'Account Opening',
-      'payment-processing': 'Payment Processing',
-      'fraud-detection': 'Fraud Detection'
-    };
+    const processNameEl = document.getElementById('selectedProcessName');
+    const businessUnitEl = document.getElementById('selectedBusinessUnit');
     
-    const businessUnits = {
-      'commercial': 'Commercial Banking',
-      'retail': 'Retail Banking',
-      'investment': 'Investment Banking',
-      'compliance': 'Compliance & Risk',
-      'operations': 'Operations'
-    };
-
-    document.getElementById('selectedProcessName').textContent = 
-      processNames[this.selectedProcess] || 'Selected Process';
-    document.getElementById('selectedBusinessUnit').textContent = 
-      businessUnits[this.selectedBusinessUnit] || 'Selected Business Unit';
+    if (processNameEl) {
+      processNameEl.textContent = this.selectedProcess || 'Selected Process';
+    }
+    
+    if (businessUnitEl) {
+      businessUnitEl.textContent = this.selectedBusinessUnit || 'Selected Business Unit';
+    }
   }
 
   bindEvents() {
@@ -716,18 +918,141 @@ class EnhancedRiskIdentification {
 
   async loadExistingRisks() {
     try {
-      // In a real implementation, this would query the Power Pages entity list
-      // For now, we'll simulate with realistic data
-      setTimeout(() => {
-        const mockExistingRisks = this.getMockExistingRisks();
-        this.existingRisks = mockExistingRisks;
-        this.renderExistingRisks();
-        this.updateCounts();
-      }, 1500);
+      // DATAVERSE INTEGRATION: Parse existing risks from Liquid template
+      this.parseExistingRisksFromPage();
     } catch (error) {
-      console.error('Failed to load existing risks:', error);
+      console.error('❌ Failed to load existing risks:', error);
       this.showExistingRisksError();
     }
+  }
+
+  parseExistingRisksFromPage() {
+    console.log('🔍 Parsing existing risks from page...');
+    
+    const riskDataElements = document.querySelectorAll('#allRisksData .risk-data');
+    const risks = [];
+    
+    riskDataElements.forEach(element => {
+      const riskData = {
+        id: element.dataset.riskId,
+        title: element.dataset.riskTitle,
+        category: element.dataset.riskCategory,
+        categoryValue: element.dataset.riskCategoryValue,
+        description: element.dataset.riskDescription || 'No description available',
+        likelihood: parseInt(element.dataset.riskLikelihood) || null,
+        impact: parseInt(element.dataset.riskImpact) || null,
+        modifiedDate: element.dataset.riskModified,
+        processId: element.dataset.processId,
+        processName: element.dataset.processName,
+        source: 'existing'
+      };
+      
+      // Calculate risk score if likelihood and impact are available
+      if (riskData.likelihood && riskData.impact) {
+        riskData.riskScore = riskData.likelihood * riskData.impact;
+      }
+      
+      console.log('📋 Found risk:', riskData);
+      risks.push(riskData);
+    });
+    
+    // Filter risks by selected process
+    const filteredRisks = risks.filter(risk => {
+      const matches = risk.processId === this.selectedProcessId;
+      console.log(`🔍 Risk "${risk.title}" process "${risk.processId}" matches selected "${this.selectedProcessId}": ${matches}`);
+      return matches;
+    });
+    
+    console.log(`📊 Total risks found: ${risks.length}, Filtered for process: ${filteredRisks.length}`);
+    
+    this.existingRisks = filteredRisks;
+    this.updateExistingRisksDisplay();
+  }
+
+  updateExistingRisksDisplay() {
+    const container = document.getElementById('filteredRisksContainer');
+    
+    if (this.existingRisks.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="bi bi-info-circle-fill text-muted mb-3" style="font-size: 3rem;"></i>
+          <h4 class="text-muted">No Existing Risks Found</h4>
+          <p class="text-muted">No risks have been identified for this process yet. Use the sections below to add risks.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = this.existingRisks.map(risk => {
+      const categoryClass = this.getCategoryClass(risk.category);
+      const riskScore = risk.riskScore || 0;
+      const likelihoodText = this.getLikelihoodText(risk.likelihood);
+      const impactText = this.getImpactText(risk.impact);
+      
+      return `
+      <div class="risk-card existing" data-risk-id="${risk.id}">
+        <div class="risk-card-header">
+          <h5 class="risk-card-title">${risk.title}</h5>
+          <span class="risk-category-badge ${categoryClass}">${risk.category}</span>
+        </div>
+        
+        <div class="risk-card-description">
+          ${risk.description || 'No description available'}
+        </div>
+        
+        ${risk.likelihood && risk.impact ? `
+        <div class="risk-metrics">
+          <div class="risk-metrics-header">
+            <i class="bi bi-graph-up"></i>
+            Risk Assessment
+          </div>
+          <div class="risk-metrics-grid">
+            <div class="risk-metric-item">
+              <div class="risk-metric-label">Likelihood</div>
+              <div class="risk-metric-value">${risk.likelihood}</div>
+              <div class="small text-muted">${likelihoodText}</div>
+            </div>
+            <div class="risk-metric-item">
+              <div class="risk-metric-label">Impact</div>
+              <div class="risk-metric-value">${risk.impact}</div>
+              <div class="small text-muted">${impactText}</div>
+            </div>
+            <div class="risk-metric-item">
+              <div class="risk-metric-label">Risk Score</div>
+              <div class="risk-score-badge risk-score-${riskScore}">${riskScore}</div>
+            </div>
+          </div>
+        </div>
+        ` : `
+        <div class="alert alert-warning">
+          <small>
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            Risk assessment data not available for this risk.
+          </small>
+        </div>
+        `}
+        
+        <div class="risk-card-footer">
+          <div class="risk-card-metadata">
+            <i class="bi bi-database me-1"></i>
+            From database
+            ${risk.modifiedDate ? `<span class="text-muted ms-2">• Last updated: ${new Date(risk.modifiedDate).toLocaleDateString()}</span>` : ''}
+          </div>
+          <div class="risk-card-actions">
+            <button class="btn btn-outline-primary btn-sm" onclick="editExistingRisk('${risk.id}')" title="Edit risk details and save changes to database">
+              <i class="bi bi-pencil me-1"></i>Edit
+            </button>
+            <button class="btn btn-outline-warning btn-sm" onclick="unlinkRiskFromProcess('${risk.id}', '${risk.title}')" title="Remove this risk from the current process (risk remains in database)">
+              <i class="bi bi-link-45deg me-1"></i>Unlink from Process
+            </button>
+          </div>
+        </div>
+      </div>
+      `;
+    }).join('');
+    
+    console.log('✅ Updated existing risks display with', this.existingRisks.length, 'risks');
+    this.updateCounts();
   }
 
   getMockExistingRisks() {
@@ -907,29 +1232,42 @@ class EnhancedRiskIdentification {
   renderAISuggestions() {
     const container = document.getElementById('aiRisksContainer');
     
-    container.innerHTML = this.aiSuggestedRisks.map(risk => `
+    container.innerHTML = this.aiSuggestedRisks.map(risk => {
+      const categoryClass = this.getCategoryClass(risk.category);
+      const riskScore = risk.likelihood * risk.impact;
+      const likelihoodText = this.getLikelihoodText(risk.likelihood);
+      const impactText = this.getImpactText(risk.impact);
+      
+      return `
       <div class="risk-card ai-suggested" data-risk-id="${risk.id}">
-        <div class="risk-source-badge ai">
-          <i class="bi bi-robot me-1"></i>AI Generated
+        <div class="risk-card-header">
+          <h5 class="risk-card-title">${risk.title}</h5>
+          <span class="risk-category-badge ${categoryClass}">${risk.category}</span>
         </div>
-        <div class="d-flex justify-content-between align-items-start mb-3">
-          <h5 class="fw-bold mb-0">${risk.title}</h5>
-          <span class="badge bg-${this.getCategoryColor(risk.category)}">${risk.category}</span>
-        </div>
-        <p class="text-muted mb-3">${risk.description}</p>
         
-        <div class="risk-matrix mb-3">
-          <div class="small fw-bold mb-2">AI Assessment</div>
-          <div class="row">
-            <div class="col-6">
-              <div class="small text-muted">Likelihood: ${risk.likelihood}</div>
-              <div class="small text-muted">Impact: ${risk.impact}</div>
+        <div class="risk-card-description">
+          ${risk.description}
+        </div>
+        
+        <div class="risk-metrics">
+          <div class="risk-metrics-header">
+            <i class="bi bi-robot"></i>
+            AI Assessment
+          </div>
+          <div class="risk-metrics-grid">
+            <div class="risk-metric-item">
+              <div class="risk-metric-label">Likelihood</div>
+              <div class="risk-metric-value">${risk.likelihood}</div>
+              <div class="small text-muted">${likelihoodText}</div>
             </div>
-            <div class="col-6">
-              <div class="matrix-cell risk-level-${risk.likelihood * risk.impact <= 6 ? '2' : risk.likelihood * risk.impact <= 12 ? '3' : risk.likelihood * risk.impact <= 20 ? '4' : '5'} active">
-                ${risk.likelihood * risk.impact}
-              </div>
-              <div class="small text-muted">Risk Score</div>
+            <div class="risk-metric-item">
+              <div class="risk-metric-label">Impact</div>
+              <div class="risk-metric-value">${risk.impact}</div>
+              <div class="small text-muted">${impactText}</div>
+            </div>
+            <div class="risk-metric-item">
+              <div class="risk-metric-label">Risk Score</div>
+              <div class="risk-score-badge risk-score-${riskScore}">${riskScore}</div>
             </div>
           </div>
         </div>
@@ -941,8 +1279,12 @@ class EnhancedRiskIdentification {
           </small>
         </div>
         
-        <div class="d-grid gap-2">
-          <div class="btn-group" role="group">
+        <div class="risk-card-footer">
+          <div class="risk-card-metadata">
+            <i class="bi bi-robot me-1"></i>
+            AI Generated
+          </div>
+          <div class="risk-card-actions">
             <button class="btn btn-success btn-sm" onclick="acceptAIRisk('${risk.id}')">
               <i class="bi bi-check-lg me-1"></i>Accept
             </button>
@@ -955,7 +1297,8 @@ class EnhancedRiskIdentification {
           </div>
         </div>
       </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   addCustomRisk() {
@@ -1007,41 +1350,60 @@ class EnhancedRiskIdentification {
     placeholder.style.display = 'none';
     customContainer.style.display = 'block';
     
-    customContainer.innerHTML = customRisks.map(risk => `
+    customContainer.innerHTML = customRisks.map(risk => {
+      const categoryClass = this.getCategoryClass(risk.category);
+      const riskScore = (risk.likelihood || 1) * (risk.impact || 1);
+      const likelihoodText = this.getLikelihoodText(risk.likelihood);
+      const impactText = this.getImpactText(risk.impact);
+      
+      return `
       <div class="risk-card custom" data-risk-id="${risk.id}">
-        <div class="risk-source-badge custom">
-          <i class="bi bi-person me-1"></i>Custom
+        <div class="risk-card-header">
+          <h5 class="risk-card-title">${risk.title || 'Untitled Risk'}</h5>
+          <span class="risk-category-badge ${categoryClass}">${risk.category || 'Other'}</span>
         </div>
-        <div class="d-flex justify-content-between align-items-start mb-3">
-          <h5 class="fw-bold mb-0">${risk.title || 'Untitled Risk'}</h5>
-          <span class="badge bg-${this.getCategoryColor(risk.category)}">${risk.category || 'Other'}</span>
-        </div>
-        <p class="text-muted mb-3">${risk.description || 'No description provided'}</p>
         
-        <div class="risk-matrix mb-3">
-          <div class="small fw-bold mb-2">Risk Assessment</div>
-          <div class="row">
-            <div class="col-6">
-              <div class="small text-muted">Likelihood: ${risk.likelihood || 'N/A'}</div>
-              <div class="small text-muted">Impact: ${risk.impact || 'N/A'}</div>
+        <div class="risk-card-description">
+          ${risk.description || 'No description provided'}
+        </div>
+        
+        <div class="risk-metrics">
+          <div class="risk-metrics-header">
+            <i class="bi bi-person"></i>
+            Custom Assessment
+          </div>
+          <div class="risk-metrics-grid">
+            <div class="risk-metric-item">
+              <div class="risk-metric-label">Likelihood</div>
+              <div class="risk-metric-value">${risk.likelihood || 'N/A'}</div>
+              <div class="small text-muted">${risk.likelihood ? likelihoodText : 'Not set'}</div>
             </div>
-            <div class="col-6">
-              <div class="matrix-cell risk-level-${(risk.likelihood || 1) * (risk.impact || 1) <= 6 ? '2' : (risk.likelihood || 1) * (risk.impact || 1) <= 12 ? '3' : (risk.likelihood || 1) * (risk.impact || 1) <= 20 ? '4' : '5'} active">
-                ${(risk.likelihood || 1) * (risk.impact || 1)}
-              </div>
-              <div class="small text-muted">Risk Score</div>
+            <div class="risk-metric-item">
+              <div class="risk-metric-label">Impact</div>
+              <div class="risk-metric-value">${risk.impact || 'N/A'}</div>
+              <div class="small text-muted">${risk.impact ? impactText : 'Not set'}</div>
+            </div>
+            <div class="risk-metric-item">
+              <div class="risk-metric-label">Risk Score</div>
+              <div class="risk-score-badge risk-score-${riskScore}">${riskScore}</div>
             </div>
           </div>
         </div>
         
-        <div class="d-flex justify-content-between align-items-center">
-          <small class="text-muted">Added: ${risk.timestamp ? new Date(risk.timestamp).toLocaleDateString() : 'Unknown'}</small>
-          <button class="btn btn-outline-danger btn-sm" onclick="removeCustomRisk('${risk.id}')">
-            <i class="bi bi-trash me-1"></i>Remove
-          </button>
+        <div class="risk-card-footer">
+          <div class="risk-card-metadata">
+            <i class="bi bi-person me-1"></i>
+            Added: ${risk.timestamp ? new Date(risk.timestamp).toLocaleDateString() : 'Unknown'}
+          </div>
+          <div class="risk-card-actions">
+            <button class="btn btn-outline-danger btn-sm" onclick="removeCustomRisk('${risk.id}')">
+              <i class="bi bi-trash me-1"></i>Remove
+            </button>
+          </div>
         </div>
       </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   updateCounts() {
@@ -1082,6 +1444,39 @@ class EnhancedRiskIdentification {
       'Credit': 'success'
     };
     return colors[category] || 'secondary';
+  }
+
+  getCategoryClass(category) {
+    const classes = {
+      'Operational': 'risk-category-operational',
+      'Technology': 'risk-category-technology',
+      'Fraud': 'risk-category-fraud',
+      'Compliance': 'risk-category-compliance',
+      'Credit': 'risk-category-credit'
+    };
+    return classes[category] || 'risk-category-operational';
+  }
+
+  getLikelihoodText(likelihood) {
+    const texts = {
+      1: 'Very Low',
+      2: 'Low',
+      3: 'Medium',
+      4: 'High',
+      5: 'Very High'
+    };
+    return texts[likelihood] || 'Unknown';
+  }
+
+  getImpactText(impact) {
+    const texts = {
+      1: 'Negligible',
+      2: 'Minor',
+      3: 'Moderate',
+      4: 'Major',
+      5: 'Severe'
+    };
+    return texts[impact] || 'Unknown';
   }
 
   clearCustomRiskForm() {
@@ -1373,6 +1768,222 @@ function closeEditModal() {
   }
 }
 
+async function saveRiskToDataverse(riskId, riskData) {
+  console.log('🔍 DEBUG: Starting saveRiskToDataverse', { riskId, riskData });
+  
+  try {
+    const requestBody = {
+      'cr129_risktitle': riskData.title,
+      'cr129_description': riskData.description,
+      'cr129_riskcategory': getCategoryValue(riskData.category),
+      'cr129_inherentlikelihood': riskData.likelihood,
+      'cr129_inherentimpact': riskData.impact
+    };
+    
+    console.log('🔍 DEBUG: Request body:', requestBody);
+    console.log('🔍 DEBUG: API URL:', `/_api/cr129_risks(${riskId})`);
+    
+    // Use Power Pages Web API to update the risk record
+    const response = await fetch(`/_api/cr129_risks(${riskId})`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'OData-MaxVersion': '4.0',
+        'OData-Version': '4.0'
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    console.log('🔍 DEBUG: Response status:', response.status);
+    console.log('🔍 DEBUG: Response headers:', [...response.headers.entries()]);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ DEBUG: Response error text:', errorText);
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+    }
+
+    console.log('✅ Risk successfully updated in Dataverse');
+    return response;
+  } catch (error) {
+    console.error('❌ Error updating risk in Dataverse:', error);
+    console.error('❌ Error details:', {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    });
+    
+    // Check if it's a permission error
+    if (error.message.includes('403') || error.message.includes('Forbidden')) {
+      console.error('❌ Permission Error: Web API write access may be disabled for cr129_risk entity');
+      console.error('❌ Check table permissions in Power Pages admin center');
+    }
+    
+    throw error;
+  }
+}
+
+function getCategoryValue(categoryLabel) {
+  const categoryMap = {
+    'Operational': 798060000,
+    'Technology': 798060001,
+    'Fraud': 798060002,
+    'Compliance': 798060003,
+    'Credit': 798060004
+  };
+  return categoryMap[categoryLabel] || 798060000;
+}
+
+async function testWebAPIConnectivity() {
+  console.log('🔍 DEBUG: Testing Web API connectivity...');
+  
+  // Test 1: Basic Web API availability
+  console.log('🔍 TEST 1: Basic Web API availability');
+  try {
+    const basicResponse = await fetch('/_api', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'OData-MaxVersion': '4.0',
+        'OData-Version': '4.0'
+      }
+    });
+    console.log(`🔍 Basic API endpoint status: ${basicResponse.status}`);
+    if (basicResponse.ok) {
+      const basicData = await basicResponse.json();
+      console.log('✅ Basic API works:', basicData);
+    } else {
+      console.log('❌ Basic API failed');
+    }
+  } catch (error) {
+    console.log('❌ Basic API error:', error);
+  }
+  
+  // Test 2: Entity name variations
+  console.log('🔍 TEST 2: Entity name variations');
+  const possibleEntityNames = [
+    'cr129_risks',        // Most likely - plural entity set name
+    'cr129_risk',         // Singular entity name (used in FetchXML)
+    'cr129_Risks',        // Capitalized plural
+    'cr129_Risk',         // Capitalized singular
+    'cr129_riskses',      // Alternative plural
+    'cr129_riskentity'    // Alternative name
+  ];
+  
+  for (const entityName of possibleEntityNames) {
+    try {
+      console.log(`🔍 DEBUG: Testing entity name: ${entityName}`);
+      const response = await fetch(`/_api/${entityName}?$top=1`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'OData-MaxVersion': '4.0',
+          'OData-Version': '4.0'
+        }
+      });
+      
+      console.log(`🔍 DEBUG: ${entityName} - Status: ${response.status}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log(`✅ SUCCESS: ${entityName} works! Sample data:`, data);
+        
+        // Test 3: Try to get a specific record if we have data
+        if (data.value && data.value.length > 0) {
+          const firstRecord = data.value[0];
+          const recordId = firstRecord.cr129_riskid;
+          console.log(`🔍 TEST 3: Testing specific record access with ID: ${recordId}`);
+          
+          try {
+            const recordResponse = await fetch(`/_api/${entityName}(${recordId})`, {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'OData-MaxVersion': '4.0',
+                'OData-Version': '4.0'
+              }
+            });
+            
+            if (recordResponse.ok) {
+              const recordData = await recordResponse.json();
+              console.log(`✅ Individual record access works:`, recordData);
+              
+              // Test 4: Try a PATCH operation on this record
+              console.log(`🔍 TEST 4: Testing PATCH operation`);
+              const patchResponse = await fetch(`/_api/${entityName}(${recordId})`, {
+                method: 'PATCH',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'OData-MaxVersion': '4.0',
+                  'OData-Version': '4.0'
+                },
+                body: JSON.stringify({
+                  // Just update the modified date to test PATCH
+                  cr129_modifiedon: new Date().toISOString()
+                })
+              });
+              
+              console.log(`🔍 PATCH response status: ${patchResponse.status}`);
+              if (patchResponse.ok || patchResponse.status === 204) {
+                console.log('✅ PATCH operation successful!');
+              } else {
+                const patchError = await patchResponse.text();
+                console.log(`❌ PATCH failed:`, patchError);
+              }
+            } else {
+              console.log(`❌ Individual record access failed: ${recordResponse.status}`);
+            }
+          } catch (recordError) {
+            console.log(`❌ Record access error:`, recordError);
+          }
+        }
+        
+        return entityName;
+      } else {
+        const errorText = await response.text();
+        console.log(`❌ FAILED: ${entityName} - Error:`, errorText);
+      }
+    } catch (error) {
+      console.log(`❌ ERROR: ${entityName} - Exception:`, error.message);
+    }
+  }
+  
+  console.log('❌ All entity names failed');
+  
+  // Test 5: Check current user context
+  console.log('🔍 TEST 5: Current user context');
+  try {
+    const userResponse = await fetch('/_api/WhoAmI()', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'OData-MaxVersion': '4.0',
+        'OData-Version': '4.0'
+      }
+    });
+    
+    if (userResponse.ok) {
+      const userData = await userResponse.json();
+      console.log('✅ Current user:', userData);
+    } else {
+      console.log('❌ User context failed');
+    }
+  } catch (userError) {
+    console.log('❌ User context error:', userError);
+  }
+  
+  // Show completion notification
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showInfo('Debug Complete', 'Web API connectivity test completed. Check browser console for detailed results.');
+  } else {
+    alert('Web API connectivity test completed. Check browser console for detailed results.');
+  }
+  
+  return null;
+}
+
 function saveRiskEdit(riskId, type) {
   try {
     const title = document.getElementById('editRiskTitle').value;
@@ -1390,19 +2001,34 @@ function saveRiskEdit(riskId, type) {
     }
     
     if (type === 'existing') {
-      // Update existing risk
-      const riskIndex = riskIdentification.existingRisks.findIndex(r => r.id === riskId);
-      if (riskIndex !== -1) {
-        riskIdentification.existingRisks[riskIndex] = {
-          ...riskIdentification.existingRisks[riskIndex],
-          title,
-          category,
-          description,
-          likelihood,
-          impact
-        };
-        riskIdentification.renderExistingRisks();
-      }
+      // Update existing risk in Dataverse
+      saveRiskToDataverse(riskId, {
+        title,
+        category,
+        description,
+        likelihood,
+        impact
+      }).then(() => {
+        // Update local array only after successful save
+        const riskIndex = riskIdentification.existingRisks.findIndex(r => r.id === riskId);
+        if (riskIndex !== -1) {
+          riskIdentification.existingRisks[riskIndex] = {
+            ...riskIdentification.existingRisks[riskIndex],
+            title,
+            category,
+            description,
+            likelihood,
+            impact
+          };
+          riskIdentification.updateExistingRisksDisplay();
+        }
+      }).catch(error => {
+        console.error('Error saving to Dataverse:', error);
+        if (typeof modernInteractions !== 'undefined') {
+          modernInteractions.showError('Save Failed', 'Unable to save changes to database. Please try again.');
+        }
+        return; // Don't close modal on error
+      });
     } else if (type === 'ai') {
       // Update AI risk
       const riskIndex = riskIdentification.aiSuggestedRisks.findIndex(r => r.id === riskId);
@@ -1441,14 +2067,56 @@ function saveRiskEdit(riskId, type) {
   }
 }
 
-function removeExistingRisk(riskId) {
-  if (confirm('Are you sure you want to remove this existing risk?')) {
-    riskIdentification.existingRisks = riskIdentification.existingRisks.filter(r => r.id !== riskId);
-    riskIdentification.renderExistingRisks();
-    riskIdentification.updateCounts();
-    
-    if (typeof modernInteractions !== 'undefined') {
-      modernInteractions.showWarning('Risk Removed', 'Existing risk has been removed');
+async function unlinkRiskFromProcess(riskId, riskTitle) {
+  const processName = riskIdentification.selectedProcess || 'this process';
+  
+  console.log('🔍 DEBUG: Starting unlinkRiskFromProcess', { riskId, riskTitle, processName });
+  
+  if (confirm(`Are you sure you want to unlink "${riskTitle}" from ${processName}?\n\nThe risk will remain in the database but will no longer be associated with this process.`)) {
+    try {
+      const requestBody = {
+        'cr129_processname@odata.bind': null  // Clear the lookup relationship
+      };
+      
+      console.log('🔍 DEBUG: Unlink request body:', requestBody);
+      console.log('🔍 DEBUG: Unlink API URL:', `/_api/cr129_risks(${riskId})`);
+      
+      // Use Power Pages Web API to clear the process lookup
+      const response = await fetch(`/_api/cr129_risks(${riskId})`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'OData-MaxVersion': '4.0',
+          'OData-Version': '4.0'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      console.log('🔍 DEBUG: Unlink response status:', response.status);
+      console.log('🔍 DEBUG: Unlink response headers:', [...response.headers.entries()]);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ DEBUG: Unlink response error text:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      }
+
+      // Remove from local array after successful unlink
+      riskIdentification.existingRisks = riskIdentification.existingRisks.filter(r => r.id !== riskId);
+      riskIdentification.updateExistingRisksDisplay();
+      riskIdentification.updateCounts();
+      
+      if (typeof modernInteractions !== 'undefined') {
+        modernInteractions.showSuccess('Risk Unlinked', `"${riskTitle}" has been unlinked from ${processName}`);
+      }
+      
+      console.log('✅ Risk successfully unlinked from process');
+    } catch (error) {
+      console.error('❌ Error unlinking risk from process:', error);
+      if (typeof modernInteractions !== 'undefined') {
+        modernInteractions.showError('Unlink Failed', 'Unable to unlink risk from process. Please try again.');
+      }
     }
   }
 }
