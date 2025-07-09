@@ -564,6 +564,89 @@
   transition: all 0.3s ease !important;
 }
 
+/* Entity Form Styling to Match Card UI */
+.entity-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.entity-form .control-label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.entity-form .form-control {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  padding: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.entity-form .form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.entity-form .btn-primary {
+  background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.entity-form .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+.entity-form .btn-secondary {
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-weight: 500;
+}
+
+/* Card-style container for the form */
+.entity-form-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 800px;
+}
+
+.entity-form-header {
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.entity-form-header h2 {
+  color: #0d6efd;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Success message styling */
+.alert-success {
+  border-radius: 8px;
+  border-left: 4px solid #28a745;
+  background: #f8fff9;
+}
+
+/* Validation error styling */
+.field-validation-error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.input-validation-error {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
 </style>
 
 <!-- Enhanced Bootstrap 5 Risk Identification Page -->
@@ -851,6 +934,90 @@
   </div>
 </div>
 
+<!-- Add this after the existing risk sections -->
+
+<!-- Power Pages Native Edit Approach -->
+<div class="container mt-4">
+  <div class="alert alert-info">
+    <h5><i class="bi bi-lightbulb me-2"></i>Power Pages Native Approach</h5>
+    <p>For more reliable editing, we can use Power Pages' built-in Entity Forms. Here are two approaches:</p>
+    
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-title">Option 1: Edit Page Navigation</h6>
+            <p class="card-text">Click edit to navigate to a dedicated edit page with full form validation.</p>
+            <a href="/edit-risk?id={{riskId}}" class="btn btn-primary btn-sm">
+              <i class="bi bi-pencil me-1"></i>Try Edit Page
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-title">Option 2: Entity List with Inline Edit</h6>
+            <p class="card-text">Use Power Pages Entity List with inline editing enabled.</p>
+            <button class="btn btn-success btn-sm" onclick="showEntityList()">
+              <i class="bi bi-table me-1"></i>Show Entity List
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden Entity List Container -->
+<div id="entityListContainer" style="display: none;" class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0"><i class="bi bi-table me-2"></i>Risk Management - Entity List View</h5>
+    </div>
+    <div class="card-body">
+      <!-- Entity List would be inserted here via Liquid -->
+      {% include 'entity_list' key: 'risks' %}
+      <!-- Note: You'll need to create an Entity List named 'risks' in Power Pages Management -->
+    </div>
+  </div>
+</div>
+
+<script>
+// Simple function to toggle entity list view
+function showEntityList() {
+  const container = document.getElementById('entityListContainer');
+  const isVisible = container.style.display !== 'none';
+  container.style.display = isVisible ? 'none' : 'block';
+  
+  if (!isVisible) {
+    // Scroll to entity list
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Alternative: Create edit links that use Power Pages forms
+function createEditLink(riskId) {
+  // This creates a link to an edit page with the risk ID
+  return `/risk-edit?id=${riskId}&returnurl=${encodeURIComponent(window.location.pathname)}`;
+}
+
+// Update the existing risk card edit buttons to use navigation
+function updateEditButtonsToUseNavigation() {
+  document.querySelectorAll('.edit-risk-btn').forEach(btn => {
+    const riskId = btn.getAttribute('data-risk-id');
+    btn.onclick = function() {
+      // Navigate to edit page instead of opening modal
+      window.location.href = createEditLink(riskId);
+    };
+  });
+}
+
+// Call this after risks are rendered
+// updateEditButtonsToUseNavigation();
+</script>
+
 <!-- Enhanced JavaScript -->
 <script>
 class EnhancedRiskIdentification {
@@ -1042,9 +1209,10 @@ class EnhancedRiskIdentification {
             ${risk.modifiedDate ? `<span class="text-muted ms-2">• Last updated: ${new Date(risk.modifiedDate).toLocaleDateString()}</span>` : ''}
           </div>
           <div class="risk-card-actions">
-            <button class="btn btn-outline-primary btn-sm" onclick="editExistingRisk('${risk.id}')" title="Edit risk details and save changes to database">
+            <a href="/edit-risk?id=${risk.id}&returnurl=${encodeURIComponent('/risk-identification')}" 
+               class="btn btn-outline-primary btn-sm" title="Edit risk details">
               <i class="bi bi-pencil me-1"></i>Edit
-            </button>
+            </a>
             <button class="btn btn-outline-warning btn-sm" onclick="unlinkRiskFromProcess('${risk.id}', '${risk.title}')" title="Remove this risk from the current process (risk remains in database)">
               <i class="bi bi-link-45deg me-1"></i>Unlink from Process
             </button>
