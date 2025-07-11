@@ -1,0 +1,97 @@
+<script>
+/**
+ * Power Pages Web API Wrapper
+ * Provides safe AJAX wrapper functions for Web API calls with proper authentication
+ * Based on Microsoft's recommended patterns for Power Pages Web API
+ */
+
+// Get the request verification token for CSRF protection
+function getRequestVerificationToken() {
+    return $('input[name="__RequestVerificationToken"]').val();
+}
+
+// Get the base Web API URL
+function getWebApiUrl() {
+    return '/_api/';
+}
+
+// Safe AJAX wrapper for Web API calls
+function webApiRequest(options) {
+    var defaults = {
+        type: 'GET',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        headers: {
+            '__RequestVerificationToken': getRequestVerificationToken()
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            console.error('Web API Error:', {
+                status: xhr.status,
+                statusText: xhr.statusText,
+                responseText: xhr.responseText,
+                textStatus: textStatus,
+                errorThrown: errorThrown
+            });
+        }
+    };
+    
+    var settings = $.extend(true, defaults, options);
+    
+    // Ensure URL is properly formatted
+    if (settings.url && !settings.url.startsWith('http')) {
+        settings.url = getWebApiUrl() + settings.url.replace(/^\/+/, '');
+    }
+    
+    return $.ajax(settings);
+}
+
+// Convenience methods for common operations
+window.WebApi = {
+    // GET request
+    get: function(entitySetName, id, options) {
+        var url = entitySetName;
+        if (id) {
+            url += '(' + id + ')';
+        }
+        
+        return webApiRequest($.extend({
+            type: 'GET',
+            url: url
+        }, options));
+    },
+    
+    // POST request (Create)
+    create: function(entitySetName, data, options) {
+        return webApiRequest($.extend({
+            type: 'POST',
+            url: entitySetName,
+            data: JSON.stringify(data)
+        }, options));
+    },
+    
+    // PATCH request (Update)
+    update: function(entitySetName, id, data, options) {
+        return webApiRequest($.extend({
+            type: 'PATCH',
+            url: entitySetName + '(' + id + ')',
+            data: JSON.stringify(data),
+            headers: {
+                'If-Match': '*'
+            }
+        }, options));
+    },
+    
+    // DELETE request
+    delete: function(entitySetName, id, options) {
+        return webApiRequest($.extend({
+            type: 'DELETE',
+            url: entitySetName + '(' + id + ')',
+            headers: {
+                'If-Match': '*'
+            }
+        }, options));
+    }
+};
+
+console.log('Power Pages Web API Wrapper loaded successfully');
+</script> 

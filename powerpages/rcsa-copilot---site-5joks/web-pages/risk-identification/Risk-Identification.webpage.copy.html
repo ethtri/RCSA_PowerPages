@@ -603,9 +603,22 @@ class RiskIdentification {
             `).join('');
             
             // Add event listeners for edit/remove buttons
+            container.querySelectorAll('.edit-risk').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    // Get the button element (in case user clicks on icon)
+                    const buttonElement = e.target.closest('.edit-risk');
+                    const riskId = buttonElement.dataset.riskId;
+                    console.log('🔧 Edit button clicked for risk:', riskId);
+                    this.startInlineEdit(riskId);
+                });
+            });
+            
             container.querySelectorAll('.remove-risk').forEach(button => {
                 button.addEventListener('click', (e) => {
-                    const riskId = parseInt(e.target.dataset.riskId);
+                    // Get the button element (in case user clicks on icon)
+                    const buttonElement = e.target.closest('.remove-risk');
+                    const riskId = parseInt(buttonElement.dataset.riskId);
+                    console.log('🗑️ Remove button clicked for risk:', riskId);
                     this.removeRisk(riskId);
                 });
             });
@@ -742,13 +755,219 @@ class RiskIdentification {
         // Add retry handler
         document.getElementById('retry-ai-suggestions')?.addEventListener('click', () => this.generateAISuggestions());
     }
+
+    // ============================================================================
+    // INLINE EDITING FUNCTIONALITY
+    // ============================================================================
+
+    startInlineEdit(riskId) {
+        console.log('🔧 Starting inline edit for risk:', riskId);
+        
+        const riskItem = document.querySelector(`[data-risk-id="${riskId}"]`);
+        if (!riskItem) {
+            console.error('Risk item not found:', riskId);
+            return;
+        }
+        
+        const risk = this.identifiedRisks.find(r => r.id == riskId);
+        if (!risk) {
+            console.error('Risk data not found:', riskId);
+            return;
+        }
+        
+        // Store original values for cancel functionality
+        if (!this.originalValues) this.originalValues = new Map();
+        this.originalValues.set(riskId, { ...risk });
+        
+        // Transform the risk item into edit mode
+        this.convertToInlineEdit(riskItem, risk);
+        
+        console.log('✅ Inline edit started for risk:', riskId);
+    }
+
+    convertToInlineEdit(riskItem, risk) {
+        // Add editing class
+        riskItem.classList.add('editing');
+        
+        // Find and transform the title
+        const titleElement = riskItem.querySelector('.fcb-h6');
+        if (titleElement) {
+            titleElement.innerHTML = `
+                <input type="text" 
+                       class="form-control form-control-sm inline-edit-input" 
+                       value="${risk.name}" 
+                       data-field="name"
+                       placeholder="Enter risk title">
+            `;
+        }
+        
+        // Find and transform the description
+        const descElement = riskItem.querySelector('.fcb-text-muted');
+        if (descElement) {
+            descElement.innerHTML = `
+                <textarea class="form-control form-control-sm inline-edit-textarea" 
+                          data-field="description" 
+                          rows="3" 
+                          placeholder="Enter risk description">${risk.description}</textarea>
+            `;
+        }
+        
+        // Transform the action buttons
+        const actionsDiv = riskItem.querySelector('.fcb-d-flex.fcb-gap-2');
+        if (actionsDiv) {
+            actionsDiv.innerHTML = `
+                <button class="fcb-btn fcb-btn-sm fcb-btn-success" 
+                        onclick="riskIdentification.saveInlineEdit('${risk.id}')">
+                    <i class="fas fa-check"></i> Save
+                </button>
+                <button class="fcb-btn fcb-btn-sm fcb-btn-secondary" 
+                        onclick="riskIdentification.cancelInlineEdit('${risk.id}')">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            `;
+        }
+    }
+
+    saveInlineEdit(riskId) {
+        console.log('💾 Saving inline edit for risk:', riskId);
+        
+        const riskItem = document.querySelector(`[data-risk-id="${riskId}"]`);
+        if (!riskItem) return;
+        
+        // Extract new values
+        const titleInput = riskItem.querySelector('[data-field="name"]');
+        const descTextarea = riskItem.querySelector('[data-field="description"]');
+        
+        const newName = titleInput ? titleInput.value.trim() : '';
+        const newDescription = descTextarea ? descTextarea.value.trim() : '';
+        
+        // Validate
+        if (!newName) {
+            alert('Risk title is required');
+            return;
+        }
+        
+        // Update the risk in the array
+        const riskIndex = this.identifiedRisks.findIndex(r => r.id == riskId);
+        if (riskIndex !== -1) {
+            this.identifiedRisks[riskIndex].name = newName;
+            this.identifiedRisks[riskIndex].description = newDescription;
+        }
+        
+        // Refresh the display
+        this.updateRisksList();
+        
+        // Show success message
+        this.showSuccessMessage('Risk updated successfully!');
+        
+        console.log('✅ Risk saved successfully:', riskId);
+    }
+
+    cancelInlineEdit(riskId) {
+        console.log('❌ Cancelling inline edit for risk:', riskId);
+        
+        // Simply refresh the display to restore original values
+        this.updateRisksList();
+        
+        // Clean up stored values
+        if (this.originalValues) {
+            this.originalValues.delete(riskId);
+        }
+        
+        console.log('✅ Inline edit cancelled for risk:', riskId);
+    }
 }
 
 // Initialize when DOM is ready
+let riskIdentification;
 document.addEventListener('DOMContentLoaded', () => {
-    new RiskIdentification();
+    riskIdentification = new RiskIdentification();
 });
 </script>
+
+<style>
+/* ============================================================================ */
+/* INLINE EDITING STYLES FOR OLDER VERSION */
+/* ============================================================================ */
+
+/* Editing state for risk items */
+.rcsa-risk-item.editing {
+  border: 2px solid #0d6efd;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  padding: 1.25rem;
+}
+
+/* Inline edit form controls */
+.inline-edit-input,
+.inline-edit-textarea {
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.inline-edit-input:focus,
+.inline-edit-textarea:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  outline: 0;
+}
+
+/* Title input styling */
+.fcb-h6 .inline-edit-input {
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid #0d6efd;
+  background: rgba(13, 110, 253, 0.05);
+}
+
+/* Description textarea styling */
+.fcb-text-muted .inline-edit-textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Success button styling */
+.fcb-btn-success {
+  background: linear-gradient(135deg, #198754, #20c997);
+  border: none;
+  color: white;
+}
+
+.fcb-btn-success:hover {
+  background: linear-gradient(135deg, #157347, #1aa085);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+}
+
+/* Secondary button styling */
+.fcb-btn-secondary {
+  background: #6c757d;
+  border: none;
+  color: white;
+}
+
+.fcb-btn-secondary:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .fcb-d-flex.fcb-gap-2 {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .fcb-btn {
+    width: 100%;
+  }
+}
+</style>
 
 <style>
 /* Risk Identification Specific Styles */

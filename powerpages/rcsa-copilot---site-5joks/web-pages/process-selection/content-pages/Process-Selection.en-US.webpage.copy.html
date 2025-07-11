@@ -226,6 +226,8 @@
             <div class="process-card position-relative" 
                  data-process-id="{{ process.cr129_procid }}"
                  data-process-name="{{ process.cr129_processname | escape }}"
+                 data-business-unit="{{ process.cr129_businessunitname.name | escape }}"
+                 data-business-unit-id="{{ process.cr129_businessunitname.cr129_buid | escape }}"
                  onclick="selectProcess(this)">
               
                              <div class="card-body p-3">
@@ -443,6 +445,8 @@ function selectProcess(card) {
   // Store selection data
   selectedProcessId = card.dataset.processId;
   selectedProcessName = card.dataset.processName;
+  const selectedBusinessUnit = card.dataset.businessUnit;
+  const selectedBusinessUnitId = card.dataset.businessUnitId;
   
   // Enable continue button
   const continueBtn = document.getElementById('continueBtn');
@@ -479,13 +483,27 @@ function continueToRiskIdentification() {
     return;
   }
   
+  // Get the selected card to extract business unit data
+  const selectedCard = document.querySelector('.process-card.selected');
+  const businessUnit = selectedCard ? selectedCard.dataset.businessUnit : null;
+  const businessUnitId = selectedCard ? selectedCard.dataset.businessUnitId : null;
+  
   // Store selection in session storage
   sessionStorage.setItem('rcsa_selected_process_id', selectedProcessId);
   sessionStorage.setItem('rcsa_selected_process_name', selectedProcessName);
+  sessionStorage.setItem('rcsa_selected_business_unit', businessUnit);
+  sessionStorage.setItem('rcsa_selected_business_unit_id', businessUnitId);
   sessionStorage.setItem('rcsa_selection_timestamp', new Date().toISOString());
   
-  // Navigate to risk identification page
-  window.location.href = '/Risk-ID';
+  console.log('Storing process selection:', {
+    processId: selectedProcessId,
+    processName: selectedProcessName,
+    businessUnit: businessUnit,
+    businessUnitId: businessUnitId
+  });
+  
+  // Navigate to risk identification V2 page (for testing)
+  window.location.href = '/Risk-Identification-V2';
 }
 
 // Initialize page

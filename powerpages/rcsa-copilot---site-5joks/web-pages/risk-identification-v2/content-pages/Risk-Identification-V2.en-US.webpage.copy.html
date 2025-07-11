@@ -1,0 +1,1056 @@
+<!-- Risk Identification V2 - Clean Implementation -->
+<!-- Using Power Pages Native Patterns -->
+
+<!-- CSRF Token for Web API -->
+{% if user %}
+  <input type="hidden" name="__RequestVerificationToken" value="{{ request.verification_token }}" />
+{% endif %}
+
+<!-- Include Bootstrap 5 and Modern Enhancements -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery for Web API calls (usually included by Power Pages, but adding to be safe) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Web API Wrapper -->
+{% include 'Portal Web API Wrapper' %}
+
+<style>
+  /* CapTech Design System Variables */
+  :root {
+    --captech-primary: #0066CC;
+    --captech-secondary: #004499;
+    --captech-success: #28a745;
+    --captech-warning: #ffc107;
+    --captech-danger: #dc3545;
+    --captech-light: #f8f9fa;
+    --captech-dark: #343a40;
+    --captech-gray-100: #f8f9fa;
+    --captech-gray-200: #e9ecef;
+    --captech-gray-300: #dee2e6;
+    --captech-gray-600: #6c757d;
+    --captech-gray-700: #495057;
+    --captech-gray-800: #343a40;
+    --captech-gray-900: #212529;
+  }
+
+  /* Page Header */
+  .risk-header {
+    background: linear-gradient(135deg, var(--captech-primary) 0%, var(--captech-secondary) 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+  }
+
+  /* Process Context Bar */
+  .process-context {
+    background: var(--captech-light);
+    border: 1px solid var(--captech-gray-300);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Section Cards */
+  .section-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .section-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .section-header.existing {
+    background: linear-gradient(45deg, #0d6efd, #6610f2);
+    color: white;
+    border-bottom: none;
+  }
+
+  .section-header.ai {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+    border-bottom: none;
+  }
+
+  .section-header.custom {
+    background: linear-gradient(45deg, #ffc107, #fd7e14);
+    color: white;
+    border-bottom: none;
+  }
+
+  .section-body {
+    padding: 2rem;
+  }
+
+  /* Risk Cards */
+  .risk-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .risk-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .risk-category-badge {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .risk-category-operational { background: #e3f2fd; color: #1565c0; }
+  .risk-category-technology { background: #f3e5f5; color: #7b1fa2; }
+  .risk-category-fraud { background: #ffebee; color: #c62828; }
+  .risk-category-compliance { background: #e8f5e8; color: #2e7d32; }
+  .risk-category-credit { background: #fff3e0; color: #ef6c00; }
+
+  /* AI Suggestion Cards */
+  .ai-risk-card {
+    background: #f8fff9;
+    border: 2px solid #e8f5e8;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .ai-risk-card.accepted {
+    border-color: #28a745;
+    background: #e8f5e8;
+  }
+
+  .ai-risk-card.rejected {
+    opacity: 0.5;
+    border-color: #dc3545;
+  }
+
+  /* Loading Animation */
+  .ai-loading {
+    text-align: center;
+    padding: 3rem;
+  }
+
+  .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.3em;
+  }
+
+  /* Empty States */
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+  }
+
+  .empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Debug Panel */
+  .debug-panel {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+  }
+
+  /* Edit Form Styling */
+  .edit-form {
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .edit-form .form-control,
+  .edit-form .form-select {
+    font-size: 0.9rem;
+  }
+
+  .edit-form .form-label {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+</style>
+
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="risk-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="display-5 fw-bold mb-2">Risk Identification V2</h1>
+          <p class="lead mb-0">AI-powered risk discovery with Dataverse integration</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <div class="bg-white bg-opacity-25 rounded-pill px-3 py-1 d-inline-block">
+            <i class="fas fa-list-ol me-2"></i>
+            Step 2 of 4
+          </div>
+          <div class="h5 mt-2 mb-0">Risk Identification</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Process Context Bar -->
+    <div class="process-context">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h5 class="mb-1">Selected Process</h5>
+          <div class="d-flex align-items-center gap-3">
+            <span class="fw-bold" id="selectedProcessName">Loading...</span>
+            <span class="text-muted">|</span>
+            <span>Business Unit: <span id="selectedBusinessUnit">Loading...</span></span>
+          </div>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <a href="/Process-Selection" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i>Change Process
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Debug Panel -->
+    <div class="debug-panel">
+      <strong>Debug Info:</strong> 
+      Contact ID: {{ user.contactid | escape }} | 
+      Role: {{ user.cr129_userrole.label | default: "None" | escape }} | 
+      Selected Process: <span id="debugProcessId">None</span>
+      <br>
+      <button class="btn btn-sm btn-outline-primary mt-2" onclick="testWebApi()">
+        <i class="bi bi-gear me-1"></i>Test Web API
+      </button>
+    </div>
+
+    <!-- FetchXML Query for Existing Risks -->
+    {% comment %} 
+    FetchXML query to get risks for the selected process
+    Using cr129_processname as the lookup field to filter by process
+    {% endcomment %}
+    {% assign processId = request.params['processId'] | default: '' %}
+    {% if processId == '' %}
+      <script>
+        // Get process ID from session storage for filtering
+        const processId = sessionStorage.getItem('rcsa_selected_process_id');
+        if (processId) {
+          // Reload page with process ID in query string for Liquid to use
+          if (!window.location.search.includes('processId=')) {
+            window.location.href = window.location.pathname + '?processId=' + encodeURIComponent(processId);
+          }
+        }
+      </script>
+    {% endif %}
+    
+    {% fetchxml existingRisks %}
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="cr129_risk">
+          <attribute name="cr129_riskid" />
+          <attribute name="cr129_risktitle" />
+          <attribute name="cr129_riskcategory" />
+          <attribute name="cr129_description" />
+          <attribute name="cr129_inherentlikelihood" />
+          <attribute name="cr129_inherentimpact" />
+          <attribute name="cr129_processname" />
+          <attribute name="modifiedon" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+            {% if processId != '' %}
+              <condition attribute="cr129_processname" operator="eq" value="{{ processId }}" />
+            {% endif %}
+          </filter>
+          <order attribute="cr129_risktitle" descending="false" />
+        </entity>
+      </fetch>
+    {% endfetchxml %}
+
+    <!-- Store FetchXML results in hidden divs (like original page) -->
+    <div id="allRisksData" style="display: none;">
+      {% for risk in existingRisks.results.entities %}
+        <div class="risk-data" 
+             data-risk-id="{{ risk.cr129_riskid }}"
+             data-risk-title="{{ risk.cr129_risktitle | escape }}"
+             data-risk-category="{{ risk.cr129_riskcategory.label | default: 'Operational' | escape }}"
+             data-risk-category-value="{{ risk.cr129_riskcategory.value | default: '100000000' }}"
+             data-risk-description="{{ risk.cr129_description | default: 'No description available' | escape }}"
+             data-risk-likelihood="{{ risk.cr129_inherentlikelihood | default: '' }}"
+             data-risk-impact="{{ risk.cr129_inherentimpact | default: '' }}"
+             data-risk-modified="{{ risk.modifiedon | date: '%Y-%m-%d' | default: '' }}"
+             data-process-id="{{ risk.cr129_processname.id | default: '' }}"
+             data-process-name="{{ risk.cr129_processname.name | default: 'Unknown Process' | escape }}">
+        </div>
+      {% endfor %}
+    </div>
+    
+    <script>
+      // Parse risks from hidden divs (more reliable than JavaScript arrays)
+      window.dataverseRisks = [];
+      document.querySelectorAll('#allRisksData .risk-data').forEach(element => {
+        const risk = {
+          id: element.dataset.riskId,
+          title: element.dataset.riskTitle,
+          category: element.dataset.riskCategory,
+          categoryValue: element.dataset.riskCategoryValue,
+          description: element.dataset.riskDescription,
+          likelihood: parseInt(element.dataset.riskLikelihood) || 3,
+          impact: parseInt(element.dataset.riskImpact) || 3,
+          modifiedOn: element.dataset.riskModified,
+          processId: element.dataset.processId,
+          processName: element.dataset.processName
+        };
+        window.dataverseRisks.push(risk);
+      });
+      console.log('Loaded ' + window.dataverseRisks.length + ' risks from Dataverse');
+    </script>
+
+    <!-- Section 1: Existing Risks from Dataverse -->
+    <div class="section-card">
+      <div class="section-header existing">
+        <div>
+          <h3 class="h4 mb-0">
+            <i class="bi bi-database me-2"></i>Existing Risks
+          </h3>
+          <p class="mb-0 opacity-75">Risks already identified for this process</p>
+        </div>
+        <span class="badge bg-white text-primary" id="existingRiskCount">Loading...</span>
+      </div>
+      <div class="section-body">
+        <div id="existingRisksContainer">
+          <!-- This will be populated by the entity list -->
+          {% comment %} 
+          Note: In production, we would use an entity list here:
+          {% entitylist id: 'risk-list-id' %}{% endentitylist %}
+          For now, we'll use FetchXML and render manually
+          {% endcomment %}
+          
+          <div class="text-center py-3">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: AI Risk Suggestions -->
+    <div class="section-card">
+      <div class="section-header ai">
+        <div>
+          <h3 class="h4 mb-0">
+            <i class="bi bi-magic me-2"></i>AI Risk Suggestions
+          </h3>
+          <p class="mb-0 opacity-75">Powered by OpenAI</p>
+        </div>
+        <button class="btn btn-white btn-sm" onclick="loadAISuggestions()">
+          <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+        </button>
+      </div>
+      <div class="section-body">
+        <div id="aiSuggestionsContainer">
+          <div class="ai-loading">
+            <div class="spinner-border text-success mb-3" role="status">
+              <span class="visually-hidden">Loading AI suggestions...</span>
+            </div>
+            <p class="text-muted">Analyzing process for potential risks...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Add Custom Risk -->
+    <div class="section-card">
+      <div class="section-header custom">
+        <div>
+          <h3 class="h4 mb-0">
+            <i class="bi bi-plus-circle me-2"></i>Add Custom Risk
+          </h3>
+          <p class="mb-0 opacity-75">Manually identify additional risks</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <button class="btn btn-primary" onclick="showAddRiskModal()">
+          <i class="bi bi-plus-circle me-2"></i>Add New Risk
+        </button>
+        <p class="text-muted mt-2 mb-0">
+          Can't find a specific risk? Add it manually to ensure comprehensive coverage.
+        </p>
+      </div>
+    </div>
+
+    <!-- Continue Button -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+          <a href="/Process-Selection" class="btn btn-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Back
+          </a>
+          <button id="continueBtn" class="btn btn-primary btn-lg" onclick="continueToControlMapping()">
+            Continue to Control Mapping
+            <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Risk Modal with Direct Form -->
+<div class="modal fade" id="editRiskModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Risk</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Direct form rendering - no iframe needed -->
+        <div id="editRiskFormContainer">
+          <!-- Form will be loaded here when modal opens -->
+          {% comment %} 
+          Note: In production, you would render the form here:
+          {% entityform id: "4037ea60-e65d-f011-bec1-7c1e521687a7" %}
+          
+          For now, we'll use inline editing or Web API
+          {% endcomment %}
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading form...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Risk Modal (Placeholder) -->
+<div class="modal fade" id="addRiskModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Risk</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Basic form for risk creation will go here</p>
+        <!-- In production, this would contain a Power Pages basic form -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Risk Identification V2 loaded');
+  
+  // Load process context from session storage
+  loadProcessContext();
+  
+  // Load existing risks
+  loadExistingRisks();
+  
+  // Load AI suggestions after a delay
+  setTimeout(loadAISuggestions, 2000);
+});
+
+// Load process context from session storage
+function loadProcessContext() {
+  const processId = sessionStorage.getItem('rcsa_selected_process_id');
+  const processName = sessionStorage.getItem('rcsa_selected_process_name');
+  const businessUnit = sessionStorage.getItem('rcsa_selected_business_unit');
+  
+  if (processName) {
+    document.getElementById('selectedProcessName').textContent = processName;
+    document.getElementById('selectedBusinessUnit').textContent = businessUnit || 'Not specified';
+    document.getElementById('debugProcessId').textContent = processId;
+  } else {
+    // No process selected, redirect back
+    console.warn('No process selected, redirecting to Process Selection');
+    window.location.href = '/Process-Selection';
+  }
+}
+
+// Load existing risks from Dataverse
+function loadExistingRisks() {
+  const container = document.getElementById('existingRisksContainer');
+  const processId = sessionStorage.getItem('rcsa_selected_process_id');
+  
+  console.log('Loading risks for process:', processId);
+  console.log('All Dataverse risks:', window.dataverseRisks);
+  
+  // Filter risks by selected process
+  let risks = [];
+  if (window.dataverseRisks && window.dataverseRisks.length > 0) {
+    // Filter by process ID
+    risks = window.dataverseRisks.filter(risk => {
+      const matches = risk.processId === processId;
+      console.log(`Risk "${risk.title}" process "${risk.processId}" matches selected "${processId}": ${matches}`);
+      return matches;
+    });
+    console.log('Filtered risks:', risks);
+  }
+  
+  // If no real data, use mock data
+  if (risks.length === 0) {
+    console.log('No real risks found, using mock data');
+    risks = [
+      {
+        id: 'mock-1',
+        title: 'Wire Transfer Fraud (Mock)',
+        category: 'fraud',
+        description: 'Risk of unauthorized wire transfers due to compromised credentials',
+        likelihood: 3,
+        impact: 5
+      },
+      {
+        id: 'mock-2',
+        title: 'System Downtime (Mock)',
+        category: 'operational',
+        description: 'Wire transfer system unavailability affecting customer transactions',
+        likelihood: 2,
+        impact: 4
+      }
+    ];
+  }
+  
+  // Simulate loading delay for better UX
+  setTimeout(() => {
+    if (risks.length > 0) {
+      container.innerHTML = risks.map(risk => {
+        // Map category values to display names
+        const categoryMap = {
+          'operational': 'operational',
+          'technology': 'technology',
+          'fraud': 'fraud',
+          'compliance': 'compliance',
+          'credit': 'credit',
+          '100000000': 'operational',
+          '100000001': 'technology',
+          '100000002': 'fraud',
+          '100000003': 'compliance',
+          '100000004': 'credit'
+        };
+        
+        const categoryDisplay = categoryMap[risk.categoryValue] || categoryMap[risk.category] || 'operational';
+        
+        return `
+          <div class="risk-card">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="h6 mb-0">${risk.title}</h5>
+              <span class="risk-category-badge risk-category-${categoryDisplay}">
+                ${risk.category || categoryDisplay}
+              </span>
+            </div>
+            <p class="text-muted small mb-2">${risk.description}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="small">
+                <span class="me-3">Likelihood: ${risk.likelihood}/5</span>
+                <span>Impact: ${risk.impact}/5</span>
+              </div>
+              <button class="btn btn-outline-primary btn-sm" onclick="editRisk('${risk.id}')">
+                <i class="bi bi-pencil me-1"></i>Edit
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      document.getElementById('existingRiskCount').textContent = risks.length;
+      
+      // Show data source in debug
+      if (window.dataverseRisks && window.dataverseRisks.length > 0) {
+        console.log('✅ Displaying real Dataverse risks');
+      } else {
+        console.log('📌 Displaying mock risks (no Dataverse data found)');
+      }
+    } else {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="bi bi-inbox text-muted"></i>
+          <h5 class="mt-3">No Existing Risks</h5>
+          <p class="text-muted">No risks have been previously identified for this process.</p>
+        </div>
+      `;
+      document.getElementById('existingRiskCount').textContent = '0';
+    }
+  }, 1000);
+}
+
+// Load AI suggestions (mock implementation)
+function loadAISuggestions() {
+  const container = document.getElementById('aiSuggestionsContainer');
+  
+  // Simulate AI processing
+  setTimeout(() => {
+    const suggestions = [
+      {
+        id: 'ai-1',
+        title: 'Insider Threat',
+        category: 'fraud',
+        description: 'Employees with wire transfer access could initiate unauthorized transfers',
+        likelihood: 2,
+        impact: 5,
+        rationale: 'Based on industry data, insider threats account for 30% of wire fraud cases'
+      },
+      {
+        id: 'ai-2',
+        title: 'SWIFT Network Compromise',
+        category: 'technology',
+        description: 'Vulnerabilities in SWIFT messaging could be exploited for fraudulent transfers',
+        likelihood: 1,
+        impact: 5,
+        rationale: 'Recent global incidents show sophisticated attacks on SWIFT infrastructure'
+      },
+      {
+        id: 'ai-3',
+        title: 'Regulatory Non-Compliance',
+        category: 'compliance',
+        description: 'Failure to meet updated wire transfer reporting requirements',
+        likelihood: 3,
+        impact: 3,
+        rationale: 'New regulations require enhanced transaction monitoring and reporting'
+      }
+    ];
+    
+    container.innerHTML = `
+      <div class="alert alert-info mb-3">
+        <i class="bi bi-lightbulb me-2"></i>
+        <strong>AI Analysis Complete!</strong> Based on your process, we've identified ${suggestions.length} potential risks.
+      </div>
+      ${suggestions.map(risk => `
+        <div class="ai-risk-card" id="ai-risk-${risk.id}">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h5 class="h6 mb-0">${risk.title}</h5>
+            <span class="risk-category-badge risk-category-${risk.category}">
+              ${risk.category}
+            </span>
+          </div>
+          <p class="text-muted small mb-2">${risk.description}</p>
+          <div class="bg-light rounded p-2 mb-3">
+            <small class="text-muted">
+              <i class="bi bi-info-circle me-1"></i>
+              <strong>AI Rationale:</strong> ${risk.rationale}
+            </small>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="small">
+              <span class="me-3">Suggested L: ${risk.likelihood}/5</span>
+              <span>Suggested I: ${risk.impact}/5</span>
+            </div>
+            <div>
+              <button class="btn btn-success btn-sm me-1" onclick="acceptRisk('${risk.id}')">
+                <i class="bi bi-check me-1"></i>Accept
+              </button>
+              <button class="btn btn-warning btn-sm me-1" onclick="modifyRisk('${risk.id}')">
+                <i class="bi bi-pencil me-1"></i>Modify
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="rejectRisk('${risk.id}')">
+                <i class="bi bi-x me-1"></i>Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    `;
+  }, 2000);
+}
+
+// Risk action handlers
+function editRisk(riskId) {
+  console.log('Edit risk:', riskId);
+  
+  // Option 1: Use the EditRisk form in a modal (recommended for production)
+  if (useModalForm()) {
+    openEditRiskModal(riskId);
+    return;
+  }
+  
+  // Option 2: Inline editing (current implementation)
+  // Find the risk data - handle case where dataverseRisks is undefined
+  const risks = window.dataverseRisks || [];
+  const risk = risks.find(r => r.id === riskId) || 
+                { id: riskId, title: 'Mock Risk', description: 'Mock description', likelihood: 3, impact: 3 };
+  
+  // Create inline edit form
+  const riskCard = document.querySelector(`[onclick="editRisk('${riskId}')"]`).closest('.risk-card');
+  
+  // Store original HTML for cancel
+  const originalHTML = riskCard.innerHTML;
+  // Store it as a data attribute to avoid escaping issues
+  riskCard.setAttribute('data-original-html', originalHTML);
+  
+  // Replace with edit form
+  riskCard.innerHTML = `
+    <div class="edit-form">
+      <div class="mb-3">
+        <label class="form-label fw-bold">Risk Title</label>
+        <input type="text" class="form-control" id="edit-title-${riskId}" value="${risk.title}">
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Description</label>
+        <textarea class="form-control" id="edit-desc-${riskId}" rows="3">${risk.description}</textarea>
+      </div>
+      <div class="row mb-3">
+        <div class="col-6">
+          <label class="form-label fw-bold">Likelihood (1-5)</label>
+          <select class="form-select" id="edit-likelihood-${riskId}">
+            <option value="1" ${risk.likelihood == 1 ? 'selected' : ''}>1 - Very Low</option>
+            <option value="2" ${risk.likelihood == 2 ? 'selected' : ''}>2 - Low</option>
+            <option value="3" ${risk.likelihood == 3 ? 'selected' : ''}>3 - Medium</option>
+            <option value="4" ${risk.likelihood == 4 ? 'selected' : ''}>4 - High</option>
+            <option value="5" ${risk.likelihood == 5 ? 'selected' : ''}>5 - Very High</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <label class="form-label fw-bold">Impact (1-5)</label>
+          <select class="form-select" id="edit-impact-${riskId}">
+            <option value="1" ${risk.impact == 1 ? 'selected' : ''}>1 - Very Low</option>
+            <option value="2" ${risk.impact == 2 ? 'selected' : ''}>2 - Low</option>
+            <option value="3" ${risk.impact == 3 ? 'selected' : ''}>3 - Medium</option>
+            <option value="4" ${risk.impact == 4 ? 'selected' : ''}>4 - High</option>
+            <option value="5" ${risk.impact == 5 ? 'selected' : ''}>5 - Very High</option>
+          </select>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end gap-2">
+        <button class="btn btn-secondary btn-sm" onclick="cancelEdit('${riskId}')">
+          <i class="bi bi-x me-1"></i>Cancel
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="saveRisk('${riskId}')">
+          <i class="bi bi-check me-1"></i>Save
+        </button>
+      </div>
+    </div>
+  `;
+  
+  // Focus on title input
+  document.getElementById(`edit-title-${riskId}`).focus();
+}
+
+// Check if we should use modal form
+function useModalForm() {
+  // You can toggle this to switch between inline and modal editing
+  return false; // Using inline editing to avoid page refresh issues
+}
+
+// Open EditRisk form in modal
+function openEditRiskModal(riskId) {
+  console.log('Opening edit modal for risk:', riskId);
+  
+  // Option 1: If you have the form rendered on the page with Liquid
+  // The form would need to dynamically update its record ID
+  
+  // Option 2: For now, show a message about the form
+  const formContainer = document.getElementById('editRiskFormContainer');
+  formContainer.innerHTML = `
+    <div class="alert alert-info">
+      <h5>Edit Risk Form</h5>
+      <p>To enable this form, add the following to this modal:</p>
+      <code>{% entityform id: "4037ea60-e65d-f011-bec1-7c1e521687a7" %}</code>
+      <hr>
+      <p><strong>Risk ID:</strong> ${riskId}</p>
+      <p>The form will load the risk data and allow editing.</p>
+      <button class="btn btn-primary mt-3" onclick="saveViaWebAPI('${riskId}')">
+        Save via Web API Instead
+      </button>
+    </div>
+  `;
+  
+  // Show the modal
+  const modal = new bootstrap.Modal(document.getElementById('editRiskModal'));
+  modal.show();
+}
+
+// Alternative: Save via Web API (if enabled)
+function saveViaWebAPI(riskId) {
+  alert(`Would save risk ${riskId} via Power Pages Web API.\n\nTo enable:\n1. Go to Site Settings\n2. Enable Web API for cr129_risk table\n3. Implement the API call here`);
+  
+  // Example Web API code (when enabled):
+  /*
+  const data = {
+    cr129_risktitle: "Updated Title",
+    cr129_description: "Updated Description"
+  };
+  
+  webapi.safeAjax({
+    type: "PATCH",
+    url: `/_api/cr129_risks(${riskId})`,
+    contentType: "application/json",
+    data: JSON.stringify(data),
+    success: function() {
+      alert("Risk updated!");
+      location.reload();
+    }
+  });
+  */
+}
+
+// Cancel editing
+function cancelEdit(riskId) {
+  const riskCard = document.querySelector('.edit-form').closest('.risk-card');
+  const originalHTML = riskCard.getAttribute('data-original-html');
+  if (originalHTML) {
+    riskCard.innerHTML = originalHTML;
+  } else {
+    // Fallback: just reload the page
+    loadExistingRisks();
+  }
+}
+
+// Save risk changes using Web API
+function saveRisk(riskId) {
+  const title = document.getElementById(`edit-title-${riskId}`).value;
+  const description = document.getElementById(`edit-desc-${riskId}`).value;
+  const likelihood = document.getElementById(`edit-likelihood-${riskId}`).value;
+  const impact = document.getElementById(`edit-impact-${riskId}`).value;
+  
+  console.log('🔍 DEBUG: Saving risk via Web API:', { riskId, title, description, likelihood, impact });
+  console.log('🔍 DEBUG: WebApi available?', typeof WebApi !== 'undefined');
+  console.log('🔍 DEBUG: jQuery available?', typeof $ !== 'undefined');
+  console.log('🔍 DEBUG: Request token:', document.querySelector('input[name="__RequestVerificationToken"]')?.value);
+  
+  // Show loading state
+  const saveBtn = document.querySelector(`[onclick="saveRisk('${riskId}')"]`);
+  const originalText = saveBtn.innerHTML;
+  saveBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Saving...';
+  saveBtn.disabled = true;
+  
+  // Prepare data for Web API
+  const data = {
+    cr129_risktitle: title,
+    cr129_description: description,
+    cr129_inherentlikelihood: parseInt(likelihood),
+    cr129_inherentimpact: parseInt(impact)
+  };
+  
+  // Try to use Web API if available
+  if (typeof WebApi !== 'undefined') {
+    // Use the new Web API wrapper
+    WebApi.update('cr129_risks', riskId, data, {
+      success: function(response) {
+        console.log('✅ Risk saved successfully:', response);
+        
+        // Show success message
+        showSuccessToast(`Risk "${title}" updated successfully!`);
+        
+        // Update local data
+        const risks = window.dataverseRisks || [];
+        const risk = risks.find(r => r.id === riskId);
+        if (risk) {
+          risk.title = title;
+          risk.description = description;
+          risk.likelihood = parseInt(likelihood);
+          risk.impact = parseInt(impact);
+        }
+        
+        // Refresh the display
+        setTimeout(() => {
+          loadExistingRisks();
+        }, 500);
+      },
+      error: function(xhr, status, error) {
+        console.error('❌ Error saving risk:', {
+          status: xhr.status,
+          statusText: xhr.statusText,
+          responseText: xhr.responseText,
+          error: error
+        });
+        
+        // Restore button
+        saveBtn.innerHTML = originalText;
+        saveBtn.disabled = false;
+        
+        // Show detailed error information
+        if (xhr.status === 401) {
+          alert(`Web API Authentication Error (401)\n\nPlease ensure:\n1. Web API is enabled in Site Settings\n2. Table permissions are configured\n3. You are properly authenticated\n\nChanges saved locally only.`);
+        } else if (xhr.status === 403) {
+          alert(`Web API Permission Error (403)\n\nPlease ensure:\n1. Table permissions allow Web API access\n2. Your user role has proper permissions\n\nChanges saved locally only.`);
+        } else {
+          alert(`Web API Error (${xhr.status})\n\n${xhr.statusText}\n\nChanges saved locally only.`);
+        }
+        
+        // For now, just update locally and show success
+        console.log('Falling back to local update only');
+        updateRiskLocally();
+      }
+    });
+  } else {
+    // Fallback if Web API wrapper not available
+    console.log('Web API wrapper not available, updating locally only');
+    updateRiskLocally();
+  }
+  
+  // Local update function
+  function updateRiskLocally() {
+    // Update local data
+    const risks = window.dataverseRisks || [];
+    const risk = risks.find(r => r.id === riskId);
+    if (risk) {
+      risk.title = title;
+      risk.description = description;
+      risk.likelihood = parseInt(likelihood);
+      risk.impact = parseInt(impact);
+    }
+    
+    // Show success message
+    alert(`Risk "${title}" has been updated!\n\nNote: Changes are saved locally. To persist to database, Web API must be enabled.`);
+    
+    // Refresh the display
+    loadExistingRisks();
+  }
+}
+
+// Helper function to show success toast
+function showSuccessToast(message) {
+  // Create toast element
+  const toastHtml = `
+    <div class="toast align-items-center text-white bg-success border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">
+          <i class="bi bi-check-circle me-2"></i>${message}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  `;
+  
+  // Add to page
+  let toastContainer = document.getElementById('toastContainer');
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.id = 'toastContainer';
+    toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+    document.body.appendChild(toastContainer);
+  }
+  
+  toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+  
+  // Show toast
+  const toastElement = toastContainer.lastElementChild;
+  const toast = new bootstrap.Toast(toastElement);
+  toast.show();
+  
+  // Remove after hidden
+  toastElement.addEventListener('hidden.bs.toast', () => {
+    toastElement.remove();
+  });
+}
+
+function acceptRisk(riskId) {
+  console.log('Accept risk:', riskId);
+  const card = document.getElementById(`ai-risk-${riskId}`);
+  if (card) {
+    card.classList.add('accepted');
+    // In production, this would save to Dataverse
+  }
+}
+
+function modifyRisk(riskId) {
+  console.log('Modify risk:', riskId);
+  // In production, this would open a form with pre-filled data
+  alert('Modify functionality would open a pre-filled form here');
+}
+
+function rejectRisk(riskId) {
+  console.log('Reject risk:', riskId);
+  const card = document.getElementById(`ai-risk-${riskId}`);
+  if (card) {
+    card.classList.add('rejected');
+  }
+}
+
+function showAddRiskModal() {
+  const modal = new bootstrap.Modal(document.getElementById('addRiskModal'));
+  modal.show();
+}
+
+function continueToControlMapping() {
+  // In production, validate that at least one risk is selected
+  console.log('Continuing to Control Mapping');
+  window.location.href = '/Control-Mapping-Overview';
+}
+
+// Test Web API setup
+function testWebApi() {
+  console.log('🧪 Testing Web API setup...');
+  console.log('🔍 WebApi object:', typeof WebApi !== 'undefined' ? WebApi : 'Not available');
+  console.log('🔍 Request token:', document.querySelector('input[name="__RequestVerificationToken"]')?.value);
+  
+  if (typeof WebApi !== 'undefined') {
+    // Test GET request to see if Web API is working
+    WebApi.get('cr129_risks', null, {
+      success: function(response) {
+        console.log('✅ Web API GET test successful:', response);
+        alert('✅ Web API is working! GET request successful.');
+      },
+      error: function(xhr, status, error) {
+        console.error('❌ Web API GET test failed:', {
+          status: xhr.status,
+          statusText: xhr.statusText,
+          responseText: xhr.responseText
+        });
+        alert(`❌ Web API GET test failed: ${xhr.status} ${xhr.statusText}\n\nCheck console for details.`);
+      }
+    });
+  } else {
+    console.error('❌ WebApi object not available');
+    alert('❌ WebApi object not available. Check if the Web API wrapper template is loaded.');
+    
+    // Fallback: Test with direct jQuery
+    if (typeof $ !== 'undefined') {
+      console.log('🔄 Trying direct jQuery approach...');
+      const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+      
+      $.ajax({
+        type: "GET",
+        url: "/_api/cr129_risks",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        headers: {
+          "__RequestVerificationToken": token
+        },
+        success: function(response) {
+          console.log('✅ Direct jQuery GET test successful:', response);
+          alert('✅ Direct jQuery Web API test successful!');
+        },
+        error: function(xhr, status, error) {
+          console.error('❌ Direct jQuery GET test failed:', {
+            status: xhr.status,
+            statusText: xhr.statusText,
+            responseText: xhr.responseText
+          });
+          alert(`❌ Direct jQuery test failed: ${xhr.status} ${xhr.statusText}\n\nThis confirms the Web API issue.`);
+        }
+      });
+    }
+  }
+}
+</script> 

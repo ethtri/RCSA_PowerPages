@@ -169,24 +169,8 @@
             <filter type="and">
               <condition attribute="statecode" operator="eq" value="0" />
               
-              <!-- Role-based filtering like Process Selection -->
-              {% if user.cr129_userrole.value == 100000000 %}
-                <!-- Executive: Can see all assessments in their BU -->
-                <link-entity name="contact" from="contactid" to="cr129_assessor" alias="assessor">
-                  <condition attribute="cr129_businessunitname" operator="eq" value="{{ user.cr129_businessunitname.cr129_buid }}" />
-                </link-entity>
-              {% elsif user.cr129_userrole.value == 100000001 %}
-                <!-- Manager: Can see all assessments in their BU -->
-                <link-entity name="contact" from="contactid" to="cr129_assessor" alias="assessor">
-                  <condition attribute="cr129_businessunitname" operator="eq" value="{{ user.cr129_businessunitname.cr129_buid }}" />
-                </link-entity>
-              {% elsif user.cr129_userrole.value == 100000002 %}
-                <!-- Analyst: Can see only their own assessments -->
-                <condition attribute="cr129_assessor" operator="eq" value="{{ user.contactid }}" />
-              {% else %}
-                <!-- Default: Show only user's own assessments -->
-                <condition attribute="cr129_assessor" operator="eq" value="{{ user.contactid }}" />
-              {% endif %}
+              <!-- Simplified filtering for testing - show all assessments -->
+              <!-- TODO: Re-implement role-based filtering after testing -->
               
             </filter>
             <order attribute="modifiedon" descending="true" />

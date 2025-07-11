@@ -231,10 +231,30 @@
 - adx_name: Authentication/Registration/Enabled
   adx_sitesettingid: fffedfec-06dd-4af9-bc39-3fd665e94a73
   adx_value: true
+# Web API settings - Main enable setting
+- adx_name: Webapi/Enabled
+  adx_value: true
+  adx_description: Enable Web API for the entire portal
+  adx_sitesettingid: 8a5d6899-b5d7-43ac-8359-482529724979
+
 # Web API settings for cr129_risk entity
 - adx_name: Webapi/cr129_risk/enabled
-  adx_sitesettingid: 11111111-1111-1111-1111-111111111111
   adx_value: true
+  adx_description: Enable Web API for Risk table
+  adx_sitesettingid: 8a5d6900-b5d7-43ac-8359-482529724980
+
 - adx_name: Webapi/cr129_risk/fields
-  adx_sitesettingid: 22222222-2222-2222-2222-222222222222
-  adx_value: '*'
+  adx_value: cr129_riskid,cr129_risktitle,cr129_description,cr129_riskcategory,cr129_inherentlikelihood,cr129_inherentimpact,cr129_processname,statecode,statuscode
+  adx_description: Allowed fields for Risk table Web API
+  adx_sitesettingid: 8a5d6901-b5d7-43ac-8359-482529724981
+
+- adx_name: Webapi/cr129_risk/disableodatafilter
+  adx_value: false
+  adx_description: Allow OData filtering for Risk table
+  adx_sitesettingid: 8a5d6902-b5d7-43ac-8359-482529724982
+
+# Additional Web API settings for authentication
+- adx_name: Webapi/error/innererror
+  adx_value: true
+  adx_description: Show detailed Web API errors
+  adx_sitesettingid: 8a5d6903-b5d7-43ac-8359-482529724983
