@@ -389,18 +389,25 @@
       <div class="section-header custom">
         <div>
           <h3 class="h4 mb-0">
-            <i class="bi bi-plus-circle me-2"></i>Add Custom Risk
+            <i class="bi bi-plus-circle me-2"></i>Custom Risks
           </h3>
           <p class="mb-0 opacity-75">Manually identify additional risks</p>
         </div>
+        <button class="btn btn-white btn-sm" onclick="showAddRiskModal()">
+          <i class="bi bi-plus-circle me-1"></i>Add New Risk
+        </button>
       </div>
       <div class="section-body">
-        <button class="btn btn-primary" onclick="showAddRiskModal()">
-          <i class="bi bi-plus-circle me-2"></i>Add New Risk
-        </button>
-        <p class="text-muted mt-2 mb-0">
-          Can't find a specific risk? Add it manually to ensure comprehensive coverage.
-        </p>
+        <div id="customRisksContainer">
+          <div class="empty-state">
+            <i class="bi bi-plus-circle text-muted"></i>
+            <h5 class="mt-3">No Custom Risks Added</h5>
+            <p class="text-muted">Click "Add New Risk" to create custom risks for this process.</p>
+            <button class="btn btn-primary" onclick="showAddRiskModal()">
+              <i class="bi bi-plus-circle me-2"></i>Add Your First Risk
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -450,7 +457,7 @@
   </div>
 </div>
 
-<!-- Add Risk Modal (Placeholder) -->
+<!-- Add Risk Modal -->
 <div class="modal fade" id="addRiskModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -459,8 +466,77 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <p>Basic form for risk creation will go here</p>
-        <!-- In production, this would contain a Power Pages basic form -->
+        <form id="addRiskForm">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="mb-3">
+                <label for="newRiskTitle" class="form-label">Risk Title *</label>
+                <input type="text" class="form-control" id="newRiskTitle" required 
+                       placeholder="Enter a clear, descriptive risk title">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="newRiskCategory" class="form-label">Category *</label>
+                <select class="form-select" id="newRiskCategory" required>
+                  <option value="">Select category...</option>
+                  <option value="100000000">Operational</option>
+                  <option value="100000001">Technology</option>
+                  <option value="100000002">Fraud</option>
+                  <option value="100000003">Compliance</option>
+                  <option value="100000004">Credit</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="newRiskDescription" class="form-label">Description *</label>
+            <textarea class="form-control" id="newRiskDescription" rows="3" required
+                      placeholder="Describe the risk, its potential causes, and impact"></textarea>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="newRiskLikelihood" class="form-label">Likelihood (1-5) *</label>
+                <select class="form-select" id="newRiskLikelihood" required>
+                  <option value="">Select likelihood...</option>
+                  <option value="1">1 - Very Low (0-5%)</option>
+                  <option value="2">2 - Low (6-25%)</option>
+                  <option value="3">3 - Medium (26-50%)</option>
+                  <option value="4">4 - High (51-75%)</option>
+                  <option value="5">5 - Very High (76-100%)</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="newRiskImpact" class="form-label">Impact (1-5) *</label>
+                <select class="form-select" id="newRiskImpact" required>
+                  <option value="">Select impact...</option>
+                  <option value="1">1 - Very Low (Minimal)</option>
+                  <option value="2">2 - Low (Minor)</option>
+                  <option value="3">3 - Medium (Moderate)</option>
+                  <option value="4">4 - High (Major)</option>
+                  <option value="5">5 - Very High (Severe)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>
+            <strong>Note:</strong> This risk will be associated with the selected process: 
+            <span id="modalProcessName" class="fw-bold"></span>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="saveNewRisk()">
+          <i class="bi bi-check-circle me-1"></i>Add Risk
+        </button>
       </div>
     </div>
   </div>
@@ -477,9 +553,15 @@ document.addEventListener('DOMContentLoaded', function() {
   // Load existing risks
   loadExistingRisks();
   
+  // Load custom risks
+  loadCustomRisks();
+  
   // Load AI suggestions after a delay
   setTimeout(loadAISuggestions, 2000);
 });
+
+// Global variable to store custom risks
+window.customRisks = [];
 
 // Load process context from session storage
 function loadProcessContext() {
@@ -988,9 +1070,519 @@ function rejectRisk(riskId) {
   }
 }
 
+// Load custom risks from session storage and Dataverse
+function loadCustomRisks() {
+  const container = document.getElementById('customRisksContainer');
+  const processId = sessionStorage.getItem('rcsa_selected_process_id');
+  
+  console.log('Loading custom risks for process:', processId);
+  
+  // Load from session storage (newly added in this session)
+  const sessionCustomRisks = JSON.parse(sessionStorage.getItem('rcsa_custom_risks') || '[]');
+  
+  // Filter by current process
+  const processCustomRisks = sessionCustomRisks.filter(risk => risk.processId === processId);
+  
+  window.customRisks = processCustomRisks;
+  
+  if (processCustomRisks.length > 0) {
+    displayCustomRisks(processCustomRisks);
+  } else {
+    // Show empty state
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-plus-circle text-muted"></i>
+        <h5 class="mt-3">No Custom Risks Added</h5>
+        <p class="text-muted">Click "Add New Risk" to create custom risks for this process.</p>
+        <button class="btn btn-primary" onclick="showAddRiskModal()">
+          <i class="bi bi-plus-circle me-2"></i>Add Your First Risk
+        </button>
+      </div>
+    `;
+  }
+}
+
+// Display custom risks
+function displayCustomRisks(risks) {
+  const container = document.getElementById('customRisksContainer');
+  
+  container.innerHTML = risks.map(risk => {
+    const categoryMap = {
+      '100000000': 'operational',
+      '100000001': 'technology',
+      '100000002': 'fraud',
+      '100000003': 'compliance',
+      '100000004': 'credit'
+    };
+    
+    const categoryNames = {
+      '100000000': 'Operational',
+      '100000001': 'Technology',
+      '100000002': 'Fraud',
+      '100000003': 'Compliance',
+      '100000004': 'Credit'
+    };
+    
+    const categoryClass = categoryMap[risk.category] || 'operational';
+    const categoryName = categoryNames[risk.category] || 'Operational';
+    
+    return `
+      <div class="risk-card" id="custom-risk-${risk.id}">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h5 class="h6 mb-0">${risk.title}</h5>
+          <div class="d-flex align-items-center gap-2">
+            <span class="risk-category-badge risk-category-${categoryClass}">
+              ${categoryName}
+            </span>
+            <span class="badge bg-info">Custom</span>
+          </div>
+        </div>
+        <p class="text-muted small mb-2">${risk.description}</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="small">
+            <span class="me-3">Likelihood: ${risk.likelihood}/5</span>
+            <span>Impact: ${risk.impact}/5</span>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-outline-primary btn-sm" onclick="editCustomRisk('${risk.id}')">
+              <i class="bi bi-pencil me-1"></i>Edit
+            </button>
+            <button class="btn btn-outline-danger btn-sm" onclick="deleteCustomRisk('${risk.id}')">
+              <i class="bi bi-trash me-1"></i>Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Show add risk modal
 function showAddRiskModal() {
+  const processName = sessionStorage.getItem('rcsa_selected_process_name');
+  document.getElementById('modalProcessName').textContent = processName || 'Selected Process';
+  
+  // Reset form
+  document.getElementById('addRiskForm').reset();
+  
   const modal = new bootstrap.Modal(document.getElementById('addRiskModal'));
   modal.show();
+}
+
+// Save new custom risk
+function saveNewRisk() {
+  const form = document.getElementById('addRiskForm');
+  
+  // Validate form
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+  
+  const processId = sessionStorage.getItem('rcsa_selected_process_id');
+  const processName = sessionStorage.getItem('rcsa_selected_process_name');
+  
+  // Get form data
+  const formData = {
+    title: document.getElementById('newRiskTitle').value.trim(),
+    category: document.getElementById('newRiskCategory').value,
+    description: document.getElementById('newRiskDescription').value.trim(),
+    likelihood: parseInt(document.getElementById('newRiskLikelihood').value),
+    impact: parseInt(document.getElementById('newRiskImpact').value)
+  };
+  
+  console.log('Creating new custom risk:', formData);
+  
+  // Show loading state
+  const saveBtn = document.querySelector('#addRiskModal .btn-primary');
+  const originalText = saveBtn.innerHTML;
+  saveBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Creating...';
+  saveBtn.disabled = true;
+  
+  // Create risk data for Dataverse
+  const riskData = {
+    cr129_risktitle: formData.title,
+    cr129_description: formData.description,
+    cr129_riskcategory: parseInt(formData.category),
+    cr129_inherentlikelihood: formData.likelihood,
+    cr129_inherentimpact: formData.impact,
+    'cr129_processname@odata.bind': `/cr129_procs(${processId})`
+  };
+  
+  // Try to save to Dataverse via Web API
+  if (typeof webapi !== 'undefined' && webapi.safeAjax) {
+    webapi.create('cr129_risks', riskData)
+      .done(function(response) {
+        console.log('✅ Risk created successfully in Dataverse:', response);
+        
+        // Create local risk object
+        const newRisk = {
+          id: response.cr129_riskid,
+          title: formData.title,
+          category: formData.category,
+          description: formData.description,
+          likelihood: formData.likelihood,
+          impact: formData.impact,
+          processId: processId,
+          processName: processName,
+          isCustom: true,
+          createdAt: new Date().toISOString()
+        };
+        
+        // Add to local storage and display
+        addCustomRiskToStorage(newRisk);
+        
+        // Show success message
+        showSuccessToast(`Risk "${formData.title}" created successfully!`);
+        
+        // Close modal and refresh display
+        bootstrap.Modal.getInstance(document.getElementById('addRiskModal')).hide();
+        loadCustomRisks();
+      })
+      .fail(function(xhr, status, error) {
+        console.error('❌ Error creating risk:', xhr.status, xhr.statusText);
+        
+        // Fallback: Save locally only
+        console.log('Falling back to local storage only');
+        
+        const newRisk = {
+          id: 'custom-' + Date.now(),
+          title: formData.title,
+          category: formData.category,
+          description: formData.description,
+          likelihood: formData.likelihood,
+          impact: formData.impact,
+          processId: processId,
+          processName: processName,
+          isCustom: true,
+          createdAt: new Date().toISOString()
+        };
+        
+        addCustomRiskToStorage(newRisk);
+        
+        // Show warning message
+        showWarningToast(`Risk "${formData.title}" saved locally. Database save failed: ${xhr.status} ${xhr.statusText}`);
+        
+        // Close modal and refresh display
+        bootstrap.Modal.getInstance(document.getElementById('addRiskModal')).hide();
+        loadCustomRisks();
+      })
+      .always(function() {
+        // Restore button
+        saveBtn.innerHTML = originalText;
+        saveBtn.disabled = false;
+      });
+  } else {
+    // Web API not available, save locally only
+    console.log('Web API not available, saving locally only');
+    
+    const newRisk = {
+      id: 'custom-' + Date.now(),
+      title: formData.title,
+      category: formData.category,
+      description: formData.description,
+      likelihood: formData.likelihood,
+      impact: formData.impact,
+      processId: processId,
+      processName: processName,
+      isCustom: true,
+      createdAt: new Date().toISOString()
+    };
+    
+    addCustomRiskToStorage(newRisk);
+    
+    // Show info message
+    showInfoToast(`Risk "${formData.title}" saved locally. Web API not available.`);
+    
+    // Close modal and refresh display
+    bootstrap.Modal.getInstance(document.getElementById('addRiskModal')).hide();
+    loadCustomRisks();
+    
+    // Restore button
+    saveBtn.innerHTML = originalText;
+    saveBtn.disabled = false;
+  }
+}
+
+// Add custom risk to session storage
+function addCustomRiskToStorage(risk) {
+  const existingRisks = JSON.parse(sessionStorage.getItem('rcsa_custom_risks') || '[]');
+  existingRisks.push(risk);
+  sessionStorage.setItem('rcsa_custom_risks', JSON.stringify(existingRisks));
+  
+  // Update global variable
+  window.customRisks = existingRisks.filter(r => r.processId === risk.processId);
+}
+
+// Edit custom risk
+function editCustomRisk(riskId) {
+  const risk = window.customRisks.find(r => r.id === riskId);
+  if (!risk) {
+    console.error('Risk not found:', riskId);
+    return;
+  }
+  
+  // Populate form with existing data
+  document.getElementById('newRiskTitle').value = risk.title;
+  document.getElementById('newRiskCategory').value = risk.category;
+  document.getElementById('newRiskDescription').value = risk.description;
+  document.getElementById('newRiskLikelihood').value = risk.likelihood;
+  document.getElementById('newRiskImpact').value = risk.impact;
+  
+  // Update modal title and button
+  document.querySelector('#addRiskModal .modal-title').textContent = 'Edit Risk';
+  document.querySelector('#addRiskModal .btn-primary').innerHTML = '<i class="bi bi-check-circle me-1"></i>Update Risk';
+  document.querySelector('#addRiskModal .btn-primary').onclick = function() { updateCustomRisk(riskId); };
+  
+  // Show modal
+  const modal = new bootstrap.Modal(document.getElementById('addRiskModal'));
+  modal.show();
+}
+
+// Update custom risk
+function updateCustomRisk(riskId) {
+  const form = document.getElementById('addRiskForm');
+  
+  // Validate form
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+  
+  // Get form data
+  const formData = {
+    title: document.getElementById('newRiskTitle').value.trim(),
+    category: document.getElementById('newRiskCategory').value,
+    description: document.getElementById('newRiskDescription').value.trim(),
+    likelihood: parseInt(document.getElementById('newRiskLikelihood').value),
+    impact: parseInt(document.getElementById('newRiskImpact').value)
+  };
+  
+  console.log('Updating custom risk:', riskId, formData);
+  
+  // Show loading state
+  const saveBtn = document.querySelector('#addRiskModal .btn-primary');
+  const originalText = saveBtn.innerHTML;
+  saveBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Updating...';
+  saveBtn.disabled = true;
+  
+  // Update risk data for Dataverse
+  const riskData = {
+    cr129_risktitle: formData.title,
+    cr129_description: formData.description,
+    cr129_riskcategory: parseInt(formData.category),
+    cr129_inherentlikelihood: formData.likelihood,
+    cr129_inherentimpact: formData.impact
+  };
+  
+  // Try to update in Dataverse via Web API
+  if (typeof webapi !== 'undefined' && webapi.safeAjax && !riskId.startsWith('custom-')) {
+    webapi.update('cr129_risks', riskId, riskData)
+      .done(function(response) {
+        console.log('✅ Risk updated successfully in Dataverse');
+        
+        // Update local storage
+        updateCustomRiskInStorage(riskId, formData);
+        
+        // Show success message
+        showSuccessToast(`Risk "${formData.title}" updated successfully!`);
+        
+        // Close modal and refresh display
+        bootstrap.Modal.getInstance(document.getElementById('addRiskModal')).hide();
+        resetAddRiskModal();
+        loadCustomRisks();
+      })
+      .fail(function(xhr, status, error) {
+        console.error('❌ Error updating risk:', xhr.status, xhr.statusText);
+        
+        // Fallback: Update locally only
+        updateCustomRiskInStorage(riskId, formData);
+        
+        // Show warning message
+        showWarningToast(`Risk "${formData.title}" updated locally. Database update failed: ${xhr.status} ${xhr.statusText}`);
+        
+        // Close modal and refresh display
+        bootstrap.Modal.getInstance(document.getElementById('addRiskModal')).hide();
+        resetAddRiskModal();
+        loadCustomRisks();
+      })
+      .always(function() {
+        // Restore button
+        saveBtn.innerHTML = originalText;
+        saveBtn.disabled = false;
+      });
+  } else {
+    // Local-only risk or Web API not available
+    updateCustomRiskInStorage(riskId, formData);
+    
+    // Show info message
+    showInfoToast(`Risk "${formData.title}" updated locally.`);
+    
+    // Close modal and refresh display
+    bootstrap.Modal.getInstance(document.getElementById('addRiskModal')).hide();
+    resetAddRiskModal();
+    loadCustomRisks();
+    
+    // Restore button
+    saveBtn.innerHTML = originalText;
+    saveBtn.disabled = false;
+  }
+}
+
+// Update custom risk in storage
+function updateCustomRiskInStorage(riskId, formData) {
+  const existingRisks = JSON.parse(sessionStorage.getItem('rcsa_custom_risks') || '[]');
+  const riskIndex = existingRisks.findIndex(r => r.id === riskId);
+  
+  if (riskIndex !== -1) {
+    existingRisks[riskIndex] = {
+      ...existingRisks[riskIndex],
+      title: formData.title,
+      category: formData.category,
+      description: formData.description,
+      likelihood: formData.likelihood,
+      impact: formData.impact,
+      updatedAt: new Date().toISOString()
+    };
+    
+    sessionStorage.setItem('rcsa_custom_risks', JSON.stringify(existingRisks));
+    
+    // Update global variable
+    const processId = sessionStorage.getItem('rcsa_selected_process_id');
+    window.customRisks = existingRisks.filter(r => r.processId === processId);
+  }
+}
+
+// Delete custom risk
+function deleteCustomRisk(riskId) {
+  const risk = window.customRisks.find(r => r.id === riskId);
+  if (!risk) {
+    console.error('Risk not found:', riskId);
+    return;
+  }
+  
+  // Confirm deletion
+  if (!confirm(`Are you sure you want to delete the risk "${risk.title}"?\n\nThis action cannot be undone.`)) {
+    return;
+  }
+  
+  console.log('Deleting custom risk:', riskId);
+  
+  // Show loading state
+  const riskCard = document.getElementById(`custom-risk-${riskId}`);
+  if (riskCard) {
+    riskCard.style.opacity = '0.5';
+    riskCard.style.pointerEvents = 'none';
+  }
+  
+  // Try to delete from Dataverse via Web API
+  if (typeof webapi !== 'undefined' && webapi.safeAjax && !riskId.startsWith('custom-')) {
+    webapi.delete('cr129_risks', riskId)
+      .done(function(response) {
+        console.log('✅ Risk deleted successfully from Dataverse');
+        
+        // Remove from local storage
+        removeCustomRiskFromStorage(riskId);
+        
+        // Show success message
+        showSuccessToast(`Risk "${risk.title}" deleted successfully!`);
+        
+        // Refresh display
+        loadCustomRisks();
+      })
+      .fail(function(xhr, status, error) {
+        console.error('❌ Error deleting risk:', xhr.status, xhr.statusText);
+        
+        // Fallback: Remove locally only
+        removeCustomRiskFromStorage(riskId);
+        
+        // Show warning message
+        showWarningToast(`Risk "${risk.title}" removed locally. Database deletion failed: ${xhr.status} ${xhr.statusText}`);
+        
+        // Refresh display
+        loadCustomRisks();
+      });
+  } else {
+    // Local-only risk or Web API not available
+    removeCustomRiskFromStorage(riskId);
+    
+    // Show info message
+    showInfoToast(`Risk "${risk.title}" removed locally.`);
+    
+    // Refresh display
+    loadCustomRisks();
+  }
+}
+
+// Remove custom risk from storage
+function removeCustomRiskFromStorage(riskId) {
+  const existingRisks = JSON.parse(sessionStorage.getItem('rcsa_custom_risks') || '[]');
+  const filteredRisks = existingRisks.filter(r => r.id !== riskId);
+  sessionStorage.setItem('rcsa_custom_risks', JSON.stringify(filteredRisks));
+  
+  // Update global variable
+  const processId = sessionStorage.getItem('rcsa_selected_process_id');
+  window.customRisks = filteredRisks.filter(r => r.processId === processId);
+}
+
+// Reset add risk modal to default state
+function resetAddRiskModal() {
+  document.querySelector('#addRiskModal .modal-title').textContent = 'Add New Risk';
+  document.querySelector('#addRiskModal .btn-primary').innerHTML = '<i class="bi bi-check-circle me-1"></i>Add Risk';
+  document.querySelector('#addRiskModal .btn-primary').onclick = saveNewRisk;
+}
+
+// Helper function to show warning toast
+function showWarningToast(message) {
+  const toastHtml = `
+    <div class="toast align-items-center text-white bg-warning border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">
+          <i class="bi bi-exclamation-triangle me-2"></i>${message}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  `;
+  
+  showToast(toastHtml);
+}
+
+// Helper function to show info toast
+function showInfoToast(message) {
+  const toastHtml = `
+    <div class="toast align-items-center text-white bg-info border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">
+          <i class="bi bi-info-circle me-2"></i>${message}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  `;
+  
+  showToast(toastHtml);
+}
+
+// Generic toast display function
+function showToast(toastHtml) {
+  let toastContainer = document.getElementById('toastContainer');
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.id = 'toastContainer';
+    toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+    document.body.appendChild(toastContainer);
+  }
+  
+  toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+  
+  const toastElement = toastContainer.lastElementChild;
+  const toast = new bootstrap.Toast(toastElement);
+  toast.show();
+  
+  toastElement.addEventListener('hidden.bs.toast', () => {
+    toastElement.remove();
+  });
 }
 
 function continueToControlMapping() {
