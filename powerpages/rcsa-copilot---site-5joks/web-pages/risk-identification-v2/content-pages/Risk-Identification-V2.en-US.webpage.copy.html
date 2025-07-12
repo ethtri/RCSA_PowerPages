@@ -833,7 +833,9 @@ function saveRisk(riskId) {
   const impact = document.getElementById(`edit-impact-${riskId}`).value;
   
   console.log('🔍 DEBUG: Saving risk via Web API:', { riskId, title, description, likelihood, impact });
-  console.log('🔍 DEBUG: WebApi available?', typeof WebApi !== 'undefined');
+  console.log('🔍 DEBUG: webapi available?', typeof webapi !== 'undefined');
+  console.log('🔍 DEBUG: webapi.safeAjax available?', typeof webapi !== 'undefined' && webapi.safeAjax);
+  console.log('🔍 DEBUG: shell available?', typeof shell !== 'undefined');
   console.log('🔍 DEBUG: jQuery available?', typeof $ !== 'undefined');
   console.log('🔍 DEBUG: Request token:', document.querySelector('input[name="__RequestVerificationToken"]')?.value);
   
@@ -852,10 +854,10 @@ function saveRisk(riskId) {
   };
   
   // Try to use Web API if available
-  if (typeof WebApi !== 'undefined') {
-    // Use the new Web API wrapper
-    WebApi.update('cr129_risks', riskId, data, {
-      success: function(response) {
+  if (typeof webapi !== 'undefined' && webapi.safeAjax) {
+    // Use the corrected Web API wrapper with proper token handling
+    webapi.update('cr129_risks', riskId, data)
+      .done(function(response) {
         console.log('✅ Risk saved successfully:', response);
         
         // Show success message
@@ -875,8 +877,8 @@ function saveRisk(riskId) {
         setTimeout(() => {
           loadExistingRisks();
         }, 500);
-      },
-      error: function(xhr, status, error) {
+      })
+      .fail(function(xhr, status, error) {
         console.error('❌ Error saving risk:', {
           status: xhr.status,
           statusText: xhr.statusText,
@@ -900,8 +902,7 @@ function saveRisk(riskId) {
         // For now, just update locally and show success
         console.log('Falling back to local update only');
         updateRiskLocally();
-      }
-    });
+      });
   } else {
     // Fallback if Web API wrapper not available
     console.log('Web API wrapper not available, updating locally only');
@@ -1001,54 +1002,49 @@ function continueToControlMapping() {
 // Test Web API setup
 function testWebApi() {
   console.log('🧪 Testing Web API setup...');
-  console.log('🔍 WebApi object:', typeof WebApi !== 'undefined' ? WebApi : 'Not available');
+  console.log('🔍 webapi object:', typeof webapi !== 'undefined' ? webapi : 'Not available');
+  console.log('🔍 shell object:', typeof shell !== 'undefined' ? shell : 'Not available');
   console.log('🔍 Request token:', document.querySelector('input[name="__RequestVerificationToken"]')?.value);
   
-  if (typeof WebApi !== 'undefined') {
-    // Test GET request to see if Web API is working
-    WebApi.get('cr129_risks', null, {
-      success: function(response) {
+  if (typeof webapi !== 'undefined' && webapi.safeAjax) {
+    // Test GET request using the corrected Web API wrapper
+    console.log('🔄 Testing with webapi.get...');
+    webapi.get('cr129_risks')
+      .done(function(response) {
         console.log('✅ Web API GET test successful:', response);
         alert('✅ Web API is working! GET request successful.');
-      },
-      error: function(xhr, status, error) {
+      })
+      .fail(function(xhr, status, error) {
         console.error('❌ Web API GET test failed:', {
           status: xhr.status,
           statusText: xhr.statusText,
           responseText: xhr.responseText
         });
         alert(`❌ Web API GET test failed: ${xhr.status} ${xhr.statusText}\n\nCheck console for details.`);
-      }
-    });
+      });
   } else {
-    console.error('❌ WebApi object not available');
-    alert('❌ WebApi object not available. Check if the Web API wrapper template is loaded.');
+    console.error('❌ webapi object not available');
+    alert('❌ webapi object not available. Check if the Web API wrapper template is loaded.');
     
-    // Fallback: Test with direct jQuery
-    if (typeof $ !== 'undefined') {
-      console.log('🔄 Trying direct jQuery approach...');
-      const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
-      
-      $.ajax({
-        type: "GET",
+    // Test with webapi.safeAjax directly
+    if (typeof webapi !== 'undefined' && webapi.safeAjax) {
+      console.log('🔄 Testing with webapi.safeAjax directly...');
+      webapi.safeAjax({
         url: "/_api/cr129_risks",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        headers: {
-          "__RequestVerificationToken": token
-        },
-        success: function(response) {
-          console.log('✅ Direct jQuery GET test successful:', response);
-          alert('✅ Direct jQuery Web API test successful!');
-        },
-        error: function(xhr, status, error) {
-          console.error('❌ Direct jQuery GET test failed:', {
-            status: xhr.status,
-            statusText: xhr.statusText,
-            responseText: xhr.responseText
-          });
-          alert(`❌ Direct jQuery test failed: ${xhr.status} ${xhr.statusText}\n\nThis confirms the Web API issue.`);
-        }
+        type: "GET",
+        contentType: "application/json; charset=utf-8"
+      })
+      .done(function(response) {
+        console.log('✅ webapi.safeAjax GET test successful:', response);
+        alert('✅ webapi.safeAjax test successful!');
+      })
+      .fail(function(xhr, status, error) {
+        console.error('❌ webapi.safeAjax GET test failed:', {
+          status: xhr.status,
+          statusText: xhr.statusText,
+          responseText: xhr.responseText
+        });
+        alert(`❌ webapi.safeAjax test failed: ${xhr.status} ${xhr.statusText}\n\nThis confirms the Web API issue.`);
       });
     }
   }
