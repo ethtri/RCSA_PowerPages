@@ -402,10 +402,7 @@
           <div class="empty-state">
             <i class="bi bi-plus-circle text-muted"></i>
             <h5 class="mt-3">No Custom Risks Added</h5>
-            <p class="text-muted">Click "Add New Risk" to create custom risks for this process.</p>
-            <button class="btn btn-primary" onclick="showAddRiskModal()">
-              <i class="bi bi-plus-circle me-2"></i>Add Your First Risk
-            </button>
+            <p class="text-muted">Click "Add New Risk" in the section header to create custom risks for this process.</p>
           </div>
         </div>
       </div>
@@ -471,14 +468,14 @@
             <div class="col-md-8">
               <div class="mb-3">
                 <label for="newRiskTitle" class="form-label">Risk Title *</label>
-                <input type="text" class="form-control" id="newRiskTitle" required 
+                <input type="text" class="form-control" id="newRiskTitle" name="newRiskTitle" required 
                        placeholder="Enter a clear, descriptive risk title">
               </div>
             </div>
             <div class="col-md-4">
               <div class="mb-3">
                 <label for="newRiskCategory" class="form-label">Category *</label>
-                <select class="form-select" id="newRiskCategory" required>
+                <select class="form-select" id="newRiskCategory" name="newRiskCategory" required>
                   <option value="">Select category...</option>
                   <option value="100000000">Operational</option>
                   <option value="100000001">Technology</option>
@@ -492,7 +489,7 @@
           
           <div class="mb-3">
             <label for="newRiskDescription" class="form-label">Description *</label>
-            <textarea class="form-control" id="newRiskDescription" rows="3" required
+            <textarea class="form-control" id="newRiskDescription" name="newRiskDescription" rows="3" required
                       placeholder="Describe the risk, its potential causes, and impact"></textarea>
           </div>
           
@@ -500,7 +497,7 @@
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="newRiskLikelihood" class="form-label">Likelihood (1-5) *</label>
-                <select class="form-select" id="newRiskLikelihood" required>
+                <select class="form-select" id="newRiskLikelihood" name="newRiskLikelihood" required>
                   <option value="">Select likelihood...</option>
                   <option value="1">1 - Very Low (0-5%)</option>
                   <option value="2">2 - Low (6-25%)</option>
@@ -513,7 +510,7 @@
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="newRiskImpact" class="form-label">Impact (1-5) *</label>
-                <select class="form-select" id="newRiskImpact" required>
+                <select class="form-select" id="newRiskImpact" name="newRiskImpact" required>
                   <option value="">Select impact...</option>
                   <option value="1">1 - Very Low (Minimal)</option>
                   <option value="2">2 - Low (Minor)</option>
@@ -534,7 +531,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="saveNewRisk()">
+        <button type="submit" class="btn btn-primary" form="addRiskForm">
           <i class="bi bi-check-circle me-1"></i>Add Risk
         </button>
       </div>
@@ -558,6 +555,16 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Load AI suggestions after a delay
   setTimeout(loadAISuggestions, 2000);
+  
+  // Add form submit handler
+  const addRiskForm = document.getElementById('addRiskForm');
+  if (addRiskForm) {
+    addRiskForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      console.log('Form submit event triggered');
+      saveNewRisk();
+    });
+  }
 });
 
 // Global variable to store custom risks
@@ -1093,10 +1100,7 @@ function loadCustomRisks() {
       <div class="empty-state">
         <i class="bi bi-plus-circle text-muted"></i>
         <h5 class="mt-3">No Custom Risks Added</h5>
-        <p class="text-muted">Click "Add New Risk" to create custom risks for this process.</p>
-        <button class="btn btn-primary" onclick="showAddRiskModal()">
-          <i class="bi bi-plus-circle me-2"></i>Add Your First Risk
-        </button>
+        <p class="text-muted">Click "Add New Risk" in the section header to create custom risks for this process.</p>
       </div>
     `;
   }
@@ -1106,7 +1110,7 @@ function loadCustomRisks() {
 function displayCustomRisks(risks) {
   const container = document.getElementById('customRisksContainer');
   
-  container.innerHTML = risks.map(risk => {
+  const risksHtml = risks.map(risk => {
     const categoryMap = {
       '100000000': 'operational',
       '100000001': 'technology',
@@ -1155,6 +1159,15 @@ function displayCustomRisks(risks) {
       </div>
     `;
   }).join('');
+  
+  // Add the risks and a button to add more
+  container.innerHTML = risksHtml + `
+    <div class="text-center mt-3">
+      <button class="btn btn-outline-primary" onclick="showAddRiskModal()">
+        <i class="bi bi-plus-circle me-2"></i>Add Another Risk
+      </button>
+    </div>
+  `;
 }
 
 // Show add risk modal
@@ -1162,8 +1175,11 @@ function showAddRiskModal() {
   const processName = sessionStorage.getItem('rcsa_selected_process_name');
   document.getElementById('modalProcessName').textContent = processName || 'Selected Process';
   
-  // Reset form
-  document.getElementById('addRiskForm').reset();
+  // Reset form if it exists
+  const form = document.getElementById('addRiskForm');
+  if (form) {
+    form.reset();
+  }
   
   const modal = new bootstrap.Modal(document.getElementById('addRiskModal'));
   modal.show();
@@ -1171,13 +1187,17 @@ function showAddRiskModal() {
 
 // Save new custom risk
 function saveNewRisk() {
+  console.log('saveNewRisk called');
   const form = document.getElementById('addRiskForm');
   
-  // Validate form
-  if (!form.checkValidity()) {
-    form.reportValidity();
+  if (!form) {
+    console.error('Form not found! addRiskForm element is null');
+    alert('Error: Form not found. Please try again.');
     return;
   }
+  
+  console.log('Form found:', form);
+  console.log('Form validation passed (handled by browser)');
   
   const processId = sessionStorage.getItem('rcsa_selected_process_id');
   const processName = sessionStorage.getItem('rcsa_selected_process_name');
@@ -1332,7 +1352,14 @@ function editCustomRisk(riskId) {
   // Update modal title and button
   document.querySelector('#addRiskModal .modal-title').textContent = 'Edit Risk';
   document.querySelector('#addRiskModal .btn-primary').innerHTML = '<i class="bi bi-check-circle me-1"></i>Update Risk';
-  document.querySelector('#addRiskModal .btn-primary').onclick = function() { updateCustomRisk(riskId); };
+  
+  // Set up form for editing
+  const form = document.getElementById('addRiskForm');
+  form.onsubmit = function(e) {
+    e.preventDefault();
+    console.log('Edit form submit event triggered');
+    updateCustomRisk(riskId);
+  };
   
   // Show modal
   const modal = new bootstrap.Modal(document.getElementById('addRiskModal'));
@@ -1341,13 +1368,17 @@ function editCustomRisk(riskId) {
 
 // Update custom risk
 function updateCustomRisk(riskId) {
+  console.log('updateCustomRisk called for:', riskId);
   const form = document.getElementById('addRiskForm');
   
-  // Validate form
-  if (!form.checkValidity()) {
-    form.reportValidity();
+  if (!form) {
+    console.error('Form not found! addRiskForm element is null');
+    alert('Error: Form not found. Please try again.');
     return;
   }
+  
+  console.log('Form found:', form);
+  console.log('Form validation passed (handled by browser)');
   
   // Get form data
   const formData = {
@@ -1529,7 +1560,14 @@ function removeCustomRiskFromStorage(riskId) {
 function resetAddRiskModal() {
   document.querySelector('#addRiskModal .modal-title').textContent = 'Add New Risk';
   document.querySelector('#addRiskModal .btn-primary').innerHTML = '<i class="bi bi-check-circle me-1"></i>Add Risk';
-  document.querySelector('#addRiskModal .btn-primary').onclick = saveNewRisk;
+  
+  // Reset form submit handler to default
+  const form = document.getElementById('addRiskForm');
+  form.onsubmit = function(e) {
+    e.preventDefault();
+    console.log('Add form submit event triggered');
+    saveNewRisk();
+  };
 }
 
 // Helper function to show warning toast
