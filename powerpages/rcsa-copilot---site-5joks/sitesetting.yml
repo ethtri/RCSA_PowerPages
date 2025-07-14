@@ -286,18 +286,18 @@
   adx_description: Allowed fields for Process table Web API
   adx_sitesettingid: 8a5d6903-b5d7-43ac-8359-482529724983
 
-# Web API settings for cr129_Control entity (corrected to capital C)
-- adx_name: Webapi/cr129_Control/enabled
+# Web API settings for cr129_controls entity (plural form)
+- adx_name: Webapi/cr129_controls/enabled
   adx_value: true
   adx_description: Enable Web API for Control table
   adx_sitesettingid: 8a5d6904-b5d7-43ac-8359-482529724984
 
-- adx_name: Webapi/cr129_Control/fields
+- adx_name: Webapi/cr129_controls/fields
   adx_value: cr129_controlid,cr129_controltitle,cr129_controltype,cr129_designefficiency,cr129_operationalefficiency,cr129_isautomated,cr129_controlowner,cr129_mineff,statecode,statuscode
   adx_description: Allowed fields for Control table Web API
   adx_sitesettingid: 8a5d6905-b5d7-43ac-8359-482529724985
 
-- adx_name: Webapi/cr129_Control/disableodatafilter
+- adx_name: Webapi/cr129_controls/disableodatafilter
   adx_value: false
   adx_description: Enable OData filtering for Control table
   adx_sitesettingid: 8a5d6906-b5d7-43ac-8359-482529724986
