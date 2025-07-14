@@ -358,7 +358,9 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     // Get existing mappings for a risk - FIXED: Use webapi.safeAjax directly
     getRiskMappings: function(riskId) {
       console.log('🔄 Loading risk mappings from Dataverse...');
-      const query = `?$filter=_cr129_risktitle_value eq ${riskId} and statecode eq 0&$expand=cr129_controltitle($select=cr129_controlid,cr129_controltitle)`;
+      // Encode spaces in the filter to avoid 400/404 errors
+      const filter = `_cr129_risktitle_value eq ${riskId} and statecode eq 0`;
+      const query = `?$filter=${encodeURIComponent(filter)}&$expand=cr129_controltitle($select=cr129_controlid,cr129_controltitle)`;
       
       return webapi.safeAjax({
         url: '/_api/cr129_riskctrls' + query,
@@ -378,7 +380,9 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     // Get all available controls - FIXED: Use webapi.safeAjax directly
     getAvailableControls: function() {
       console.log('🔄 Loading controls from Dataverse...');
-      const query = "?$select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_designefficiency,cr129_operationalefficiency,cr129_isautomated,cr129_controlowner&$orderby=cr129_controltitle&$filter=statecode eq 0";
+      // Encode filter spaces just like the working Risk Identification page
+      const filter = 'statecode eq 0';
+      const query = `?$select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_designefficiency,cr129_operationalefficiency,cr129_isautomated,cr129_controlowner&$orderby=cr129_controltitle&$filter=${encodeURIComponent(filter)}`;
       
       return webapi.safeAjax({
         url: '/_api/cr129_controls' + query,
