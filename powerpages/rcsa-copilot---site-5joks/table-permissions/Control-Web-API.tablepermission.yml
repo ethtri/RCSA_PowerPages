@@ -1,10 +1,10 @@
-adx_entityname: cr129_Risk
-adx_entitypermissionid: 9a5d6900-b5d7-43ac-8359-482529724990
-adx_name: Risk - Web API Access
+adx_entityname: cr129_Control
+adx_entitypermissionid: 9a5d6902-b5d7-43ac-8359-482529724992
+adx_name: Control - Web API Access
 adx_scope: 756150000  # Global scope
 adx_read: true
-adx_write: true
-adx_create: true
+adx_write: false
+adx_create: false
 adx_delete: false
 adx_append: true
 adx_appendto: true

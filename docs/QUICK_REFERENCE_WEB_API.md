@@ -13,6 +13,7 @@ Webapi/[table_logical_name]/fields = field1,field2,field3,...
 - **Table**: Your table
 - **Web Role**: Authenticated Users
 - **🚨 CRITICAL**: Check **"Web API"** checkbox!
+- **🚨 CRITICAL**: For relationships, enable `adx_append: true` and `adx_appendto: true` on BOTH tables
 
 ### **3. Page Code**
 ```liquid
@@ -25,9 +26,18 @@ webapi.update('cr129_tablename', recordId, data)
   .done(function(response) { /* success */ })
   .fail(function(xhr) { /* error */ });
 
-// CREATE
-webapi.create('cr129_tablename', data)
-  .done(function(response) { /* success */ });
+// CREATE (with required headers)
+webapi.safeAjax({
+  url: "/_api/cr129_tablename",
+  type: "POST",
+  contentType: "application/json; charset=utf-8",
+  headers: {
+    'OData-Version': '4.0',
+    'Prefer': 'return=representation'  // CRITICAL!
+  },
+  data: JSON.stringify(data)
+})
+.done(function(response) { /* response contains full record */ });
 
 // READ
 webapi.get('cr129_tablename', recordId)
@@ -37,6 +47,24 @@ webapi.get('cr129_tablename', recordId)
 webapi.delete('cr129_tablename', recordId)
   .done(function(response) { /* success */ });
 ```
+
+## 🚨 **CRITICAL: Option Set Values**
+
+**❌ WRONG - Will cause 400 Bad Request:**
+```javascript
+cr129_riskcategory: 756150000  // Large form values
+```
+
+**✅ CORRECT - Use Dataverse schema values:**
+```javascript
+cr129_riskcategory: 0  // Operational
+cr129_riskcategory: 1  // Fraud
+cr129_riskcategory: 2  // Technology
+cr129_riskcategory: 3  // Credit
+cr129_riskcategory: 4  // Compliance
+```
+
+**Find correct values in:** `solution-src/RCSA_POC_V2/src/Entities/[TableName]/Entity.xml`
 
 ## 🔧 **Copy-Paste Template**
 

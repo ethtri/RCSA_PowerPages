@@ -237,7 +237,29 @@
   adx_description: Enable Web API for the entire portal
   adx_sitesettingid: 8a5d6899-b5d7-43ac-8359-482529724979
 
-# Web API settings for cr129_risk entity
+# Additional Web API configuration settings
+- adx_name: Webapi/EntityPermissions/Enabled
+  adx_value: true
+  adx_description: Enable entity permissions for Web API
+  adx_sitesettingid: 8a5d6912-b5d7-43ac-8359-482529724992
+
+- adx_name: Webapi/FieldSecurity/Enabled
+  adx_value: false
+  adx_description: Disable field-level security for Web API
+  adx_sitesettingid: 8a5d6913-b5d7-43ac-8359-482529724993
+
+# Core Web API configuration settings
+- adx_name: Webapi/contact/enabled
+  adx_value: true
+  adx_description: Enable Web API for Contact table (testing standard table)
+  adx_sitesettingid: 8a5d6910-b5d7-43ac-8359-482529724990
+
+- adx_name: Webapi/contact/fields
+  adx_value: contactid,fullname,firstname,lastname,emailaddress1,telephone1
+  adx_description: Allowed fields for Contact table Web API
+  adx_sitesettingid: 8a5d6911-b5d7-43ac-8359-482529724991
+
+# Web API settings for cr129_risk entity (corrected to singular)
 - adx_name: Webapi/cr129_risk/enabled
   adx_value: true
   adx_description: Enable Web API for Risk table
@@ -252,6 +274,60 @@
   adx_value: false
   adx_description: Allow OData filtering for Risk table
   adx_sitesettingid: 8a5d6902-b5d7-43ac-8359-482529724982
+
+# Web API settings for cr129_proc entity (corrected to singular)
+- adx_name: Webapi/cr129_proc/enabled
+  adx_value: true
+  adx_description: Enable Web API for Process table
+  adx_sitesettingid: 8a5d6902-b5d7-43ac-8359-482529724982
+
+- adx_name: Webapi/cr129_proc/fields
+  adx_value: cr129_procid,cr129_processname,cr129_processid,cr129_businessunitname,cr129_processcriticality,cr129_processowner,statecode,statuscode
+  adx_description: Allowed fields for Process table Web API
+  adx_sitesettingid: 8a5d6903-b5d7-43ac-8359-482529724983
+
+# Web API settings for cr129_Control entity (corrected to capital C)
+- adx_name: Webapi/cr129_Control/enabled
+  adx_value: true
+  adx_description: Enable Web API for Control table
+  adx_sitesettingid: 8a5d6904-b5d7-43ac-8359-482529724984
+
+- adx_name: Webapi/cr129_Control/fields
+  adx_value: cr129_controlid,cr129_controltitle,cr129_controltype,cr129_designefficiency,cr129_operationalefficiency,cr129_isautomated,cr129_controlowner,cr129_mineff,statecode,statuscode
+  adx_description: Allowed fields for Control table Web API
+  adx_sitesettingid: 8a5d6905-b5d7-43ac-8359-482529724985
+
+- adx_name: Webapi/cr129_Control/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for Control table
+  adx_sitesettingid: 8a5d6906-b5d7-43ac-8359-482529724986
+
+# Web API settings for cr129_riskctrls entity (corrected to plural)
+- adx_name: Webapi/cr129_riskctrls/enabled
+  adx_value: true
+  adx_description: Enable Web API for Risk-Control Mapping table
+  adx_sitesettingid: 8a5d6906-b5d7-43ac-8359-482529724986
+
+- adx_name: Webapi/cr129_riskctrls/fields
+  adx_value: cr129_riskctrlid,cr129_risktitle,cr129_controltitle,cr129_risk,cr129_control,statecode,statuscode
+  adx_description: Allowed fields for Risk-Control Mapping table Web API (includes navigation properties)
+  adx_sitesettingid: 8a5d6907-b5d7-43ac-8359-482529724987
+
+- adx_name: Webapi/cr129_riskctrls/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for Risk-Control Mapping table
+  adx_sitesettingid: 8a5d6908-b5d7-43ac-8359-482529724988
+
+# Web API settings for cr129_bu entity (corrected to singular)
+- adx_name: Webapi/cr129_bu/enabled
+  adx_value: true
+  adx_description: Enable Web API for Business Unit table
+  adx_sitesettingid: 8a5d6909-b5d7-43ac-8359-482529724989
+
+- adx_name: Webapi/cr129_bu/fields
+  adx_value: cr129_buid,cr129_businessunitname,cr129_budescription,statecode,statuscode
+  adx_description: Allowed fields for Business Unit table Web API
+  adx_sitesettingid: 8a5d6910-b5d7-43ac-8359-482529724990
 
 # Additional Web API settings for authentication
 - adx_name: Webapi/error/innererror
