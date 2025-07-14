@@ -821,42 +821,40 @@ function loadExistingRisks() {
   }, 1000);
 }
 
-// Load AI suggestions (mock implementation)
-function loadAISuggestions() {
+// Load AI suggestions from Power Automate flow
+async function loadAISuggestions() {
   const container = document.getElementById('aiSuggestionsContainer');
-  
-  // Simulate AI processing
-  setTimeout(() => {
-    const suggestions = [
-      {
-        id: 'ai-1',
-        title: 'Insider Threat',
-        category: 'fraud',
-        description: 'Employees with wire transfer access could initiate unauthorized transfers',
-        likelihood: 2,
-        impact: 5,
-        rationale: 'Based on industry data, insider threats account for 30% of wire fraud cases'
-      },
-      {
-        id: 'ai-2',
-        title: 'SWIFT Network Compromise',
-        category: 'technology',
-        description: 'Vulnerabilities in SWIFT messaging could be exploited for fraudulent transfers',
-        likelihood: 1,
-        impact: 5,
-        rationale: 'Recent global incidents show sophisticated attacks on SWIFT infrastructure'
-      },
-      {
-        id: 'ai-3',
-        title: 'Regulatory Non-Compliance',
-        category: 'compliance',
-        description: 'Failure to meet updated wire transfer reporting requirements',
-        likelihood: 3,
-        impact: 3,
-        rationale: 'New regulations require enhanced transaction monitoring and reporting'
-      }
-    ];
-    
+
+  // Loading state
+  container.innerHTML = `
+    <div class="ai-loading">
+      <div class="spinner-border text-success" role="status"></div>
+      <p class="mt-2">Analyzing process for potential risks...</p>
+    </div>`;
+
+  const processId = sessionStorage.getItem('rcsa_selected_process_id');
+  const processName = sessionStorage.getItem('rcsa_selected_process_name');
+  const criticality = sessionStorage.getItem('rcsa_selected_process_criticality');
+
+  try {
+    const response = await fetch('/api/ai-suggest-risks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ processId, processName, criticality })
+    });
+
+    if (!response.ok) {
+      throw new Error('Flow call failed: ' + response.status);
+    }
+
+    const data = await response.json();
+
+    if (!data || !Array.isArray(data.risks)) {
+      throw new Error('Invalid JSON response');
+    }
+
+    const suggestions = data.risks;
+
     container.innerHTML = `
       <div class="alert alert-info mb-3">
         <i class="bi bi-lightbulb me-2"></i>
@@ -897,7 +895,21 @@ function loadAISuggestions() {
         </div>
       `).join('')}
     `;
-  }, 2000);
+  } catch (error) {
+    console.error('AI suggestions error:', error);
+
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-exclamation-triangle display-1 text-warning mb-3"></i>
+        <h5 class="text-muted">Unable to Load AI Suggestions</h5>
+        <p class="text-muted">AI service is unavailable. Please try again or continue without AI risks.</p>
+        <button class="btn btn-outline-success" id="retry-ai-suggestions">
+          <i class="bi bi-arrow-clockwise me-1"></i>Try Again
+        </button>
+      </div>`;
+
+    document.getElementById('retry-ai-suggestions')?.addEventListener('click', loadAISuggestions);
+  }
 }
 
 // Risk action handlers
