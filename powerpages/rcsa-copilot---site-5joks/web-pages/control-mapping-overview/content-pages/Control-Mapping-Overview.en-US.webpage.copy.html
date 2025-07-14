@@ -1,5 +1,7 @@
 <!-- Include jQuery FIRST, then Portal Web API Wrapper -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
 {% include 'Portal Web API Wrapper' %}
 {% if user %}
   <input type="hidden" name="__RequestVerificationToken" value="{{ request.verification_token }}" />
@@ -7,7 +9,10 @@
 
 <!-- Include Bootstrap and other dependencies -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Fallback Web API Implementation (copied from working Risk Identification V2) -->
@@ -313,7 +318,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
       console.log('🔄 Creating risk-control mapping...');
       const mappingData = {
         "cr129_risktitle@odata.bind": `/cr129_risks(${riskId})`,
-        "cr129_controltitle@odata.bind": `/cr129_controls(${controlId})`
+        "cr129_controltitle@odata.bind": `/cr129_Control(${controlId})`
       };
       
       return webapi.safeAjax({
@@ -385,7 +390,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
       const query = `?$select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_designefficiency,cr129_operationalefficiency,cr129_isautomated,cr129_controlowner&$orderby=cr129_controltitle&$filter=${encodeURIComponent(filter)}`;
       
       return webapi.safeAjax({
-        url: '/_api/cr129_controls' + query,
+        url: '/_api/cr129_Control' + query,
         type: 'GET',
         contentType: 'application/json; charset=utf-8'
       })
@@ -1023,7 +1028,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     // Step 2: Test entity endpoints with exact names
     console.log('🔗 Step 2: Testing entity endpoints...');
     const endpoints = [
-      '/_api/cr129_controls?$top=1',
+      '/_api/cr129_Control?$top=1',
       '/_api/cr129_risks?$top=1',
       '/_api/cr129_riskctrls?$top=1',
       '/_api/cr129_procs?$top=1'
@@ -1110,7 +1115,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
         });
         
         const controlsResponse = await webapi.safeAjax({
-          url: '/_api/cr129_controls?$top=1',
+          url: '/_api/cr129_Control?$top=1',
           type: 'GET'
         });
         
@@ -1126,11 +1131,11 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
           const testPatterns = [
             {
               'cr129_risk@odata.bind': `/cr129_risks(${riskId})`,
-              'cr129_control@odata.bind': `/cr129_controls(${controlId})`
+              'cr129_control@odata.bind': `/cr129_Control(${controlId})`
             },
             {
               'cr129_risktitle@odata.bind': `/cr129_risks(${riskId})`,
-              'cr129_controltitle@odata.bind': `/cr129_controls(${controlId})`
+              'cr129_controltitle@odata.bind': `/cr129_Control(${controlId})`
             }
           ];
           
@@ -1219,7 +1224,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     
     // Test 3: Test our custom entities
     console.log('📋 Step 3: Testing our custom entities...');
-      const customEntities = ['cr129_risks', 'cr129_controls', 'cr129_procs', 'cr129_riskctrls'];
+      const customEntities = ['cr129_risks', 'cr129_Control', 'cr129_procs', 'cr129_riskctrls'];
     
     for (const entity of customEntities) {
       try {
@@ -1257,7 +1262,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
       ],
       'Control Entity': [
         'cr129_control',
-        'cr129_controls', 
+        'cr129_Control', 
         'cr129_Control',
         'cr129_Controls'
       ],
