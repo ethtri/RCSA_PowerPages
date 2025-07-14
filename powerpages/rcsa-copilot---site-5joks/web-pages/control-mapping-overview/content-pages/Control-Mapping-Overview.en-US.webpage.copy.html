@@ -1,5 +1,7 @@
 <!-- Include jQuery FIRST, then Portal Web API Wrapper -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
 {% include 'Portal Web API Wrapper' %}
 {% if user %}
   <input type="hidden" name="__RequestVerificationToken" value="{{ request.verification_token }}" />
@@ -7,7 +9,10 @@
 
 <!-- Include Bootstrap and other dependencies -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Fallback Web API Implementation (copied from working Risk Identification V2) -->
@@ -313,7 +318,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
       console.log('🔄 Creating risk-control mapping...');
       const mappingData = {
         "cr129_risktitle@odata.bind": `/cr129_risks(${riskId})`,
-        "cr129_controltitle@odata.bind": `/cr129_Control(${controlId})`
+        "cr129_controltitle@odata.bind": `/cr129_controls(${controlId})`
       };
       
       return webapi.safeAjax({
@@ -358,7 +363,9 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     // Get existing mappings for a risk - FIXED: Use webapi.safeAjax directly
     getRiskMappings: function(riskId) {
       console.log('🔄 Loading risk mappings from Dataverse...');
-      const query = `?$filter=_cr129_risktitle_value eq ${riskId} and statecode eq 0&$expand=cr129_controltitle($select=cr129_controlid,cr129_controltitle)`;
+      // Encode spaces in the filter to avoid 400/404 errors
+      const filter = `_cr129_risktitle_value eq ${riskId} and statecode eq 0`;
+      const query = `?$filter=${encodeURIComponent(filter)}&$expand=cr129_controltitle($select=cr129_controlid,cr129_controltitle)`;
       
       return webapi.safeAjax({
         url: '/_api/cr129_riskctrls' + query,
@@ -378,10 +385,12 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     // Get all available controls - FIXED: Use webapi.safeAjax directly
     getAvailableControls: function() {
       console.log('🔄 Loading controls from Dataverse...');
-      const query = "?$select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_designefficiency,cr129_operationalefficiency,cr129_isautomated,cr129_controlowner&$orderby=cr129_controltitle&$filter=statecode eq 0";
+      // Encode filter spaces just like the working Risk Identification page
+      const filter = 'statecode eq 0';
+      const query = `?$select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_designefficiency,cr129_operationalefficiency,cr129_isautomated,cr129_controlowner&$orderby=cr129_controltitle&$filter=${encodeURIComponent(filter)}`;
       
       return webapi.safeAjax({
-        url: '/_api/cr129_Control' + query,
+        url: '/_api/cr129_controls' + query,
         type: 'GET',
         contentType: 'application/json; charset=utf-8'
       })
@@ -1019,7 +1028,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     // Step 2: Test entity endpoints with exact names
     console.log('🔗 Step 2: Testing entity endpoints...');
     const endpoints = [
-      '/_api/cr129_Control?$top=1',
+      '/_api/cr129_controls?$top=1',
       '/_api/cr129_risks?$top=1',
       '/_api/cr129_riskctrls?$top=1',
       '/_api/cr129_procs?$top=1'
@@ -1028,18 +1037,21 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     for (const endpoint of endpoints) {
       try {
         console.log(`🧪 Testing: ${endpoint}`);
-        const response = await fetch(endpoint);
-        if (response.ok) {
-          const data = await response.json();
-          console.log(`✅ ${endpoint} - SUCCESS! Found ${data.value ? data.value.length : 0} records`);
-          if (data.value && data.value.length > 0) {
-            console.log(`📋 Available fields:`, Object.keys(data.value[0]));
-          }
-        } else {
-          console.log(`❌ ${endpoint} - ${response.status} ${response.statusText}`);
+        const data = await webapi.safeAjax({
+          url: endpoint,
+          type: 'GET',
+          contentType: 'application/json; charset=utf-8'
+        });
+        console.log(`✅ ${endpoint} - SUCCESS! Found ${data.value ? data.value.length : 0} records`);
+        if (data.value && data.value.length > 0) {
+          console.log(`📋 Available fields:`, Object.keys(data.value[0]));
         }
       } catch (error) {
-        console.log(`❌ ${endpoint} - Error:`, error.message);
+        if (error && error.status) {
+          console.log(`❌ ${endpoint} - ${error.status} ${error.statusText}`);
+        } else {
+          console.log(`❌ ${endpoint} - Error:`, error.message || error);
+        }
       }
     }
     
@@ -1083,11 +1095,10 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     // Test different navigation property naming patterns
     const navPatterns = [
       'cr129_risk',
-      'cr129_risktitle', 
+      'cr129_risktitle',
       'cr129_control',
       'cr129_controltitle',
-      'cr129_Risk',
-      'cr129_Control'
+      'cr129_Risk'
     ];
     
     for (const pattern of navPatterns) {
@@ -1106,7 +1117,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
         });
         
         const controlsResponse = await webapi.safeAjax({
-          url: '/_api/cr129_Control?$top=1', 
+          url: '/_api/cr129_controls?$top=1',
           type: 'GET'
         });
         
@@ -1122,11 +1133,11 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
           const testPatterns = [
             {
               'cr129_risk@odata.bind': `/cr129_risks(${riskId})`,
-              'cr129_control@odata.bind': `/cr129_Control(${controlId})`
+              'cr129_control@odata.bind': `/cr129_controls(${controlId})`
             },
             {
               'cr129_risktitle@odata.bind': `/cr129_risks(${riskId})`,
-              'cr129_controltitle@odata.bind': `/cr129_Control(${controlId})`
+              'cr129_controltitle@odata.bind': `/cr129_controls(${controlId})`
             }
           ];
           
@@ -1181,18 +1192,19 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     // Test 1: Check if Web API root is accessible
     console.log('📋 Step 1: Testing Web API root endpoint...');
     try {
-      const response = await fetch('/_api/');
-      console.log('/_api/ response:', response.status, response.statusText);
-      
-      if (response.ok) {
-        const text = await response.text();
-        console.log('✅ Web API root accessible');
-        console.log('Response preview:', text.substring(0, 200) + '...');
-      } else {
-        console.log('❌ Web API root not accessible');
-      }
+      const response = await webapi.safeAjax({
+        url: '/_api/',
+        type: 'GET',
+        contentType: 'text/plain'
+      });
+      console.log('✅ Web API root accessible');
+      console.log('Response preview:', JSON.stringify(response).substring(0, 200) + '...');
     } catch (error) {
-      console.log('❌ Web API root error:', error);
+      if (error && error.status) {
+        console.log('❌ Web API root not accessible:', error.status, error.statusText);
+      } else {
+        console.log('❌ Web API root error:', error);
+      }
     }
     
     // Test 2: Test standard entities (contacts, etc.)
@@ -1201,36 +1213,42 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     
     for (const entity of standardEntities) {
       try {
-        const response = await fetch(`/_api/${entity}?$top=1`);
-        console.log(`/_api/${entity} response:`, response.status, response.statusText);
-        
-        if (response.ok) {
-          const data = await response.json();
-          console.log(`✅ ${entity} accessible, found ${data.value ? data.value.length : 0} records`);
-        }
+        const data = await webapi.safeAjax({
+          url: `/_api/${entity}?$top=1`,
+          type: 'GET',
+          contentType: 'application/json; charset=utf-8'
+        });
+        console.log(`✅ ${entity} accessible, found ${data.value ? data.value.length : 0} records`);
       } catch (error) {
-        console.log(`❌ ${entity} error:`, error);
+        if (error && error.status) {
+          console.log(`❌ ${entity} error: ${error.status} ${error.statusText}`);
+        } else {
+          console.log(`❌ ${entity} error:`, error);
+        }
       }
     }
     
     // Test 3: Test our custom entities
     console.log('📋 Step 3: Testing our custom entities...');
-    const customEntities = ['cr129_risks', 'cr129_Control', 'cr129_procs', 'cr129_riskctrls'];
+      const customEntities = ['cr129_risks', 'cr129_controls', 'cr129_procs', 'cr129_riskctrls'];
     
     for (const entity of customEntities) {
       try {
-        const response = await fetch(`/_api/${entity}?$top=1`);
-        console.log(`/_api/${entity} response:`, response.status, response.statusText);
-        
-        if (response.ok) {
-          const data = await response.json();
-          console.log(`✅ ${entity} accessible, found ${data.value ? data.value.length : 0} records`);
-          if (data.value && data.value.length > 0) {
-            console.log(`📋 ${entity} sample fields:`, Object.keys(data.value[0]));
-          }
+        const data = await webapi.safeAjax({
+          url: `/_api/${entity}?$top=1`,
+          type: 'GET',
+          contentType: 'application/json; charset=utf-8'
+        });
+        console.log(`✅ ${entity} accessible, found ${data.value ? data.value.length : 0} records`);
+        if (data.value && data.value.length > 0) {
+          console.log(`📋 ${entity} sample fields:`, Object.keys(data.value[0]));
         }
       } catch (error) {
-        console.log(`❌ ${entity} error:`, error);
+        if (error && error.status) {
+          console.log(`❌ ${entity} error: ${error.status} ${error.statusText}`);
+        } else {
+          console.log(`❌ ${entity} error:`, error);
+        }
       }
     }
     
@@ -1253,9 +1271,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
       ],
       'Control Entity': [
         'cr129_control',
-        'cr129_controls', 
-        'cr129_Control',
-        'cr129_Controls'
+        'cr129_controls'
       ],
       'Risk-Control Mapping Entity': [
         'cr129_riskctrl',
@@ -1295,31 +1311,19 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
           console.log(`   Testing: ${entityName}`);
           
           // Test with a simple GET request with $top=1 to minimize data
-          const response = await fetch(`/_api/${entityName}?$top=1`, {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            }
+          const data = await webapi.safeAjax({
+            url: `/_api/${entityName}?$top=1`,
+            type: 'GET',
+            contentType: 'application/json; charset=utf-8'
           });
-          
-          if (response.ok) {
-            const data = await response.json();
-            results[entityType][entityName] = {
-              status: 'SUCCESS',
-              statusCode: response.status,
-              recordCount: data.value ? data.value.length : 0,
-              sampleFields: data.value && data.value.length > 0 ? Object.keys(data.value[0]).slice(0, 5) : []
-            };
-            console.log(`   ✅ ${entityName}: SUCCESS (${response.status}) - ${data.value ? data.value.length : 0} records`);
-          } else {
-            results[entityType][entityName] = {
-              status: 'FAILED',
-              statusCode: response.status,
-              error: response.statusText
-            };
-            console.log(`   ❌ ${entityName}: FAILED (${response.status}) - ${response.statusText}`);
-          }
+
+          results[entityType][entityName] = {
+            status: 'SUCCESS',
+            statusCode: 200,
+            recordCount: data.value ? data.value.length : 0,
+            sampleFields: data.value && data.value.length > 0 ? Object.keys(data.value[0]).slice(0, 5) : []
+          };
+          console.log(`   ✅ ${entityName}: SUCCESS (${data.value ? data.value.length : 0} records)`);
         } catch (error) {
           results[entityType][entityName] = {
             status: 'ERROR',
