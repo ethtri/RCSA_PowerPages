@@ -1,5 +1,7 @@
 <!-- Include jQuery FIRST, then Portal Web API Wrapper -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
 {% include 'Portal Web API Wrapper' %}
 {% if user %}
   <input type="hidden" name="__RequestVerificationToken" value="{{ request.verification_token }}" />
@@ -7,7 +9,10 @@
 
 <!-- Include Bootstrap and other dependencies -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Fallback Web API Implementation (copied from working Risk Identification V2) -->
@@ -358,7 +363,9 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     // Get existing mappings for a risk - FIXED: Use webapi.safeAjax directly
     getRiskMappings: function(riskId) {
       console.log('🔄 Loading risk mappings from Dataverse...');
-      const query = `?$filter=_cr129_risktitle_value eq ${riskId} and statecode eq 0&$expand=cr129_controltitle($select=cr129_controlid,cr129_controltitle)`;
+      // Encode spaces in the filter to avoid 400/404 errors
+      const filter = `_cr129_risktitle_value eq ${riskId} and statecode eq 0`;
+      const query = `?$filter=${encodeURIComponent(filter)}&$expand=cr129_controltitle($select=cr129_controlid,cr129_controltitle)`;
       
       return webapi.safeAjax({
         url: '/_api/cr129_riskctrls' + query,
@@ -378,7 +385,9 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     // Get all available controls - FIXED: Use webapi.safeAjax directly
     getAvailableControls: function() {
       console.log('🔄 Loading controls from Dataverse...');
-      const query = "?$select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_designefficiency,cr129_operationalefficiency,cr129_isautomated,cr129_controlowner&$orderby=cr129_controltitle&$filter=statecode eq 0";
+      // Encode filter spaces just like the working Risk Identification page
+      const filter = 'statecode eq 0';
+      const query = `?$select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_designefficiency,cr129_operationalefficiency,cr129_isautomated,cr129_controlowner&$orderby=cr129_controltitle&$filter=${encodeURIComponent(filter)}`;
       
       return webapi.safeAjax({
         url: '/_api/cr129_Control' + query,
@@ -1106,7 +1115,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
         });
         
         const controlsResponse = await webapi.safeAjax({
-          url: '/_api/cr129_Control?$top=1', 
+          url: '/_api/cr129_Control?$top=1',
           type: 'GET'
         });
         
@@ -1215,7 +1224,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     
     // Test 3: Test our custom entities
     console.log('📋 Step 3: Testing our custom entities...');
-    const customEntities = ['cr129_risks', 'cr129_Control', 'cr129_procs', 'cr129_riskctrls'];
+      const customEntities = ['cr129_risks', 'cr129_Control', 'cr129_procs', 'cr129_riskctrls'];
     
     for (const entity of customEntities) {
       try {
@@ -1253,7 +1262,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
       ],
       'Control Entity': [
         'cr129_control',
-        'cr129_controls', 
+        'cr129_Control', 
         'cr129_Control',
         'cr129_Controls'
       ],
