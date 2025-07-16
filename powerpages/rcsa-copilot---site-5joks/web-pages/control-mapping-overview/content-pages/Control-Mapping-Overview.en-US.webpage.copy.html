@@ -43,7 +43,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
 }
 </script>
 
-<!-- Clean Bootstrap 5 Control Mapping Page - Simplified 1:1 Implementation -->
+<!-- Bootstrap 5 Control Mapping Page - Multi-Select Implementation -->
 <div class="container-fluid">
   <!-- Page Header -->
   <div class="control-header" style="background: linear-gradient(135deg, #fd7e14 0%, #ffc107 100%); color: white; padding: 3rem 0; margin-bottom: 2rem;">
@@ -51,7 +51,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
       <div class="row align-items-center">
         <div class="col-md-8">
           <h1 class="display-5 fw-bold mb-2">Control Mapping</h1>
-          <p class="lead mb-0">Link mitigating controls to identified risks across your organization</p>
+          <p class="lead mb-0">Map multiple controls to identified risks across your organization</p>
         </div>
         <div class="col-md-4 text-md-end">
           <div class="step-indicator bg-white bg-opacity-25 rounded-pill px-3 py-1">
@@ -121,12 +121,12 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
   </div>
 </div>
 
-<!-- Control Selection Modal - Simplified for 1:1 Mapping -->
+<!-- Control Selection Modal - Multi-Select Implementation -->
 <div id="controlMappingModal" class="modal fade">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Map Control to Risk</h5>
+        <h5 class="modal-title">Map Controls to Risk</h5>
         <button type="button" data-bs-dismiss="modal" class="btn-close"></button>
       </div>
       <div class="modal-body">
@@ -149,27 +149,27 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
           </div>
       <div class="modal-footer">
         <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cancel</button>
-        <button type="button" onclick="saveControlMapping()" class="btn btn-primary">Save Mapping</button>
-        <button type="button" onclick="clearControlMapping()" class="btn btn-outline-danger">Clear Mapping</button>
+        <button type="button" onclick="saveControlMappings()" class="btn btn-primary">Save Mappings</button>
             </div>
           </div>
             </div>
           </div>
 
-<!-- Enhanced JavaScript for Simplified 1:1 Control Mapping -->
+<!-- Enhanced JavaScript for Multi-Select Control Mapping with Junction Table -->
 <script>
-class SimplifiedControlMapping {
+class MultiSelectControlMapping {
   constructor() {
     this.selectedRisks = [];
     this.availableControls = [];
     this.currentRiskId = null;
     this.currentRiskData = null;
-    this.riskMappings = {}; // Track current mappings
+    this.riskMappings = {}; // Track current mappings: { riskId: [controlIds] }
+    this.existingMappings = new Map(); // Initialize the existingMappings Map for junction table data
     this.init();
   }
 
   async init() {
-    console.log('✅ Initializing Simplified Control Mapping (1:1 approach) with cr129_mappedcontrol field');
+    console.log('✅ Initializing Multi-Select Control Mapping with cr129_riskctrl junction table');
     
     try {
       // Load selected risks from session storage
@@ -178,13 +178,13 @@ class SimplifiedControlMapping {
       // Load available controls from Dataverse
       await this.loadAvailableControls();
       
-      // Load existing mappings from Dataverse using the new cr129_mappedcontrol field
-      await this.loadExistingMappingsFromDataverse();
+      // Load existing mappings from Dataverse using the junction table
+      await this.loadExistingMappingsFromJunctionTable();
       
       // Bind event handlers
       this.bindEvents();
       
-      console.log('✅ Control Mapping page initialized successfully with Dataverse integration');
+      console.log('✅ Multi-Select Control Mapping page initialized successfully');
       
     } catch (error) {
       console.error('❌ Error initializing Control Mapping page:', error);
@@ -192,8 +192,6 @@ class SimplifiedControlMapping {
       this.displayErrorState();
     }
   }
-
-
 
   // Load risks from Risk Identification session storage [[memory:3367576]]
   loadSelectedRisks() {
@@ -286,6 +284,83 @@ class SimplifiedControlMapping {
     ];
   }
 
+  // Load existing mappings from junction table
+  async loadExistingMappingsFromJunctionTable() {
+    console.log('🔄 Loading existing mappings from cr129_riskctrl junction table...');
+    
+    try {
+      // Use physical field names with $expand to get related entity data
+      const response = await webapi.safeAjax({
+        url: '/_api/cr129_riskctrls?$select=cr129_riskctrlid&$expand=cr129_RIskTitle($select=cr129_riskid),cr129_ControlTitle($select=cr129_controlid)&$filter=statecode eq 0',
+        type: 'GET',
+        contentType: 'application/json; charset=utf-8'
+      });
+      
+      console.log('✅ Junction records loaded successfully:', response.value?.length || 0, 'mappings found');
+      
+      // Process the mappings using expanded lookup fields
+      this.existingMappings.clear();
+      
+      if (response.value) {
+        response.value.forEach((record) => {
+          // Extract GUID values from expanded lookup objects
+          const riskId = record.cr129_RIskTitle?.cr129_riskid;
+          const controlId = record.cr129_ControlTitle?.cr129_controlid;
+          
+          if (riskId && controlId) {
+            if (!this.existingMappings.has(riskId)) {
+              this.existingMappings.set(riskId, []);
+            }
+            this.existingMappings.get(riskId).push({
+              controlId: controlId,
+              junctionRecordId: record.cr129_riskctrlid
+            });
+          }
+        });
+      }
+      
+      console.log('✅ Existing mappings processed:', this.existingMappings.size, 'risks have mappings');
+      
+      // Update the display with loaded mappings
+      this.applyExistingMappingsToDisplay();
+      
+      return true;
+      
+    } catch (error) {
+      console.log('❌ Error loading existing mappings from junction table:', error);
+      if (error.responseJSON?.error) {
+        console.log('Error details:', error.responseJSON.error);
+      }
+      return false;
+    }
+  }
+  
+  // Apply existing mappings to the display
+  applyExistingMappingsToDisplay() {
+    console.log('🎨 Applying existing mappings to display...');
+    
+    // Convert existingMappings to the format expected by the UI
+    this.riskMappings = {};
+    
+    for (const [riskId, mappings] of this.existingMappings.entries()) {
+      // Find the local risk that matches this GUID
+      const localRisk = this.selectedRisks.find(r => (r.cr129_riskid || r.id) === riskId);
+      
+      if (localRisk) {
+        this.riskMappings[localRisk.id] = mappings.map(m => m.controlId);
+        
+        // Update the risk card display
+        const controls = mappings.map(m => this.availableControls.find(c => c.cr129_controlid === m.controlId)).filter(Boolean);
+        this.updateRiskCard(localRisk.id, controls);
+        
+        console.log('✅ Applied mappings for risk:', localRisk.id, '→', mappings.length, 'controls');
+      }
+    }
+    
+    this.updateProgress();
+    console.log('✅ All existing mappings applied to display');
+  }
+
   // Display the selected risks as cards
   displaySelectedRisks() {
     const container = document.getElementById('riskCardsGrid');
@@ -306,9 +381,6 @@ class SimplifiedControlMapping {
         this.openControlMapping(riskId, riskTitle, riskDescription);
       });
     });
-    
-    // Load existing mappings from session storage
-    this.loadExistingMappingsFromSession();
   }
 
   // Generate HTML for a risk card
@@ -326,15 +398,15 @@ class SimplifiedControlMapping {
           <p class="text-muted mb-3">${risk.description}</p>
         <div class="mb-3">
             <span class="badge ${categoryClass} mb-2">${risk.category}</span>
-            <div class="small fw-bold mb-2">Mapped Control:</div>
+            <div class="small fw-bold mb-2">Mapped Controls:</div>
           <div id="controls-${risk.id}" class="controls-container">
-              <div class="text-muted small">No control mapped yet</div>
+              <div class="text-muted small">No controls mapped yet</div>
           </div>
         </div>
         <div class="d-grid">
             <button class="btn btn-outline-primary map-control-btn" data-risk-id="${risk.id}" data-risk-title="${risk.title}" data-risk-description="${risk.description}">
             <i class="bi bi-plus-circle me-2"></i>
-              Map Control
+              Map Controls
           </button>
           </div>
         </div>
@@ -385,17 +457,17 @@ class SimplifiedControlMapping {
     document.getElementById('modalRiskTitle').textContent = riskTitle;
     document.getElementById('modalRiskDescription').textContent = riskDescription;
     
-    // Populate control options
+    // Populate control options with checkboxes
     this.populateControlOptions();
 
     const modal = new bootstrap.Modal(document.getElementById('controlMappingModal'));
     modal.show();
   }
 
-  // Populate control options in modal (1:1 with radio buttons)
+  // Populate control options in modal (multi-select with checkboxes)
   populateControlOptions() {
     const container = document.getElementById('controlOptions');
-    const currentMapping = this.riskMappings[this.currentRiskId];
+    const currentMappings = this.riskMappings[this.currentRiskId] || [];
     
     if (this.availableControls.length === 0) {
       container.innerHTML = `
@@ -411,7 +483,7 @@ class SimplifiedControlMapping {
     container.innerHTML = this.availableControls.map(control => `
       <div data-control-id="${control.cr129_controlid}" class="control-option" style="background: white; border: 1px solid #e9ecef; border-radius: 8px; padding: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.3s ease;">
         <div class="form-check">
-          <input type="radio" id="${control.cr129_controlid}" name="selectedControl" value="${control.cr129_controlid}" class="form-check-input" ${currentMapping === control.cr129_controlid ? 'checked' : ''} />
+          <input type="checkbox" id="${control.cr129_controlid}" name="selectedControls" value="${control.cr129_controlid}" class="form-check-input" ${currentMappings.includes(control.cr129_controlid) ? 'checked' : ''} />
           <label for="${control.cr129_controlid}" class="form-check-label w-100">
             <div class="d-flex justify-content-between align-items-start">
               <div>
@@ -430,14 +502,16 @@ class SimplifiedControlMapping {
     // Add click handlers for the control options
     container.querySelectorAll('.control-option').forEach(option => {
       option.addEventListener('click', (e) => {
-        const radio = option.querySelector('input[type="radio"]');
-        radio.checked = true;
+        if (e.target.type !== 'checkbox') {
+          const checkbox = option.querySelector('input[type="checkbox"]');
+          checkbox.checked = !checkbox.checked;
+        }
       });
     });
   }
 
-  // Save control mapping using the new cr129_mappedcontrol lookup field [[memory:3367576]]
-  async saveControlMapping(riskId, controlId) {
+  // Save control mappings using junction table
+  async saveControlMappings() {
     const saveBtn = document.querySelector('#controlMappingModal .btn-primary');
     const originalText = saveBtn.innerHTML;
     
@@ -446,7 +520,13 @@ class SimplifiedControlMapping {
       saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
       saveBtn.disabled = true;
       
-      console.log('💾 Saving control mapping - Risk:', riskId, 'Control:', controlId);
+      const riskId = this.currentRiskId;
+      const selectedControls = Array.from(document.querySelectorAll('input[name="selectedControls"]:checked')).map(cb => cb.value);
+      const currentMappings = this.riskMappings[riskId] || [];
+      
+      console.log('💾 Saving control mappings - Risk:', riskId);
+      console.log('📋 Selected controls:', selectedControls);
+      console.log('📋 Current mappings:', currentMappings);
       
       // Find the risk to get its GUID
       const risk = this.selectedRisks.find(r => r.id === riskId);
@@ -456,47 +536,29 @@ class SimplifiedControlMapping {
       
       const riskGuid = risk.cr129_riskid || risk.id;
       
-      // Find the control to get its GUID
-      const control = this.availableControls.find(c => c.cr129_controlid === controlId);
-      if (!control) {
-        throw new Error('Control not found');
+      // Determine what needs to be added and removed
+      const toAdd = selectedControls.filter(id => !currentMappings.includes(id));
+      const toRemove = currentMappings.filter(id => !selectedControls.includes(id));
+      
+      console.log('➕ Controls to add:', toAdd);
+      console.log('➖ Controls to remove:', toRemove);
+      
+      // Remove deselected mappings
+      for (const controlId of toRemove) {
+        await this.removeJunctionRecord(riskGuid, controlId);
       }
       
-      const controlGuid = control.cr129_controlid;
-      
-             // Try different possible field names for the lookup field
-       // Common patterns: cr129_mappedcontrol, cr129_primarycontrolid, cr129_controlid
-       const possibleFieldNames = [
-         'cr129_mappedcontrol',
-         'cr129_primarycontrolid', 
-         'cr129_controlid',
-         'cr129_linkedcontrol'
-       ];
-       
-       let updateData = {};
-       // Start with the most likely field name
-       const fieldName = possibleFieldNames[0];
-       updateData[`${fieldName}@odata.bind`] = `/cr129_controls(${controlGuid})`;
-       
-       console.log('🔄 Using field name:', fieldName);
-      
-      console.log('🔄 PATCH request data:', updateData);
-      console.log('🔄 Risk GUID:', riskGuid);
-      console.log('🔄 Control GUID:', controlGuid);
-      
-      // Save to Dataverse using the correct EntitySetName [[memory:3346968]]
-        const response = await webapi.safeAjax({
-        url: `/_api/cr129_risks(${riskGuid})`,
-        type: 'PATCH',
-        data: JSON.stringify(updateData),
-          contentType: 'application/json; charset=utf-8'
-        });
-        
-      console.log('✅ Control mapping saved successfully to Dataverse');
+      // Add new mappings
+      for (const controlId of toAdd) {
+        await this.createJunctionRecord(riskGuid, controlId);
+      }
       
       // Update local state
-      this.riskMappings[riskId] = controlId;
-      this.updateRiskCard(riskId, control);
+      this.riskMappings[riskId] = selectedControls;
+      
+      // Update risk card display
+      const selectedControlObjects = selectedControls.map(id => this.availableControls.find(c => c.cr129_controlid === id)).filter(Boolean);
+      this.updateRiskCard(riskId, selectedControlObjects);
       this.updateProgress();
       
       // Close modal
@@ -504,11 +566,11 @@ class SimplifiedControlMapping {
       modal.hide();
       
       // Show success message
-      this.showSuccessMessage('Control mapping saved successfully!');
+      this.showSuccessMessage(`Successfully mapped ${selectedControls.length} controls to risk!`);
       
-        } catch (error) {
-      console.error('❌ Error saving control mapping to Dataverse:', error);
-      this.showErrorMessage('Failed to save control mapping. Please try again.');
+    } catch (error) {
+      console.error('❌ Error saving control mappings:', error);
+      this.showErrorMessage('Failed to save control mappings. Please try again.');
     } finally {
       // Restore button state
       saveBtn.innerHTML = originalText;
@@ -516,181 +578,100 @@ class SimplifiedControlMapping {
     }
   }
 
-  // Clear control mapping using the new cr129_mappedcontrol lookup field
-  async clearControlMapping(riskId) {
-    const clearBtn = document.querySelector('#controlMappingModal .btn-outline-danger');
-    const originalText = clearBtn.innerHTML;
+  // Create a new junction table record
+  async createJunctionRecord(riskGuid, controlGuid) {
+    console.log('➕ Creating junction record:', riskGuid, '→', controlGuid);
+    
+    const junctionData = {
+      "cr129_RIskTitle@odata.bind": `/cr129_risks(${riskGuid})`,
+      "cr129_ControlTitle@odata.bind": `/cr129_controls(${controlGuid})`
+    };
+    
+    
     
     try {
-      // Show loading state
-      clearBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Clearing...';
-      clearBtn.disabled = true;
-      
-      console.log('🗑️ Clearing control mapping for risk:', riskId);
-      
-      // Find the risk to get its GUID
-      const risk = this.selectedRisks.find(r => r.id === riskId);
-      if (!risk) {
-        throw new Error('Risk not found');
-      }
-      
-      const riskGuid = risk.cr129_riskid || risk.id;
-      
-      // Clear the cr129_mappedcontrol lookup field by setting it to null
-      const updateData = {
-        "cr129_mappedcontrol@odata.bind": null
-      };
-      
-      console.log('🔄 PATCH request to clear mapping:', updateData);
-      console.log('🔄 Risk GUID:', riskGuid);
-      
-      // Clear from Dataverse using the correct EntitySetName [[memory:3346968]]
       const response = await webapi.safeAjax({
-        url: `/_api/cr129_risks(${riskGuid})`,
-        type: 'PATCH',
-        data: JSON.stringify(updateData),
+        url: '/_api/cr129_riskctrls',
+        type: 'POST',
+        data: JSON.stringify(junctionData),
         contentType: 'application/json; charset=utf-8'
       });
       
-      console.log('✅ Control mapping cleared successfully from Dataverse');
-      
-      // Update local state
-      delete this.riskMappings[riskId];
-      this.updateRiskCard(riskId, null);
-      this.updateProgress();
-      
-      // Close modal
-      const modal = bootstrap.Modal.getInstance(document.getElementById('controlMappingModal'));
-      modal.hide();
-      
-      // Show success message
-      this.showSuccessMessage('Control mapping cleared successfully!');
-      
-        } catch (error) {
-      console.error('❌ Error clearing control mapping:', error);
-      this.showErrorMessage('Failed to clear control mapping. Please try again.');
-    } finally {
-      // Restore button state
-      clearBtn.innerHTML = originalText;
-      clearBtn.disabled = false;
+      console.log('✅ Junction record created successfully');
+      return response;
+    } catch (error) {
+      console.error('❌ Error creating junction record:', error);
+      console.error('Error details:', error.responseText || error.statusText);
+      throw error;
     }
   }
 
-  // Load existing mappings from Dataverse using the new cr129_mappedcontrol field
-  async loadExistingMappingsFromDataverse() {
-    console.log('🔄 Loading existing mappings from Dataverse using cr129_mappedcontrol field...');
+  // Remove a junction table record
+  async removeJunctionRecord(riskGuid, controlGuid) {
+    console.log('🗑️ Removing junction record:', riskGuid, '→', controlGuid);
     
     try {
-      // Load all risks with their mapped controls using the new lookup field
-      const riskIds = this.selectedRisks.map(risk => risk.cr129_riskid || risk.id);
+      // First, find the junction record to delete
+      const response = await webapi.safeAjax({
+        url: `/_api/cr129_riskctrls?$select=cr129_riskctrlid&$filter=_cr129_risktitle_value eq ${riskGuid} and _cr129_controltitle_value eq ${controlGuid}`,
+        type: 'GET',
+        contentType: 'application/json; charset=utf-8'
+      });
       
-      for (const riskId of riskIds) {
-      try {
-        const response = await webapi.safeAjax({
-            url: `/_api/cr129_risks(${riskId})?$select=cr129_riskid&$expand=cr129_mappedcontrol($select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_controlowner)`,
-          type: 'GET',
+      const records = response.value || [];
+      
+      for (const record of records) {
+        await webapi.safeAjax({
+          url: `/_api/cr129_riskctrls(${record.cr129_riskctrlid})`,
+          type: 'DELETE',
           contentType: 'application/json; charset=utf-8'
         });
         
-          // Check if a control is mapped
-          if (response.cr129_mappedcontrol) {
-            const mappedControl = response.cr129_mappedcontrol;
-            const localRisk = this.selectedRisks.find(r => (r.cr129_riskid || r.id) === riskId);
-            
-            if (localRisk) {
-              this.riskMappings[localRisk.id] = mappedControl.cr129_controlid;
-              this.updateRiskCard(localRisk.id, mappedControl);
-              console.log('✅ Loaded existing mapping for risk:', localRisk.id, 'to control:', mappedControl.cr129_controltitle);
-            }
-          }
-          
-        } catch (riskError) {
-          console.log('⚠️ Could not load mapping for risk:', riskId, 'Error:', riskError);
-        }
+        console.log('✅ Junction record deleted successfully:', record.cr129_riskctrlid);
       }
-      
-      this.updateProgress();
-      console.log('✅ Finished loading existing mappings from Dataverse');
-      
-      } catch (error) {
-      console.error('❌ Error loading existing mappings from Dataverse:', error);
-      // Fallback to session storage if Dataverse fails
-      this.loadExistingMappingsFromSession();
-    }
-  }
-
-  // Load existing mappings from session storage (fallback only)
-  loadExistingMappingsFromSession() {
-    console.log('⚠️ Using fallback: Loading existing mappings from session storage...');
-    
-    try {
-      // Try session storage first, then localStorage as fallback
-      let mappings = JSON.parse(sessionStorage.getItem('rcsa_control_mappings') || '{}');
-      if (Object.keys(mappings).length === 0) {
-        mappings = JSON.parse(localStorage.getItem('rcsa_control_mappings') || '{}');
-        console.log('📋 Loading existing mappings from localStorage (session was empty):', mappings);
-        
-        // Copy from localStorage to sessionStorage for current session
-        if (Object.keys(mappings).length > 0) {
-          sessionStorage.setItem('rcsa_control_mappings', JSON.stringify(mappings));
-        }
-        } else {
-        console.log('📋 Loading existing mappings from sessionStorage:', mappings);
-      }
-      
-      for (const [riskId, mappingData] of Object.entries(mappings)) {
-        if (mappingData && mappingData.controlId) {
-          // Find the control details
-          const control = this.availableControls.find(c => c.cr129_controlid === mappingData.controlId);
-          if (control) {
-            this.riskMappings[riskId] = mappingData.controlId;
-            this.updateRiskCard(riskId, control);
-            console.log('✅ Restored mapping for risk:', riskId, 'to control:', control.cr129_controltitle);
-        } else {
-            console.log('⚠️ Could not find control for mapping:', mappingData);
-          }
-        }
-      }
-      
-      this.updateProgress();
       
     } catch (error) {
-      console.error('❌ Error loading mappings from storage:', error);
+      console.error('❌ Error removing junction record:', error);
+      throw error;
     }
-  }
-
-  // Load existing mapping for a risk (legacy method - now handled by loadExistingMappingsFromDataverse)
-  async loadExistingMapping(risk) {
-    // This method is now deprecated - mappings are loaded in batch by loadExistingMappingsFromDataverse
-    console.log('ℹ️ Individual risk mapping load requested for:', risk.id, '- now handled by batch load');
   }
 
   // Update risk card display
-  updateRiskCard(riskId, control) {
+  updateRiskCard(riskId, controls) {
     const riskCard = document.querySelector(`[data-risk-id="${riskId}"]`);
     const controlsContainer = document.getElementById(`controls-${riskId}`);
     
     if (!controlsContainer) return;
     
-    if (!control) {
-      // No control mapped
-      controlsContainer.innerHTML = '<div class="text-muted small">No control mapped yet</div>';
+    if (!controls || controls.length === 0) {
+      // No controls mapped
+      controlsContainer.innerHTML = '<div class="text-muted small">No controls mapped yet</div>';
       riskCard.classList.remove('mapped');
       riskCard.classList.add('unmapped');
       riskCard.style.borderColor = '#ffc107';
       riskCard.style.backgroundColor = '#fffbf0';
     } else {
-      // Control mapped
-      controlsContainer.innerHTML = `
-        <div class="d-flex align-items-center justify-content-between">
+      // Controls mapped
+      const controlsList = controls.map(control => `
+        <div class="d-flex align-items-center justify-content-between mb-1">
           <div>
-            <span class="fw-bold text-success">${control.cr129_controltitle}</span>
+            <span class="fw-bold text-success small">${control.cr129_controltitle}</span>
             <br />
             <small class="text-muted">${control.cr129_controltype || 'Unknown Type'}</small>
           </div>
           <i class="bi bi-check-circle-fill text-success"></i>
         </div>
+      `).join('');
+      
+      controlsContainer.innerHTML = `
+        <div class="mapped-controls">
+          ${controlsList}
+          <div class="mt-2">
+            <span class="badge bg-success">${controls.length} control${controls.length > 1 ? 's' : ''} mapped</span>
+          </div>
+        </div>
       `;
+      
       riskCard.classList.remove('unmapped');
       riskCard.classList.add('mapped');
       riskCard.style.borderColor = '#28a745';
@@ -701,7 +682,7 @@ class SimplifiedControlMapping {
   // Update progress summary
   updateProgress() {
     const totalRisks = this.selectedRisks.length;
-    const mappedCount = Object.keys(this.riskMappings).length;
+    const mappedCount = Object.keys(this.riskMappings).filter(riskId => this.riskMappings[riskId].length > 0).length;
     const unmappedCount = totalRisks - mappedCount;
     
     document.getElementById('progressCircle').textContent = `${mappedCount}/${totalRisks}`;
@@ -795,34 +776,8 @@ function openControlMapping(riskId, riskTitle, riskDescription) {
   window.controlMapping.openControlMapping(riskId, riskTitle, riskDescription);
 }
 
-function saveControlMapping() {
-  // Get the selected control from the modal
-  const selectedControl = document.querySelector('input[name="selectedControl"]:checked');
-  if (!selectedControl) {
-    alert('Please select a control to map to this risk.');
-    return;
-  }
-  
-  const controlId = selectedControl.value;
-  const riskId = window.controlMapping.currentRiskId;
-  
-  if (!riskId) {
-    console.error('❌ No risk selected for mapping');
-    return;
-  }
-  
-  window.controlMapping.saveControlMapping(riskId, controlId);
-}
-
-function clearControlMapping() {
-  const riskId = window.controlMapping.currentRiskId;
-  
-  if (!riskId) {
-    console.error('❌ No risk selected for clearing mapping');
-    return;
-  }
-  
-  window.controlMapping.clearControlMapping(riskId);
+function saveControlMappings() {
+  window.controlMapping.saveControlMappings();
 }
 
 function goBack() {
@@ -835,8 +790,8 @@ function continueToNextStep() {
 
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('✅ Simplified Control Mapping page loaded');
-  window.controlMapping = new SimplifiedControlMapping();
+  console.log('✅ Multi-Select Control Mapping page loaded');
+  window.controlMapping = new MultiSelectControlMapping();
 });
 </script>
 {% endif %}

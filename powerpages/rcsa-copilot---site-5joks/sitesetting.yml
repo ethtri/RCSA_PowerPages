@@ -353,8 +353,8 @@
   adx_sitesettingid: 8a5d6920-b5d7-43ac-8359-482529725000
 
 - adx_name: Webapi/cr129_riskctrl/fields
-  adx_value: cr129_riskctrlid,cr129_controltitle,cr129_risktitle
-  adx_description: All required fields including lookup values and navigation properties for Risk-Control Mapping Web API
+  adx_value: cr129_riskctrlid,cr129_ControlTitle,cr129_RIskTitle,statecode,statuscode
+  adx_description: All required fields using working physical field names for Risk-Control Mapping Web API
   adx_sitesettingid: 8a5d6921-b5d7-43ac-8359-482529725001
 
 - adx_name: Webapi/cr129_riskctrl/disableodatafilter
@@ -369,8 +369,8 @@
   adx_sitesettingid: 8a5d6954-b5d7-43ac-8359-482529725034
 
 - adx_name: Webapi/cr129_riskctrls/fields
-  adx_value: cr129_riskctrlid,cr129_controltitle,cr129_risktitle
-  adx_description: All required fields including lookup values and navigation properties for Risk-Control Mapping Web API (EntitySetName plural)
+  adx_value: cr129_riskctrlid,cr129_ControlTitle,cr129_RIskTitle,statecode,statuscode
+  adx_description: All required fields using working physical field names for Risk-Control Mapping Web API (EntitySetName plural)
   adx_sitesettingid: 8a5d6955-b5d7-43ac-8359-482529725035
 
 - adx_name: Webapi/cr129_riskctrls/maxpagesize
@@ -379,8 +379,8 @@
   adx_sitesettingid: 8a5d6956-b5d7-43ac-8359-482529725036
 
 - adx_name: Webapi/cr129_riskctrls/disableodatafilter
-  adx_value: false
-  adx_description: Enable OData filtering for Risk-Control Mapping table (EntitySetName plural)
+  adx_value: true
+  adx_description: Disable OData filtering for Risk-Control Mapping table (EntitySetName plural) - workaround for known Power Pages issue
   adx_sitesettingid: 8a5d6957-b5d7-43ac-8359-482529725037
 
 # Web API settings for cr129_bu entity (singular, matches entity logical name)
