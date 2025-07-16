@@ -53,7 +53,7 @@ RCSA_PowerPages_V3/
 │   ├── BUSINESS_CONTEXT_GUIDE.md      ← 🎯 ESSENTIAL: Banking domain knowledge
 │   ├── DATAVERSE_INTEGRATION_GUIDE.md ← 🎯 ESSENTIAL: Integration patterns
 │   ├── POWER_PAGES_WEB_API_403_TROUBLESHOOTING.md ← 🆕 Complete solution guide
-│   ├── CONTROL_MAPPING_TECHNICAL_REFERENCE.md ← 🔧 Technical implementation
+│   ├── CONTROL_MAPPING_MULTISELECT_REQUIREMENTS.md ← 📋 P1 roadmap item
 │   ├── PROJECT_STATUS.md              ← 📊 CURRENT: Project progress
 │   ├── POWER_PLATFORM_CLI_REFERENCE.md ← 🔧 ESSENTIAL: CLI commands
 │   └── [other essential docs...]

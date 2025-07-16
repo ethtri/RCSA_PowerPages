@@ -373,8 +373,8 @@ class SimplifiedControlMapping {
             <i class="bi bi-arrow-clockwise me-2"></i>Refresh Page
           </button>
         </div>
-      </div>
-    `;
+        </div>
+      `;
   }
 
   // Open control mapping modal
@@ -407,7 +407,7 @@ class SimplifiedControlMapping {
       `;
       return;
     }
-    
+
     container.innerHTML = this.availableControls.map(control => `
       <div data-control-id="${control.cr129_controlid}" class="control-option" style="background: white; border: 1px solid #e9ecef; border-radius: 8px; padding: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.3s ease;">
         <div class="form-check">
@@ -485,13 +485,13 @@ class SimplifiedControlMapping {
       console.log('🔄 Control GUID:', controlGuid);
       
       // Save to Dataverse using the correct EntitySetName [[memory:3346968]]
-      const response = await webapi.safeAjax({
+        const response = await webapi.safeAjax({
         url: `/_api/cr129_risks(${riskGuid})`,
         type: 'PATCH',
         data: JSON.stringify(updateData),
-        contentType: 'application/json; charset=utf-8'
-      });
-      
+          contentType: 'application/json; charset=utf-8'
+        });
+        
       console.log('✅ Control mapping saved successfully to Dataverse');
       
       // Update local state
@@ -506,7 +506,7 @@ class SimplifiedControlMapping {
       // Show success message
       this.showSuccessMessage('Control mapping saved successfully!');
       
-    } catch (error) {
+        } catch (error) {
       console.error('❌ Error saving control mapping to Dataverse:', error);
       this.showErrorMessage('Failed to save control mapping. Please try again.');
     } finally {
@@ -566,7 +566,7 @@ class SimplifiedControlMapping {
       // Show success message
       this.showSuccessMessage('Control mapping cleared successfully!');
       
-    } catch (error) {
+        } catch (error) {
       console.error('❌ Error clearing control mapping:', error);
       this.showErrorMessage('Failed to clear control mapping. Please try again.');
     } finally {
@@ -585,13 +585,13 @@ class SimplifiedControlMapping {
       const riskIds = this.selectedRisks.map(risk => risk.cr129_riskid || risk.id);
       
       for (const riskId of riskIds) {
-        try {
-          const response = await webapi.safeAjax({
+      try {
+        const response = await webapi.safeAjax({
             url: `/_api/cr129_risks(${riskId})?$select=cr129_riskid&$expand=cr129_mappedcontrol($select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_controlowner)`,
-            type: 'GET',
-            contentType: 'application/json; charset=utf-8'
-          });
-          
+          type: 'GET',
+          contentType: 'application/json; charset=utf-8'
+        });
+        
           // Check if a control is mapped
           if (response.cr129_mappedcontrol) {
             const mappedControl = response.cr129_mappedcontrol;
@@ -612,7 +612,7 @@ class SimplifiedControlMapping {
       this.updateProgress();
       console.log('✅ Finished loading existing mappings from Dataverse');
       
-    } catch (error) {
+      } catch (error) {
       console.error('❌ Error loading existing mappings from Dataverse:', error);
       // Fallback to session storage if Dataverse fails
       this.loadExistingMappingsFromSession();
@@ -634,7 +634,7 @@ class SimplifiedControlMapping {
         if (Object.keys(mappings).length > 0) {
           sessionStorage.setItem('rcsa_control_mappings', JSON.stringify(mappings));
         }
-      } else {
+        } else {
         console.log('📋 Loading existing mappings from sessionStorage:', mappings);
       }
       
@@ -646,7 +646,7 @@ class SimplifiedControlMapping {
             this.riskMappings[riskId] = mappingData.controlId;
             this.updateRiskCard(riskId, control);
             console.log('✅ Restored mapping for risk:', riskId, 'to control:', control.cr129_controltitle);
-          } else {
+        } else {
             console.log('⚠️ Could not find control for mapping:', mappingData);
           }
         }
@@ -679,7 +679,7 @@ class SimplifiedControlMapping {
       riskCard.classList.add('unmapped');
       riskCard.style.borderColor = '#ffc107';
       riskCard.style.backgroundColor = '#fffbf0';
-        } else {
+    } else {
       // Control mapped
       controlsContainer.innerHTML = `
         <div class="d-flex align-items-center justify-content-between">

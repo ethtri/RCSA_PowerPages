@@ -36,14 +36,13 @@ docs/
 ├── DATAVERSE_INTEGRATION_GUIDE.md  ← ESSENTIAL: Integration patterns
 ├── DATAVERSE_SCHEMA_REFERENCE.md ← 🆕 AUTHORITATIVE: Complete entity/field mappings
 ├── POWER_PAGES_WEB_API_403_TROUBLESHOOTING.md ← 🆕 Complete 403 error solution
-├── CONTROL_MAPPING_TECHNICAL_REFERENCE.md ← ESSENTIAL: Technical implementation
+├── CONTROL_MAPPING_MULTISELECT_REQUIREMENTS.md ← 📋 ROADMAP: P1 backlog item
 ├── PROJECT_STATUS.md           ← CURRENT: Project progress
 ├── POWER_PLATFORM_CLI_REFERENCE.md  ← ESSENTIAL: CLI commands
 ├── LOCAL_DEPLOYMENT_GUIDE.md   ← ESSENTIAL: Deployment procedures
 ├── rcsa-ux-design-system.md    ← ESSENTIAL: Design standards
 ├── rcsa-power-pages-requirements.md  ← ESSENTIAL: Functional requirements
 ├── rcsa_data_dictionary.md     ← ESSENTIAL: Data model
-├── CONTROL_MAPPING_SIMPLIFIED_REQUIREMENTS.md ← Business requirements
 └── REPOSITORY_STRUCTURE.md     ← THIS FILE: Navigation guide
 ```
 
@@ -63,6 +62,8 @@ archive/
 │   ├── CI_SETUP.md
 │   ├── POWER_PAGES_BEST_PRACTICES.md
 │   ├── PRODUCT_ROADMAP.md
+│   ├── CONTROL_MAPPING_TECHNICAL_REFERENCE.md ← Superseded by schema reference
+│   ├── CONTROL_MAPPING_SIMPLIFIED_REQUIREMENTS.md ← Completed historical work
 │   └── [other archived docs...]
 └── process-selection-backup/   ← OLD: Original process selection before rebuild
 
