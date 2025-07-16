@@ -1,0 +1,131 @@
+<div class="row sectionBlockLayout text-start" style="min-height: auto; padding: 8px;">
+    <div class="container" style="display: flex; flex-wrap: wrap;">
+        <div class="col-lg-12 columnBlockLayout" style="padding: 16px; margin: 60px 0px; min-height: 200px;">
+            
+            <h1>🧪 RCSA Web API Diagnostic Test</h1>
+            <div style="background: #d1ecf1; padding: 15px; border: 1px solid #bee5eb; border-radius: 5px; margin: 20px 0;">
+                <strong>🛠️ Column Permissions Fix Applied:</strong> We've added comprehensive column permissions to all Web API table permissions. This should resolve the "Attribute * not enabled for Web Api" errors that were preventing all API access.
+            </div>
+            <p>This page will systematically test each API endpoint to verify that the column permission fixes have resolved the issues.</p>
+
+            <div id="step1" class="test-section pending" style="margin: 20px 0; padding: 15px; border: 1px solid #ccc;">
+                <h3>Step 1: Test Basic RiskCtrl Endpoint</h3>
+                <button onclick="testStep1()" style="padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; cursor: pointer;">Test: /_api/cr129_riskctrls</button>
+                <div id="step1-result"></div>
+            </div>
+
+            <div id="step2" class="test-section pending" style="margin: 20px 0; padding: 15px; border: 1px solid #ccc;">
+                <h3>Step 2: Test with statecode filter only</h3>
+                <button onclick="testStep2()" style="padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; cursor: pointer;">Test: /_api/cr129_riskctrls?$filter=statecode eq 0</button>
+                <div id="step2-result"></div>
+            </div>
+
+            <div id="step3" class="test-section pending" style="margin: 20px 0; padding: 15px; border: 1px solid #ccc;">
+                <h3>Step 3: Test Metadata Endpoint</h3>
+                <button onclick="testStep3()" style="padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; cursor: pointer;">Test: /_api/$metadata</button>
+                <div id="step3-result"></div>
+            </div>
+
+            <div id="step4" class="test-section pending" style="margin: 20px 0; padding: 15px; border: 1px solid #ccc;">
+                <h3>Step 4: Test with simple expand</h3>
+                <button onclick="testStep4()" style="padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; cursor: pointer;">Test: /_api/cr129_riskctrls?$expand=cr129_controltitle</button>
+                <div id="step4-result"></div>
+            </div>
+
+            <div id="step5" class="test-section pending" style="margin: 20px 0; padding: 15px; border: 1px solid #ccc;">
+                <h3>Step 5: Test working Controls endpoint for comparison</h3>
+                <button onclick="testStep5()" style="padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; cursor: pointer;">Test: /_api/cr129_controls (working)</button>
+                <div id="step5-result"></div>
+            </div>
+
+            <div style="margin: 30px 0;">
+                <button onclick="runAllTests()" style="padding: 15px 25px; margin: 5px; background: #28a745; color: white; border: none; cursor: pointer; font-size: 16px;">🚀 Run All Tests</button>
+                <button onclick="clearResults()" style="padding: 15px 25px; margin: 5px; background: #6c757d; color: white; border: none; cursor: pointer; font-size: 16px;">🗑️ Clear Results</button>
+            </div>
+
+            <div class="alert alert-danger mt-4">
+                <h4>🚨 CRITICAL: Test Basic Web API</h4>
+                <p>Before debugging custom entities, let's verify Web API works at all:</p>
+                <button onclick="testBasicWebApi()" class="btn btn-danger">Test Contact Entity (Standard)</button>
+                <div id="basicApiTest" class="mt-2"></div>
+                <p class="mt-2"><small>If this fails, Web API is completely broken at infrastructure level</small></p>
+            </div>
+            
+            <div class="test-results" id="testResults">
+                <!-- Test results will be populated here -->
+            </div>
+
+        </div>
+    </div>
+</div>
+  
+<div class="container mt-4">
+    <h1 class="text-center mb-4">🔍 API Diagnostics</h1>
+    <p class="text-center text-muted mb-4">Testing Web API endpoints and troubleshooting connectivity</p>
+
+    <!-- CRITICAL BREAKTHROUGH ANALYSIS -->
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">🎯 CRITICAL BREAKTHROUGH!</h4>
+        <p><strong>Test A (Contact entity):</strong> ✅ SUCCESS - Web API infrastructure works perfectly</p>
+        <p><strong>Test B (Custom entities):</strong> ❌ HTTP 500 - Custom entity specific issue identified</p>
+        <hr>
+        <p class="mb-0"><strong>Root Cause:</strong> The problem is isolated to custom entity configuration, not Web API infrastructure.</p>
+    </div>
+
+    <!-- NEW METADATA INVESTIGATION TEST -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>🧪 Test C: Metadata Investigation</h3>
+            <p>Testing metadata endpoint to understand custom entity failures</p>
+        </div>
+        <div class="card-body">
+            <button id="testMetadata" class="btn btn-warning mb-3">Test Metadata Endpoint</button>
+            <div id="metadataResult" class="alert" style="display: none;"></div>
+            <pre id="metadataResponse" class="bg-light p-3" style="display: none; white-space: pre-wrap; word-wrap: break-word;"></pre>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Test C: Metadata Investigation
+    document.getElementById('testMetadata').addEventListener('click', function() {
+        const resultDiv = document.getElementById('metadataResult');
+        const responseDiv = document.getElementById('metadataResponse');
+        
+        resultDiv.style.display = 'block';
+        resultDiv.className = 'alert alert-info';
+        resultDiv.innerHTML = '🔄 Testing metadata endpoint...';
+        responseDiv.style.display = 'none';
+
+        fetch('/_api/$metadata')
+            .then(response => {
+                const status = response.status;
+                const statusText = response.statusText;
+                
+                if (response.ok) {
+                    return response.text().then(text => {
+                        resultDiv.className = 'alert alert-success';
+                        resultDiv.innerHTML = `✅ <strong>Test C PASSED</strong> - Metadata: ${status} ${statusText}`;
+                        responseDiv.style.display = 'block';
+                        responseDiv.textContent = text.substring(0, 2000) + (text.length > 2000 ? '...\n\n[Truncated - Full metadata loaded successfully]' : '');
+                    });
+                } else {
+                    return response.text().then(text => {
+                        resultDiv.className = 'alert alert-danger';
+                        resultDiv.innerHTML = `❌ <strong>Test C FAILED</strong> - Metadata: ${status} ${statusText}`;
+                        responseDiv.style.display = 'block';
+                        responseDiv.textContent = text;
+                    });
+                }
+            })
+            .catch(error => {
+                resultDiv.className = 'alert alert-danger';
+                resultDiv.innerHTML = `❌ <strong>Test C ERROR</strong> - Metadata: ${error.message}`;
+                responseDiv.style.display = 'block';
+                responseDiv.textContent = error.toString();
+            });
+    });
+});
+</script>
+  

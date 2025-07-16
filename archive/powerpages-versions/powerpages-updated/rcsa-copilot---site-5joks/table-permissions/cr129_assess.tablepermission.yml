@@ -1,0 +1,10 @@
+adx_append: false
+adx_appendto: false
+adx_create: true
+adx_delete: false
+adx_entitylogicalname: cr129_assess
+adx_entityname: cr129_assess
+adx_entitypermissionid: bcc604e9-8e61-f011-bec2-7c1e521687a7
+adx_read: true
+adx_scope: 756150000
+adx_write: true

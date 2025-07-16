@@ -1,0 +1,72 @@
+adx_append: true
+adx_appendto: true
+adx_columnpermissionprofiles:
+- adx_allcolumnspermissions: true
+  adx_columnpermissions:
+  - adx_columnlogicalname: cr129_controlid
+    adx_columnpermissionprofileid: control-columns-profile
+    adx_columnpermissionid: control-id-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6944-b5d7-43ac-8359-482529725024
+  - adx_columnlogicalname: cr129_controltitle
+    adx_columnpermissionprofileid: control-columns-profile
+    adx_columnpermissionid: control-title-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6944-b5d7-43ac-8359-482529725024
+  - adx_columnlogicalname: cr129_controltype
+    adx_columnpermissionprofileid: control-columns-profile
+    adx_columnpermissionid: control-type-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6944-b5d7-43ac-8359-482529725024
+  - adx_columnlogicalname: cr129_designefficiency
+    adx_columnpermissionprofileid: control-columns-profile
+    adx_columnpermissionid: control-designeff-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6944-b5d7-43ac-8359-482529725024
+  - adx_columnlogicalname: cr129_operationalefficiency
+    adx_columnpermissionprofileid: control-columns-profile
+    adx_columnpermissionid: control-opereff-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6944-b5d7-43ac-8359-482529725024
+  - adx_columnlogicalname: cr129_isautomated
+    adx_columnpermissionprofileid: control-columns-profile
+    adx_columnpermissionid: control-automated-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6944-b5d7-43ac-8359-482529725024
+  - adx_columnlogicalname: cr129_controlowner
+    adx_columnpermissionprofileid: control-columns-profile
+    adx_columnpermissionid: control-owner-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6944-b5d7-43ac-8359-482529725024
+  - adx_columnlogicalname: statecode
+    adx_columnpermissionprofileid: control-columns-profile
+    adx_columnpermissionid: control-statecode-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6944-b5d7-43ac-8359-482529725024
+  - adx_columnlogicalname: statuscode
+    adx_columnpermissionprofileid: control-columns-profile
+    adx_columnpermissionid: control-statuscode-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6944-b5d7-43ac-8359-482529725024
+  adx_columnpermissionprofileid: control-columns-profile
+  adx_columnpermissionprofilename: Control Web API Columns (Simplified)
+  adx_columnpermissionprofile_tablepermission:
+  - 8a5d6944-b5d7-43ac-8359-482529725024
+adx_create: true
+adx_delete: true
+adx_entitylogicalname: cr129_control
+adx_entityname: Web-API-Control
+adx_entitypermissionid: 8a5d6944-b5d7-43ac-8359-482529725024
+adx_parententitypermission: 
+adx_read: true
+adx_scope: 756150000
+adx_write: true

@@ -1,30 +1,25 @@
 <!-- Include jQuery FIRST, then Portal Web API Wrapper -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-{% include 'Portal Web API Wrapper' %}
 {% if user %}
+  {% include 'Portal Web API Wrapper' %}
   <input type="hidden" name="__RequestVerificationToken" value="{{ request.verification_token }}" />
+{% else %}
+  <!-- User not authenticated - redirect to sign in -->
+  <script>
+    console.log('❌ User not authenticated on Control Mapping page, redirecting to sign-in');
+    window.location.href = '/signin?returnUrl=' + encodeURIComponent(window.location.pathname);
+  </script>
 {% endif %}
 
-<!-- Include Bootstrap and other dependencies -->
+<!-- Include Bootstrap and dependencies -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Fallback Web API Implementation (copied from working Risk Identification V2) -->
+{% if user %}
+<!-- Fallback Web API Implementation for authenticated users -->
 <script>
-// Check if Web API wrapper loaded successfully
-console.log('🔍 Checking Web API wrapper availability...');
-console.log('🔍 webapi object:', typeof webapi !== 'undefined' ? webapi : 'undefined');
-console.log('🔍 webapi.safeAjax:', typeof webapi !== 'undefined' && webapi.safeAjax ? 'available' : 'missing');
-console.log('🔍 shell object:', typeof shell !== 'undefined' ? shell : 'undefined');
-console.log('🔍 shell.getTokenDeferred:', typeof shell !== 'undefined' && shell.getTokenDeferred ? 'available' : 'missing');
-
-// Fallback Web API implementation if the template didn't load
+// Ensure webapi is available
 if (typeof webapi === 'undefined' || !webapi.safeAjax) {
   console.warn('🔄 Web API wrapper not loaded, creating fallback implementation...');
   
@@ -33,91 +28,25 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
   window.webapi.safeAjax = function(options) {
     var deferred = $.Deferred();
     
-    // Use Power Pages' built-in token management
-    if (typeof shell !== 'undefined' && shell.getTokenDeferred) {
-      shell.getTokenDeferred().done(function(token) {
-        options.headers = options.headers || {};
-        options.headers["__RequestVerificationToken"] = token;
-        console.log('✅ Using shell.getTokenDeferred token for Web API call');
-        $.ajax(options).done(deferred.resolve).fail(deferred.reject);
-      }).fail(function(error) {
-        console.error('❌ Failed to get token from shell.getTokenDeferred:', error);
-        deferred.reject(error);
-      });
-    } else {
-      // Fallback for when shell is not available
-      console.warn('⚠️ shell.getTokenDeferred not available, using fallback token method');
+    // Add verification token
       options.headers = options.headers || {};
       var token = $('input[name="__RequestVerificationToken"]').val();
       if (token) {
         options.headers["__RequestVerificationToken"] = token;
-        console.log('✅ Using fallback token for Web API call');
-      } else {
-        console.error('❌ No token found for Web API call');
-      }
-      $.ajax(options).done(deferred.resolve).fail(deferred.reject);
     }
     
+    $.ajax(options).done(deferred.resolve).fail(deferred.reject);
     return deferred.promise();
-  };
-  
-  // Convenience methods
-  window.webapi.get = function(entitySetName, id, options) {
-    var url = '/_api/' + entitySetName;
-    if (id) {
-      url += '(' + id + ')';
-    }
-    
-    return window.webapi.safeAjax($.extend({
-      url: url,
-      type: 'GET',
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json'
-    }, options));
-  };
-  
-  window.webapi.create = function(entitySetName, data, options) {
-    return window.webapi.safeAjax($.extend({
-      url: '/_api/' + entitySetName,
-      type: 'POST',
-      contentType: 'application/json; charset=utf-8',
-      headers: {
-        'OData-Version': '4.0',
-        'Prefer': 'return=representation'
-      },
-      data: JSON.stringify(data)
-    }, options));
-  };
-  
-  window.webapi.update = function(entitySetName, id, data, options) {
-    return window.webapi.safeAjax($.extend({
-      url: '/_api/' + entitySetName + '(' + id + ')',
-      type: 'PATCH',
-      contentType: 'application/json; charset=utf-8',
-      data: JSON.stringify(data),
-      headers: {
-        'If-Match': '*'
-      }
-    }, options));
-  };
-  
-  window.webapi.delete = function(entitySetName, id, options) {
-    return window.webapi.safeAjax($.extend({
-      url: '/_api/' + entitySetName + '(' + id + ')',
-      type: 'DELETE',
-      headers: {
-        'If-Match': '*'
-      }
-    }, options));
   };
   
   console.log('✅ Fallback Web API wrapper created successfully');
 }
 </script>
-<!-- Clean Bootstrap 5 Control Mapping Page -->
+
+<!-- Clean Bootstrap 5 Control Mapping Page - Simplified 1:1 Implementation -->
 <div class="container-fluid">
   <!-- Page Header -->
-  <div class="control-header" style="background-image: linear-gradient(135deg, rgb(253, 126, 20) 0%, rgb(255, 193, 7) 100%); background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: initial; color: white; padding-top: 3rem; padding-right: 0px; padding-bottom: 3rem; padding-left: 0px; margin-bottom: 2rem;">
+  <div class="control-header" style="background: linear-gradient(135deg, #fd7e14 0%, #ffc107 100%); color: white; padding: 3rem 0; margin-bottom: 2rem;">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-8">
@@ -134,11 +63,14 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
       </div>
     </div>
   </div>
+
   <!-- Progress Summary -->
   <div class="container">
-    <div class="progress-card" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 2rem; padding-right: 2rem; padding-bottom: 2rem; padding-left: 2rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 16px; margin-bottom: 2rem;">
+    <div class="progress-card" style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.1); margin-bottom: 2rem;">
       <div class="row align-items-center">
-        <div class="col-md-2"><div id="progressCircle" class="progress-circle mx-auto" style="width: 80px; height: 80px; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(45deg, rgb(253, 126, 20), rgb(255, 193, 7)); background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: initial; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;">0/3</div></div>
+        <div class="col-md-2">
+          <div id="progressCircle" class="progress-circle mx-auto" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, #fd7e14, #ffc107); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;">0/0</div>
+        </div>
         <div class="col-md-6">
           <h4 class="fw-bold mb-2">Mapping Progress</h4>
           <p class="text-muted mb-0">Track your control mapping completion across all identified risks</p>
@@ -146,7 +78,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
         <div class="col-md-4">
           <div class="row text-center">
             <div class="col-4">
-              <div id="totalRisks" class="h3 fw-bold text-primary">3</div>
+              <div id="totalRisks" class="h3 fw-bold text-primary">0</div>
               <div class="small text-muted">Total Risks</div>
             </div>
             <div class="col-4">
@@ -154,7 +86,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
               <div class="small text-muted">Mapped</div>
             </div>
             <div class="col-4">
-              <div id="unmappedRisks" class="h3 fw-bold text-warning">3</div>
+              <div id="unmappedRisks" class="h3 fw-bold text-warning">0</div>
               <div class="small text-muted">Unmapped</div>
             </div>
           </div>
@@ -162,97 +94,24 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
       </div>
     </div>
   </div>
-  <!-- Filter Tabs -->
-  <div class="container">
-    <div class="filter-tabs text-center" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 0.5rem; padding-right: 0.5rem; padding-bottom: 0.5rem; padding-left: 0.5rem; margin-bottom: 2rem; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px;">
-      <button onclick="filterRisks('all')" id="filterAll" class="filter-tab active" style="padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(253, 126, 20); color: white;"><i class="bi bi-list me-1"></i>All Risks</button><button onclick="filterRisks('unmapped')" id="filterUnmapped" class="filter-tab" style="padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem;"><i class="bi bi-exclamation-triangle me-1"></i>Unmapped</button><button onclick="filterRisks('mapped')" id="filterMapped" class="filter-tab" style="padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem;"><i class="bi bi-check-circle me-1"></i>Mapped</button><button onclick="filterRisks('high')" id="filterHigh" class="filter-tab" style="padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; margin-top: 0px; margin-right: 0.25rem; margin-bottom: 0px; margin-left: 0.25rem;"><i class="bi bi-shield-exclamation me-1"></i>High Risk</button>
-    </div>
-  </div>
+
   <!-- Risk Cards Grid -->
   <div class="container">
     <div id="riskCardsGrid" class="row g-4">
-      <!-- Risk 1 -->
-      <div class="col-lg-4">
-        <div data-risk-id="risk-1" data-risk-level="critical" class="risk-card unmapped" style="border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; margin-bottom: 1.5rem; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; position: relative; border-top-color: rgb(255, 193, 7); border-right-color: rgb(255, 193, 7); border-bottom-color: rgb(255, 193, 7); border-left-color: rgb(255, 193, 7); background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 251, 240);">
-          <div class="d-flex justify-content-between align-items-start mb-3">
-            <h5 class="fw-bold mb-0">Credit Default Risk</h5>
-            <span class="badge bg-danger">Critical</span>
+      <!-- Risk cards will be populated dynamically -->
           </div>
-          <p class="text-muted mb-3">Risk of borrower defaulting on loan obligations due to inadequate credit assessment processes.</p>
-          <div class="mb-3">
-            <div class="small fw-bold mb-2">Mapped Controls:</div>
-            <div id="controls-risk-1" class="controls-container"><div class="text-muted small">No controls mapped yet</div></div>
           </div>
-          <div class="d-grid">
-            <button onclick="openControlMapping('risk-1', 'Credit Default Risk')" class="btn btn-outline-primary">
-              <i class="bi bi-plus-circle me-2"></i>
-              Map Controls
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- Risk 2 -->
-      <div class="col-lg-4">
-        <div data-risk-id="risk-2" data-risk-level="high" class="risk-card unmapped" style="border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; margin-bottom: 1.5rem; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; position: relative; border-top-color: rgb(255, 193, 7); border-right-color: rgb(255, 193, 7); border-bottom-color: rgb(255, 193, 7); border-left-color: rgb(255, 193, 7); background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 251, 240);">
-          <div class="d-flex justify-content-between align-items-start mb-3">
-            <h5 class="fw-bold mb-0">Operational Process Failure</h5>
-            <span class="badge bg-warning">High</span>
-          </div>
-          <p class="text-muted mb-3">Risk of system failures or human errors disrupting critical business operations and service delivery.</p>
-          <div class="mb-3">
-            <div class="small fw-bold mb-2">Mapped Controls:</div>
-            <div id="controls-risk-2" class="controls-container"><div class="text-muted small">No controls mapped yet</div></div>
-          </div>
-          <div class="d-grid">
-            <button onclick="openControlMapping('risk-2', 'Operational Process Failure')" class="btn btn-outline-primary">
-              <i class="bi bi-plus-circle me-2"></i>
-              Map Controls
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- Risk 3 -->
-      <div class="col-lg-4">
-        <div data-risk-id="risk-3" data-risk-level="medium" class="risk-card unmapped" style="border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; margin-bottom: 1.5rem; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; position: relative; border-top-color: rgb(255, 193, 7); border-right-color: rgb(255, 193, 7); border-bottom-color: rgb(255, 193, 7); border-left-color: rgb(255, 193, 7); background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 251, 240);">
-          <div class="d-flex justify-content-between align-items-start mb-3">
-            <h5 class="fw-bold mb-0">Regulatory Compliance Gap</h5>
-            <span class="badge bg-info">Medium</span>
-          </div>
-          <p class="text-muted mb-3">Risk of non-compliance with regulatory requirements leading to penalties and reputational damage.</p>
-          <div class="mb-3">
-            <div class="small fw-bold mb-2">Mapped Controls:</div>
-            <div id="controls-risk-3" class="controls-container"><div class="text-muted small">No controls mapped yet</div></div>
-          </div>
-          <div class="d-grid">
-            <button onclick="openControlMapping('risk-3', 'Regulatory Compliance Gap')" class="btn btn-outline-primary">
-              <i class="bi bi-plus-circle me-2"></i>
-              Map Controls
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
   <!-- Action Buttons -->
   <div class="container">
     <div class="row mt-4 mb-4">
       <div class="col-12">
         <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <button onclick="goBack()" class="btn btn-outline-secondary btn-lg me-2">
+          <button onclick="goBack()" class="btn btn-outline-secondary btn-lg">
             <i class="bi bi-arrow-left me-2"></i>
               Back to Risk Identification
             </button>
-            <button onclick="testControlMappingAPI()" class="btn btn-outline-info btn-lg me-2">
-              <i class="bi bi-bug me-2"></i>
-              Test Web API
-            </button>
-            <button onclick="testBasicConnectivity()" class="btn btn-outline-warning btn-lg">
-              <i class="bi bi-wifi me-2"></i>
-              Basic Connectivity
-            </button>
-          </div>
-          <button id="continueBtn" onclick="continueToNextStep()" disabled="" class="btn btn-warning btn-lg">
+          <button id="continueBtn" onclick="continueToNextStep()" class="btn btn-warning btn-lg">
             Continue to Residual Assessment
             <i class="bi bi-arrow-right ms-2"></i>
           </button>
@@ -261,12 +120,13 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     </div>
   </div>
 </div>
-<!-- Control Selection Modal -->
+
+<!-- Control Selection Modal - Simplified for 1:1 Mapping -->
 <div id="controlMappingModal" class="modal fade">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Map Controls to Risk</h5>
+        <h5 class="modal-title">Map Control to Risk</h5>
         <button type="button" data-bs-dismiss="modal" class="btn-close"></button>
       </div>
       <div class="modal-body">
@@ -274,1268 +134,713 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
           <h6 id="modalRiskTitle" class="fw-bold">Risk Title</h6>
           <p id="modalRiskDescription" class="text-muted">Risk description</p>
         </div>
-        <div class="mb-3"><input type="text" placeholder="Search available controls..." id="controlSearch" class="form-control" /></div>
-        <div id="controlOptions" class="control-options">
-          <div data-control-id="ctrl-1" class="control-option" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
-            <div class="form-check">
-              <input type="checkbox" id="ctrl-1" class="form-check-input" /><label for="ctrl-1" class="form-check-label"><strong>Segregation of Duties</strong><br /><small class="text-muted">Ensures critical processes require multiple approvals</small></label>
-            </div>
-          </div>
-          <div data-control-id="ctrl-2" class="control-option" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
-            <div class="form-check">
-              <input type="checkbox" id="ctrl-2" class="form-check-input" /><label for="ctrl-2" class="form-check-label"><strong>Regular System Backups</strong><br /><small class="text-muted">Automated daily backups of critical systems and data</small></label>
-            </div>
-          </div>
-          <div data-control-id="ctrl-3" class="control-option" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
-            <div class="form-check">
-              <input type="checkbox" id="ctrl-3" class="form-check-input" /><label for="ctrl-3" class="form-check-label"><strong>Compliance Monitoring</strong><br /><small class="text-muted">Regular audits and compliance checks</small></label>
-            </div>
-          </div>
-          <div data-control-id="ctrl-4" class="control-option" style="background-image: initial; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: rgb(233, 236, 239); border-right-color: rgb(233, 236, 239); border-bottom-color: rgb(233, 236, 239); border-left-color: rgb(233, 236, 239); border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; padding-top: 1rem; padding-right: 1rem; padding-bottom: 1rem; padding-left: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
-            <div class="form-check">
-              <input type="checkbox" id="ctrl-4" class="form-check-input" /><label for="ctrl-4" class="form-check-label"><strong>Access Controls</strong><br /><small class="text-muted">Role-based access to sensitive systems and data</small></label>
-            </div>
-          </div>
+        <div class="mb-3">
+          <input type="text" placeholder="Search available controls..." id="controlSearch" class="form-control" />
         </div>
-      </div>
-      <div class="modal-footer"><button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cancel</button><button type="button" onclick="saveControlMapping()" class="btn btn-primary">Save Mapping</button></div>
-    </div>
-  </div>
-</div>
-<!-- Clean JavaScript -->
-<script>
-  let currentRiskId = null;
-  let riskMappings = {};
-  let selectedRisks = [];
-  let availableControls = [];
+        <div id="controlOptions" class="control-options">
+          <!-- Loading state -->
+          <div class="text-center p-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading controls...</span>
+            </div>
+            <p class="mt-2 text-muted">Loading available controls...</p>
+          </div>
+            </div>
+          </div>
+      <div class="modal-footer">
+        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cancel</button>
+        <button type="button" onclick="saveControlMapping()" class="btn btn-primary">Save Mapping</button>
+        <button type="button" onclick="clearControlMapping()" class="btn btn-outline-danger">Clear Mapping</button>
+            </div>
+          </div>
+            </div>
+          </div>
 
-  // ===== WEB API EXTENSIONS FOR CR129_RISKCTRL =====
-  
-  // Enhanced Web API wrapper for risk-control mappings
-  window.riskControlAPI = {
-    // Create risk-control mapping - FIXED: Use webapi.safeAjax directly
-    createMapping: function(riskId, controlId) {
-      console.log('🔄 Creating risk-control mapping...');
-      const mappingData = {
-        "cr129_risktitle@odata.bind": `/cr129_risks(${riskId})`,
-        "cr129_controltitle@odata.bind": `/cr129_Control(${controlId})`
-      };
-      
-      return webapi.safeAjax({
-        url: '/_api/cr129_riskctrls',
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        headers: {
-          'OData-Version': '4.0',
-          'Prefer': 'return=representation'
-        },
-        data: JSON.stringify(mappingData)
-      })
-        .then(response => {
-          console.log('✅ Risk-control mapping created successfully');
-          return response;
-        })
-        .catch(error => {
-          console.error('❌ Error creating risk-control mapping:', error);
-          throw error;
-        });
-    },
+<!-- Enhanced JavaScript for Simplified 1:1 Control Mapping -->
+<script>
+class SimplifiedControlMapping {
+  constructor() {
+    this.selectedRisks = [];
+    this.availableControls = [];
+    this.currentRiskId = null;
+    this.currentRiskData = null;
+    this.riskMappings = {}; // Track current mappings
+    this.init();
+  }
+
+  async init() {
+    console.log('✅ Initializing Simplified Control Mapping (1:1 approach) with cr129_mappedcontrol field');
     
-    // Delete risk-control mapping - FIXED: Use webapi.safeAjax directly
-    deleteMapping: function(mappingId) {
-      console.log('🔄 Deleting risk-control mapping...');
-      return webapi.safeAjax({
-        url: '/_api/cr129_riskctrls(' + mappingId + ')',
-        type: 'DELETE',
-        headers: {
-          'If-Match': '*'
-        }
-      })
-        .then(() => {
-          console.log('✅ Risk-control mapping deleted successfully');
-        })
-        .catch(error => {
-          console.error('❌ Error deleting risk-control mapping:', error);
-          throw error;
-        });
-    },
-    
-    // Get existing mappings for a risk - FIXED: Use webapi.safeAjax directly
-    getRiskMappings: function(riskId) {
-      console.log('🔄 Loading risk mappings from Dataverse...');
-      // Encode spaces in the filter to avoid 400/404 errors
-      const filter = `_cr129_risktitle_value eq ${riskId} and statecode eq 0`;
-      const query = `?$filter=${encodeURIComponent(filter)}&$expand=cr129_controltitle($select=cr129_controlid,cr129_controltitle)`;
+    try {
+      // Load selected risks from session storage
+      this.loadSelectedRisks();
       
-      return webapi.safeAjax({
-        url: '/_api/cr129_riskctrls' + query,
+      // Load available controls from Dataverse
+      await this.loadAvailableControls();
+      
+      // Load existing mappings from Dataverse using the new cr129_mappedcontrol field
+      await this.loadExistingMappingsFromDataverse();
+      
+      // Bind event handlers
+      this.bindEvents();
+      
+      console.log('✅ Control Mapping page initialized successfully with Dataverse integration');
+      
+    } catch (error) {
+      console.error('❌ Error initializing Control Mapping page:', error);
+      // Show error message to user
+      this.displayErrorState();
+    }
+  }
+
+
+
+  // Load risks from Risk Identification session storage [[memory:3367576]]
+  loadSelectedRisks() {
+    console.log('🔄 Loading selected risks from session storage...');
+    
+    try {
+      // Load risks from Risk Identification V2 page
+      const allRisks = JSON.parse(sessionStorage.getItem('rcsa_custom_risks') || '[]');
+      console.log('📋 All risks loaded from session storage:', allRisks);
+      
+      // Filter risks for the current process
+      const processId = sessionStorage.getItem('rcsa_selected_process_id');
+      console.log('🔍 Current process ID:', processId);
+      
+      if (processId) {
+        this.selectedRisks = allRisks.filter(risk => risk.processId === processId);
+      } else {
+        this.selectedRisks = allRisks;
+      }
+      
+      console.log('✅ Selected risks loaded for Control Mapping:', this.selectedRisks.length, 'risks');
+      
+      // Display the risks
+      this.displaySelectedRisks();
+      this.updateProgress();
+      
+    } catch (error) {
+      console.error('❌ Error loading selected risks:', error);
+      this.selectedRisks = [];
+      this.displayEmptyState();
+    }
+  }
+
+  // Load available controls from Dataverse [[memory:3346968]]
+  async loadAvailableControls() {
+    console.log('🔄 Loading controls from Dataverse...');
+    
+    try {
+      // Use the correct EntitySetName for controls
+      const response = await webapi.safeAjax({
+        url: '/_api/cr129_controls?$select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_controlowner&$filter=statecode eq 0&$orderby=cr129_controltitle',
         type: 'GET',
         contentType: 'application/json; charset=utf-8'
-      })
-        .then(response => {
-          console.log('✅ Risk mappings loaded from Dataverse:', response.value?.length || 0);
-          return response;
-        })
-        .catch(error => {
-          console.error('❌ Error loading risk mappings:', error);
-          throw error;
-        });
-    },
-    
-    // Get all available controls - FIXED: Use webapi.safeAjax directly
-    getAvailableControls: function() {
-      console.log('🔄 Loading controls from Dataverse...');
-      // Encode filter spaces just like the working Risk Identification page
-      const filter = 'statecode eq 0';
-      const query = `?$select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_designefficiency,cr129_operationalefficiency,cr129_isautomated,cr129_controlowner&$orderby=cr129_controltitle&$filter=${encodeURIComponent(filter)}`;
+      });
       
-      return webapi.safeAjax({
-        url: '/_api/cr129_Control' + query,
-        type: 'GET',
-        contentType: 'application/json; charset=utf-8'
-      })
-        .then(response => {
-          console.log('✅ Controls loaded from Dataverse:', response.value?.length || 0);
-          return response;
-        })
-        .catch(error => {
-          console.error('❌ Error loading controls from Dataverse:', error);
-          console.log('🔄 Using fallback control data...');
-          return { value: this.getFallbackControls() };
-        });
-    },
-    
-    // Fallback controls data when Dataverse is unavailable
-    getFallbackControls: function() {
+      this.availableControls = response.value || [];
+      console.log('✅ Controls loaded from Dataverse:', this.availableControls.length);
+      
+    } catch (error) {
+      console.error('❌ Error loading controls from Dataverse:', error);
+      // Use fallback controls
+      this.availableControls = this.getFallbackControls();
+      console.log('⚠️ Using fallback controls:', this.availableControls.length);
+    }
+  }
+
+  // Fallback controls when Dataverse is unavailable
+  getFallbackControls() {
       return [
         {
           cr129_controlid: 'fallback-001',
           cr129_controltitle: 'Access Control Review',
-          cr129_controltype: 'Manual',
-          cr129_designefficiency: 'High',
-          cr129_operationalefficiency: 'Medium',
-          cr129_isautomated: false,
+        cr129_controltype: 'Preventive',
           cr129_controlowner: 'IT Security Team'
         },
         {
           cr129_controlid: 'fallback-002',
           cr129_controltitle: 'Segregation of Duties',
           cr129_controltype: 'Preventive',
-          cr129_designefficiency: 'High',
-          cr129_operationalefficiency: 'High',
-          cr129_isautomated: false,
           cr129_controlowner: 'Finance Team'
         },
         {
           cr129_controlid: 'fallback-003',
           cr129_controltitle: 'Automated Monitoring',
           cr129_controltype: 'Detective',
-          cr129_designefficiency: 'High',
-          cr129_operationalefficiency: 'High',
-          cr129_isautomated: true,
           cr129_controlowner: 'Risk Management'
-        }
-      ];
-    },
-    
-    // Batch create multiple mappings
-    createMultipleMappings: function(riskId, controlIds) {
-      const promises = controlIds.map(controlId => 
-        this.createMapping(riskId, controlId)
-      );
-      return Promise.all(promises);
-    },
-    
-    // Batch delete mappings for a risk
-    deleteRiskMappings: function(riskId, controlIds) {
-      // First get existing mappings, then delete the ones we want to remove
-      return this.getRiskMappings(riskId)
-        .then(response => {
-          const existingMappings = response.value || [];
-          const mappingsToDelete = existingMappings.filter(mapping => 
-            controlIds.includes(mapping.cr129_controltitle.cr129_controlid)
-          );
-          
-          const deletePromises = mappingsToDelete.map(mapping => 
-            this.deleteMapping(mapping.cr129_riskctrlid)
-          );
-          
-          return Promise.all(deletePromises);
-        });
-    }
-  };
-
-  // ===== SESSION STORAGE INTEGRATION =====
-  
-  function loadSelectedRisks() {
-    console.log('🔄 Loading selected risks from session storage...');
-    
-    try {
-      // Debug: Check all session storage keys
-      console.log('🔍 All session storage keys:');
-      for (let i = 0; i < sessionStorage.length; i++) {
-        const key = sessionStorage.key(i);
-        if (key && key.startsWith('rcsa_')) {
-          console.log(`  ${key}: ${sessionStorage.getItem(key)}`);
-        }
+      },
+      {
+        cr129_controlid: 'fallback-004',
+        cr129_controltitle: 'Regular System Backups',
+        cr129_controltype: 'Detective',
+        cr129_controlowner: 'IT Operations'
+      },
+      {
+        cr129_controlid: 'fallback-005',
+        cr129_controltitle: 'Compliance Monitoring',
+        cr129_controltype: 'Detective',
+        cr129_controlowner: 'Compliance Team'
       }
-      
-      // Load ALL risks from Risk Identification V2 (existing + AI + custom)
-      const allRisks = JSON.parse(sessionStorage.getItem('rcsa_custom_risks') || '[]');
-      console.log('📋 All risks loaded from session storage:', allRisks);
-      console.log('📋 Number of risks in storage:', allRisks.length);
-      
-      // Filter risks for the current process
-      const processId = sessionStorage.getItem('rcsa_selected_process_id');
-      console.log('🔍 Current process ID:', processId);
-      
-      // Filter risks by process ID if available
-      if (processId) {
-        selectedRisks = allRisks.filter(risk => {
-          console.log(`🔍 Checking risk ${risk.id}: processId=${risk.processId}, matches=${risk.processId === processId}`);
-          return risk.processId === processId;
-        });
-        console.log('📋 Filtered risks for process:', selectedRisks);
-      } else {
-        selectedRisks = allRisks;
-        console.log('📋 No process filter, using all risks:', selectedRisks);
-      }
-      
-      if (selectedRisks.length === 0) {
-        console.warn('⚠️ No risks found in session storage, using fallback data');
-        // Fallback to existing hardcoded risks for development
-        selectedRisks = [
-          { 
-            id: 'risk-1', 
-            title: 'Credit Default Risk', 
-            description: 'Risk of borrower defaulting on loan obligations due to inadequate credit assessment processes.', 
-            category: 'Credit',
-            likelihood: 4,
-            impact: 4,
-            isCustom: false
-          },
-          { 
-            id: 'risk-2', 
-            title: 'Operational Process Failure', 
-            description: 'Risk of system failures or human errors disrupting critical business operations and service delivery.', 
-            category: 'Operational',
-            likelihood: 3,
-            impact: 4,
-            isCustom: false
-          },
-          { 
-            id: 'risk-3', 
-            title: 'Regulatory Compliance Gap', 
-            description: 'Risk of non-compliance with regulatory requirements leading to penalties and reputational damage.', 
-            category: 'Compliance',
-            likelihood: 3,
-            impact: 3,
-            isCustom: false
-          }
-        ];
-      }
-      
-      console.log('✅ Selected risks loaded for Control Mapping:', selectedRisks.length, 'risks');
-      console.log('📋 Risk details:', selectedRisks);
-      
-      // Update the UI to show the loaded risks
-      displaySelectedRisks();
-      
-      return selectedRisks;
-      
-    } catch (error) {
-      console.error('❌ Error loading selected risks:', error);
-      return [];
-    }
+    ];
   }
 
-  function displaySelectedRisks() {
-    console.log('🔄 Displaying selected risks...');
+  // Display the selected risks as cards
+  displaySelectedRisks() {
+    const container = document.getElementById('riskCardsGrid');
     
-    const riskCardsGrid = document.getElementById('riskCardsGrid');
-    if (!riskCardsGrid) {
-      console.error('❌ Risk cards grid not found');
+    if (this.selectedRisks.length === 0) {
+      this.displayEmptyState();
       return;
     }
     
-    // Clear existing cards
-    riskCardsGrid.innerHTML = '';
+    container.innerHTML = this.selectedRisks.map(risk => this.generateRiskCard(risk)).join('');
     
-    // Generate cards for each risk
-    selectedRisks.forEach(risk => {
-      const riskLevel = getRiskLevel(risk.likelihood, risk.impact);
-      const riskCard = createRiskCard(risk, riskLevel);
-      riskCardsGrid.appendChild(riskCard);
+    // Add event listeners for map control buttons
+    container.querySelectorAll('.map-control-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const riskId = e.target.getAttribute('data-risk-id');
+        const riskTitle = e.target.getAttribute('data-risk-title');
+        const riskDescription = e.target.getAttribute('data-risk-description');
+        this.openControlMapping(riskId, riskTitle, riskDescription);
+      });
     });
     
-    console.log('✅ Risk cards displayed:', selectedRisks.length);
+    // Load existing mappings from session storage
+    this.loadExistingMappingsFromSession();
   }
 
-  function getRiskLevel(likelihood, impact) {
-    if (!likelihood || !impact) return 'medium';
+  // Generate HTML for a risk card
+  generateRiskCard(risk) {
+    const categoryClass = this.getCategoryClass(risk.category);
+    const severityBadge = this.getSeverityBadge(risk.likelihood, risk.impact);
     
-    const score = likelihood * impact;
-    if (score >= 16) return 'critical';
-    if (score >= 12) return 'high';
-    if (score >= 6) return 'medium';
-    return 'low';
-  }
-
-  function getRiskLevelBadge(level) {
-    switch(level) {
-      case 'critical': return '<span class="badge bg-danger">Critical</span>';
-      case 'high': return '<span class="badge bg-warning">High</span>';
-      case 'medium': return '<span class="badge bg-info">Medium</span>';
-      case 'low': return '<span class="badge bg-success">Low</span>';
-      default: return '<span class="badge bg-secondary">Unknown</span>';
-    }
-  }
-
-  function createRiskCard(risk, level) {
-    const col = document.createElement('div');
-    col.className = 'col-lg-4';
-    
-    const cardHtml = `
-      <div data-risk-id="${risk.id}" data-risk-level="${level}" class="risk-card unmapped" style="border: 2px solid #ffc107; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; transition: all 0.3s ease; position: relative; background-color: #fffbf0;">
+    return `
+      <div class="col-lg-4">
+        <div data-risk-id="${risk.id}" class="risk-card unmapped" style="border: 2px solid #ffc107; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; background: #fffbf0; transition: all 0.3s ease; position: relative;">
         <div class="d-flex justify-content-between align-items-start mb-3">
           <h5 class="fw-bold mb-0">${risk.title}</h5>
-          ${getRiskLevelBadge(level)}
+            ${severityBadge}
         </div>
-        <p class="text-muted mb-3">${risk.description || 'No description available'}</p>
-        <div class="mb-2">
-          <small class="text-muted">
-            <strong>Category:</strong> ${risk.category || 'Unknown'} | 
-            <strong>L:</strong> ${risk.likelihood || 'N/A'} | 
-            <strong>I:</strong> ${risk.impact || 'N/A'}
-            ${risk.isCustom ? ' | <span class="badge bg-primary">Custom</span>' : ''}
-          </small>
-        </div>
+          <p class="text-muted mb-3">${risk.description}</p>
         <div class="mb-3">
-          <div class="small fw-bold mb-2">Mapped Controls:</div>
+            <span class="badge ${categoryClass} mb-2">${risk.category}</span>
+            <div class="small fw-bold mb-2">Mapped Control:</div>
           <div id="controls-${risk.id}" class="controls-container">
-            <div class="text-muted small">No controls mapped yet</div>
+              <div class="text-muted small">No control mapped yet</div>
           </div>
         </div>
         <div class="d-grid">
-          <button onclick="openControlMapping('${risk.id}', '${risk.title.replace(/'/g, "\\'")}', '${risk.category || 'Unknown'}')" class="btn btn-outline-primary">
+            <button class="btn btn-outline-primary map-control-btn" data-risk-id="${risk.id}" data-risk-title="${risk.title}" data-risk-description="${risk.description}">
             <i class="bi bi-plus-circle me-2"></i>
-            Map Controls
+              Map Control
+          </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Display empty state when no risks found
+  displayEmptyState() {
+    const container = document.getElementById('riskCardsGrid');
+    container.innerHTML = `
+      <div class="col-12">
+        <div class="text-center py-5">
+          <i class="bi bi-exclamation-triangle text-muted mb-3" style="font-size: 4rem;"></i>
+          <h4 class="text-muted">No Risks Found</h4>
+          <p class="text-muted">Please complete Risk Identification first to identify risks that need control mapping.</p>
+          <button onclick="controlMapping.goBack()" class="btn btn-primary">
+            <i class="bi bi-arrow-left me-2"></i>
+            Go to Risk Identification
+          </button>
+        </div>
+        </div>
+      `;
+  }
+
+  // Display error state when initialization fails
+  displayErrorState() {
+    const container = document.getElementById('riskCardsGrid');
+    container.innerHTML = `
+      <div class="col-12">
+        <div class="text-center py-5">
+          <i class="bi bi-exclamation-triangle text-danger mb-3" style="font-size: 4rem;"></i>
+          <h4 class="text-danger">Initialization Error</h4>
+          <p class="text-muted">There was an error loading the Control Mapping page. Please try refreshing the page.</p>
+          <button class="btn btn-primary" onclick="window.location.reload()">
+            <i class="bi bi-arrow-clockwise me-2"></i>Refresh Page
           </button>
         </div>
       </div>
     `;
-    
-    col.innerHTML = cardHtml;
-    return col;
   }
 
-  function loadAvailableControls() {
-    console.log('🔄 Loading available controls from Dataverse...');
+  // Open control mapping modal
+  openControlMapping(riskId, riskTitle, riskDescription) {
+    this.currentRiskId = riskId;
+    this.currentRiskData = this.selectedRisks.find(r => r.id === riskId);
     
-    if (typeof webapi !== 'undefined' && webapi.safeAjax) {
-      return riskControlAPI.getAvailableControls()
-        .then(response => {
-          availableControls = response.value || [];
-          console.log('✅ Available controls loaded:', availableControls);
-          return availableControls;
-        })
-        .catch(error => {
-          console.error('❌ Error loading controls from Dataverse:', error);
-          console.log('🔄 Using fallback control data...');
-          
-          // Fallback to hardcoded controls
-          availableControls = [
-            { cr129_controlid: 'ctrl-1', cr129_controltitle: 'Segregation of Duties', cr129_controltype: 0, cr129_designefficiency: 5, cr129_operationalefficiency: 4, cr129_isautomated: false, cr129_controlowner: 'admin@company.com' },
-            { cr129_controlid: 'ctrl-2', cr129_controltitle: 'Regular System Backups', cr129_controltype: 1, cr129_designefficiency: 4, cr129_operationalefficiency: 4, cr129_isautomated: true, cr129_controlowner: 'it@company.com' },
-            { cr129_controlid: 'ctrl-3', cr129_controltitle: 'Compliance Monitoring', cr129_controltype: 1, cr129_designefficiency: 4, cr129_operationalefficiency: 3, cr129_isautomated: false, cr129_controlowner: 'compliance@company.com' },
-            { cr129_controlid: 'ctrl-4', cr129_controltitle: 'Access Controls', cr129_controltype: 0, cr129_designefficiency: 5, cr129_operationalefficiency: 5, cr129_isautomated: true, cr129_controlowner: 'security@company.com' }
-          ];
-          
-          return availableControls;
-        });
-    } else {
-      console.warn('⚠️ Web API not available, using fallback controls');
-      availableControls = [
-                            { cr129_controlid: 'ctrl-1', cr129_controltitle: 'Segregation of Duties', cr129_controltype: 0, cr129_designefficiency: 5, cr129_operationalefficiency: 4, cr129_isautomated: false, cr129_controlowner: 'admin@company.com' },
-          { cr129_controlid: 'ctrl-2', cr129_controltitle: 'Regular System Backups', cr129_controltype: 1, cr129_designefficiency: 4, cr129_operationalefficiency: 4, cr129_isautomated: true, cr129_controlowner: 'it@company.com' },
-          { cr129_controlid: 'ctrl-3', cr129_controltitle: 'Compliance Monitoring', cr129_controltype: 1, cr129_designefficiency: 4, cr129_operationalefficiency: 3, cr129_isautomated: false, cr129_controlowner: 'compliance@company.com' },
-          { cr129_controlid: 'ctrl-4', cr129_controltitle: 'Access Controls', cr129_controltype: 0, cr129_designefficiency: 5, cr129_operationalefficiency: 5, cr129_isautomated: true, cr129_controlowner: 'security@company.com' }
-      ];
-      return Promise.resolve(availableControls);
-    }
-  }
-
-  // ===== ENHANCED CONTROL MAPPING FUNCTIONS =====
-
-  const controlData = {
-    'ctrl-1': { name: 'Segregation of Duties', description: 'Ensures critical processes require multiple approvals' },
-    'ctrl-2': { name: 'Regular System Backups', description: 'Automated daily backups of critical systems and data' },
-    'ctrl-3': { name: 'Compliance Monitoring', description: 'Regular audits and compliance checks' },
-    'ctrl-4': { name: 'Access Controls', description: 'Role-based access to sensitive systems and data' }
-  };
-
-  function openControlMapping(riskId, riskTitle, riskCategory) {
-    currentRiskId = riskId;
     document.getElementById('modalRiskTitle').textContent = riskTitle;
+    document.getElementById('modalRiskDescription').textContent = riskDescription;
     
-    // Update modal with risk category if provided
-    if (riskCategory) {
-      const categoryElement = document.getElementById('modalRiskCategory');
-      if (categoryElement) {
-        categoryElement.textContent = riskCategory;
-      }
-    }
-
-    // Clear previous selections
-    document.querySelectorAll('#controlOptions input[type="checkbox"]').forEach(cb => {
-      cb.checked = false;
-    });
-
-    // Load existing mappings if Web API is available
-    if (typeof webapi !== 'undefined' && webapi.safeAjax && riskControlAPI) {
-      console.log('🔄 Loading existing mappings for risk:', riskId);
-      
-      riskControlAPI.getRiskMappings(riskId)
-        .then(response => {
-          const existingMappings = response.value || [];
-          console.log('📋 Existing mappings loaded:', existingMappings);
-          
-          // Check the appropriate checkboxes
-          existingMappings.forEach(mapping => {
-            const controlId = mapping.cr129_controltitle.cr129_controlid;
-            const checkbox = document.getElementById(controlId);
-            if (checkbox) {
-              checkbox.checked = true;
-            }
-          });
-        })
-        .catch(error => {
-          console.error('❌ Error loading existing mappings:', error);
-          
-          // Fallback to local storage
-          if (riskMappings[riskId]) {
-            riskMappings[riskId].forEach(controlId => {
-              const checkbox = document.getElementById(controlId);
-              if (checkbox) checkbox.checked = true;
-            });
-          }
-        });
-    } else {
-      // Fallback to local storage
-    if (riskMappings[riskId]) {
-      riskMappings[riskId].forEach(controlId => {
-        const checkbox = document.getElementById(controlId);
-        if (checkbox) checkbox.checked = true;
-      });
-      }
-    }
+    // Populate control options
+    this.populateControlOptions();
 
     const modal = new bootstrap.Modal(document.getElementById('controlMappingModal'));
     modal.show();
   }
 
-  function saveControlMapping() {
-    if (!currentRiskId) return;
-
-    const selectedControls = [];
-    document.querySelectorAll('#controlOptions input[type="checkbox"]:checked').forEach(cb => {
-      selectedControls.push(cb.id);
-    });
-
-    console.log('💾 Saving control mappings for risk:', currentRiskId, 'Controls:', selectedControls);
-
-    // Save to local storage first (fallback)
-    riskMappings[currentRiskId] = selectedControls;
-    updateRiskCard(currentRiskId, selectedControls);
-    updateProgress();
-
-    // If Web API is available, save to Dataverse
-    if (typeof webapi !== 'undefined' && webapi.safeAjax && riskControlAPI) {
-      console.log('🔄 Saving mappings to Dataverse...');
-      
-      // Get the actual risk ID from the risk object
-      const riskObj = selectedRisks.find(r => r.id === currentRiskId);
-      const actualRiskId = riskObj && riskObj.cr129_riskid ? riskObj.cr129_riskid : currentRiskId;
-      
-      // First, get existing mappings to determine what to add/remove
-      riskControlAPI.getRiskMappings(actualRiskId)
-        .then(response => {
-          const existingMappings = response.value || [];
-          const existingControlIds = existingMappings.map(m => m.cr129_controltitle.cr129_controlid);
-          
-          // Determine what to add and what to remove
-          const toAdd = selectedControls.filter(controlId => !existingControlIds.includes(controlId));
-          const toRemove = existingControlIds.filter(controlId => !selectedControls.includes(controlId));
-          
-          console.log('📋 Mappings to add:', toAdd);
-          console.log('📋 Mappings to remove:', toRemove);
-          
-          // Create promises for additions and deletions
-          const addPromises = toAdd.map(controlId => 
-            riskControlAPI.createMapping(actualRiskId, controlId)
-          );
-          
-          const removePromises = toRemove.length > 0 ? 
-            [riskControlAPI.deleteRiskMappings(actualRiskId, toRemove)] : [];
-          
-          // Execute all operations
-          return Promise.all([...addPromises, ...removePromises]);
-        })
-        .then(results => {
-          console.log('✅ Mappings saved successfully to Dataverse:', results);
-          
-          if (typeof modernInteractions !== 'undefined') {
-            modernInteractions.showSuccess('Controls Mapped', `Successfully mapped ${selectedControls.length} controls to risk`);
-          }
-        })
-        .catch(error => {
-          console.error('❌ Error saving mappings to Dataverse:', error);
-          
-          if (typeof modernInteractions !== 'undefined') {
-            modernInteractions.showWarning('Saved Locally', 'Mappings saved locally but could not sync to database');
-          }
-        });
-    } else {
-      console.log('⚠️ Web API not available, mappings saved locally only');
-      
-      if (typeof modernInteractions !== 'undefined') {
-        modernInteractions.showInfo('Saved Locally', `Mapped ${selectedControls.length} controls to risk (local storage)`);
-      }
+  // Populate control options in modal (1:1 with radio buttons)
+  populateControlOptions() {
+    const container = document.getElementById('controlOptions');
+    const currentMapping = this.riskMappings[this.currentRiskId];
+    
+    if (this.availableControls.length === 0) {
+      container.innerHTML = `
+        <div class="text-center p-4">
+          <i class="bi bi-exclamation-triangle text-warning mb-3" style="font-size: 3rem;"></i>
+          <h6 class="text-muted">No Controls Available</h6>
+          <p class="text-muted small">Controls could not be loaded from Dataverse.</p>
+        </div>
+      `;
+      return;
     }
-
-    const modal = bootstrap.Modal.getInstance(document.getElementById('controlMappingModal'));
-    modal.hide();
+    
+    container.innerHTML = this.availableControls.map(control => `
+      <div data-control-id="${control.cr129_controlid}" class="control-option" style="background: white; border: 1px solid #e9ecef; border-radius: 8px; padding: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.3s ease;">
+        <div class="form-check">
+          <input type="radio" id="${control.cr129_controlid}" name="selectedControl" value="${control.cr129_controlid}" class="form-check-input" ${currentMapping === control.cr129_controlid ? 'checked' : ''} />
+          <label for="${control.cr129_controlid}" class="form-check-label w-100">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <strong>${control.cr129_controltitle}</strong>
+                <br />
+                <small class="text-muted">Type: ${control.cr129_controltype || 'Unknown'}</small>
+                <br />
+                <small class="text-muted">Owner: ${control.cr129_controlowner || 'Unknown'}</small>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+    `).join('');
+    
+    // Add click handlers for the control options
+    container.querySelectorAll('.control-option').forEach(option => {
+      option.addEventListener('click', (e) => {
+        const radio = option.querySelector('input[type="radio"]');
+        radio.checked = true;
+      });
+    });
   }
 
-  function updateRiskCard(riskId, controlIds) {
+  // Save control mapping using the new cr129_mappedcontrol lookup field [[memory:3367576]]
+  async saveControlMapping(riskId, controlId) {
+    const saveBtn = document.querySelector('#controlMappingModal .btn-primary');
+    const originalText = saveBtn.innerHTML;
+    
+    try {
+      // Show loading state
+      saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+      saveBtn.disabled = true;
+      
+      console.log('💾 Saving control mapping - Risk:', riskId, 'Control:', controlId);
+      
+      // Find the risk to get its GUID
+      const risk = this.selectedRisks.find(r => r.id === riskId);
+      if (!risk) {
+        throw new Error('Risk not found');
+      }
+      
+      const riskGuid = risk.cr129_riskid || risk.id;
+      
+      // Find the control to get its GUID
+      const control = this.availableControls.find(c => c.cr129_controlid === controlId);
+      if (!control) {
+        throw new Error('Control not found');
+      }
+      
+      const controlGuid = control.cr129_controlid;
+      
+             // Try different possible field names for the lookup field
+       // Common patterns: cr129_mappedcontrol, cr129_primarycontrolid, cr129_controlid
+       const possibleFieldNames = [
+         'cr129_mappedcontrol',
+         'cr129_primarycontrolid', 
+         'cr129_controlid',
+         'cr129_linkedcontrol'
+       ];
+       
+       let updateData = {};
+       // Start with the most likely field name
+       const fieldName = possibleFieldNames[0];
+       updateData[`${fieldName}@odata.bind`] = `/cr129_controls(${controlGuid})`;
+       
+       console.log('🔄 Using field name:', fieldName);
+      
+      console.log('🔄 PATCH request data:', updateData);
+      console.log('🔄 Risk GUID:', riskGuid);
+      console.log('🔄 Control GUID:', controlGuid);
+      
+      // Save to Dataverse using the correct EntitySetName [[memory:3346968]]
+      const response = await webapi.safeAjax({
+        url: `/_api/cr129_risks(${riskGuid})`,
+        type: 'PATCH',
+        data: JSON.stringify(updateData),
+        contentType: 'application/json; charset=utf-8'
+      });
+      
+      console.log('✅ Control mapping saved successfully to Dataverse');
+      
+      // Update local state
+      this.riskMappings[riskId] = controlId;
+      this.updateRiskCard(riskId, control);
+      this.updateProgress();
+      
+      // Close modal
+      const modal = bootstrap.Modal.getInstance(document.getElementById('controlMappingModal'));
+      modal.hide();
+      
+      // Show success message
+      this.showSuccessMessage('Control mapping saved successfully!');
+      
+    } catch (error) {
+      console.error('❌ Error saving control mapping to Dataverse:', error);
+      this.showErrorMessage('Failed to save control mapping. Please try again.');
+    } finally {
+      // Restore button state
+      saveBtn.innerHTML = originalText;
+      saveBtn.disabled = false;
+    }
+  }
+
+  // Clear control mapping using the new cr129_mappedcontrol lookup field
+  async clearControlMapping(riskId) {
+    const clearBtn = document.querySelector('#controlMappingModal .btn-outline-danger');
+    const originalText = clearBtn.innerHTML;
+    
+    try {
+      // Show loading state
+      clearBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Clearing...';
+      clearBtn.disabled = true;
+      
+      console.log('🗑️ Clearing control mapping for risk:', riskId);
+      
+      // Find the risk to get its GUID
+      const risk = this.selectedRisks.find(r => r.id === riskId);
+      if (!risk) {
+        throw new Error('Risk not found');
+      }
+      
+      const riskGuid = risk.cr129_riskid || risk.id;
+      
+      // Clear the cr129_mappedcontrol lookup field by setting it to null
+      const updateData = {
+        "cr129_mappedcontrol@odata.bind": null
+      };
+      
+      console.log('🔄 PATCH request to clear mapping:', updateData);
+      console.log('🔄 Risk GUID:', riskGuid);
+      
+      // Clear from Dataverse using the correct EntitySetName [[memory:3346968]]
+      const response = await webapi.safeAjax({
+        url: `/_api/cr129_risks(${riskGuid})`,
+        type: 'PATCH',
+        data: JSON.stringify(updateData),
+        contentType: 'application/json; charset=utf-8'
+      });
+      
+      console.log('✅ Control mapping cleared successfully from Dataverse');
+      
+      // Update local state
+      delete this.riskMappings[riskId];
+      this.updateRiskCard(riskId, null);
+      this.updateProgress();
+      
+      // Close modal
+      const modal = bootstrap.Modal.getInstance(document.getElementById('controlMappingModal'));
+      modal.hide();
+      
+      // Show success message
+      this.showSuccessMessage('Control mapping cleared successfully!');
+      
+    } catch (error) {
+      console.error('❌ Error clearing control mapping:', error);
+      this.showErrorMessage('Failed to clear control mapping. Please try again.');
+    } finally {
+      // Restore button state
+      clearBtn.innerHTML = originalText;
+      clearBtn.disabled = false;
+    }
+  }
+
+  // Load existing mappings from Dataverse using the new cr129_mappedcontrol field
+  async loadExistingMappingsFromDataverse() {
+    console.log('🔄 Loading existing mappings from Dataverse using cr129_mappedcontrol field...');
+    
+    try {
+      // Load all risks with their mapped controls using the new lookup field
+      const riskIds = this.selectedRisks.map(risk => risk.cr129_riskid || risk.id);
+      
+      for (const riskId of riskIds) {
+        try {
+          const response = await webapi.safeAjax({
+            url: `/_api/cr129_risks(${riskId})?$select=cr129_riskid&$expand=cr129_mappedcontrol($select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_controlowner)`,
+            type: 'GET',
+            contentType: 'application/json; charset=utf-8'
+          });
+          
+          // Check if a control is mapped
+          if (response.cr129_mappedcontrol) {
+            const mappedControl = response.cr129_mappedcontrol;
+            const localRisk = this.selectedRisks.find(r => (r.cr129_riskid || r.id) === riskId);
+            
+            if (localRisk) {
+              this.riskMappings[localRisk.id] = mappedControl.cr129_controlid;
+              this.updateRiskCard(localRisk.id, mappedControl);
+              console.log('✅ Loaded existing mapping for risk:', localRisk.id, 'to control:', mappedControl.cr129_controltitle);
+            }
+          }
+          
+        } catch (riskError) {
+          console.log('⚠️ Could not load mapping for risk:', riskId, 'Error:', riskError);
+        }
+      }
+      
+      this.updateProgress();
+      console.log('✅ Finished loading existing mappings from Dataverse');
+      
+    } catch (error) {
+      console.error('❌ Error loading existing mappings from Dataverse:', error);
+      // Fallback to session storage if Dataverse fails
+      this.loadExistingMappingsFromSession();
+    }
+  }
+
+  // Load existing mappings from session storage (fallback only)
+  loadExistingMappingsFromSession() {
+    console.log('⚠️ Using fallback: Loading existing mappings from session storage...');
+    
+    try {
+      // Try session storage first, then localStorage as fallback
+      let mappings = JSON.parse(sessionStorage.getItem('rcsa_control_mappings') || '{}');
+      if (Object.keys(mappings).length === 0) {
+        mappings = JSON.parse(localStorage.getItem('rcsa_control_mappings') || '{}');
+        console.log('📋 Loading existing mappings from localStorage (session was empty):', mappings);
+        
+        // Copy from localStorage to sessionStorage for current session
+        if (Object.keys(mappings).length > 0) {
+          sessionStorage.setItem('rcsa_control_mappings', JSON.stringify(mappings));
+        }
+      } else {
+        console.log('📋 Loading existing mappings from sessionStorage:', mappings);
+      }
+      
+      for (const [riskId, mappingData] of Object.entries(mappings)) {
+        if (mappingData && mappingData.controlId) {
+          // Find the control details
+          const control = this.availableControls.find(c => c.cr129_controlid === mappingData.controlId);
+          if (control) {
+            this.riskMappings[riskId] = mappingData.controlId;
+            this.updateRiskCard(riskId, control);
+            console.log('✅ Restored mapping for risk:', riskId, 'to control:', control.cr129_controltitle);
+          } else {
+            console.log('⚠️ Could not find control for mapping:', mappingData);
+          }
+        }
+      }
+      
+      this.updateProgress();
+      
+    } catch (error) {
+      console.error('❌ Error loading mappings from storage:', error);
+    }
+  }
+
+  // Load existing mapping for a risk (legacy method - now handled by loadExistingMappingsFromDataverse)
+  async loadExistingMapping(risk) {
+    // This method is now deprecated - mappings are loaded in batch by loadExistingMappingsFromDataverse
+    console.log('ℹ️ Individual risk mapping load requested for:', risk.id, '- now handled by batch load');
+  }
+
+  // Update risk card display
+  updateRiskCard(riskId, control) {
     const riskCard = document.querySelector(`[data-risk-id="${riskId}"]`);
     const controlsContainer = document.getElementById(`controls-${riskId}`);
-
-    if (controlIds.length === 0) {
-      controlsContainer.innerHTML = '<div class="text-muted small">No controls mapped yet</div>';
+    
+    if (!controlsContainer) return;
+    
+    if (!control) {
+      // No control mapped
+      controlsContainer.innerHTML = '<div class="text-muted small">No control mapped yet</div>';
       riskCard.classList.remove('mapped');
       riskCard.classList.add('unmapped');
-    } else {
-      let controlsHtml = '';
-      controlIds.forEach(controlId => {
-        const control = controlData[controlId];
-        if (control) {
-          controlsHtml += `
-            <span class="control-chip">
-              ${control.name}
-              <span class="remove-control" onclick="removeControl('${riskId}', '${controlId}')">&times;</span>
-            </span>
-          `;
-        }
-      });
-      controlsContainer.innerHTML = controlsHtml;
+      riskCard.style.borderColor = '#ffc107';
+      riskCard.style.backgroundColor = '#fffbf0';
+        } else {
+      // Control mapped
+      controlsContainer.innerHTML = `
+        <div class="d-flex align-items-center justify-content-between">
+          <div>
+            <span class="fw-bold text-success">${control.cr129_controltitle}</span>
+            <br />
+            <small class="text-muted">${control.cr129_controltype || 'Unknown Type'}</small>
+          </div>
+          <i class="bi bi-check-circle-fill text-success"></i>
+        </div>
+      `;
       riskCard.classList.remove('unmapped');
       riskCard.classList.add('mapped');
+      riskCard.style.borderColor = '#28a745';
+      riskCard.style.backgroundColor = '#f8fff9';
     }
   }
 
-  function removeControl(riskId, controlId) {
-    if (riskMappings[riskId]) {
-      riskMappings[riskId] = riskMappings[riskId].filter(id => id !== controlId);
-      updateRiskCard(riskId, riskMappings[riskId]);
-      updateProgress();
-
-      // If Web API is available, remove from Dataverse
-      if (typeof webapi !== 'undefined' && webapi.safeAjax && riskControlAPI) {
-        const riskObj = selectedRisks.find(r => r.id === riskId);
-        const actualRiskId = riskObj && riskObj.cr129_riskid ? riskObj.cr129_riskid : riskId;
-        
-        riskControlAPI.deleteRiskMappings(actualRiskId, [controlId])
-          .then(() => {
-            console.log('✅ Control mapping removed from Dataverse');
-      if (typeof modernInteractions !== 'undefined') {
-        modernInteractions.showInfo('Control Removed', 'Control mapping removed');
-            }
-          })
-          .catch(error => {
-            console.error('❌ Error removing control mapping from Dataverse:', error);
-          });
-      }
-    }
-  }
-
-  function updateProgress() {
-    const totalRisks = selectedRisks.length;
-    const mappedCount = Object.keys(riskMappings).filter(riskId => riskMappings[riskId].length > 0).length;
+  // Update progress summary
+  updateProgress() {
+    const totalRisks = this.selectedRisks.length;
+    const mappedCount = Object.keys(this.riskMappings).length;
     const unmappedCount = totalRisks - mappedCount;
-
+    
     document.getElementById('progressCircle').textContent = `${mappedCount}/${totalRisks}`;
     document.getElementById('totalRisks').textContent = totalRisks;
     document.getElementById('mappedRisks').textContent = mappedCount;
     document.getElementById('unmappedRisks').textContent = unmappedCount;
-
-    // Enable continue button if all risks are mapped
-    const continueBtn = document.getElementById('continueBtn');
-    continueBtn.disabled = mappedCount < totalRisks;
-
-    if (mappedCount === totalRisks) {
-      continueBtn.classList.remove('btn-warning');
-      continueBtn.classList.add('btn-success');
-    } else {
-      continueBtn.classList.remove('btn-success');
-      continueBtn.classList.add('btn-warning');
-    }
+    
+    // Enable continue button (controls are optional)
+    document.getElementById('continueBtn').disabled = false;
   }
 
-  function filterRisks(filter) {
-    // Update active tab
-    document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
-    document.getElementById(`filter${filter.charAt(0).toUpperCase() + filter.slice(1)}`).classList.add('active');
-
-    // Filter risk cards
-    document.querySelectorAll('.risk-card').forEach(card => {
-      const riskId = card.dataset.riskId;
-      const riskLevel = card.dataset.riskLevel;
-      const isMapped = riskMappings[riskId] && riskMappings[riskId].length > 0;
-
-      let show = false;
-      switch(filter) {
-        case 'all':
-          show = true;
-          break;
-        case 'mapped':
-          show = isMapped;
-          break;
-        case 'unmapped':
-          show = !isMapped;
-          break;
-        case 'high':
-          show = riskLevel === 'critical' || riskLevel === 'high';
-          break;
-      }
-
-      card.closest('.col-lg-4').style.display = show ? 'block' : 'none';
+  // Bind event handlers
+  bindEvents() {
+    // Search functionality
+    document.getElementById('controlSearch').addEventListener('input', (e) => {
+      this.filterControls(e.target.value);
     });
   }
 
-  function continueToNextStep() {
-    const mappedCount = Object.keys(riskMappings).filter(riskId => riskMappings[riskId].length > 0).length;
-    const totalRisks = selectedRisks.length;
+  // Filter controls in modal
+  filterControls(searchTerm) {
+    const controlOptions = document.querySelectorAll('.control-option');
+    const term = searchTerm.toLowerCase();
+    
+    controlOptions.forEach(option => {
+      const controlText = option.textContent.toLowerCase();
+      option.style.display = controlText.includes(term) ? 'block' : 'none';
+    });
+  }
 
-    if (mappedCount < totalRisks) {
-      if (typeof modernInteractions !== 'undefined') {
-        modernInteractions.showError('Incomplete Mapping', 'Please map controls to all risks before continuing');
-      }
-      return;
-    }
+  // Navigation functions
+  goBack() {
+    console.log('🔄 Navigating back to Risk Identification...');
+    window.location.href = '/Risk-ID';
+  }
 
+  continueToNextStep() {
+    console.log('🔄 Continuing to Residual Assessment...');
+    
+    // Store mappings in session storage for next step
+    sessionStorage.setItem('rcsa_control_mappings', JSON.stringify(this.riskMappings));
+    
     // Show loading state
     const btn = document.getElementById('continueBtn');
     const originalText = btn.innerHTML;
     btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
     btn.disabled = true;
-
-    // Save current mappings to session storage for next screen
-    sessionStorage.setItem('rcsa_control_mappings', JSON.stringify(riskMappings));
-
-    if (typeof modernInteractions !== 'undefined') {
-      modernInteractions.showSuccess('Proceeding', 'Moving to Residual Risk Assessment...');
-    }
-
+    
     setTimeout(() => {
-      window.location.href = '/residual-risk-assessment';
-    }, 2000);
-  }
-
-  function goBack() {
-    if (typeof modernInteractions !== 'undefined') {
-      modernInteractions.showInfo('Returning to Risk Identification', 'Redirecting...');
-    }
-
-    setTimeout(() => {
-      window.location.href = '/risk-identification-v2';
+      window.location.href = '/Residual-Assessment';
     }, 1000);
   }
 
-  // ===== INITIALIZATION =====
-  
-  // Initialize page
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Control Mapping page initializing...');
-    
-    // Debug: Check if Web API wrapper is available
-    console.log('🔍 Web API wrapper available?', typeof webapi !== 'undefined');
-    if (typeof webapi !== 'undefined') {
-      console.log('🔍 Available webapi methods:', Object.keys(webapi));
-      console.log('🔍 webapi.get available?', typeof webapi.get === 'function');
-      console.log('🔍 webapi.create available?', typeof webapi.create === 'function');
-      console.log('🔍 webapi.delete available?', typeof webapi.delete === 'function');
-    }
-    
-    // Load selected risks from session storage
-    console.log('🔄 About to load selected risks...');
-    loadSelectedRisks();
-    console.log('✅ Selected risks loaded, count:', selectedRisks.length);
-    
-    // Load available controls from Dataverse
-    loadAvailableControls()
-      .then(() => {
-        console.log('✅ Control Mapping initialized successfully');
-    updateProgress();
-
-    if (typeof modernInteractions !== 'undefined') {
-      modernInteractions.showSuccess('Control Mapping Ready', 'Map controls to identified risks to proceed');
-    }
-      })
-      .catch(error => {
-        console.error('❌ Error initializing Control Mapping:', error);
-        
-        if (typeof modernInteractions !== 'undefined') {
-          modernInteractions.showError('Initialization Error', 'Some features may not work properly');
-        }
-      });
-  });
-
-  // ===== ENHANCED METADATA DIAGNOSTIC FUNCTIONS =====
-  
-  async function testControlMappingAPI() {
-    console.log('🧪 Starting Enhanced Control Mapping API Diagnostic...');
-    
-    // Step 1: Test metadata endpoint and extract navigation properties
-    console.log('📋 Step 1: Testing metadata endpoint and extracting navigation properties...');
-    try {
-      const metadataResponse = await fetch('/_api/$metadata');
-      if (metadataResponse.ok) {
-        const metadataText = await metadataResponse.text();
-        console.log('✅ Metadata endpoint accessible!');
-        
-        // Extract EntitySet information
-        const entitySetMatches = metadataText.match(/<EntitySet[^>]*Name="cr129_[^"]*"[^>]*>/g);
-        console.log('📊 Available EntitySets:', entitySetMatches);
-        
-        // Extract NavigationProperty information for our entities
-        const navigationProps = extractNavigationProperties(metadataText);
-        console.log('🔗 Navigation Properties:', navigationProps);
-        
-        // Store for later use
-        window.metadataInfo = {
-          entitySets: entitySetMatches,
-          navigationProps: navigationProps
-        };
-        
-      } else {
-        console.error('❌ Metadata endpoint failed:', metadataResponse.status, metadataResponse.statusText);
-      }
-    } catch (error) {
-      console.error('❌ Metadata test failed:', error);
-    }
-    
-    // Step 2: Test entity endpoints with exact names
-    console.log('🔗 Step 2: Testing entity endpoints...');
-    const endpoints = [
-      '/_api/cr129_Control?$top=1',
-      '/_api/cr129_risks?$top=1',
-      '/_api/cr129_riskctrls?$top=1',
-      '/_api/cr129_procs?$top=1'
-    ];
-    
-    for (const endpoint of endpoints) {
-      try {
-        console.log(`🧪 Testing: ${endpoint}`);
-        const response = await fetch(endpoint);
-        if (response.ok) {
-          const data = await response.json();
-          console.log(`✅ ${endpoint} - SUCCESS! Found ${data.value ? data.value.length : 0} records`);
-          if (data.value && data.value.length > 0) {
-            console.log(`📋 Available fields:`, Object.keys(data.value[0]));
-          }
-        } else {
-          console.log(`❌ ${endpoint} - ${response.status} ${response.statusText}`);
-        }
-      } catch (error) {
-        console.log(`❌ ${endpoint} - Error:`, error.message);
-      }
-    }
-    
-    // Step 3: Test navigation property binding
-    console.log('🔗 Step 3: Testing navigation property patterns...');
-    await testNavigationPropertyPatterns();
-    
-    console.log('🎯 Enhanced diagnostic complete! Check the console output above for results.');
-  }
-  
-  function extractNavigationProperties(metadataXml) {
-    const navigationProps = {};
-    
-    // Extract EntityType definitions
-    const entityTypeRegex = /<EntityType[^>]*Name="([^"]*cr129_[^"]*)"[^>]*>(.*?)<\/EntityType>/gs;
-    let match;
-    
-    while ((match = entityTypeRegex.exec(metadataXml)) !== null) {
-      const entityName = match[1];
-      const entityContent = match[2];
-      
-      // Extract NavigationProperty elements
-      const navPropRegex = /<NavigationProperty[^>]*Name="([^"]*)"[^>]*Type="[^"]*\.([^"]*)"[^>]*>/g;
-      let navMatch;
-      
-      navigationProps[entityName] = [];
-      while ((navMatch = navPropRegex.exec(entityContent)) !== null) {
-        navigationProps[entityName].push({
-          name: navMatch[1],
-          type: navMatch[2]
-        });
-      }
-    }
-    
-    return navigationProps;
-  }
-  
-  async function testNavigationPropertyPatterns() {
-    console.log('🧪 Testing common navigation property patterns...');
-    
-    // Test different navigation property naming patterns
-    const navPatterns = [
-      'cr129_risk',
-      'cr129_risktitle', 
-      'cr129_control',
-      'cr129_controltitle',
-      'cr129_Risk',
-      'cr129_Control'
-    ];
-    
-    for (const pattern of navPatterns) {
-      console.log(`🔍 Testing navigation property pattern: ${pattern}@odata.bind`);
-    }
-    
-    // If we have actual data, test a mapping creation
-    if (typeof webapi !== 'undefined' && webapi.safeAjax) {
-      console.log('🔄 Testing risk-control mapping creation with different navigation property patterns...');
-      
-      // Get sample data first
-      try {
-        const risksResponse = await webapi.safeAjax({
-          url: '/_api/cr129_risks?$top=1',
-          type: 'GET'
-        });
-        
-        const controlsResponse = await webapi.safeAjax({
-          url: '/_api/cr129_Control?$top=1',
-          type: 'GET'
-        });
-        
-        if (risksResponse.value && risksResponse.value.length > 0 && 
-            controlsResponse.value && controlsResponse.value.length > 0) {
-          
-          const riskId = risksResponse.value[0].cr129_riskid;
-          const controlId = controlsResponse.value[0].cr129_controlid;
-          
-          console.log('📋 Sample data found:', { riskId, controlId });
-          
-          // Test different navigation property patterns
-          const testPatterns = [
-            {
-              'cr129_risk@odata.bind': `/cr129_risks(${riskId})`,
-              'cr129_control@odata.bind': `/cr129_Control(${controlId})`
-            },
-            {
-              'cr129_risktitle@odata.bind': `/cr129_risks(${riskId})`,
-              'cr129_controltitle@odata.bind': `/cr129_Control(${controlId})`
-            }
-          ];
-          
-          for (let i = 0; i < testPatterns.length; i++) {
-            console.log(`🧪 Testing navigation pattern ${i + 1}:`, testPatterns[i]);
-            
-            try {
-              const testResponse = await webapi.safeAjax({
-                url: '/_api/cr129_riskctrls',
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                headers: {
-                  'OData-Version': '4.0',
-                  'Prefer': 'return=representation'
-                },
-                data: JSON.stringify(testPatterns[i])
-              });
-              
-              console.log(`✅ Navigation pattern ${i + 1} SUCCESS:`, testResponse);
-              
-              // Clean up the test record
-              if (testResponse.cr129_riskctrlid) {
-                await webapi.safeAjax({
-                  url: `/_api/cr129_riskctrls(${testResponse.cr129_riskctrlid})`,
-                  type: 'DELETE',
-                  headers: { 'If-Match': '*' }
-                });
-                console.log(`🧹 Cleaned up test record ${testResponse.cr129_riskctrlid}`);
-              }
-              
-              break; // Stop testing once we find a working pattern
-              
-            } catch (error) {
-              console.log(`❌ Navigation pattern ${i + 1} failed:`, error);
-            }
-          }
-        }
-      } catch (error) {
-        console.log('❌ Could not get sample data for navigation property testing:', error);
-      }
-    }
-  }
-  
-  // Make diagnostic function available globally
-  window.testControlMappingAPI = testControlMappingAPI;
-
-  // ===== BASIC CONNECTIVITY TEST =====
-  
-  async function testBasicConnectivity() {
-    console.log('🔍 Testing basic Web API connectivity...');
-    
-    // Test 1: Check if Web API root is accessible
-    console.log('📋 Step 1: Testing Web API root endpoint...');
-    try {
-      const response = await fetch('/_api/');
-      console.log('/_api/ response:', response.status, response.statusText);
-      
-      if (response.ok) {
-        const text = await response.text();
-        console.log('✅ Web API root accessible');
-        console.log('Response preview:', text.substring(0, 200) + '...');
-      } else {
-        console.log('❌ Web API root not accessible');
-      }
-    } catch (error) {
-      console.log('❌ Web API root error:', error);
-    }
-    
-    // Test 2: Test standard entities (contacts, etc.)
-    console.log('📋 Step 2: Testing standard entities...');
-    const standardEntities = ['contacts', 'accounts', 'contact'];
-    
-    for (const entity of standardEntities) {
-      try {
-        const response = await fetch(`/_api/${entity}?$top=1`);
-        console.log(`/_api/${entity} response:`, response.status, response.statusText);
-        
-        if (response.ok) {
-          const data = await response.json();
-          console.log(`✅ ${entity} accessible, found ${data.value ? data.value.length : 0} records`);
-        }
-      } catch (error) {
-        console.log(`❌ ${entity} error:`, error);
-      }
-    }
-    
-    // Test 3: Test our custom entities
-    console.log('📋 Step 3: Testing our custom entities...');
-      const customEntities = ['cr129_risks', 'cr129_Control', 'cr129_procs', 'cr129_riskctrls'];
-    
-    for (const entity of customEntities) {
-      try {
-        const response = await fetch(`/_api/${entity}?$top=1`);
-        console.log(`/_api/${entity} response:`, response.status, response.statusText);
-        
-        if (response.ok) {
-          const data = await response.json();
-          console.log(`✅ ${entity} accessible, found ${data.value ? data.value.length : 0} records`);
-          if (data.value && data.value.length > 0) {
-            console.log(`📋 ${entity} sample fields:`, Object.keys(data.value[0]));
-          }
-        }
-      } catch (error) {
-        console.log(`❌ ${entity} error:`, error);
-      }
-    }
-    
-    console.log('🎯 Basic connectivity test complete!');
-  }
-
-  // ===== ENTITY NAME VERIFICATION FUNCTION =====
-  
-  async function verifyEntityNames() {
-    console.log('🔍 ENTITY NAME VERIFICATION DIAGNOSTIC');
-    console.log('=====================================');
-    
-    // Define all possible entity name variations to test
-    const entityVariations = {
-      'Risk Entity': [
-        'cr129_risk',
-        'cr129_risks',
-        'cr129_Risk',
-        'cr129_Risks'
-      ],
-      'Control Entity': [
-        'cr129_control',
-        'cr129_Control', 
-        'cr129_Control',
-        'cr129_Controls'
-      ],
-      'Risk-Control Mapping Entity': [
-        'cr129_riskctrl',
-        'cr129_riskctrls',
-        'cr129_RiskCtrl',
-        'cr129_RiskCtrls',
-        'cr129_riskcontrol',
-        'cr129_riskcontrols'
-      ],
-      'Process Entity': [
-        'cr129_proc',
-        'cr129_procs',
-        'cr129_Proc',
-        'cr129_Procs',
-        'cr129_process',
-        'cr129_processes'
-      ],
-      'Business Unit Entity': [
-        'cr129_bu',
-        'cr129_bus',
-        'cr129_Bu',
-        'cr129_Bus',
-        'cr129_businessunit',
-        'cr129_businessunits'
-      ]
+  // Utility functions
+  getCategoryClass(category) {
+    const categoryClasses = {
+      'Credit': 'bg-danger text-white',
+      'Operational': 'bg-warning text-dark',
+      'Market': 'bg-info text-white',
+      'Liquidity': 'bg-primary text-white',
+      'Compliance': 'bg-success text-white',
+      'Technology': 'bg-secondary text-white',
+      'Fraud': 'bg-dark text-white'
     };
-    
-    const results = {};
-    
-    // Test each entity variation
-    for (const [entityType, variations] of Object.entries(entityVariations)) {
-      console.log(`\n🧪 Testing ${entityType}:`);
-      results[entityType] = {};
-      
-      for (const entityName of variations) {
-        try {
-          console.log(`   Testing: ${entityName}`);
-          
-          // Test with a simple GET request with $top=1 to minimize data
-          const response = await fetch(`/_api/${entityName}?$top=1`, {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            }
-          });
-          
-          if (response.ok) {
-            const data = await response.json();
-            results[entityType][entityName] = {
-              status: 'SUCCESS',
-              statusCode: response.status,
-              recordCount: data.value ? data.value.length : 0,
-              sampleFields: data.value && data.value.length > 0 ? Object.keys(data.value[0]).slice(0, 5) : []
-            };
-            console.log(`   ✅ ${entityName}: SUCCESS (${response.status}) - ${data.value ? data.value.length : 0} records`);
-          } else {
-            results[entityType][entityName] = {
-              status: 'FAILED',
-              statusCode: response.status,
-              error: response.statusText
-            };
-            console.log(`   ❌ ${entityName}: FAILED (${response.status}) - ${response.statusText}`);
-          }
-        } catch (error) {
-          results[entityType][entityName] = {
-            status: 'ERROR',
-            error: error.message
-          };
-          console.log(`   ❌ ${entityName}: ERROR - ${error.message}`);
-        }
-        
-        // Small delay to avoid overwhelming the API
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-    }
-    
-    // Summary of results
-    console.log('\n📊 ENTITY NAME VERIFICATION SUMMARY:');
-    console.log('====================================');
-    
-    for (const [entityType, variations] of Object.entries(results)) {
-      console.log(`\n${entityType}:`);
-      const successfulVariations = Object.entries(variations)
-        .filter(([name, result]) => result.status === 'SUCCESS')
-        .map(([name, result]) => ({ name, ...result }));
-      
-      if (successfulVariations.length > 0) {
-        console.log('   ✅ WORKING ENTITY NAMES:');
-        successfulVariations.forEach(variation => {
-          console.log(`      • ${variation.name} (${variation.recordCount} records)`);
-          if (variation.sampleFields.length > 0) {
-            console.log(`        Sample fields: ${variation.sampleFields.join(', ')}`);
-          }
-        });
-      } else {
-        console.log('   ❌ NO WORKING ENTITY NAMES FOUND');
-      }
-    }
-    
-    // Store results globally for reference
-    window.entityNameResults = results;
-    
-    console.log('\n💡 RECOMMENDATIONS:');
-    console.log('==================');
-    console.log('Based on the results above, update your site settings and code to use the WORKING entity names.');
-    console.log('The results are stored in window.entityNameResults for reference.');
-    
-    return results;
+    return categoryClasses[category] || 'bg-secondary text-white';
   }
-  
-  // Add button to trigger verification
-  function addEntityVerificationButton() {
-    const button = document.createElement('button');
-    button.textContent = 'Verify Entity Names';
-    button.className = 'btn btn-warning btn-sm me-2';
-    button.onclick = verifyEntityNames;
-    
-    // Add to page (you can adjust where this appears)
-    const container = document.querySelector('.container') || document.body;
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'mb-3';
-    buttonContainer.appendChild(button);
-    container.insertBefore(buttonContainer, container.firstChild);
-  }
-  
-  // Add the button when page loads
-  document.addEventListener('DOMContentLoaded', addEntityVerificationButton);
 
-  // ===== METADATA EXTRACTION FUNCTION =====
-  
-  async function extractMetadata() {
-    console.log('🔍 EXTRACTING DATAVERSE METADATA');
-    console.log('================================');
-    
-    try {
-      console.log('📡 Fetching metadata from /_api/$metadata...');
-      const response = await fetch('/_api/$metadata');
-      
-      if (!response.ok) {
-        console.error('❌ Failed to fetch metadata:', response.status, response.statusText);
-        return null;
-      }
-      
-      const metadataXml = await response.text();
-      console.log('✅ Metadata fetched successfully');
-      
-      // Parse the XML to extract EntitySet names
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(metadataXml, 'text/xml');
-      
-      // Find all EntitySet elements
-      const entitySets = xmlDoc.querySelectorAll('EntitySet');
-      console.log(`📊 Found ${entitySets.length} total entity sets`);
-      
-      // Filter for cr129_ entities
-      const cr129EntitySets = [];
-      entitySets.forEach(entitySet => {
-        const name = entitySet.getAttribute('Name');
-        if (name && name.startsWith('cr129_')) {
-          const entityType = entitySet.getAttribute('EntityType');
-          cr129EntitySets.push({
-            name: name,
-            entityType: entityType,
-            fullDefinition: entitySet.outerHTML
-          });
-        }
-      });
-      
-      console.log(`🎯 Found ${cr129EntitySets.length} cr129_ entity sets:`);
-      cr129EntitySets.forEach(entity => {
-        console.log(`   • ${entity.name} (Type: ${entity.entityType})`);
-      });
-      
-      // Also extract EntityType definitions for field information
-      const entityTypes = xmlDoc.querySelectorAll('EntityType');
-      const cr129EntityTypes = [];
-      entityTypes.forEach(entityType => {
-        const name = entityType.getAttribute('Name');
-        if (name && name.startsWith('cr129_')) {
-          const properties = entityType.querySelectorAll('Property');
-          const fields = Array.from(properties).map(prop => ({
-            name: prop.getAttribute('Name'),
-            type: prop.getAttribute('Type'),
-            nullable: prop.getAttribute('Nullable')
-          }));
-          
-          cr129EntityTypes.push({
-            name: name,
-            fields: fields
-          });
-        }
-      });
-      
-      console.log(`📋 Found ${cr129EntityTypes.length} cr129_ entity types with field definitions`);
-      
-      // Create a comprehensive mapping
-      const entityMapping = {};
-      cr129EntitySets.forEach(entitySet => {
-        const entityTypeName = entitySet.entityType.split('.').pop(); // Remove namespace
-        const entityType = cr129EntityTypes.find(et => et.name === entityTypeName);
-        
-        entityMapping[entitySet.name] = {
-          entitySetName: entitySet.name,
-          entityTypeName: entityTypeName,
-          fields: entityType ? entityType.fields : [],
-          apiEndpoint: `/_api/${entitySet.name}`
-        };
-      });
-      
-      console.log('\n📊 COMPLETE ENTITY MAPPING:');
-      console.log('===========================');
-      Object.entries(entityMapping).forEach(([name, info]) => {
-        console.log(`\n${name}:`);
-        console.log(`   API Endpoint: ${info.apiEndpoint}`);
-        console.log(`   Entity Type: ${info.entityTypeName}`);
-        console.log(`   Field Count: ${info.fields.length}`);
-        if (info.fields.length > 0) {
-          console.log(`   Key Fields: ${info.fields.slice(0, 5).map(f => f.name).join(', ')}${info.fields.length > 5 ? '...' : ''}`);
-        }
-      });
-      
-      // Store results globally
-      window.metadataResults = {
-        entitySets: cr129EntitySets,
-        entityTypes: cr129EntityTypes,
-        entityMapping: entityMapping,
-        rawMetadata: metadataXml
-      };
-      
-      console.log('\n💾 Results stored in window.metadataResults');
-      
-      // Generate site settings recommendations
-      console.log('\n🔧 RECOMMENDED SITE SETTINGS:');
-      console.log('=============================');
-      Object.entries(entityMapping).forEach(([name, info]) => {
-        console.log(`\n# ${name} Entity`);
-        console.log(`- adx_name: Webapi/${name}/enabled`);
-        console.log(`  adx_value: true`);
-        console.log(`- adx_name: Webapi/${name}/fields`);
-        console.log(`  adx_value: '*'`);
-        console.log(`- adx_name: Webapi/${name}/disableodatafilter`);
-        console.log(`  adx_value: false`);
-      });
-      
-      return entityMapping;
-      
-    } catch (error) {
-      console.error('❌ Error extracting metadata:', error);
-      return null;
-    }
+  getSeverityBadge(likelihood, impact) {
+    const score = (likelihood || 1) * (impact || 1);
+    if (score >= 16) return '<span class="badge bg-danger">Critical</span>';
+    if (score >= 9) return '<span class="badge bg-warning">High</span>';
+    if (score >= 4) return '<span class="badge bg-info">Medium</span>';
+    return '<span class="badge bg-success">Low</span>';
+  }
+
+  showSuccessMessage(message) {
+    // Simple alert for now - can be enhanced with toast notifications
+    console.log('✅ Success:', message);
+    alert(message);
+  }
+
+  showErrorMessage(message) {
+    // Simple alert for now - can be enhanced with toast notifications
+    console.error('❌ Error:', message);
+    alert(message);
+  }
+}
+
+// Global functions for onclick handlers
+function openControlMapping(riskId, riskTitle, riskDescription) {
+  window.controlMapping.openControlMapping(riskId, riskTitle, riskDescription);
+}
+
+function saveControlMapping() {
+  // Get the selected control from the modal
+  const selectedControl = document.querySelector('input[name="selectedControl"]:checked');
+  if (!selectedControl) {
+    alert('Please select a control to map to this risk.');
+    return;
   }
   
-  // Add button to trigger metadata extraction
-  function addMetadataExtractionButton() {
-    const button = document.createElement('button');
-    button.textContent = 'Extract Metadata';
-    button.className = 'btn btn-info btn-sm me-2';
-    button.onclick = extractMetadata;
-    
-    // Add to page
-    const container = document.querySelector('.container') || document.body;
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'mb-3';
-    buttonContainer.appendChild(button);
-    container.insertBefore(buttonContainer, container.firstChild);
+  const controlId = selectedControl.value;
+  const riskId = window.controlMapping.currentRiskId;
+  
+  if (!riskId) {
+    console.error('❌ No risk selected for mapping');
+    return;
   }
   
-  // Add the button when page loads
-  document.addEventListener('DOMContentLoaded', addMetadataExtractionButton);
+  window.controlMapping.saveControlMapping(riskId, controlId);
+}
+
+function clearControlMapping() {
+  const riskId = window.controlMapping.currentRiskId;
+  
+  if (!riskId) {
+    console.error('❌ No risk selected for clearing mapping');
+    return;
+  }
+  
+  window.controlMapping.clearControlMapping(riskId);
+}
+
+function goBack() {
+  window.controlMapping.goBack();
+}
+
+function continueToNextStep() {
+  window.controlMapping.continueToNextStep();
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('✅ Simplified Control Mapping page loaded');
+  window.controlMapping = new SimplifiedControlMapping();
+});
 </script>
+{% endif %}
+
 <div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;">
   <div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;"><div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;"></div></div>
 </div>

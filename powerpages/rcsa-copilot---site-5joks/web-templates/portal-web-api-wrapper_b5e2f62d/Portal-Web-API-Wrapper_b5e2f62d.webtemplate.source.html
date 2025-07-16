@@ -1,0 +1,84 @@
+<script>
+/**
+ * Power Pages Web API Wrapper
+ * Based on Microsoft's official recommended pattern
+ * Uses shell.getTokenDeferred() for proper token management
+ */
+(function(webapi, $){
+  function safeAjax(options) {
+    var deferred = $.Deferred();
+    
+    // Use Power Pages' built-in token management
+    if (typeof shell !== 'undefined' && shell.getTokenDeferred) {
+      shell.getTokenDeferred().done(function(token) {
+        options.headers = options.headers || {};
+        options.headers["__RequestVerificationToken"] = token;
+        $.ajax(options).done(deferred.resolve).fail(deferred.reject);
+      }).fail(deferred.reject);
+    } else {
+      // Fallback for when shell is not available
+      console.warn('shell.getTokenDeferred not available, using fallback token method');
+      options.headers = options.headers || {};
+      var token = $('input[name="__RequestVerificationToken"]').val();
+      if (token) {
+        options.headers["__RequestVerificationToken"] = token;
+      }
+      $.ajax(options).done(deferred.resolve).fail(deferred.reject);
+    }
+    
+    return deferred.promise();
+  }
+  
+  // Expose the safeAjax method
+  webapi.safeAjax = safeAjax;
+  
+  // Convenience methods using safeAjax
+  webapi.get = function(entitySetName, id, options) {
+    var url = '/_api/' + entitySetName;
+    if (id) {
+      url += '(' + id + ')';
+    }
+    
+    return safeAjax($.extend({
+      url: url,
+      type: 'GET',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json'
+    }, options));
+  };
+  
+  webapi.update = function(entitySetName, id, data, options) {
+    return safeAjax($.extend({
+      url: '/_api/' + entitySetName + '(' + id + ')',
+      type: 'PATCH',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(data),
+      headers: {
+        'If-Match': '*'
+      }
+    }, options));
+  };
+  
+  webapi.create = function(entitySetName, data, options) {
+    return safeAjax($.extend({
+      url: '/_api/' + entitySetName,
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(data)
+    }, options));
+  };
+  
+  webapi.delete = function(entitySetName, id, options) {
+    return safeAjax($.extend({
+      url: '/_api/' + entitySetName + '(' + id + ')',
+      type: 'DELETE',
+      headers: {
+        'If-Match': '*'
+      }
+    }, options));
+  };
+  
+  console.log('Power Pages Web API Wrapper loaded successfully');
+  
+})(window.webapi = window.webapi || {}, jQuery);
+</script> 

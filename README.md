@@ -1,13 +1,13 @@
 # RCSA Power Pages V3 - AI-Powered Risk and Compliance Assessment
 
-## 🚀 Project Status: Major Breakthrough - Dataverse Integration Complete
+## 🚀 Project Status: Control Mapping 403 Error RESOLVED - Full Web API Integration Working
 
 **Current Phase:** Phase 3 - Remaining Page Development  
 **Environment:** Risk and Compliance Assessment (https://org601a79e1.crm.dynamics.com/)  
 **Website ID:** aa7d49af-363f-41d3-b9d-bdd5ad5694d8 (RCSA Copilot - site-5joks)  
 **Last Updated:** January 2025
 
-> **🎉 MAJOR BREAKTHROUGH:** Successfully implemented complete Dataverse integration with working Dashboard and Process Selection pages. This is the first time we've achieved full data integration in the RCSA application.
+> **🎉 MAJOR BREAKTHROUGH:** Successfully resolved the week-long 403 Forbidden error in Control Mapping feature! Complete Web API integration now working with proper table permissions, child permissions, and site settings configuration. Repository cleaned and organized for maximum productivity.
 
 ## Overview
 
@@ -18,8 +18,10 @@ RCSA Power Pages V3 is an enterprise-grade AI-powered Risk and Compliance Assess
 ### ✅ Completed Features (Working in Production)
 - **Dashboard Page**: Real-time assessment metrics with role-based filtering
 - **Process Selection Page**: Dynamic process loading with business unit integration
+- **Control Mapping Feature**: FULL WEB API INTEGRATION with 1:1 lookup mapping
 - **Contact-Based Authentication**: Proper user context and role management
 - **Dataverse Integration**: Complete data connectivity with proper error handling
+- **Web API Permissions**: Complete 403 error resolution with table/child permissions
 - **CapTech Design System**: Professional styling with brand compliance
 - **Role-Based Security**: Analyst/Manager/Executive access levels
 - **Choice Field Handling**: Proper status mapping and display
@@ -40,21 +42,25 @@ RCSA_PowerPages_V3/
 │       ├── web-pages/
 │       │   ├── dashboard/             ← ✅ COMPLETE: Working dashboard
 │       │   ├── process-selection/     ← ✅ COMPLETE: Working process selection
+│       │   ├── control-mapping/       ← ✅ COMPLETE: Working with Web API
 │       │   ├── risk-identification/   ← 🔄 TODO: Next to implement
-│       │   ├── control-mapping/       ← 🔄 TODO: After risk identification
 │       │   └── residual-assessment/   ← 🔄 TODO: Final page
 │       ├── web-files/                 ← CSS, JavaScript, and assets
+│       ├── table-permissions/         ← Web API permissions configuration
 │       └── sitesetting.yml            ← Site configuration
-├── docs/
+├── docs/                              ← 📚 CLEANED: Essential documentation only
 │   ├── AI_DELEGATION_GUIDE.md         ← 🎯 ESSENTIAL: Guide for AI assistants
 │   ├── BUSINESS_CONTEXT_GUIDE.md      ← 🎯 ESSENTIAL: Banking domain knowledge
 │   ├── DATAVERSE_INTEGRATION_GUIDE.md ← 🎯 ESSENTIAL: Integration patterns
+│   ├── POWER_PAGES_WEB_API_403_TROUBLESHOOTING.md ← 🆕 Complete solution guide
+│   ├── CONTROL_MAPPING_TECHNICAL_REFERENCE.md ← 🔧 Technical implementation
 │   ├── PROJECT_STATUS.md              ← 📊 CURRENT: Project progress
 │   ├── POWER_PLATFORM_CLI_REFERENCE.md ← 🔧 ESSENTIAL: CLI commands
-│   ├── REPOSITORY_STRUCTURE.md        ← 🗺️ Navigation guide
 │   └── [other essential docs...]
-├── archive/                           ← 🗄️ OLD: Archived files for reference
-├── original-dashboard-backup/         ← 🗄️ OLD: Original dashboard backup
+├── archive/                           ← 🗄️ CLEANED: Organized legacy content
+│   ├── powerpages-versions/           ← Previous backup versions
+│   └── legacy-docs/                   ← Outdated documentation
+├── rcsa-design-system/                ← 🎨 Design system components
 └── scripts/                           ← 🔧 Deployment scripts
 ```
 
@@ -87,11 +93,14 @@ pac auth create --url https://org601a79e1.crm.dynamics.com
 ## 🔑 Key Achievements
 
 ### Technical Breakthroughs
+- **🚀 Web API 403 Error Resolution**: Complete solution for lookup field permissions
 - **Contact-Based Authentication**: Proper user context with Contact table integration
 - **Role-Based Data Filtering**: Analysts see own data, Managers see BU data
 - **Choice Field Handling**: Proper `.value` and `.label` usage in Liquid templates
 - **FetchXML Optimization**: Efficient queries with proper error handling
 - **Real-Time Metrics**: Live calculation of assessment status and counts
+- **Child Table Permissions**: Proper lookup field validation in Web API
+- **Site Settings Configuration**: Complete field restriction management
 
 ### Business Value
 - **Time Reduction**: Assessment process reduced from 2+ hours to target <10 minutes

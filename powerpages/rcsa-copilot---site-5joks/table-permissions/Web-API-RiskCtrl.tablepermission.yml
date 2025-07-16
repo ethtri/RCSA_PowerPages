@@ -1,0 +1,41 @@
+adx_append: true
+adx_appendto: true
+adx_columnpermissionprofiles:
+- adx_allcolumnspermissions: true
+  adx_columnpermissions:
+  - adx_columnlogicalname: cr129_riskctrlid
+    adx_columnpermissionprofileid: riskctrl-columns-profile
+    adx_columnpermissionid: riskctrl-id-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6943-b5d7-43ac-8359-482529725023
+  - adx_columnlogicalname: cr129_controltitle
+    adx_columnpermissionprofileid: riskctrl-columns-profile
+    adx_columnpermissionid: riskctrl-controltitle-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6943-b5d7-43ac-8359-482529725023
+  - adx_columnlogicalname: cr129_risktitle
+    adx_columnpermissionprofileid: riskctrl-columns-profile
+    adx_columnpermissionid: riskctrl-risktitle-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6943-b5d7-43ac-8359-482529725023
+  adx_columnpermissionprofileid: riskctrl-columns-profile
+  adx_columnpermissionprofilename: RiskCtrl Web API Columns
+  adx_columnpermissionprofile_tablepermission:
+  - 8a5d6943-b5d7-43ac-8359-482529725023
+adx_create: true
+adx_delete: true
+adx_enablewebapi: true
+adx_entitylogicalname: cr129_riskctrl
+adx_entityname: Web-API-RiskCtrl
+adx_entitypermission_webrole:
+- 27b95ddd-4d8e-409b-acb1-5b679dd2282c
+- a3f35e16-a398-428c-b9db-986df58ce13e
+- b912c42b-d467-42b7-88c9-2427536440e4
+adx_entitypermissionid: 8a5d6943-b5d7-43ac-8359-482529725023
+adx_parententitypermission: 
+adx_read: true
+adx_scope: 756150000
+adx_write: true

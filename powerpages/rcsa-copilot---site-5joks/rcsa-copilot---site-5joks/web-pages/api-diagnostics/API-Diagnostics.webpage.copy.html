@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Diagnostic Test</title>
+</head>
+<body>
+    <div class="diagnostic-container">
+        <h1>Power Pages Web API Diagnostic Test</h1>
+        <p>This page tests the Web API endpoints systematically to identify configuration issues.</p>
+        
+        <div class="alert alert-info">
+            <strong>Instructions:</strong> Run tests in order from top to bottom. Each test builds on the previous one.
+        </div>
+        
+        <div class="test-section">
+            <h2>Step 1: Metadata Endpoint Test</h2>
+            <p>First, let's test the metadata endpoint to see if Web API is accessible at all.</p>
+            <button class="test-button" onclick="testMetadata()">Test /_api/$metadata</button>
+            <div id="metadata-results" class="results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Step 2: Entity Set Discovery</h2>
+            <p>Extract entity set names from metadata to verify correct configuration.</p>
+            <button class="test-button" onclick="parseEntitySets()">Parse Entity Sets from Metadata</button>
+            <div id="entitysets-results" class="results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Step 3: Individual Entity Tests</h2>
+            <p>Test each entity endpoint individually with basic queries.</p>
+            <button class="test-button" onclick="testEntity('cr129_risks')">Test cr129_risks</button>
+            <button class="test-button" onclick="testEntity('cr129_controls')">Test cr129_controls</button>
+            <button class="test-button" onclick="testEntity('cr129_procs')">Test cr129_procs</button>
+            <button class="test-button" onclick="testEntity('cr129_riskctrls')">Test cr129_riskctrls</button>
+            <button class="test-button" onclick="testEntity('cr129_bus')">Test cr129_bus</button>
+            <div id="entity-results" class="results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Step 4: Complex Query Tests</h2>
+            <p>Test the specific queries used in the Control Mapping page.</p>
+            <button class="test-button" onclick="testComplexQueries()">Test Complex Queries</button>
+            <div id="complex-results" class="results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Step 5: Authentication & Permissions Test</h2>
+            <p>Verify authentication status and permissions.</p>
+            <button class="test-button" onclick="testAuthentication()">Test Authentication</button>
+            <div id="auth-results" class="results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>All Test Results Summary</h2>
+            <button class="test-button" onclick="runAllTests()">Run All Tests</button>
+            <button class="test-button" onclick="clearResults()">Clear Results</button>
+            <div id="summary-results" class="results"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+adx_appendquerystring: false
+adx_associatecurrentportaluser: false
+adx_attachfile: false
+adx_attachfileallowmultiple: false
+adx_attachfilelabel: >-
+  [
+    {
+      "LCID": 1033,
+      "Value": ""
+    }
+  ]
+adx_attachfilerequired: false
+adx_attachfilerestrictaccept: false
+adx_attachfilestoragelocation: 756150000
+adx_autogeneratesteps: false
+adx_captcharequired: false
+adx_containername: ''
+adx_entityformid: ad3d334b-fc5c-f011-bec1-7c1e521687a7
+adx_entityname: cr129_risk
+adx_entitypermissionsenabled: true
+adx_entitysourcetype: 756150001
+adx_forceallfieldsrequired: false
+adx_formname: RiskForm
+adx_geolocation_displaymap: false
+adx_geolocation_enabled: false
+adx_geolocation_maptype: 756150000
+adx_hideformonsuccess: true
+adx_maximumnooffiles: 5
+adx_mode: 100000001
+adx_name: RiskForm
+adx_onsuccess: 756150000
+adx_populatereferenceentitylookupfield: false
+adx_portaluserlookupattributeisactivityparty: false
+adx_recommendedfieldsrequired: false
+adx_recordidquerystringparametername: id
+adx_recordsourceallowcreateonnull: false
+adx_redirecturlappendentityidquerystring: false
+adx_redirectwebpage: 
+adx_referenceentityshowreadonlyform: false
+adx_referencequerystringisprimarykey: true
+adx_renderwebresourcesinline: false
+adx_setentityreference: false
+adx_showcaptchaforauthenticatedusers: false
+adx_showownerfields: false
+adx_showunsupportedfields: false
+adx_storageaccountname: ''
+adx_successmessage: >-
+  [
+    {
+      "LCID": 1033,
+      "Value": ""
+    }
+  ]
+adx_tooltipenabled: false
+adx_validationsummarylinksenabled: true

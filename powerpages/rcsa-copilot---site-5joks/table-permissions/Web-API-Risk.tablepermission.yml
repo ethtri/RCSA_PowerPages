@@ -1,0 +1,34 @@
+adx_allcolumnspermissions: true
+adx_append: true
+adx_appendto: true
+adx_childTablePermissions:
+- adx_append: false
+  adx_appendto: false
+  adx_create: false
+  adx_delete: false
+  adx_entitylogicalname: cr129_control
+  adx_entityname: Risk-Control-Lookup-Access
+  adx_entitypermission_webrole:
+  - 27b95ddd-4d8e-409b-acb1-5b679dd2282c
+  - a3f35e16-a398-428c-b9db-986df58ce13e
+  - b912c42b-d467-42b7-88c9-2427536440e4
+  adx_entitypermissionid: e2447bea-c145-4778-a183-1249a2fdbb13
+  adx_parententitypermission: e2447bea-c145-4778-a183-1249a2fdbb12
+  adx_parentrelationship: cr129_mappedcontrol
+  adx_read: true
+  adx_scope: 756150000
+  adx_write: false
+adx_create: true
+adx_delete: true
+adx_enablewebapi: true
+adx_entitylogicalname: cr129_risk
+adx_entityname: Web-API-Risk
+adx_entitypermission_webrole:
+- 27b95ddd-4d8e-409b-acb1-5b679dd2282c
+- a3f35e16-a398-428c-b9db-986df58ce13e
+- b912c42b-d467-42b7-88c9-2427536440e4
+adx_entitypermissionid: e2447bea-c145-4778-a183-1249a2fdbb12
+adx_parententitypermission: 
+adx_read: true
+adx_scope: 756150000
+adx_write: true

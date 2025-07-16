@@ -1,0 +1,247 @@
+{% assign defaultlang = settings['LanguageLocale/Code'] | default: 'en-us' %}
+{% assign homeurl = website.adx_partialurl %}
+
+<!-- Modern RCSA Header -->
+<style>
+.rcsa-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.75rem 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.rcsa-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rcsa-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rcsa-brand:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.rcsa-brand i {
+  font-size: 1.8rem;
+}
+
+.rcsa-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.rcsa-user-menu {
+  position: relative;
+}
+
+.rcsa-user-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rcsa-user-btn:hover {
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
+
+.breadcrumb-container {
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+}
+
+.breadcrumb-container .breadcrumb {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumb-container .breadcrumb-item {
+  color: rgba(255,255,255,0.8);
+}
+
+.breadcrumb-container .breadcrumb-item.active {
+  color: white;
+  font-weight: 600;
+}
+
+.breadcrumb-container .breadcrumb-item + .breadcrumb-item::before {
+  content: "›";
+  color: rgba(255,255,255,0.6);
+}
+
+@media (max-width: 768px) {
+  .rcsa-header .container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .breadcrumb-container {
+    width: 100%;
+    text-align: center;
+  }
+}
+</style>
+
+<header class="rcsa-header" role="banner">
+  <div class="container">
+    <a href="/" class="rcsa-brand">
+      <i class="bi bi-shield-check"></i>
+      <span>CapTech RCSA Copilot</span>
+    </a>
+    
+    <!-- Breadcrumb Navigation - JavaScript-based detection -->
+    <nav class="breadcrumb-container" aria-label="breadcrumb" id="breadcrumb-nav">
+      <ol class="breadcrumb" id="breadcrumb-list">
+        <!-- Breadcrumbs will be populated by JavaScript -->
+        <li class="breadcrumb-item">
+          <a href="/" style="color: rgba(255,255,255,0.8);">
+            <i class="bi bi-house-door me-1"></i>Loading...
+          </a>
+        </li>
+      </ol>
+    </nav>
+
+    <script>
+    // JavaScript breadcrumb logic - runs on every page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const breadcrumbList = document.getElementById('breadcrumb-list');
+        const currentPath = window.location.pathname.toLowerCase();
+        
+        console.log('Current path for breadcrumbs:', currentPath);
+        
+        // Clear existing breadcrumbs
+        breadcrumbList.innerHTML = '';
+        
+        // Home page - no breadcrumbs, just welcome message
+        if (currentPath === '/' || currentPath === '') {
+            const breadcrumbContainer = document.getElementById('breadcrumb-nav');
+            breadcrumbContainer.innerHTML = `
+                <div style="opacity: 0.6;">
+                    <span style="font-size: 0.9rem;">
+                        <i class="bi bi-house-door me-1"></i>Welcome to CapTech RCSA Copilot
+                    </span>
+                </div>
+            `;
+            return;
+        }
+        
+        // Always start with Home
+        breadcrumbList.innerHTML = `
+            <li class="breadcrumb-item">
+                <a href="/" style="color: rgba(255,255,255,0.8);">
+                    <i class="bi bi-house-door me-1"></i>Home
+                </a>
+            </li>
+        `;
+        
+        // Dashboard page
+        if (currentPath.includes('/dashboard')) {
+            breadcrumbList.innerHTML += `
+                <li class="breadcrumb-item active">Dashboard</li>
+            `;
+        }
+        // Process Selection page
+        else if (currentPath.includes('/process-selection')) {
+            breadcrumbList.innerHTML += `
+                <li class="breadcrumb-item">
+                    <a href="/Dashboard/" style="color: rgba(255,255,255,0.8);">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Process Selection</li>
+            `;
+        }
+        // Risk Identification page
+        else if (currentPath.includes('/risk-id')) {
+            breadcrumbList.innerHTML += `
+                <li class="breadcrumb-item">
+                    <a href="/Dashboard/" style="color: rgba(255,255,255,0.8);">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/Process-Selection/" style="color: rgba(255,255,255,0.8);">Process Selection</a>
+                </li>
+                <li class="breadcrumb-item active">Risk Identification</li>
+            `;
+        }
+        // Control Mapping page
+        else if (currentPath.includes('/control-mapping')) {
+            breadcrumbList.innerHTML += `
+                <li class="breadcrumb-item">
+                    <a href="/Dashboard/" style="color: rgba(255,255,255,0.8);">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/Process-Selection/" style="color: rgba(255,255,255,0.8);">Process Selection</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/Risk-ID/" style="color: rgba(255,255,255,0.8);">Risk Identification</a>
+                </li>
+                <li class="breadcrumb-item active">Control Mapping</li>
+            `;
+        }
+        // Residual Assessment page
+        else if (currentPath.includes('/residual')) {
+            breadcrumbList.innerHTML += `
+                <li class="breadcrumb-item">
+                    <a href="/Dashboard/" style="color: rgba(255,255,255,0.8);">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/Process-Selection/" style="color: rgba(255,255,255,0.8);">Process Selection</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/Risk-ID/" style="color: rgba(255,255,255,0.8);">Risk Identification</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/Control-Mapping-Overview/" style="color: rgba(255,255,255,0.8);">Control Mapping</a>
+                </li>
+                <li class="breadcrumb-item active">Residual Risk Assessment</li>
+            `;
+        }
+        // Success page
+        else if (currentPath.includes('/success')) {
+            breadcrumbList.innerHTML += `
+                <li class="breadcrumb-item">
+                    <a href="/Dashboard/" style="color: rgba(255,255,255,0.8);">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Assessment Complete</li>
+            `;
+        }
+        // Default - unknown page
+        else {
+            breadcrumbList.innerHTML += `
+                <li class="breadcrumb-item active">Page</li>
+            `;
+        }
+    });
+    </script>
+
+    <!-- User Menu - Removed for internal app -->
+    <div class="rcsa-nav">
+      <!-- No sign-in needed for internal app -->
+    </div>
+  </div>
+</header>
+
+<!-- Skip to content for accessibility -->
+<div class="skip-to-content">
+  <a href="#mainContent">Skip to main content</a>
+</div>

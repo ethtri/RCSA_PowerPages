@@ -34,12 +34,15 @@ docs/
 ├── AI_DELEGATION_GUIDE.md      ← ESSENTIAL: Guide for AI assistants
 ├── BUSINESS_CONTEXT_GUIDE.md   ← ESSENTIAL: Banking domain knowledge
 ├── DATAVERSE_INTEGRATION_GUIDE.md  ← ESSENTIAL: Integration patterns
+├── POWER_PAGES_WEB_API_403_TROUBLESHOOTING.md ← 🆕 Complete 403 error solution
+├── CONTROL_MAPPING_TECHNICAL_REFERENCE.md ← ESSENTIAL: Technical implementation
 ├── PROJECT_STATUS.md           ← CURRENT: Project progress
 ├── POWER_PLATFORM_CLI_REFERENCE.md  ← ESSENTIAL: CLI commands
 ├── LOCAL_DEPLOYMENT_GUIDE.md   ← ESSENTIAL: Deployment procedures
 ├── rcsa-ux-design-system.md    ← ESSENTIAL: Design standards
-├── rcsa-power-pages-requirements.md  ← ENTIAL: Functional requirements
+├── rcsa-power-pages-requirements.md  ← ESSENTIAL: Functional requirements
 ├── rcsa_data_dictionary.md     ← ESSENTIAL: Data model
+├── CONTROL_MAPPING_SIMPLIFIED_REQUIREMENTS.md ← Business requirements
 └── REPOSITORY_STRUCTURE.md     ← THIS FILE: Navigation guide
 ```
 
@@ -48,6 +51,18 @@ docs/
 #### **Archived Code**
 ```
 archive/
+├── powerpages-versions/        ← OLD: Previous powerpages backup versions
+│   ├── powerpages-current/
+│   ├── powerpages-final/
+│   ├── powerpages-test/
+│   └── powerpages-updated/
+├── legacy-docs/                ← OLD: Outdated documentation files
+│   ├── DEPLOYMENT_STRATEGY.md
+│   ├── DEPLOYMENT_CHECKLIST.md
+│   ├── CI_SETUP.md
+│   ├── POWER_PAGES_BEST_PRACTICES.md
+│   ├── PRODUCT_ROADMAP.md
+│   └── [other archived docs...]
 └── process-selection-backup/   ← OLD: Original process selection before rebuild
 
 original-dashboard-backup/
