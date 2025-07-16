@@ -34,6 +34,7 @@ docs/
 ├── AI_DELEGATION_GUIDE.md      ← ESSENTIAL: Guide for AI assistants
 ├── BUSINESS_CONTEXT_GUIDE.md   ← ESSENTIAL: Banking domain knowledge
 ├── DATAVERSE_INTEGRATION_GUIDE.md  ← ESSENTIAL: Integration patterns
+├── DATAVERSE_SCHEMA_REFERENCE.md ← 🆕 AUTHORITATIVE: Complete entity/field mappings
 ├── POWER_PAGES_WEB_API_403_TROUBLESHOOTING.md ← 🆕 Complete 403 error solution
 ├── CONTROL_MAPPING_TECHNICAL_REFERENCE.md ← ESSENTIAL: Technical implementation
 ├── PROJECT_STATUS.md           ← CURRENT: Project progress

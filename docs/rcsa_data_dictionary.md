@@ -1,5 +1,9 @@
 # RCSA Data Dictionary
 
+> **📋 NEW:** For complete entity schemas including logical names, EntitySetNames, and Web API patterns, see **[DATAVERSE_SCHEMA_REFERENCE.md](DATAVERSE_SCHEMA_REFERENCE.md)** - the authoritative source for all Dataverse naming conventions.
+
+## Quick Reference (Business View)
+
 ## Table: Assess
 
 | Field | Data Type | Description | Example | Lookup/Choice |
