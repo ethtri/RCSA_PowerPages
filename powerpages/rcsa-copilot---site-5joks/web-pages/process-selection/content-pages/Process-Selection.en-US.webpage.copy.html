@@ -175,15 +175,6 @@
   </div>
 
   <div class="container">
-    <!-- User Context & Debug Information -->
-    <div class="debug-panel">
-      <strong>Debug Info:</strong> 
-      Contact ID: {{ user.contactid | escape }} | 
-      Role: {{ user.cr129_userrole.label | default: "None" | escape }} ({{ user.cr129_userrole.value | default: "N/A" }}) | 
-      BU: {{ user.cr129_businessunitname.name | default: "None" | escape }} | 
-      Access Level: {{ user.cr129_accesslevel.label | default: "None" | escape }}
-    </div>
-
     <!-- Process Data Fetching with Enhanced Fields -->
     {% fetchxml userProcesses %}
       <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
@@ -502,8 +493,8 @@ function continueToRiskIdentification() {
     businessUnitId: businessUnitId
   });
   
-  // Navigate to risk identification V2 page (for testing)
-  window.location.href = '/Risk-Identification-V2';
+  // Navigate to working risk identification page
+  window.location.href = 'https://site-5joks.powerappsportals.com/Risk-ID/';
 }
 
 // Initialize page

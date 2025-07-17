@@ -16,6 +16,9 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- Include LogicGate Design System -->
+<link rel="stylesheet" href="/logicgate-design-system.css">
+
 {% if user %}
 <!-- Fallback Web API Implementation for authenticated users -->
 <script>
@@ -40,6 +43,49 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
   };
   
   console.log('✅ Fallback Web API wrapper created successfully');
+}
+
+// Fallback LogicGate components if not loaded
+if (typeof LogicGate === 'undefined') {
+  console.warn('⚠️ LogicGate components not loaded, creating fallback implementation...');
+  
+  window.LogicGate = {
+    Loading: {
+      show: function(element, message = 'Loading...') {
+        const el = typeof element === 'string' ? document.querySelector(element) : element;
+        if (!el) return;
+        
+        el.innerHTML = `
+          <div class="text-center p-4">
+            <div class="spinner-border text-primary mb-3" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <div>${message}</div>
+          </div>
+        `;
+      },
+      
+      hide: function(element) {
+        // Will be replaced by actual content rendering
+      }
+    },
+    
+    Toast: {
+      show: function(message, type = 'info', duration = 4000) {
+        console.log(`Toast [${type}]: ${message}`);
+        // Simple alert fallback
+        if (type === 'success') {
+          alert('✅ ' + message);
+        } else if (type === 'danger') {
+          alert('❌ ' + message);
+        } else {
+          alert(message);
+        }
+      }
+    }
+  };
+  
+  console.log('✅ Fallback LogicGate components created');
 }
 </script>
 
@@ -99,6 +145,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
   <div class="container">
     <div id="riskCardsGrid" class="row g-4">
       <!-- Risk cards will be populated dynamically -->
+      <!-- Skeleton loading state will be shown here during initial load -->
           </div>
           </div>
 
@@ -138,12 +185,12 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
           <input type="text" placeholder="Search available controls..." id="controlSearch" class="form-control" />
         </div>
         <div id="controlOptions" class="control-options">
-          <!-- Loading state -->
-          <div class="text-center p-4">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading controls...</span>
+          <!-- Enhanced loading state using LogicGate design system -->
+          <div class="lg-loading-overlay">
+            <div class="lg-loading-content">
+              <div class="lg-spinner"></div>
+              <div class="lg-loading-message">Loading available controls...</div>
             </div>
-            <p class="mt-2 text-muted">Loading available controls...</p>
           </div>
             </div>
           </div>
@@ -172,14 +219,20 @@ class MultiSelectControlMapping {
     console.log('✅ Initializing Multi-Select Control Mapping with cr129_riskctrl junction table');
     
     try {
+      // Show skeleton loading state for risk cards
+      this.showSkeletonRiskCards();
+      
       // Load selected risks from session storage
       this.loadSelectedRisks();
       
-      // Load available controls from Dataverse
+      // Load available controls from Dataverse with loading indicator
       await this.loadAvailableControls();
       
       // Load existing mappings from Dataverse using the junction table
       await this.loadExistingMappingsFromJunctionTable();
+      
+      // Hide skeleton loading and show actual content
+      this.hideSkeletonRiskCards();
       
       // Bind event handlers
       this.bindEvents();
@@ -188,6 +241,8 @@ class MultiSelectControlMapping {
       
     } catch (error) {
       console.error('❌ Error initializing Control Mapping page:', error);
+      // Hide skeleton loading
+      this.hideSkeletonRiskCards();
       // Show error message to user
       this.displayErrorState();
     }
@@ -475,17 +530,57 @@ class MultiSelectControlMapping {
     const container = document.getElementById('controlOptions');
     const currentMappings = this.riskMappings[this.currentRiskId] || [];
     
-    if (this.availableControls.length === 0) {
-      container.innerHTML = `
-        <div class="text-center p-4">
-          <i class="bi bi-exclamation-triangle text-warning mb-3" style="font-size: 3rem;"></i>
-          <h6 class="text-muted">No Controls Available</h6>
-          <p class="text-muted small">Controls could not be loaded from Dataverse.</p>
-        </div>
-      `;
-      return;
+    console.log('🔄 Populating control options...');
+    console.log('🔍 LogicGate available:', typeof LogicGate !== 'undefined');
+    console.log('🔍 Available controls:', this.availableControls.length);
+    
+    // Show loading state using LogicGate design system (with fallback)
+    try {
+      if (typeof LogicGate !== 'undefined' && LogicGate.Loading) {
+        LogicGate.Loading.show(container, 'Loading available controls...');
+      } else {
+        // Fallback loading state
+        container.innerHTML = `
+          <div class="text-center p-4">
+            <div class="spinner-border text-primary mb-3" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <div>Loading available controls...</div>
+          </div>
+        `;
+      }
+    } catch (error) {
+      console.error('❌ Error showing loading state:', error);
+      // Continue without loading state
     }
+    
+    // Simulate brief loading delay for better UX
+    setTimeout(() => {
+      try {
+        if (typeof LogicGate !== 'undefined' && LogicGate.Loading) {
+          LogicGate.Loading.hide(container);
+        }
+      } catch (error) {
+        console.warn('⚠️ Could not hide LogicGate loading state:', error);
+      }
+      
+      if (this.availableControls.length === 0) {
+        container.innerHTML = `
+          <div class="text-center p-4">
+            <i class="bi bi-exclamation-triangle text-warning mb-3" style="font-size: 3rem;"></i>
+            <h6 class="text-muted">No Controls Available</h6>
+            <p class="text-muted small">Controls could not be loaded from Dataverse.</p>
+          </div>
+        `;
+        return;
+      }
 
+      this.renderControlOptions(container, currentMappings);
+    }, 500);
+  }
+
+  // Render control options (separated for cleaner code)
+  renderControlOptions(container, currentMappings) {
     container.innerHTML = this.availableControls.map(control => `
       <div data-control-id="${control.cr129_controlid}" class="control-option" style="background: white; border: 1px solid #e9ecef; border-radius: 8px; padding: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.3s ease;">
         <div class="form-check">
@@ -516,14 +611,47 @@ class MultiSelectControlMapping {
     });
   }
 
+  // Show skeleton loading state for risk cards
+  showSkeletonRiskCards() {
+    const container = document.getElementById('riskCardsGrid');
+    const skeletonCount = 6; // Show 6 skeleton cards
+    
+    container.innerHTML = Array.from({ length: skeletonCount }, (_, i) => `
+      <div class="col-lg-4">
+        <div class="lg-skeleton-card" style="border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; background: #f8f9fa; min-height: 200px;">
+          <div class="lg-skeleton-header" style="height: 20px; background: #e9ecef; border-radius: 4px; margin-bottom: 12px; animation: lg-skeleton-pulse 1.5s ease-in-out infinite;"></div>
+          <div class="lg-skeleton-content">
+            <div class="lg-skeleton-line" style="height: 16px; background: #e9ecef; border-radius: 4px; margin-bottom: 8px; animation: lg-skeleton-pulse 1.5s ease-in-out infinite;"></div>
+            <div class="lg-skeleton-line short" style="height: 16px; width: 60%; background: #e9ecef; border-radius: 4px; margin-bottom: 16px; animation: lg-skeleton-pulse 1.5s ease-in-out infinite;"></div>
+            <div class="lg-skeleton-badges" style="display: flex; gap: 8px; margin-bottom: 16px;">
+              <div style="height: 24px; width: 60px; background: #e9ecef; border-radius: 12px; animation: lg-skeleton-pulse 1.5s ease-in-out infinite;"></div>
+              <div style="height: 24px; width: 80px; background: #e9ecef; border-radius: 12px; animation: lg-skeleton-pulse 1.5s ease-in-out infinite;"></div>
+            </div>
+            <div class="lg-skeleton-button" style="height: 40px; background: #e9ecef; border-radius: 8px; animation: lg-skeleton-pulse 1.5s ease-in-out infinite;"></div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Hide skeleton loading state
+  hideSkeletonRiskCards() {
+    // Skeleton cards will be replaced by displaySelectedRisks()
+    console.log('✅ Hiding skeleton loading state');
+  }
+
   // Save control mappings using junction table
   async saveControlMappings() {
     const saveBtn = document.querySelector('#controlMappingModal .btn-primary');
     const originalText = saveBtn.innerHTML;
     
     try {
-      // Show loading state
-      saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+      // Show loading state with fallback
+      if (typeof LogicGate !== 'undefined') {
+        saveBtn.innerHTML = '<div class="lg-spinner" style="width: 16px; height: 16px; border-width: 2px; margin-right: 8px; display: inline-block;"></div>Saving...';
+      } else {
+        saveBtn.innerHTML = '<div class="spinner-border spinner-border-sm me-2" role="status"></div>Saving...';
+      }
       saveBtn.disabled = true;
       
       const riskId = this.currentRiskId;
@@ -791,10 +919,14 @@ class MultiSelectControlMapping {
     // Store mappings in session storage for next step
     sessionStorage.setItem('rcsa_control_mappings', JSON.stringify(this.riskMappings));
     
-    // Show loading state
+    // Show loading state with fallback
     const btn = document.getElementById('continueBtn');
     const originalText = btn.innerHTML;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
+    if (typeof LogicGate !== 'undefined') {
+      btn.innerHTML = '<div class="lg-spinner" style="width: 16px; height: 16px; border-width: 2px; margin-right: 8px; display: inline-block;"></div>Loading...';
+    } else {
+      btn.innerHTML = '<div class="spinner-border spinner-border-sm me-2" role="status"></div>Loading...';
+    }
     btn.disabled = true;
     
     setTimeout(() => {

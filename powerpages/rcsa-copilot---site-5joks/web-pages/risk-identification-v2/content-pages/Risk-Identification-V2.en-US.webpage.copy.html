@@ -290,7 +290,7 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-8">
-          <h1 class="display-5 fw-bold mb-2">Risk Identification V2</h1>
+          <h1 class="display-5 fw-bold mb-2">Risk Identification</h1>
           <p class="lead mb-0">AI-powered risk discovery with Dataverse integration</p>
         </div>
         <div class="col-md-4 text-md-end">
@@ -324,39 +324,11 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
       </div>
     </div>
 
-    <!-- Debug Panel -->
-    <div class="debug-panel">
-      <strong>Debug Info:</strong> 
-      Contact ID: {{ user.contactid | escape }} | 
-      Role: {{ user.cr129_userrole.label | default: "None" | escape }} | 
-      Selected Process: <span id="debugProcessId">None</span>
-      <br>
-      <button class="btn btn-sm btn-outline-primary mt-2 me-2" onclick="testWebApi()">
-        <i class="bi bi-gear me-1"></i>Test Web API
-      </button>
-      <button class="btn btn-sm btn-outline-warning mt-2" onclick="testWebApiWithRelationship()">
-        <i class="bi bi-link me-1"></i>Test Relationship
-      </button>
-    </div>
-
     <!-- FetchXML Query for Existing Risks -->
     {% comment %} 
-    FetchXML query to get risks for the selected process
-    Using cr129_processname as the lookup field to filter by process
+    FetchXML query to get ALL active risks, then filter by process in JavaScript
+    This avoids the complex parameter passing issues
     {% endcomment %}
-    {% assign processId = request.params['processId'] | default: '' %}
-    {% if processId == '' %}
-      <script>
-        // Get process ID from session storage for filtering
-        const processId = sessionStorage.getItem('rcsa_selected_process_id');
-        if (processId) {
-          // Reload page with process ID in query string for Liquid to use
-          if (!window.location.search.includes('processId=')) {
-            window.location.href = window.location.pathname + '?processId=' + encodeURIComponent(processId);
-          }
-        }
-      </script>
-    {% endif %}
     
     {% fetchxml existingRisks %}
       <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
@@ -371,9 +343,6 @@ if (typeof webapi === 'undefined' || !webapi.safeAjax) {
           <attribute name="modifiedon" />
           <filter type="and">
             <condition attribute="statecode" operator="eq" value="0" />
-            {% if processId != '' %}
-              <condition attribute="cr129_processname" operator="eq" value="{{ processId }}" />
-            {% endif %}
           </filter>
           <order attribute="cr129_risktitle" descending="false" />
         </entity>
@@ -662,7 +631,12 @@ function cleanupSessionStorage() {
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Risk Identification V2 loaded');
+  console.log('🚀 Risk Identification V2 loaded - Starting diagnostic');
+  
+  // Diagnostic information
+  console.log('🔍 Dataverse risks available:', window.dataverseRisks ? window.dataverseRisks.length : 'undefined');
+  console.log('🔍 Session storage process:', sessionStorage.getItem('rcsa_selected_process_name'));
+  console.log('🔍 Page URL:', window.location.href);
   
   // Clean up session storage first
   cleanupSessionStorage();
@@ -684,15 +658,21 @@ document.addEventListener('DOMContentLoaded', function() {
   loadProcessContext();
   
   // Load existing risks
+  console.log('📋 Starting to load existing risks...');
   loadExistingRisks();
   
   // Load custom risks
+  console.log('📋 Starting to load custom risks...');
   loadCustomRisks();
   
   // Load AI suggestions after a delay
-  setTimeout(loadAISuggestions, 2000);
+  console.log('🤖 Scheduling AI suggestions...');
+  setTimeout(() => {
+    console.log('🤖 Loading AI suggestions now...');
+    loadAISuggestions();
+  }, 2000);
   
-  // Form submit handler removed - using onclick instead to prevent page refresh
+  console.log('✅ Risk Identification V2 initialization complete');
 });
 
 // Global variable to store custom risks
@@ -733,15 +713,48 @@ function loadProcessContext() {
   const processName = sessionStorage.getItem('rcsa_selected_process_name');
   const businessUnit = sessionStorage.getItem('rcsa_selected_business_unit');
   
+  console.log('🔍 Process context:', { processId, processName, businessUnit });
+  
   if (processName) {
     document.getElementById('selectedProcessName').textContent = processName;
     document.getElementById('selectedBusinessUnit').textContent = businessUnit || 'Not specified';
-    document.getElementById('debugProcessId').textContent = processId;
   } else {
     // No process selected, redirect back
-    console.warn('No process selected, redirecting to Process Selection');
+    console.warn('⚠️ No process selected, redirecting to Process Selection');
     window.location.href = '/Process-Selection';
   }
+}
+
+// Get mock risks for a specific process (for demo purposes when no Dataverse data)
+function getMockRisksForProcess(processId) {
+  const mockData = {
+    // Use actual process IDs or names that might be in the system
+    'default': [
+      {
+        id: 'mock-1',
+        title: 'Operational Risk - System Downtime',
+        category: 'operational',
+        description: 'Risk of system unavailability affecting business operations',
+        likelihood: 3,
+        impact: 4,
+        processId: processId,
+        source: 'mock'
+      },
+      {
+        id: 'mock-2', 
+        title: 'Compliance Risk - Regulatory Changes',
+        category: 'compliance',
+        description: 'Risk of non-compliance due to evolving regulatory requirements',
+        likelihood: 2,
+        impact: 3,
+        processId: processId,
+        source: 'mock'
+      }
+    ]
+  };
+  
+  // Return default mock data for any process
+  return mockData['default'] || [];
 }
 
 // Load existing risks from Dataverse
@@ -749,42 +762,37 @@ function loadExistingRisks() {
   const container = document.getElementById('existingRisksContainer');
   const processId = sessionStorage.getItem('rcsa_selected_process_id');
   
-  console.log('Loading risks for process:', processId);
-  console.log('All Dataverse risks:', window.dataverseRisks);
+  console.log('🔍 Loading risks for process:', processId);
+  console.log('🔍 All Dataverse risks available:', window.dataverseRisks ? window.dataverseRisks.length : 0);
   
   // Filter risks by selected process
   let risks = [];
   if (window.dataverseRisks && window.dataverseRisks.length > 0) {
-    // Filter by process ID
+    // Filter by process ID - handle both direct ID match and lookup reference match
     risks = window.dataverseRisks.filter(risk => {
-      const matches = risk.processId === processId;
-      console.log(`Risk "${risk.title}" process "${risk.processId}" matches selected "${processId}": ${matches}`);
+      // Try multiple matching strategies
+      const directMatch = risk.processId === processId;
+      const nameMatch = risk.processName === processId; 
+      const lookupMatch = risk['cr129_processname.id'] === processId;
+      const matches = directMatch || nameMatch || lookupMatch;
+      
+      if (matches) {
+        console.log(`✅ Risk "${risk.title}" matches process "${processId}"`);
+      }
       return matches;
     });
-    console.log('Filtered risks:', risks);
+    console.log('🔍 Filtered risks for process:', risks.length);
   }
   
-  // If no real data, use mock data
-  if (risks.length === 0) {
-    console.log('No real risks found, using mock data');
-    risks = [
-      {
-        id: 'mock-1',
-        title: 'Wire Transfer Fraud (Mock)',
-        category: 'fraud',
-        description: 'Risk of unauthorized wire transfers due to compromised credentials',
-        likelihood: 3,
-        impact: 5
-      },
-      {
-        id: 'mock-2',
-        title: 'System Downtime (Mock)',
-        category: 'operational',
-        description: 'Wire transfer system unavailability affecting customer transactions',
-        likelihood: 2,
-        impact: 4
-      }
-    ];
+  // If no Dataverse data available, show realistic mock data
+  if (!window.dataverseRisks || window.dataverseRisks.length === 0) {
+    console.log('📋 No Dataverse data available, using mock data for demo');
+    risks = getMockRisksForProcess(processId);
+  }
+  
+  // If filtered to 0 but we have Dataverse data, the process might not have risks yet
+  if (risks.length === 0 && window.dataverseRisks && window.dataverseRisks.length > 0) {
+    console.log('📋 No risks found for this specific process in Dataverse');
   }
   
   // Simulate loading delay for better UX
@@ -853,36 +861,39 @@ function loadExistingRisks() {
 // Load AI suggestions (mock implementation)
 function loadAISuggestions() {
   const container = document.getElementById('aiSuggestionsContainer');
+  const processName = sessionStorage.getItem('rcsa_selected_process_name') || 'Selected Process';
+  
+  console.log('🤖 Generating AI suggestions for process:', processName);
   
   // Simulate AI processing
   setTimeout(() => {
     const suggestions = [
       {
         id: 'ai-1',
-        title: 'Insider Threat',
-        category: 'fraud',
-        description: 'Employees with wire transfer access could initiate unauthorized transfers',
+        title: 'Data Security Breach',
+        category: 'technology',
+        description: `Risk of unauthorized access to sensitive data in ${processName}`,
         likelihood: 2,
-        impact: 5,
-        rationale: 'Based on industry data, insider threats account for 30% of wire fraud cases'
+        impact: 4,
+        rationale: 'AI analysis indicates elevated cybersecurity risks in this process type'
       },
       {
         id: 'ai-2',
-        title: 'SWIFT Network Compromise',
-        category: 'technology',
-        description: 'Vulnerabilities in SWIFT messaging could be exploited for fraudulent transfers',
-        likelihood: 1,
-        impact: 5,
-        rationale: 'Recent global incidents show sophisticated attacks on SWIFT infrastructure'
+        title: 'Process Automation Failure',
+        category: 'operational',
+        description: `Risk of automated systems failing during ${processName} execution`,
+        likelihood: 3,
+        impact: 3,
+        rationale: 'Machine learning models predict potential system integration points of failure'
       },
       {
         id: 'ai-3',
-        title: 'Regulatory Non-Compliance',
+        title: 'Regulatory Compliance Gap',
         category: 'compliance',
-        description: 'Failure to meet updated wire transfer reporting requirements',
-        likelihood: 3,
-        impact: 3,
-        rationale: 'New regulations require enhanced transaction monitoring and reporting'
+        description: `Risk of non-compliance with regulations affecting ${processName}`,
+        likelihood: 2,
+        impact: 4,
+        rationale: 'AI analysis of regulatory changes suggests potential compliance gaps'
       }
     ];
     

@@ -19,6 +19,13 @@
   100% { transform: rotate(360deg); }
 }
 
+/* Skeleton loading animation */
+@keyframes lg-skeleton-pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
 /* Loading overlay for better UX during data fetching */
 .lg-loading-overlay {
   position: absolute;

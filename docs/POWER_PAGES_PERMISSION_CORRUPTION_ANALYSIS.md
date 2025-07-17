@@ -111,7 +111,7 @@ We can't prevent Power Pages from making bad decisions during upload
 # Before every upload:
 .\scripts\validate-junction-table-config.ps1
 .\scripts\clean-conflicting-permissions.ps1
-pac paportal upload --path ./rcsa-copilot---site-5joks --modelVersion 2
+pac paportal upload --path powerpages/rcsa-copilot---site-5joks --modelVersion 2
 .\scripts\validate-junction-table-config.ps1  # Verify after upload
 ```
 

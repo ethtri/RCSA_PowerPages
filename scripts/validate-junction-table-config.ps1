@@ -20,30 +20,30 @@ if (-not (Test-Path $siteSettingsPath)) {
 } else {
     $content = Get-Content $siteSettingsPath -Raw
     
-    # Check critical wildcard settings
-    if ($content -notmatch 'Webapi/cr129_riskctrls/fields.*adx_value:\s*"\*"') {
-        $errors += "❌ CRITICAL: cr129_riskctrls/fields must be wildcard (*)"
-    } else {
+    # Check critical wildcard settings with multi-line pattern matching
+    if ($content -match 'Webapi/cr129_riskctrls/fields[\s\S]*?adx_value:\s*"\*"') {
         Write-Host "✅ cr129_riskctrls/fields is wildcard" -ForegroundColor Green
+    } else {
+        $errors += "❌ CRITICAL: cr129_riskctrls/fields must be wildcard (*)"
     }
     
-    if ($content -notmatch 'Webapi/cr129_riskctrl/fields.*adx_value:\s*"\*"') {
-        $errors += "❌ CRITICAL: cr129_riskctrl/fields must be wildcard (*)"
-    } else {
+    if ($content -match 'Webapi/cr129_riskctrl/fields[\s\S]*?adx_value:\s*"\*"') {
         Write-Host "✅ cr129_riskctrl/fields is wildcard" -ForegroundColor Green
+    } else {
+        $errors += "❌ CRITICAL: cr129_riskctrl/fields must be wildcard (*)"
     }
     
-    # Check disableodatafilter settings
-    if ($content -notmatch 'Webapi/cr129_riskctrls/disableodatafilter.*adx_value:\s*true') {
-        $errors += "❌ CRITICAL: cr129_riskctrls/disableodatafilter must be true"
-    } else {
+    # Check disableodatafilter settings with multi-line pattern matching
+    if ($content -match 'Webapi/cr129_riskctrls/disableodatafilter[\s\S]*?adx_value:\s*true') {
         Write-Host "✅ cr129_riskctrls/disableodatafilter is enabled" -ForegroundColor Green
+    } else {
+        $errors += "❌ CRITICAL: cr129_riskctrls/disableodatafilter must be true"
     }
     
-    if ($content -notmatch 'Webapi/cr129_riskctrl/disableodatafilter.*adx_value:\s*true') {
-        $errors += "❌ CRITICAL: cr129_riskctrl/disableodatafilter must be true"
-    } else {
+    if ($content -match 'Webapi/cr129_riskctrl/disableodatafilter[\s\S]*?adx_value:\s*true') {
         Write-Host "✅ cr129_riskctrl/disableodatafilter is enabled" -ForegroundColor Green
+    } else {
+        $errors += "❌ CRITICAL: cr129_riskctrl/disableodatafilter must be true"
     }
 }
 
@@ -144,8 +144,8 @@ if ($errors.Count -eq 0 -and $warnings.Count -eq 0) {
 } else {
     if ($errors.Count -gt 0) {
         Write-Host "`n❌ CRITICAL ERRORS FOUND:" -ForegroundColor Red
-        foreach ($error in $errors) {
-            Write-Host $error -ForegroundColor Red
+        foreach ($validationError in $errors) {
+            Write-Host $validationError -ForegroundColor Red
         }
     }
     

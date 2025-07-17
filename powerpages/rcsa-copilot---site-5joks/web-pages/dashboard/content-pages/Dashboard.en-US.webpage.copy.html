@@ -287,26 +287,6 @@
               </button>
             </div>
             
-            <!-- Debug: User Context Info -->
-            <div class="alert alert-info mb-3">
-              <small>
-                <strong>Debug Info:</strong> 
-                Contact ID: {{ user.contactid | escape }} | 
-                Role: {{ user.cr129_userrole.label | default: "None" | escape }} ({{ user.cr129_userrole.value | default: "N/A" }}) | 
-                BU: {{ user.cr129_businessunitname.name | default: "None" | escape }} | 
-                Assessments Found: {{ totalAssessments }}
-                <br><strong>Status Breakdown:</strong> 
-                Draft (0): {{ draftCount }} | 
-                Submitted (1): {{ inProgressCount | minus: draftCount }} | 
-                Challenged (2): {{ challengedCount }} | 
-                Agreed (3): {{ completedCount }}
-                <br><strong>Sample Status Values:</strong>
-                {% for assessment in userAssessments.results.entities limit: 3 %}
-                  {{ assessment.cr129_assessmentname | escape }}: {{ assessment.cr129_assessmentstatus }} ({{ assessment.cr129_assessmentstatus.value }}/{{ assessment.cr129_assessmentstatus.label }}) |
-                {% endfor %}
-              </small>
-            </div>
-            
             {% if userAssessments.results.entities.size > 0 %}
               {% for assessment in userAssessments.results.entities limit: 5 %}
                 <div class="assessment-item" onclick="openAssessment('{{ assessment.cr129_assessid | escape }}')">

@@ -98,7 +98,27 @@ If the configuration breaks:
 3. **Simplify Table Permissions** - Remove complex column/child permissions
 4. **Use $expand Pattern** in JavaScript instead of lookup value fields
 5. **Remove Conflicting Permission Files** in nested directories
-6. **Upload and Test** immediately
+6. **Upload with Correct Command**: `pac paportal upload --path powerpages/rcsa-copilot---site-5joks --modelVersion 2`
+7. **Test immediately** after upload
+
+## 🚀 SAFE UPLOAD PROCEDURE
+
+**CRITICAL**: Always use the enhanced data model (v2) for uploads:
+
+```powershell
+# CORRECT upload command (required for this environment):
+pac paportal upload --path powerpages/rcsa-copilot---site-5joks --modelVersion 2
+
+# WRONG - will fail with metadata errors:
+pac paportal upload --path powerpages/rcsa-copilot---site-5joks
+```
+
+**Expected XRM Network Errors During Upload:**
+- `adx_entitypermission` metadata cache errors - **NORMAL**, upload will continue
+- `adx_sitesetting` metadata cache errors - **NORMAL**, upload will continue  
+- `adx_webpage` metadata cache errors - **NORMAL**, upload will continue
+
+These errors indicate Power Pages metadata synchronization issues but don't prevent successful upload.
 
 ## 🔗 REFERENCE LINKS
 
