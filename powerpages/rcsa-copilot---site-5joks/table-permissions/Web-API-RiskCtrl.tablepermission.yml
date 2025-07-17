@@ -54,6 +54,18 @@ adx_columnpermissionprofiles:
     adx_permissions: 7
     adx_columnpermission_tablepermission:
     - 8a5d6943-b5d7-43ac-8359-482529725023
+  - adx_columnlogicalname: _cr129_risktitle_value
+    adx_columnpermissionprofileid: riskctrl-columns-profile
+    adx_columnpermissionid: riskctrl-risktitle-value-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6943-b5d7-43ac-8359-482529725023
+  - adx_columnlogicalname: _cr129_controltitle_value
+    adx_columnpermissionprofileid: riskctrl-columns-profile
+    adx_columnpermissionid: riskctrl-controltitle-value-permission
+    adx_permissions: 7
+    adx_columnpermission_tablepermission:
+    - 8a5d6943-b5d7-43ac-8359-482529725023
   adx_columnpermissionprofileid: riskctrl-columns-profile
   adx_columnpermissionprofilename: RiskCtrl Web API Columns
   adx_columnpermissionprofile_tablepermission:
