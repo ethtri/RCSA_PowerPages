@@ -3,6 +3,9 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- Anti-forgery token for Web API authentication -->
+<input type="hidden" name="__RequestVerificationToken" value="{{ request.verification_token }}" />
+
 <style>
 /* Clean Residual Risk Assessment Styles */
 .residual-header {
@@ -49,8 +52,8 @@
   grid-template-rows: repeat(5, 1fr);
   gap: 2px;
   width: 100%;
-  max-width: 400px;
-  margin: 1rem auto;
+  max-width: 300px;
+  aspect-ratio: 1;
 }
 
 .heat-map-cell {
@@ -87,6 +90,99 @@
 .heat-map-cell.risk-4 { background: #f8d7da; color: #721c24; }
 .heat-map-cell.risk-5 { background: #f5c6cb; color: #721c24; }
 
+/* Heat map with perfect axis alignment using CSS Grid */
+.heat-map-wrapper {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 8px;
+  margin: 1rem 0;
+  align-items: start;
+}
+
+.impact-axis-container {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  position: relative;
+  height: 300px;
+}
+
+.impact-axis-title {
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.8rem;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  text-align: center;
+}
+
+.impact-labels-container {
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+  height: 300px;
+  padding-right: 8px;
+  padding-left: 25px;
+  align-items: center;
+}
+
+.impact-labels-container .impact-label {
+  font-size: 0.65rem;
+  color: #6c757d;
+  font-weight: 500;
+  text-align: right;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.heat-map-grid-container {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.likelihood-labels-container {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.likelihood-axis {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 0.65rem;
+  color: #6c757d;
+  font-weight: 500;
+  padding: 8px 0;
+  gap: 4px;
+  max-width: 300px;
+}
+
+.likelihood-axis .axis-title {
+  font-weight: 600;
+  color: #495057;
+  margin-top: 8px;
+  text-align: center;
+  width: 100%;
+  font-size: 0.8rem;
+}
+
+/* Legacy classes for compatibility */
 .axis-labels {
   display: flex;
   justify-content: space-between;
@@ -176,6 +272,200 @@
   margin-top: 2rem;
 }
 
+/* Sticky Footer for Navigation */
+.sticky-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid #e9ecef;
+  padding: 1rem 0;
+  z-index: 1030;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sticky-footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Add bottom padding to main content to prevent overlap with sticky footer */
+.main-content {
+  padding-bottom: 100px;
+}
+
+/* Smart Status Indicator for Risk Assessment Panels */
+.risk-panel {
+  border-left: 5px solid #e9ecef !important; /* Default state */
+  transition: border-left-color 0.3s ease;
+}
+
+.risk-panel.status-pending {
+  border-left-color: #ffc107 !important; /* Warning yellow - waiting for input */
+}
+
+.risk-panel.status-in-progress {
+  border-left-color: #0d6efd !important; /* Primary blue - actively working */
+}
+
+.risk-panel.status-completed {
+  border-left-color: #198754 !important; /* Success green - fully complete */
+}
+
+.risk-panel.status-high-risk {
+  border-left-color: #dc3545 !important; /* Danger red - high residual risk */
+  box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+}
+
+/* Status badge styling */
+.status-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.status-badge.pending {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.status-badge.in-progress {
+  background: #cfe2ff;
+  color: #084298;
+  border: 1px solid #9ec5fe;
+}
+
+.status-badge.completed {
+  background: #d1e7dd;
+  color: #0a3622;
+  border: 1px solid #a3cfbb;
+}
+
+.status-badge.high-risk {
+  background: #f8d7da;
+  color: #58151c;
+  border: 1px solid #f1aeb5;
+  animation: pulse-danger 2s infinite;
+}
+
+@keyframes pulse-danger {
+  0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(220, 53, 69, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+/* Individual Save Button Styling */
+.individual-save-section {
+  border-top: 1px solid #e9ecef;
+  background: rgba(248, 249, 250, 0.5);
+  border-radius: 0 0 0.375rem 0.375rem;
+  margin: 0 -1.5rem -1.5rem -1.5rem;
+  padding: 1rem 1.5rem;
+}
+
+.save-progress-btn {
+  transition: all 0.3s ease;
+}
+
+.save-progress-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* CapTech Blue Color Scheme */
+.captech-blue {
+  color: #0066CC !important;
+}
+
+.captech-blue-bg {
+  background-color: #0066CC !important;
+  color: white !important;
+}
+
+/* AI Recommended Score Badge */
+.ai-score-badge {
+  background: #0066CC;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+/* Auto-highlighted heat map cell */
+.heat-map-cell.ai-recommended {
+  border: 2px solid #0066CC !important;
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2) !important;
+  animation: ai-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes ai-glow {
+  from { box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2); }
+  to { box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.4); }
+}
+
+/* Control Alignment Section */
+.control-alignment-card {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.control-alignment-table {
+  margin-bottom: 0;
+}
+
+.control-alignment-table th {
+  background: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.control-alignment-table td {
+  vertical-align: middle;
+  padding: 0.75rem;
+}
+
+.coverage-input {
+  width: 80px;
+  text-align: center;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.coverage-input:focus {
+  border-color: #0066CC;
+  box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
+}
+
+.total-coverage {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.total-coverage.error {
+  color: #dc3545 !important;
+}
+
+.total-coverage.success {
+  color: #198754 !important;
+}
+
+.no-controls-banner {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+  color: #6c757d;
+}
+
 @media (max-width: 768px) {
   .residual-header {
     padding: 2rem 0;
@@ -188,10 +478,21 @@
   .heat-map-cell {
     font-size: 0.75rem;
   }
+  
+  .sticky-footer .container {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .sticky-footer .btn {
+    width: 100%;
+    max-width: 300px;
+  }
 }
 </style>
 
 <!-- Clean Bootstrap 5 Residual Risk Assessment Page -->
+<div class="main-content">
 <div class="container-fluid">
   
   <!-- Page Header -->
@@ -251,192 +552,100 @@
 
   <!-- Main Content -->
   <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
       
-      <!-- Heat Map Section -->
-      <div class="col-lg-8">
+      <!-- Assessment Content - Now Full Width -->
+      <div class="col-12">
+        <!-- This section will be replaced by the dynamic multi-risk interface -->
         <div class="heat-map-container">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="h5 fw-bold mb-0">
-              <i class="bi bi-grid-3x3-gap me-2 text-warning"></i>
-              5×5 Risk Heat Map
-            </h4>
-            <button class="btn btn-outline-secondary btn-sm" onclick="resetHeatMap()">
-              <i class="bi bi-arrow-clockwise me-1"></i>
-              Reset
-            </button>
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading assessment data...</span>
+            </div>
+            <p class="mt-3 text-muted">Loading your risk assessments...</p>
+          </div>
+        </div>
           </div>
           
-          <div class="text-center mb-3">
-            <small class="text-muted">Click cells to assess residual risk levels</small>
+    </div>
           </div>
           
-          <div class="d-flex align-items-center">
-            <!-- Y-axis label -->
-            <div class="axis-label-vertical">
-              <strong>Impact</strong>
+  <!-- Dynamic assessment interface will be inserted here by JavaScript -->
+  
+</div>
             </div>
             
-            <!-- Heat map grid -->
-            <div class="flex-grow-1">
-              <div class="heat-map-grid" id="heatMapGrid">
-                <!-- Grid cells will be generated by JavaScript -->
-              </div>
-            </div>
-          </div>
-          
-          <!-- X-axis labels -->
-          <div class="axis-labels mt-2">
-            <small>1 - Rare</small>
-            <small>2 - Unlikely</small>
-            <small>3 - Possible</small>
-            <small>4 - Likely</small>
-            <small>5 - Almost Certain</small>
-          </div>
-          <div class="text-center mt-1">
-            <small class="fw-bold text-muted">Likelihood</small>
-          </div>
-          
-          <!-- Legend -->
-          <div class="mt-4">
-            <h6 class="small fw-bold text-muted mb-2">RISK LEVELS:</h6>
-            <div class="d-flex gap-3 flex-wrap">
-              <div class="d-flex align-items-center gap-1">
-                <div class="heat-map-cell risk-1" style="width: 20px; height: 20px; font-size: 0.7rem;">1</div>
-                <small>Very Low</small>
-              </div>
-              <div class="d-flex align-items-center gap-1">
-                <div class="heat-map-cell risk-2" style="width: 20px; height: 20px; font-size: 0.7rem;">2</div>
-                <small>Low</small>
-              </div>
-              <div class="d-flex align-items-center gap-1">
-                <div class="heat-map-cell risk-3" style="width: 20px; height: 20px; font-size: 0.7rem;">3</div>
-                <small>Medium</small>
-              </div>
-              <div class="d-flex align-items-center gap-1">
-                <div class="heat-map-cell risk-4" style="width: 20px; height: 20px; font-size: 0.7rem;">4</div>
-                <small>High</small>
-              </div>
-              <div class="d-flex align-items-center gap-1">
-                <div class="heat-map-cell risk-5" style="width: 20px; height: 20px; font-size: 0.7rem;">5</div>
-                <small>Critical</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Risk Assessment Panel -->
-      <div class="col-lg-4">
-        <div class="summary-card">
-          <h4 class="h5 fw-bold mb-3">
-            <i class="bi bi-speedometer2 me-2 text-danger"></i>
-            Risk Assessment
-          </h4>
-          
-          <!-- Current Risk Display -->
-          <div class="risk-score-display" id="currentRiskScore">
-            <span class="score-value" id="scoreValue">-</span>
-            <span class="score-label" id="scoreLabel">Click heat map to assess</span>
-          </div>
-          
-          <!-- Risk Breakdown -->
-          <div class="risk-breakdown" id="riskBreakdown">
-            <div class="breakdown-item">
-              <span class="small text-muted">Likelihood:</span>
-              <span class="fw-semibold" id="selectedLikelihood">-</span>
-            </div>
-            <div class="breakdown-item">
-              <span class="small text-muted">Impact:</span>
-              <span class="fw-semibold" id="selectedImpact">-</span>
-            </div>
-            <div class="breakdown-item">
-              <span class="small text-muted">Risk Level:</span>
-              <span class="fw-semibold" id="selectedRiskLevel">-</span>
-            </div>
-          </div>
-          
-          <!-- AI Suggestions -->
-          <div class="ai-suggestions" id="aiSuggestions">
-            <div class="d-flex align-items-center gap-2 mb-2">
-              <div class="ai-icon">
-                <i class="bi bi-robot"></i>
-              </div>
-              <span class="fw-semibold">AI Recommendations</span>
-            </div>
-            <div class="suggestions-content" id="suggestionsContent">
-              <small class="text-muted">
-                Select a risk level to see AI-powered recommendations
-              </small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Rationale Section -->
+<!-- Sticky Footer with Navigation -->
+<div class="sticky-footer">
   <div class="container">
-    <div class="rationale-card">
-      <h4 class="h5 fw-bold mb-3">
-        <i class="bi bi-journal-text me-2 text-info"></i>
-        Risk Assessment Rationale
-      </h4>
-      <div class="row">
-        <div class="col-md-6">
-          <label for="riskRationale" class="form-label fw-semibold">Risk Justification</label>
-          <textarea 
-            class="form-control" 
-            id="riskRationale" 
-            rows="4" 
-            placeholder="Provide detailed rationale for your risk assessment (minimum 50 characters)..."
-            required
-          ></textarea>
-          <div class="form-text">
-            <span id="rationaleCount">0</span>/50 characters minimum
-          </div>
-        </div>
-        <div class="col-md-6">
-          <label for="mitigationStrategies" class="form-label fw-semibold">Mitigation Strategies</label>
-          <textarea 
-            class="form-control" 
-            id="mitigationStrategies" 
-            rows="4" 
-            placeholder="Describe additional mitigation strategies or controls needed..."
-          ></textarea>
-          <div class="form-text">
-            Optional: Additional risk mitigation approaches
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Action Buttons -->
-  <div class="container">
-    <div class="row mt-4 mb-4">
-      <div class="col-12">
-        <div class="d-flex justify-content-between align-items-center">
-          <button class="btn btn-outline-secondary btn-lg" onclick="goBack()">
-            <i class="bi bi-arrow-left me-2"></i>
-            Back to Control Mapping
-          </button>
-          <button class="btn btn-primary btn-lg" id="continueBtn" onclick="continueToNextStep()" disabled>
-            Complete Assessment
-            <i class="bi bi-arrow-right ms-2"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+    <button class="btn btn-outline-secondary btn-lg" onclick="goBack()">
+      <i class="bi bi-arrow-left me-2"></i>
+      Back to Control Mapping
+    </button>
+    <button class="btn btn-primary btn-lg" id="submitAssessmentBtn" onclick="submitCompleteAssessment()" disabled>
+      Submit Assessment
+      <i class="bi bi-check-circle ms-2"></i>
+    </button>
+              </div>
 </div>
 
-<!-- Clean JavaScript -->
+<!-- Include Portal Web API Wrapper -->
+{% include 'Portal Web API Wrapper' %}
+
+<!-- Fallback Web API Implementation -->
 <script>
+// Check if Web API wrapper loaded successfully
+if (typeof webapi === 'undefined' && typeof shell !== 'undefined') {
+  console.warn('🔄 Web API wrapper not loaded, creating fallback implementation...');
+  
+  window.webapi = {
+    safeAjax: function(options) {
+      return new Promise((resolve, reject) => {
+        $.ajaxSetup({ cache: false });
+        
+        // Get anti-forgery token 
+        const token = $('input[name="__RequestVerificationToken"]').val() || 
+                      shell.getTokenDeferred().then(t => t) || 
+                      'fallback-token';
+        
+        const ajaxOptions = {
+          ...options,
+          headers: {
+            'RequestVerificationToken': token,
+            'Content-Type': options.contentType || 'application/json; charset=utf-8',
+            ...options.headers
+          },
+          success: resolve,
+          error: reject
+        };
+        
+        $.ajax(ajaxOptions);
+      });
+    }
+  };
+  
+  console.log('✅ Fallback Web API wrapper created successfully');
+}
+</script>
+
+<!-- Residual Assessment JavaScript with Real Data Integration -->
+<script>
+// Application state
+let assessmentData = {
+  businessUnit: '',
+  businessUnitId: '',
+  process: '',
+  processId: '',
+  selectedRisks: [],
+  controlMappings: {},
+  assessments: {}
+};
+
 let selectedCell = null;
 let selectedLikelihood = null;
 let selectedImpact = null;
 let selectedRiskLevel = null;
+let currentRiskId = null;
 
 // Risk calculation matrix (likelihood x impact = risk level)
 const riskMatrix = [
@@ -463,8 +672,385 @@ const aiRecommendations = {
   5: 'Critical risk! Urgent intervention needed. Consider halting activities until controls are strengthened.'
 };
 
+// Load assessment data from session storage and Web API
+async function loadAssessmentData() {
+  console.log('🔄 Loading assessment data from session storage...');
+  
+  try {
+    // Load business context from session storage
+    assessmentData.businessUnit = sessionStorage.getItem('rcsa_selected_business_unit') || '';
+    assessmentData.businessUnitId = sessionStorage.getItem('rcsa_selected_business_unit_id') || '';
+    assessmentData.process = sessionStorage.getItem('rcsa_selected_process_name') || '';
+    assessmentData.processId = sessionStorage.getItem('rcsa_selected_process_id') || '';
+    
+    console.log('📋 Business context:', {
+      businessUnit: assessmentData.businessUnit,
+      process: assessmentData.process
+    });
+    
+    // Load selected risks from Risk Identification V2
+    const allRisks = JSON.parse(sessionStorage.getItem('rcsa_custom_risks') || '[]');
+    console.log('📋 All risks loaded:', allRisks.length);
+    
+    // Filter risks for current process
+    if (assessmentData.processId) {
+      assessmentData.selectedRisks = allRisks.filter(risk => risk.processId === assessmentData.processId);
+    } else {
+      assessmentData.selectedRisks = allRisks;
+    }
+    
+    console.log('✅ Selected risks for residual assessment:', assessmentData.selectedRisks.length);
+    
+    // Load control mappings from session storage or Dataverse
+    await loadControlMappings();
+    
+    // Display the assessment interface
+    displayAssessmentInterface();
+    updateContextSummary();
+    
+  } catch (error) {
+    console.error('❌ Error loading assessment data:', error);
+    showErrorMessage('Failed to load assessment data. Please return to Risk Identification and try again.');
+  }
+}
+
+// Load control mappings using the same pattern as Control Mapping page
+async function loadControlMappings() {
+  console.log('🔄 Loading control mappings...');
+  
+  try {
+    // First try session storage
+    let mappings = JSON.parse(sessionStorage.getItem('rcsa_control_mappings') || '{}');
+    
+    // Fallback to localStorage  
+    if (Object.keys(mappings).length === 0) {
+      mappings = JSON.parse(localStorage.getItem('rcsa_control_mappings') || '{}');
+      
+      // Copy to sessionStorage for current session
+      if (Object.keys(mappings).length > 0) {
+        sessionStorage.setItem('rcsa_control_mappings', JSON.stringify(mappings));
+      }
+    }
+    
+    assessmentData.controlMappings = mappings;
+    console.log('📋 Control mappings loaded:', Object.keys(mappings).length, 'mappings');
+    
+    // Try to load additional control effectiveness data from Dataverse
+    await loadControlEffectiveness();
+    
+  } catch (error) {
+    console.error('❌ Error loading control mappings:', error);
+    assessmentData.controlMappings = {};
+  }
+}
+
+// Load control effectiveness data for better AI recommendations
+async function loadControlEffectiveness() {
+  console.log('🔄 Loading control effectiveness data...');
+  
+  try {
+    // Get unique control IDs from mappings
+    const controlIds = Object.values(assessmentData.controlMappings).filter(id => id);
+    
+    if (controlIds.length === 0) {
+      console.log('⚠️ No control mappings found, skipping effectiveness data');
+      return;
+    }
+    
+    // Load controls with effectiveness scores using Web API
+    const filter = controlIds.map(id => `cr129_controlid eq '${id}'`).join(' or ');
+    const url = `/_api/cr129_controls?$select=cr129_controlid,cr129_controltitle,cr129_designeff,cr129_opereff&$filter=${filter}`;
+    
+    const response = await webapi.safeAjax({
+      url: url,
+      type: 'GET',
+      contentType: 'application/json; charset=utf-8'
+    });
+    
+    const controls = response.value || [];
+    console.log('✅ Loaded control effectiveness data:', controls.length, 'controls');
+    
+    // Store control data for AI recommendations
+    assessmentData.controlEffectiveness = {};
+    controls.forEach(control => {
+      assessmentData.controlEffectiveness[control.cr129_controlid] = {
+        title: control.cr129_controltitle,
+        designEffectiveness: control.cr129_designeff || 3,
+        operatingEffectiveness: control.cr129_opereff || 3
+      };
+    });
+    
+  } catch (error) {
+    console.error('❌ Error loading control effectiveness:', error);
+    assessmentData.controlEffectiveness = {};
+  }
+}
+
+// Display the multi-risk assessment interface
+function displayAssessmentInterface() {
+  console.log('🔄 Displaying assessment interface for', assessmentData.selectedRisks.length, 'risks');
+  
+  const container = document.querySelector('.heat-map-container').parentElement;
+  
+  if (assessmentData.selectedRisks.length === 0) {
+    displayEmptyState(container);
+    return;
+  }
+  
+  // Replace single heat map with multiple risk panels
+  container.innerHTML = generateMultiRiskAssessmentHTML();
+  
+  // Initialize heat maps for each risk
+  assessmentData.selectedRisks.forEach(risk => {
+    initializeHeatMapForRisk(risk.id);
+  });
+  
+  // Set up form validation
+  setupFormValidation();
+  
+  // Initialize status indicators
+  initializeAllStatusIndicators();
+}
+
+// Generate HTML for multiple risk assessment panels
+function generateMultiRiskAssessmentHTML() {
+  let html = '<div class="risk-assessment-panels">';
+  
+  assessmentData.selectedRisks.forEach((risk, index) => {
+    const controlMapping = assessmentData.controlMappings[risk.id];
+    const controlInfo = controlMapping ? assessmentData.controlEffectiveness[controlMapping] : null;
+    
+    html += `
+      <div class="card mb-4 risk-panel status-pending" data-risk-id="${risk.id}">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              <button class="btn btn-link p-0 text-start fw-semibold" type="button" 
+                      data-bs-toggle="collapse" data-bs-target="#riskPanel${index}" 
+                      aria-expanded="true" aria-controls="riskPanel${index}">
+                <i class="bi bi-chevron-down me-2"></i>
+                Risk ${index + 1}: ${risk.title}
+              </button>
+            </h5>
+            <span class="status-badge pending" id="statusBadge${risk.id}">
+              <i class="bi bi-clock me-1"></i>Pending
+            </span>
+            </div>
+          </div>
+          
+        <div id="riskPanel${index}" class="collapse ${index === 0 ? 'show' : ''}" data-bs-parent=".risk-assessment-panels">
+          <div class="card-body">
+            
+            <!-- Risk Context -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <h6 class="text-muted mb-2">Risk Description</h6>
+                <p class="small">${risk.description || 'No description provided'}</p>
+                
+                <h6 class="text-muted mb-2">Inherent Risk</h6>
+                <div class="d-flex gap-3">
+                  <span class="small">Likelihood: <strong>${risk.likelihood || 'N/A'}</strong></span>
+                  <span class="small">Impact: <strong>${risk.impact || 'N/A'}</strong></span>
+                  <span class="small">Score: <strong>${(risk.likelihood && risk.impact) ? (risk.likelihood * risk.impact) : 'N/A'}</strong></span>
+          </div>
+          </div>
+          
+              <div class="col-md-6">
+                <!-- Control Alignment / Coverage Section -->
+                <div class="control-alignment-card">
+                  <div class="card-header py-2 px-3">
+                    <h6 class="mb-0 fw-semibold">Control Alignment – distribute 100% coverage</h6>
+                  </div>
+                  <div class="card-body p-0" id="controlAlignment${risk.id}">
+                    ${controlInfo ? `
+                      <table class="table control-alignment-table">
+                        <thead>
+                          <tr>
+                            <th>Control Name</th>
+                            <th>Design</th>
+                            <th>Oper</th>
+                            <th>Coverage %</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="small">${controlInfo.title}</td>
+                            <td class="text-center">${controlInfo.designEffectiveness}</td>
+                            <td class="text-center">${controlInfo.operatingEffectiveness}</td>
+                            <td class="text-center">
+                              <input type="number" class="coverage-input" 
+                                     value="100" min="0" max="100" 
+                                     data-risk-id="${risk.id}" 
+                                     onchange="updateTotalCoverage('${risk.id}')">%
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div class="px-3 py-2 border-top">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <span class="small text-muted">Total Coverage:</span>
+                          <span class="total-coverage success" id="totalCoverage${risk.id}">100% / 100%</span>
+                        </div>
+                      </div>
+                    ` : `
+                      <div class="no-controls-banner">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <span class="small">No controls mapped – residual will equal inherent risk.</span>
+                      </div>
+                    `}
+                  </div>
+                </div>
+              </div>
+              </div>
+            
+            <!-- Heat Map Assessment -->
+            <div class="heat-map-container">
+              <h6 class="fw-semibold mb-3">Residual Risk Assessment</h6>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <!-- Perfectly aligned heat map with CSS Grid axis positioning -->
+                  <div class="heat-map-wrapper">
+                    <!-- Impact axis container with title and labels -->
+                    <div class="impact-axis-container">
+                      <div class="impact-axis-title">Impact</div>
+                      <div class="impact-labels-container">
+                        <div class="impact-label">Severe</div>
+                        <div class="impact-label">Major</div>
+                        <div class="impact-label">Moderate</div>
+                        <div class="impact-label">Minor</div>
+                        <div class="impact-label">Insignificant</div>
+              </div>
+              </div>
+                    
+                    <!-- Heat map grid -->
+                    <div class="heat-map-grid-container">
+                      <div class="heat-map-grid" id="heatMapGrid${risk.id}"></div>
+            </div>
+                    
+                    <!-- Likelihood axis (horizontal, below grid) -->
+                    <div class="likelihood-labels-container">
+                      <div class="likelihood-axis">
+                        <small>Rare</small>
+                        <small>Unlikely</small>
+                        <small>Possible</small>
+                        <small>Likely</small>
+                        <small>Almost Certain</small>
+                      </div>
+                      <div class="likelihood-axis">
+                        <div class="axis-title">Likelihood</div>
+                      </div>
+          </div>
+        </div>
+      </div>
+
+                <div class="col-md-6">
+                  <div class="assessment-summary bg-light p-3 rounded">
+                    <h6 class="fw-semibold mb-3">Assessment Summary</h6>
+                    
+                    <div class="mb-3">
+                      <small class="text-muted">Selected Risk Level</small>
+                      <div class="fw-semibold fs-4" id="scoreDisplay${risk.id}">
+                        <span id="scoreValue${risk.id}">-</span> 
+                        <small class="text-muted" id="scoreLabel${risk.id}">Click heat map to assess</small>
+                      </div>
+          </div>
+          
+                    <div class="row mb-3">
+                      <div class="col-4">
+                        <small class="text-muted">Likelihood</small>
+                        <div class="fw-semibold" id="selectedLikelihood${risk.id}">-</div>
+            </div>
+                      <div class="col-4">
+                        <small class="text-muted">Impact</small>
+                        <div class="fw-semibold" id="selectedImpact${risk.id}">-</div>
+            </div>
+                      <div class="col-4">
+                        <small class="text-muted">Risk Level</small>
+                        <div class="fw-semibold" id="selectedRiskLevel${risk.id}">-</div>
+            </div>
+          </div>
+          
+                    <div class="alert alert-info" id="riskAlert${risk.id}" style="display: none;">
+                      <i class="bi bi-exclamation-triangle me-2"></i>
+                      <small>Residual risk exceeds appetite — Issue record will be created.</small>
+              </div>
+                    
+                    <div class="ai-suggestions">
+                      <small class="text-muted">AI Recommendation</small>
+                      
+                      <!-- AI Recommended Score -->
+                      <div class="mt-2 mb-2">
+                        <strong>AI-recommended residual score: <span class="ai-score-badge" id="aiScore${risk.id}">12</span></strong>
+                        <div class="small text-muted mt-1">Computed from inherent risk and average control mitigation.</div>
+                      </div>
+                      
+                      <div class="small mt-1" id="suggestionsContent${risk.id}">
+                        <small class="text-muted">Select a risk level to see AI-powered recommendations</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+            <!-- Required Rationale -->
+            <div class="mt-4">
+              <label for="riskRationale${risk.id}" class="form-label fw-semibold">
+                Risk Assessment Rationale <span class="text-danger">*</span>
+              </label>
+          <textarea 
+                class="form-control rationale-textarea" 
+                id="riskRationale${risk.id}" 
+            rows="4" 
+                placeholder="Provide detailed justification for your residual risk assessment (minimum 50 characters)..."
+                data-risk-id="${risk.id}"
+            required
+          ></textarea>
+          <div class="form-text">
+                <span id="rationaleCount${risk.id}">0</span>/50 characters minimum
+    </div>
+  </div>
+
+          <!-- Individual Save Button -->
+          <div class="individual-save-section">
+        <div class="d-flex justify-content-between align-items-center">
+              <div class="text-muted small">
+                <i class="bi bi-info-circle me-1"></i>
+                Save your progress to continue later
+              </div>
+              <button class="btn btn-outline-primary save-progress-btn" onclick="saveIndividualRisk('${risk.id}')" id="saveBtn${risk.id}">
+                <i class="bi bi-floppy me-2"></i>Save Progress
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+    `;
+  });
+  
+  html += '</div>';
+  
+  // Navigation buttons now in sticky footer - no need to add here
+  
+  return html;
+}
+
 function initializeHeatMap() {
-  const grid = document.getElementById('heatMapGrid');
+  // Legacy function - now handled by initializeHeatMapForRisk
+  console.log('⚠️ Legacy initializeHeatMap called - use initializeHeatMapForRisk instead');
+}
+
+// Initialize heat map for a specific risk
+function initializeHeatMapForRisk(riskId) {
+  const grid = document.getElementById(`heatMapGrid${riskId}`);
+  if (!grid) {
+    console.error('❌ Heat map grid not found for risk:', riskId);
+    return;
+  }
+  
   grid.innerHTML = '';
   
   // Create 25 cells (5x5 grid)
@@ -477,53 +1063,128 @@ function initializeHeatMap() {
       cell.dataset.likelihood = likelihood;
       cell.dataset.impact = impact;
       cell.dataset.riskScore = riskScore;
+      cell.dataset.score = riskScore; // For AI highlighting
+      cell.dataset.riskId = riskId;
       cell.textContent = riskScore;
       cell.title = `Likelihood: ${likelihood}, Impact: ${impact}, Risk: ${riskScore}`;
       
-      cell.addEventListener('click', () => selectRiskLevel(cell, likelihood, impact, riskScore));
+      cell.addEventListener('click', () => selectRiskLevelForRisk(cell, riskId, likelihood, impact, riskScore));
       
       grid.appendChild(cell);
     }
   }
+  
+  // Apply AI recommendations and auto-highlighting
+  setTimeout(() => {
+    const risk = assessmentData.selectedRisks.find(r => r.id === riskId);
+    const controlInfo = assessmentData.controlMappings[riskId] ? 
+      assessmentData.controlEffectiveness[assessmentData.controlMappings[riskId]] : null;
+    
+    // Calculate AI recommended score
+    const inherentScore = (risk?.likelihood && risk?.impact) ? 
+      (risk.likelihood * risk.impact) : 12; // Default fallback
+    const controlEffectiveness = controlInfo ? 
+      (controlInfo.designEffectiveness + controlInfo.operatingEffectiveness) / 2 : 3;
+    
+    const aiScore = calculateAIRecommendedScore(inherentScore, controlEffectiveness);
+    
+    // Update AI score display
+    const aiScoreElement = document.getElementById(`aiScore${riskId}`);
+    if (aiScoreElement) {
+      aiScoreElement.textContent = aiScore;
+    }
+    
+    // Highlight recommended cell
+    highlightAIRecommendedCell(riskId, aiScore);
+  }, 100); // Small delay to ensure DOM is ready
 }
 
 function selectRiskLevel(cell, likelihood, impact, riskScore) {
-  // Remove previous selection
-  if (selectedCell) {
-    selectedCell.classList.remove('selected');
-  }
-  
-  // Select new cell
-  selectedCell = cell;
-  cell.classList.add('selected');
-  
-  // Update values
-  selectedLikelihood = likelihood;
-  selectedImpact = impact;
-  selectedRiskLevel = riskScore;
-  
-  // Update display
-  updateRiskDisplay();
-  
-  if (typeof modernInteractions !== 'undefined') {
-    modernInteractions.showInfo('Risk Level Selected', `Selected: ${riskLevelNames[riskScore]} Risk (${riskScore})`);
+  // Legacy function - redirect to new multi-risk function
+  console.log('⚠️ Legacy selectRiskLevel called - use selectRiskLevelForRisk instead');
+  if (currentRiskId) {
+    selectRiskLevelForRisk(cell, currentRiskId, likelihood, impact, riskScore);
   }
 }
 
+// Select risk level for a specific risk (multi-risk support)
+function selectRiskLevelForRisk(cell, riskId, likelihood, impact, riskScore) {
+  console.log('🎯 Risk level selected for risk:', riskId, 'Score:', riskScore);
+  
+  // Remove previous selection for this risk
+  const grid = document.getElementById(`heatMapGrid${riskId}`);
+  if (grid) {
+    const previouslySelected = grid.querySelector('.selected');
+    if (previouslySelected) {
+      previouslySelected.classList.remove('selected');
+    }
+  }
+  
+  // Select new cell
+  cell.classList.add('selected');
+  
+  // Store assessment data for this risk
+  if (!assessmentData.assessments[riskId]) {
+    assessmentData.assessments[riskId] = {};
+  }
+  
+  assessmentData.assessments[riskId].likelihood = likelihood;
+  assessmentData.assessments[riskId].impact = impact;
+  assessmentData.assessments[riskId].riskScore = riskScore;
+  
+  // Update display for this risk
+  updateRiskDisplayForRisk(riskId, likelihood, impact, riskScore);
+  
+  // Update status indicator for this risk
+  updateRiskStatusIndicator(riskId);
+  
+  // Update overall form validation
+  checkOverallFormCompletion();
+  
+  // Show success feedback
+  showSuccessMessage(`Risk level ${riskScore} (${riskLevelNames[riskScore]}) selected for risk`);
+}
+
 function updateRiskDisplay() {
-  document.getElementById('scoreValue').textContent = selectedRiskLevel;
-  document.getElementById('scoreLabel').textContent = riskLevelNames[selectedRiskLevel];
+  // Legacy function - redirect to new multi-risk function
+  console.log('⚠️ Legacy updateRiskDisplay called - use updateRiskDisplayForRisk instead');
+  if (currentRiskId && selectedRiskLevel) {
+    updateRiskDisplayForRisk(currentRiskId, selectedLikelihood, selectedImpact, selectedRiskLevel);
+  }
+}
+
+// Update display for a specific risk
+function updateRiskDisplayForRisk(riskId, likelihood, impact, riskScore) {
+  console.log('🔄 Updating display for risk:', riskId);
   
-  document.getElementById('selectedLikelihood').textContent = selectedLikelihood;
-  document.getElementById('selectedImpact').textContent = selectedImpact;
-  document.getElementById('selectedRiskLevel').textContent = riskLevelNames[selectedRiskLevel];
+  // Update score display
+  const scoreValue = document.getElementById(`scoreValue${riskId}`);
+  const scoreLabel = document.getElementById(`scoreLabel${riskId}`);
   
-  // Update AI recommendations
-  const suggestionsContent = document.getElementById('suggestionsContent');
-  suggestionsContent.innerHTML = `<small class="text-dark">${aiRecommendations[selectedRiskLevel]}</small>`;
+  if (scoreValue) scoreValue.textContent = riskScore;
+  if (scoreLabel) scoreLabel.textContent = riskLevelNames[riskScore];
   
-  // Enable continue button if rationale is sufficient
-  checkFormCompletion();
+  // Update component values
+  const likelihoodElement = document.getElementById(`selectedLikelihood${riskId}`);
+  const impactElement = document.getElementById(`selectedImpact${riskId}`);
+  const riskLevelElement = document.getElementById(`selectedRiskLevel${riskId}`);
+  
+  if (likelihoodElement) likelihoodElement.textContent = likelihood;
+  if (impactElement) impactElement.textContent = impact;
+  if (riskLevelElement) riskLevelElement.textContent = riskLevelNames[riskScore];
+  
+  // Show/hide high risk alert for scores >15
+  const alertElement = document.getElementById(`riskAlert${riskId}`);
+  if (alertElement) {
+    if (riskScore >= 4) { // Risk level 4-5 corresponds to scores 16-25
+      alertElement.style.display = 'block';
+    } else {
+      alertElement.style.display = 'none';
+    }
+  }
+  
+  // Update AI recommendations with control context
+  updateAIRecommendationsForRisk(riskId, riskScore);
 }
 
 function resetHeatMap() {
@@ -553,46 +1214,496 @@ function resetHeatMap() {
   }
 }
 
-function checkFormCompletion() {
-  const rationale = document.getElementById('riskRationale').value;
-  const continueBtn = document.getElementById('continueBtn');
+// Update AI recommendations with control effectiveness context
+function updateAIRecommendationsForRisk(riskId, riskScore) {
+  const suggestionsContent = document.getElementById(`suggestionsContent${riskId}`);
+  if (!suggestionsContent) return;
   
-  if (selectedRiskLevel && rationale.length >= 50) {
-    continueBtn.disabled = false;
+  let recommendation = aiRecommendations[riskScore];
+  
+  // Enhance recommendations based on control effectiveness
+  const controlMapping = assessmentData.controlMappings[riskId];
+  const controlInfo = controlMapping ? assessmentData.controlEffectiveness[controlMapping] : null;
+  
+  if (controlInfo) {
+    const avgEffectiveness = (controlInfo.designEffectiveness + controlInfo.operatingEffectiveness) / 2;
+    
+    if (avgEffectiveness < 3 && riskScore >= 3) {
+      recommendation += ` Consider strengthening the mapped control "${controlInfo.title}" (current effectiveness: ${avgEffectiveness.toFixed(1)}/5).`;
+    } else if (avgEffectiveness >= 4 && riskScore <= 2) {
+      recommendation += ` The mapped control "${controlInfo.title}" appears effective (${avgEffectiveness.toFixed(1)}/5).`;
+    }
+  } else if (riskScore >= 3) {
+    recommendation += ' Consider mapping an appropriate control to reduce residual risk.';
+  }
+  
+  suggestionsContent.innerHTML = `<small class="text-dark">${recommendation}</small>`;
+}
+
+// Setup form validation for all risks
+function setupFormValidation() {
+  console.log('🔄 Setting up form validation for multi-risk assessment');
+  
+  // Add character counting and validation to all rationale textareas
+  const rationaleTextareas = document.querySelectorAll('.rationale-textarea');
+  
+  rationaleTextareas.forEach(textarea => {
+    const riskId = textarea.dataset.riskId;
+    const countElement = document.getElementById(`rationaleCount${riskId}`);
+    
+    textarea.addEventListener('input', function() {
+      if (countElement) {
+        countElement.textContent = this.value.length;
+      }
+      
+      // Store rationale in assessment data
+      if (!assessmentData.assessments[riskId]) {
+        assessmentData.assessments[riskId] = {};
+      }
+      assessmentData.assessments[riskId].rationale = this.value;
+      
+      // Update status indicator for this risk
+      updateRiskStatusIndicator(riskId);
+      
+      // Update overall form validation
+      checkOverallFormCompletion();
+    });
+  });
+}
+
+// Update the visual status indicator for a specific risk
+function updateRiskStatusIndicator(riskId) {
+  const assessment = assessmentData.assessments[riskId];
+  const rationale = assessment?.rationale || '';
+  const hasScore = !!assessment?.riskScore;
+  const hasValidRationale = rationale.length >= 50;
+  
+  const panel = document.querySelector(`.risk-panel[data-risk-id="${riskId}"]`);
+  const badge = document.getElementById(`statusBadge${riskId}`);
+  
+  if (!panel || !badge) return;
+  
+  // Remove all status classes
+  panel.classList.remove('status-pending', 'status-in-progress', 'status-completed', 'status-high-risk');
+  badge.classList.remove('pending', 'in-progress', 'completed', 'high-risk');
+  
+  if (hasScore && hasValidRationale) {
+    // Completed - check if high risk
+    const riskScore = assessment.riskScore;
+    if (riskScore >= 16) { // High risk threshold (4x4 or higher)
+      panel.classList.add('status-high-risk');
+      badge.classList.add('high-risk');
+      badge.innerHTML = '<i class="bi bi-exclamation-triangle me-1"></i>High Risk';
   } else {
-    continueBtn.disabled = true;
+      panel.classList.add('status-completed');
+      badge.classList.add('completed');
+      badge.innerHTML = '<i class="bi bi-check-circle me-1"></i>Complete';
+    }
+  } else if (hasScore || rationale.length > 0) {
+    // In progress
+    panel.classList.add('status-in-progress');
+    badge.classList.add('in-progress');
+    badge.innerHTML = '<i class="bi bi-pencil me-1"></i>In Progress';
+  } else {
+    // Pending
+    panel.classList.add('status-pending');
+    badge.classList.add('pending');
+    badge.innerHTML = '<i class="bi bi-clock me-1"></i>Pending';
+  }
+}
+
+// Initialize status indicators for all risks
+function initializeAllStatusIndicators() {
+  assessmentData.selectedRisks.forEach(risk => {
+    updateRiskStatusIndicator(risk.id);
+  });
+}
+
+// Calculate AI-recommended score with ceiling rounding
+function calculateAIRecommendedScore(inherentScore, controlEffectiveness) {
+  // Placeholder calculation - replace with actual AI logic
+  let baseScore = inherentScore || 12;
+  let effectiveness = controlEffectiveness || 3;
+  
+  // Simple mitigation: reduce score based on control effectiveness
+  let mitigationFactor = effectiveness / 5; // 0.6 for effectiveness 3/5
+  let reducedScore = baseScore * (1 - (mitigationFactor * 0.3)); // Reduce by up to 30%
+  
+  // Apply ceiling (round up) and cap at 25
+  let recommendedScore = Math.min(Math.ceil(reducedScore), 25);
+  
+  return recommendedScore;
+}
+
+// Auto-highlight the AI-recommended cell in heat map
+function highlightAIRecommendedCell(riskId, recommendedScore) {
+  const grid = document.getElementById(`heatMapGrid${riskId}`);
+  if (!grid) return;
+  
+  // Remove existing AI highlights
+  grid.querySelectorAll('.ai-recommended').forEach(cell => {
+    cell.classList.remove('ai-recommended');
+  });
+  
+  // Find cell with matching score (clamp to 1-25 range)
+  const clampedScore = Math.max(1, Math.min(25, recommendedScore));
+  const targetCell = grid.querySelector(`[data-score="${clampedScore}"]`);
+  
+  if (targetCell) {
+    targetCell.classList.add('ai-recommended');
+  }
+}
+
+// Update total coverage calculation
+function updateTotalCoverage(riskId) {
+  const coverageInputs = document.querySelectorAll(`[data-risk-id="${riskId}"].coverage-input`);
+  const totalDisplay = document.getElementById(`totalCoverage${riskId}`);
+  const saveBtn = document.getElementById(`saveBtn${riskId}`);
+  
+  if (!totalDisplay) return;
+  
+  let total = 0;
+  coverageInputs.forEach(input => {
+    total += parseInt(input.value) || 0;
+  });
+  
+  totalDisplay.textContent = `${total}% / 100%`;
+  
+  // Update styling and validation
+  totalDisplay.classList.remove('error', 'success');
+  if (total === 100) {
+    totalDisplay.classList.add('success');
+    if (saveBtn) saveBtn.disabled = false;
+  } else {
+    totalDisplay.classList.add('error');
+    if (saveBtn) saveBtn.disabled = true;
+  }
+  
+  // Store coverage data
+  if (!assessmentData.coverageData) assessmentData.coverageData = {};
+  assessmentData.coverageData[riskId] = total;
+}
+
+// Check completion of all risk assessments
+function checkOverallFormCompletion() {
+  const submitBtn = document.getElementById('submitAssessmentBtn');
+  if (!submitBtn) return;
+  
+  let allComplete = true;
+  let completedCount = 0;
+  
+  // Check each risk for completion
+  for (const risk of assessmentData.selectedRisks) {
+    const assessment = assessmentData.assessments[risk.id];
+    const rationale = assessment?.rationale || '';
+    
+    if (!assessment?.riskScore || rationale.length < 50) {
+      allComplete = false;
+    } else {
+      completedCount++;
+    }
+  }
+  
+  // Update button state
+  submitBtn.disabled = !allComplete;
+  
+  // Update button text to show progress
+  if (allComplete) {
+    submitBtn.innerHTML = `Submit Assessment <i class="bi bi-check-circle ms-2"></i>`;
+  } else {
+    submitBtn.innerHTML = `Submit Assessment (${completedCount}/${assessmentData.selectedRisks.length}) <i class="bi bi-arrow-right ms-2"></i>`;
+  }
+  
+  console.log(`📊 Assessment progress: ${completedCount}/${assessmentData.selectedRisks.length} complete`);
+}
+
+function checkFormCompletion() {
+  // Legacy function - redirect to new multi-risk function
+  console.log('⚠️ Legacy checkFormCompletion called - use checkOverallFormCompletion instead');
+  checkOverallFormCompletion();
+}
+
+// Submit complete multi-risk assessment
+async function submitCompleteAssessment() {
+  console.log('🚀 Submitting complete residual assessment...');
+  
+  const submitBtn = document.getElementById('submitAssessmentBtn');
+  const originalText = submitBtn.innerHTML;
+  
+  try {
+  // Show loading state
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
+    submitBtn.disabled = true;
+    
+    // Validate all assessments are complete
+    for (const risk of assessmentData.selectedRisks) {
+      const assessment = assessmentData.assessments[risk.id];
+      
+      if (!assessment?.riskScore) {
+        throw new Error(`Risk assessment incomplete for: ${risk.title}`);
+      }
+      
+      if (!assessment.rationale || assessment.rationale.length < 50) {
+        throw new Error(`Insufficient rationale for: ${risk.title}`);
+      }
+    }
+    
+    // Save assessments to Dataverse
+    const results = await saveAssessmentsToDataverse();
+    
+    // Create issues for high-risk assessments
+    await createIssuesForHighRisk();
+    
+    // Show success and redirect
+    showSuccessMessage('All assessments submitted successfully!');
+  
+  setTimeout(() => {
+      window.location.href = '/dashboard';  // Redirect to dashboard or success page
+  }, 2000);
+    
+  } catch (error) {
+    console.error('❌ Error submitting assessments:', error);
+    showErrorMessage(`Failed to submit assessments: ${error.message}`);
+    
+    // Restore button state
+    submitBtn.innerHTML = originalText;
+    submitBtn.disabled = false;
+  }
+}
+
+// Save individual risk assessment to Dataverse
+async function saveIndividualRisk(riskId) {
+  console.log('💾 Saving individual risk assessment:', riskId);
+  
+  const saveBtn = document.getElementById(`saveBtn${riskId}`);
+  if (!saveBtn) return;
+  
+  // Update button to show saving state
+  const originalContent = saveBtn.innerHTML;
+  saveBtn.disabled = true;
+  saveBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Saving...';
+  
+  try {
+    const assessment = assessmentData.assessments[riskId];
+    const risk = assessmentData.selectedRisks.find(r => r.id === riskId);
+    
+    if (!assessment || !risk) {
+      throw new Error('Assessment or risk data not found');
+    }
+    
+    // Check if we have any data to save
+    const hasScore = !!assessment.riskScore;
+    const hasRationale = (assessment.rationale || '').length > 0;
+    
+    if (!hasScore && !hasRationale) {
+      showErrorMessage('No assessment data to save. Please provide a risk score and/or rationale.');
+      return;
+    }
+    
+    // Check coverage validation if controls are mapped
+    const controlMapping = assessmentData.controlMappings[riskId];
+    if (controlMapping && assessmentData.coverageData) {
+      const coverage = assessmentData.coverageData[riskId] || 0;
+      if (coverage !== 100) {
+        showErrorMessage('Control coverage must equal 100% before saving.');
+        return;
+      }
+    }
+    
+    // Prepare assessment data using proven pattern from complete submission
+    const assessmentPayload = {
+      cr129_assessmentname: `${risk.title} - Residual Assessment`,
+      'cr129_risktitle@odata.bind': `/cr129_risks(${risk.dataverseId})`,
+      cr129_assessor: '{{ user.email | default:"system@company.com" }}',
+      cr129_assmntdate: new Date().toISOString(),
+      cr129_assessmentstatus: hasScore && (assessment.rationale || '').length >= 50 ? 861560001 : 861560000 // Complete : In Progress
+    };
+    
+    // Add scores if available
+    if (hasScore) {
+      assessmentPayload.cr129_residuall = assessment.likelihood || 1;
+      assessmentPayload.cr129_residuali = assessment.impact || 1;
+    }
+    
+    // Add rationale if available
+    if (hasRationale) {
+      assessmentPayload.cr129_rationale = assessment.rationale;
+    }
+    
+    // Check if this assessment already exists in Dataverse
+    let response;
+    if (assessment.dataverseId) {
+      // Update existing assessment
+      response = await webapi.safeAjax({
+        url: `/_api/cr129_assesses(${assessment.dataverseId})`,
+        type: 'PATCH',
+        data: JSON.stringify(assessmentPayload),
+        contentType: 'application/json; charset=utf-8'
+      });
+      console.log('✅ Individual assessment updated successfully');
+    } else {
+      // Create new assessment
+      response = await webapi.safeAjax({
+        url: '/_api/cr129_assesses',
+        type: 'POST',
+        data: JSON.stringify(assessmentPayload),
+        contentType: 'application/json; charset=utf-8'
+      });
+      console.log('✅ Individual assessment created successfully:', response);
+    }
+    
+    console.log('✅ Individual assessment saved successfully:', response);
+    
+    // Store the Dataverse ID for future updates
+    if (response && response.cr129_assessid) {
+      if (!assessmentData.assessments[riskId]) {
+        assessmentData.assessments[riskId] = {};
+      }
+      assessmentData.assessments[riskId].dataverseId = response.cr129_assessid;
+    }
+    
+    // Update button to show success
+    saveBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Saved';
+    saveBtn.classList.remove('btn-outline-primary');
+    saveBtn.classList.add('btn-outline-success');
+    
+    // Show success message
+    showSuccessMessage(`Risk assessment saved successfully. You can continue later.`);
+    
+    // Reset button after 3 seconds
+    setTimeout(() => {
+      saveBtn.innerHTML = originalContent;
+      saveBtn.classList.remove('btn-outline-success');
+      saveBtn.classList.add('btn-outline-primary');
+      saveBtn.disabled = false;
+    }, 3000);
+    
+  } catch (error) {
+    console.error('❌ Error saving individual assessment:', error);
+    showErrorMessage(`Failed to save assessment: ${error.message}`);
+    
+    // Reset button on error
+    saveBtn.innerHTML = originalContent;
+    saveBtn.disabled = false;
+  }
+}
+
+// Save all assessments to cr129_assesses table using Web API
+async function saveAssessmentsToDataverse() {
+  console.log('💾 Saving assessments to Dataverse...');
+  
+  const results = [];
+  
+  for (const risk of assessmentData.selectedRisks) {
+    const assessment = assessmentData.assessments[risk.id];
+    
+    try {
+      // Prepare assessment data for Web API [[memory:3346968]]
+      const dataToSave = {
+        "cr129_assessmentname": `${assessmentData.process} - ${risk.title} Assessment`,
+        "cr129_risktitle@odata.bind": `/cr129_risks(${risk.cr129_riskid || risk.id})`,
+        "cr129_assessor": "{{ user.email | default:'system@company.com' }}", // Power Pages user context
+        "cr129_assmntdate": new Date().toISOString(),
+        "cr129_residuall": assessment.likelihood,
+        "cr129_residuali": assessment.impact,
+        "cr129_rationale": assessment.rationale,
+        "cr129_assessmentstatus": 0 // Draft status
+      };
+      
+      console.log('🔄 Saving assessment for risk:', risk.title);
+      console.log('🔄 Assessment data:', dataToSave);
+      
+      // Use proven Web API pattern from Control Mapping [[memory:3367576]]
+      const response = await webapi.safeAjax({
+        url: '/_api/cr129_assesses',
+        type: 'POST',
+        data: JSON.stringify(dataToSave),
+        contentType: 'application/json; charset=utf-8'
+      });
+      
+      console.log('✅ Assessment saved successfully for risk:', risk.title);
+      results.push({ riskId: risk.id, success: true, response });
+      
+    } catch (error) {
+      console.error('❌ Error saving assessment for risk:', risk.title, error);
+      results.push({ riskId: risk.id, success: false, error });
+    }
+  }
+  
+  const successCount = results.filter(r => r.success).length;
+  console.log(`📊 Assessment save results: ${successCount}/${results.length} successful`);
+  
+  return results;
+}
+
+// Create cr129_issues records for high residual risk (>15)
+async function createIssuesForHighRisk() {
+  console.log('🚨 Creating issues for high residual risk assessments...');
+  
+  const highRiskAssessments = assessmentData.selectedRisks.filter(risk => {
+    const assessment = assessmentData.assessments[risk.id];
+    return assessment && assessment.riskScore >= 4; // Risk level 4-5 = scores 16-25
+  });
+  
+  if (highRiskAssessments.length === 0) {
+    console.log('✅ No high-risk assessments, no issues to create');
+    return;
+  }
+  
+  console.log(`🔄 Creating ${highRiskAssessments.length} issue records...`);
+  
+  for (const risk of highRiskAssessments) {
+    const assessment = assessmentData.assessments[risk.id];
+    
+    try {
+      // Prepare issue data for Web API
+      const issueData = {
+        "cr129_issuetitle": `High Residual Risk: ${risk.title}`,
+        "cr129_risktitle@odata.bind": `/cr129_risks(${risk.cr129_riskid || risk.id})`,
+        "cr129_owner": "{{ user.email | default:'system@company.com' }}",
+        "cr129_targetdate": new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+        "cr129_status": 0, // Open
+        "cr129_severity": assessment.riskScore >= 5 ? 0 : 1, // High if Critical, Medium if High
+        "cr129_issuerootcause": 3 // External (default - can be updated later)
+      };
+      
+      console.log('🔄 Creating issue for high-risk assessment:', risk.title);
+      
+      const response = await webapi.safeAjax({
+        url: '/_api/cr129_issues',
+        type: 'POST',
+        data: JSON.stringify(issueData),
+        contentType: 'application/json; charset=utf-8'
+      });
+      
+      console.log('✅ Issue created successfully for risk:', risk.title);
+      
+    } catch (error) {
+      console.error('❌ Error creating issue for risk:', risk.title, error);
+    }
   }
 }
 
 function continueToNextStep() {
-  if (!selectedRiskLevel) {
-    if (typeof modernInteractions !== 'undefined') {
-      modernInteractions.showError('No Risk Level Selected', 'Please select a risk level on the heat map');
-    }
-    return;
-  }
+  // Legacy function - redirect to new multi-risk function
+  console.log('⚠️ Legacy continueToNextStep called - use submitCompleteAssessment instead');
+  submitCompleteAssessment();
+}
+
+// Update context summary with real data
+function updateContextSummary() {
+  console.log('🔄 Updating context summary with real data');
   
-  const rationale = document.getElementById('riskRationale').value;
-  if (rationale.length < 50) {
-    if (typeof modernInteractions !== 'undefined') {
-      modernInteractions.showError('Insufficient Rationale', 'Please provide at least 50 characters of justification');
-    }
-    return;
-  }
+  // Update breadcrumb or header if present
+  const processNameElements = document.querySelectorAll('[data-process-name]');
+  processNameElements.forEach(el => {
+    el.textContent = assessmentData.process || 'Selected Process';
+  });
   
-  // Show loading state
-  const btn = document.getElementById('continueBtn');
-  const originalText = btn.innerHTML;
-  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Completing...';
-  btn.disabled = true;
-  
-  if (typeof modernInteractions !== 'undefined') {
-    modernInteractions.showSuccess('Assessment Complete', 'Finalizing your risk assessment...');
-  }
-  
-  setTimeout(() => {
-    window.location.href = '/success-page';
-  }, 2000);
+  const businessUnitElements = document.querySelectorAll('[data-business-unit]');
+  businessUnitElements.forEach(el => {
+    el.textContent = assessmentData.businessUnit || 'Selected Business Unit';
+  });
 }
 
 function goBack() {
@@ -605,18 +1716,145 @@ function goBack() {
   }, 1000);
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('✅ Residual Risk Assessment loaded with clean Bootstrap 5');
-  initializeHeatMap();
+// Helper functions for user feedback
+function showSuccessMessage(message) {
+  console.log('✅ Success:', message);
   
-  // Character counter for rationale
-  const rationaleTextarea = document.getElementById('riskRationale');
-  const rationaleCount = document.getElementById('rationaleCount');
+  // Try to use existing toast/notification system
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showSuccess('Success', message);
+  } else {
+    // Fallback to simple alert
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed';
+    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 1050; max-width: 400px;';
+    alertDiv.innerHTML = `
+      <i class="bi bi-check-circle me-2"></i>${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alertDiv);
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+      if (alertDiv.parentNode) {
+        alertDiv.parentNode.removeChild(alertDiv);
+      }
+    }, 5000);
+  }
+}
+
+function showErrorMessage(message) {
+  console.error('❌ Error:', message);
   
-  rationaleTextarea.addEventListener('input', function() {
-    rationaleCount.textContent = this.value.length;
-    checkFormCompletion();
+  if (typeof modernInteractions !== 'undefined') {
+    modernInteractions.showError('Error', message);
+  } else {
+    // Fallback to simple alert
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-danger alert-dismissible fade show position-fixed';
+    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 1050; max-width: 400px;';
+    alertDiv.innerHTML = `
+      <i class="bi bi-exclamation-triangle me-2"></i>${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alertDiv);
+    
+    // Auto-hide after 10 seconds for errors
+    setTimeout(() => {
+      if (alertDiv.parentNode) {
+        alertDiv.parentNode.removeChild(alertDiv);
+      }
+    }, 10000);
+  }
+}
+
+// Display empty state when no risks found
+function displayEmptyState(container) {
+  container.innerHTML = `
+    <div class="text-center py-5">
+      <div class="mb-4">
+        <i class="bi bi-inbox display-1 text-muted"></i>
+      </div>
+      <h3 class="text-muted">No Risks Found</h3>
+      <p class="text-muted mb-4">
+        No risks were found for residual assessment. Please return to Risk Identification to select risks first.
+      </p>
+      <div class="d-flex gap-3 justify-content-center">
+        <button class="btn btn-outline-secondary" onclick="goBack()">
+          <i class="bi bi-arrow-left me-2"></i>Back to Control Mapping
+        </button>
+        <a href="/risk-identification-v2" class="btn btn-primary">
+          <i class="bi bi-plus-circle me-2"></i>Identify Risks
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+// Reset all heat maps (if needed)
+function resetAllHeatMaps() {
+  console.log('🔄 Resetting all heat maps');
+  
+  assessmentData.assessments = {};
+  
+  assessmentData.selectedRisks.forEach(risk => {
+    const grid = document.getElementById(`heatMapGrid${risk.id}`);
+    if (grid) {
+      const selectedCells = grid.querySelectorAll('.selected');
+      selectedCells.forEach(cell => cell.classList.remove('selected'));
+    }
+    
+    // Reset displays
+    const scoreValue = document.getElementById(`scoreValue${risk.id}`);
+    const scoreLabel = document.getElementById(`scoreLabel${risk.id}`);
+    if (scoreValue) scoreValue.textContent = '-';
+    if (scoreLabel) scoreLabel.textContent = 'Click heat map to assess';
+    
+    // Reset rationale
+    const rationale = document.getElementById(`riskRationale${risk.id}`);
+    if (rationale) rationale.value = '';
+    
+    // Hide alert
+    const alert = document.getElementById(`riskAlert${risk.id}`);
+    if (alert) alert.style.display = 'none';
   });
+  
+  // Reset status indicators
+  initializeAllStatusIndicators();
+  
+  checkOverallFormCompletion();
+  
+  showSuccessMessage('All assessments cleared');
+}
+
+function resetHeatMap() {
+  // Legacy function - redirect to new multi-risk function  
+  console.log('⚠️ Legacy resetHeatMap called - use resetAllHeatMaps instead');
+  resetAllHeatMaps();
+}
+
+function goBack() {
+  console.log('🔄 Returning to Control Mapping');
+  showSuccessMessage('Returning to Control Mapping...');
+  
+  setTimeout(() => {
+    window.location.href = '/control-mapping-overview';
+  }, 1000);
+}
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', async function() {
+  console.log('🚀 Residual Risk Assessment with Real Data Integration loaded');
+  
+  try {
+    // Load real data and set up interface
+    await loadAssessmentData();
+    
+    console.log('✅ Residual Risk Assessment fully initialized');
+    
+  } catch (error) {
+    console.error('❌ Error initializing Residual Risk Assessment:', error);
+    showErrorMessage('Failed to initialize assessment. Please refresh the page.');
+  }
 });
 </script>

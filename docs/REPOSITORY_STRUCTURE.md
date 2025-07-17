@@ -14,9 +14,9 @@ powerpages/
     │   ├── process-selection/
     │   │   └── content-pages/
     │   │       └── Process-Selection.en-US.webpage.copy.html  ← ACTIVE: Current Process Selection
-    │   ├── risk-identification/
+    │   ├── risk-identification-v2/
     │   │   └── content-pages/
-    │   │       └── Risk-Identification.en-US.webpage.copy.html  ← TODO: Next to implement
+    │   │       └── Risk-Identification-V2.en-US.webpage.copy.html  ← ACTIVE: Custom risk CRUD with Web API
     │   ├── control-mapping/
     │   │   └── content-pages/
     │   │       └── Control-Mapping.en-US.webpage.copy.html  ← TODO: After risk identification
