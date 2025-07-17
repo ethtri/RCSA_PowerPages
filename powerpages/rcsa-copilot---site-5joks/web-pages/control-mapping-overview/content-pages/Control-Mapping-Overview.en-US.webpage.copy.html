@@ -297,6 +297,7 @@ class MultiSelectControlMapping {
       });
       
       console.log('✅ Junction records loaded successfully:', response.value?.length || 0, 'mappings found');
+      console.log('🔍 Sample junction record structure:', response.value?.[0]);
       
       // Process the mappings using physical field names
       this.existingMappings.clear();
@@ -306,6 +307,8 @@ class MultiSelectControlMapping {
           // Extract GUID values from the lookup value fields
           const riskId = record._cr129_risktitle_value;
           const controlId = record._cr129_controltitle_value;
+          
+          console.log('🔍 Processing record - Risk ID:', riskId, 'Control ID:', controlId, 'Record:', record);
           
           if (riskId && controlId) {
             if (!this.existingMappings.has(riskId)) {
@@ -344,6 +347,9 @@ class MultiSelectControlMapping {
     
     for (const [riskId, mappings] of this.existingMappings.entries()) {
       // Find the local risk that matches this GUID
+      console.log('🔍 Looking for local risk with ID:', riskId);
+      console.log('🔍 Available risk IDs:', this.selectedRisks.map(r => ({ id: r.id, cr129_riskid: r.cr129_riskid })));
+      
       const localRisk = this.selectedRisks.find(r => (r.cr129_riskid || r.id) === riskId);
       
       if (localRisk) {
@@ -353,12 +359,12 @@ class MultiSelectControlMapping {
         const controls = mappings.map(m => this.availableControls.find(c => c.cr129_controlid === m.controlId)).filter(Boolean);
         this.updateRiskCard(localRisk.id, controls);
         
-        // Mappings applied successfully
+        console.log('✅ Applied mappings for risk:', localRisk.id, '→', mappings.length, 'controls');
       }
     }
     
     this.updateProgress();
-    // All existing mappings applied to display
+    console.log('✅ All existing mappings applied to display');
   }
 
   // Display the selected risks as cards
@@ -524,7 +530,9 @@ class MultiSelectControlMapping {
       const selectedControls = Array.from(document.querySelectorAll('input[name="selectedControls"]:checked')).map(cb => cb.value);
       const currentMappings = this.riskMappings[riskId] || [];
       
-      console.log('💾 Saving control mappings for risk:', riskId);
+      console.log('💾 Saving control mappings - Risk:', riskId);
+      console.log('📋 Selected controls:', selectedControls);
+      console.log('📋 Current mappings:', currentMappings);
       
       // Find the risk to get its GUID
       const risk = this.selectedRisks.find(r => r.id === riskId);
@@ -538,7 +546,8 @@ class MultiSelectControlMapping {
       const toAdd = selectedControls.filter(id => !currentMappings.includes(id));
       const toRemove = currentMappings.filter(id => !selectedControls.includes(id));
       
-      // Process additions and removals
+      console.log('➕ Controls to add:', toAdd);
+      console.log('➖ Controls to remove:', toRemove);
       
       // Remove deselected mappings
       for (const controlId of toRemove) {
@@ -593,9 +602,9 @@ class MultiSelectControlMapping {
     const junctionData = {
       "cr129_RIskTitle@odata.bind": `/cr129_risks(${riskGuid})`,
       "cr129_ControlTitle@odata.bind": `/cr129_controls(${controlGuid})`
-          };
-      
-      // Creating junction record with proper field binding
+    };
+    
+    console.log('🔄 Junction POST data:', junctionData);
     
     try {
       const response = await webapi.safeAjax({
@@ -638,7 +647,7 @@ class MultiSelectControlMapping {
           contentType: 'application/json; charset=utf-8'
         });
         
-        console.log('✅ Junction record deleted successfully');
+        console.log('✅ Junction record deleted using cached ID:', recordToDelete);
         
         // Update cache
         if (this.existingMappings.has(riskGuid)) {
@@ -653,7 +662,7 @@ class MultiSelectControlMapping {
         
       } else {
         // Method 2: Load all records and filter client-side (fallback)
-        console.log('Record not in cache, searching all records...');
+        console.log('🔍 Record not in cache, loading all records to find match...');
         
         const response = await webapi.safeAjax({
           url: `/_api/cr129_riskctrls?$select=cr129_riskctrlid,_cr129_risktitle_value,_cr129_controltitle_value&$filter=statecode eq 0`,
@@ -680,7 +689,7 @@ class MultiSelectControlMapping {
             contentType: 'application/json; charset=utf-8'
           });
           
-          console.log('✅ Junction record deleted successfully');
+          console.log('✅ Junction record deleted successfully:', record.cr129_riskctrlid);
         }
       }
       
