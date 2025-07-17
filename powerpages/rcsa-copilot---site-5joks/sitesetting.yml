@@ -353,7 +353,7 @@
   adx_sitesettingid: 8a5d6920-b5d7-43ac-8359-482529725000
 
 - adx_name: Webapi/cr129_riskctrl/fields
-  adx_value: cr129_riskctrlid,cr129_ControlTitle,cr129_RIskTitle,_cr129_risktitle_value,_cr129_controltitle_value,statecode,statuscode
+  adx_value: "*"
   adx_description: All required fields including lookup value fields for Risk-Control Mapping Web API
   adx_sitesettingid: 8a5d6921-b5d7-43ac-8359-482529725001
 
@@ -369,7 +369,7 @@
   adx_sitesettingid: 8a5d6954-b5d7-43ac-8359-482529725034
 
 - adx_name: Webapi/cr129_riskctrls/fields
-  adx_value: cr129_riskctrlid,cr129_ControlTitle,cr129_RIskTitle,_cr129_risktitle_value,_cr129_controltitle_value,statecode,statuscode
+  adx_value: "*"
   adx_description: All required fields including lookup value fields for Risk-Control Mapping Web API (EntitySetName plural)
   adx_sitesettingid: 8a5d6955-b5d7-43ac-8359-482529725035
 

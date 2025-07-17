@@ -291,7 +291,7 @@ class MultiSelectControlMapping {
     try {
       // Use lookup value fields for reading (they work for SELECT but not for FILTER)
       const response = await webapi.safeAjax({
-        url: '/_api/cr129_riskctrls?$select=cr129_riskctrlid,_cr129_risktitle_value,_cr129_controltitle_value&$filter=statecode eq 0',
+                        url: '/_api/cr129_riskctrls?$filter=statecode eq 0&$expand=cr129_ControlTitle($select=cr129_controlid,cr129_controltitle),cr129_RIskTitle($select=cr129_riskid,cr129_risktitle)',
         type: 'GET',
         contentType: 'application/json; charset=utf-8'
       });
@@ -303,12 +303,12 @@ class MultiSelectControlMapping {
       this.existingMappings.clear();
       
       if (response.value) {
-        response.value.forEach(record => {
-          // Extract GUID values from the lookup value fields
-          const riskId = record._cr129_risktitle_value;
-          const controlId = record._cr129_controltitle_value;
-          
-          console.log('🔍 Processing record - Risk ID:', riskId, 'Control ID:', controlId, 'Record:', record);
+                  response.value.forEach(record => {
+            // Extract GUID values from expanded objects (working approach from guide)
+            const riskId = record.cr129_RIskTitle?.cr129_riskid;
+            const controlId = record.cr129_ControlTitle?.cr129_controlid;
+            
+            console.log('🔍 Processing record - Risk ID:', riskId, 'Control ID:', controlId, 'Record:', record);
           
           if (riskId && controlId) {
             if (!this.existingMappings.has(riskId)) {
@@ -665,7 +665,7 @@ class MultiSelectControlMapping {
         console.log('🔍 Record not in cache, loading all records to find match...');
         
         const response = await webapi.safeAjax({
-          url: `/_api/cr129_riskctrls?$select=cr129_riskctrlid,_cr129_risktitle_value,_cr129_controltitle_value&$filter=statecode eq 0`,
+                      url: `/_api/cr129_riskctrls?$filter=statecode eq 0&$expand=cr129_ControlTitle($select=cr129_controlid,cr129_controltitle),cr129_RIskTitle($select=cr129_riskid,cr129_risktitle)`,
           type: 'GET',
           contentType: 'application/json; charset=utf-8'
         });
@@ -674,7 +674,10 @@ class MultiSelectControlMapping {
         
         // Filter records to find the one matching our risk and control  
         const matchingRecords = records.filter(record => {
-          return record._cr129_risktitle_value === riskGuid && record._cr129_controltitle_value === controlGuid;
+                      // Use expanded objects to get GUIDs
+            const recordRiskId = record.cr129_RIskTitle?.cr129_riskid;
+            const recordControlId = record.cr129_ControlTitle?.cr129_controlid;
+            return recordRiskId === riskGuid && recordControlId === controlGuid;
         });
         
         if (matchingRecords.length === 0) {
