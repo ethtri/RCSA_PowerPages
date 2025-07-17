@@ -1,0 +1,734 @@
+- adx_filecontent: 
+  adx_name: Authentication/Registration/LocalLoginEnabled
+  adx_sitesettingid: 020deb12-41e2-45dd-ae07-56d73a24602a
+  adx_value: false
+- adx_filecontent: 
+  adx_name: Authentication/Registration/OpenRegistrationEnabled
+  adx_sitesettingid: 02da73ef-1a46-4532-af21-8ddb1fd1052c
+  adx_value: true
+- adx_filecontent: 
+  adx_name: Authentication/OpenIdConnect/AAD-B2C_1/ExternalLogoutEnabled
+  adx_sitesettingid: 03cf5160-346f-4d8b-8282-2afc5bb7db45
+  adx_value: ''
+  statecode: 1
+  statuscode: 2
+- adx_description: Sets whether or not the portal can redirect the user to the profile page after successful sign-in. By default, it is set to true.
+  adx_name: Authentication/Registration/ProfileRedirectEnabled
+  adx_sitesettingid: 09b566f1-1229-4872-ad3a-78ab634b3ec3
+  adx_value: true
+- adx_filecontent: 
+  adx_name: Authentication/OpenIdConnect/AAD-B2C_1/AllowContactMappingWithEmail
+  adx_sitesettingid: 0ed8fcfd-fef7-43c4-b3bb-bd7efb9529b1
+  adx_value: ''
+  statecode: 1
+  statuscode: 2
+- adx_name: HTTP/X-Frame-Options
+  adx_sitesettingid: 0f38cb7d-b3cf-4d7d-95a7-044f2b6a76d7
+  adx_value: SAMEORIGIN
+- adx_description: Denies use of the portal to minors without parental consent. By default, it is set to false.
+  adx_name: Authentication/Registration/DenyMinorsWithoutParentalConsent
+  adx_sitesettingid: 199c4a77-9722-4ba7-9295-a909bfe97f75
+  adx_value: false
+- adx_name: Authentication/OpenAuth/Twitter/ConsumerKey
+  adx_sitesettingid: 20739c5b-0f72-4035-9ebc-91d239d24c90
+- adx_filecontent: 
+  adx_name: Authentication/OpenIdConnect/AAD-B2C_1/Caption
+  adx_sitesettingid: 20cb4561-fb84-4d6e-b1a9-62118bb16f2c
+  adx_value: ''
+  statecode: 1
+  statuscode: 2
+- adx_description: A true or false value. If set to true, the local account will be marked as deprecated. The portal user will be required to migrate to a non-deprecated account.
+  adx_name: Authentication/Registration/LocalLoginDeprecated
+  adx_sitesettingid: 29ef7977-36bc-4ee7-8d4f-706d0c74b411
+  adx_value: False
+- adx_description: Setting controls whether attachments will be displayed on Knowledge articles
+  adx_name: KnowledgeManagement/DisplayNotes
+  adx_sitesettingid: 300a1237-2622-42f6-8fbe-b26bbe3400af
+  adx_value: false
+- adx_description: 'The amount of time the Authentication/LoginThrottling/MaxInvaildAttemptsFromIPAddress are to be within before the IP address has to wait Authentication/LoginThrottling/IpAddressTimeoutTimeSpan. Default: 00:03:00 (3 mins)'
+  adx_name: Authentication/LoginThrottling/MaxAttemptsTimeLimitTimeSpan
+  adx_sitesettingid: 303a6875-e12e-4ff5-99f9-2641cbc5ae6e
+  adx_value: 00:03:00
+- adx_description: >-
+    A collection of search logical name filter options. Defining a value here will add dropdown filter options to site-wide search.
+
+
+    This value should be in the form of name/value pairs, with name and value separated by a colon, and pairs separated by a semicolon. For example: "Forums:adx_communityforum,adx_communityforumthread,adx_communityforumpost;Blogs:adx_blog,adx_blogpost,adx_blogpostcomment".
+  adx_name: search/filters
+  adx_sitesettingid: 32efeef0-f0d3-4036-84f1-ff562ddf8346
+- adx_description: Denies use of the portal to minors. By default, it is set to false.
+  adx_name: Authentication/Registration/DenyMinors
+  adx_sitesettingid: 33936dcb-a5a6-4680-863f-ba65838fc551
+  adx_value: false
+- adx_name: Metadata/Template-Version
+  adx_sitesettingid: 35641859-230e-40e0-af2d-a96f3286cc10
+  adx_value: 3.0.2505.1
+- adx_name: Authentication/OpenIdConnect/AzureAD/LoginClaimsMapping
+  adx_sitesettingid: 41f6eab8-c7c2-4120-8f91-e415b28a3e3e
+  adx_value: emailaddress1=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
+- adx_description: 'Override query for site search, to apply additional weights and filters. @Query is the query text entered by a user. Lucene query syntax reference: http://lucene.apache.org/core/old_versioned_docs/versions/2_9_1/queryparsersyntax.html'
+  adx_name: search/query
+  adx_sitesettingid: 4c06bdf8-6da7-445a-8114-554708e2a2b4
+  adx_value: +(@Query) _title:(@Query) _logicalname:knowledgearticle~0.9^0.3 _logicalname:annotation~0.9^0.25 _logicalname:adx_webpage~0.9^0.2 -_logicalname:adx_webfile~0.9 adx_partialurl:(@Query) _logicalname:adx_blogpost~0.9^0.1 -_logicalname:adx_communityforumthread~0.9
+- adx_filecontent: 
+  adx_name: Authentication/OpenIdConnect/AAD-B2C_1/Authority
+  adx_sitesettingid: 4e1741fc-b210-48d5-b69d-eb52140afc66
+  adx_value: ''
+  statecode: 1
+  statuscode: 2
+- adx_name: Authentication/OpenAuth/LinkedIn/ConsumerSecret
+  adx_sitesettingid: 5511cd3f-d8ec-485e-a6ff-2d21558043e8
+- adx_name: ThemeFeature
+  adx_sitesettingid: 6804063c-82ff-4630-b6d7-d1f24fb2ce99
+  adx_value: '{"status":"enable","selectedThemeId":"329a43fa-5471-4678-8330-d3a0b404e9bb","version":"V2"}'
+- adx_description: 'The default number of unauthenticated login attempts from an IP address before the IP address is blocked for Authentication/LoginThrottling/IpAddressTimeoutTimeSpan if the attempts occur within Authentication/LoginThrottling/MaxAttemptsTimeLimitTimeSpan amount of time. Default: 1000'
+  adx_name: Authentication/LoginThrottling/MaxInvaildAttemptsFromIPAddress
+  adx_sitesettingid: 6fd0a4d7-d8b4-47cf-8d5d-69698983e79a
+  adx_value: 1000
+- adx_name: Authentication/OpenAuth/Twitter/ConsumerSecret
+  adx_sitesettingid: 71f7c6bd-f09f-4e48-a71c-89e88644deda
+- adx_description: A true or false value. If set to true, the portal will display the terms and conditions of the site. Users must agree to the terms and conditions before they are considered authenticated and can use the site.
+  adx_name: Authentication/Registration/TermsAgreementEnabled
+  adx_sitesettingid: 72e9e97a-91b1-4453-9bb3-76dd3bed4c70
+  adx_value: false
+- adx_description: Enables or disables Azure AD as an external identity provider. By default, it is set to true.
+  adx_name: Authentication/Registration/AzureADLoginEnabled
+  adx_sitesettingid: 768f06ef-6f83-4d65-8b4b-cf26188f70c8
+  adx_value: true
+- adx_name: Authentication/OpenAuth/LinkedIn/ConsumerKey
+  adx_sitesettingid: 78c71caa-cdbe-49f6-8397-c4f46ffff1e5
+- adx_name: Authentication/Registration/InvitationEnabled
+  adx_sitesettingid: 790ef0e7-02ec-48d0-842c-9d8b17879726
+  adx_value: true
+- adx_description: A true or false value. If set to true, the Last Successful Login field on the portal user’s contact will be updated with the date and time when they successfully signed in.
+  adx_name: Authentication/LoginTrackingEnabled
+  adx_sitesettingid: 7c488b61-b711-4332-b0a3-b931295624e0
+  adx_value: False
+- adx_name: Authentication/OpenAuth/Facebook/AppId
+  adx_sitesettingid: 80c58c7c-48b6-4d33-8ad3-070c9a066ae8
+- adx_filecontent: 
+  adx_name: Authentication/Registration/LoginButtonAuthenticationType
+  adx_sitesettingid: 84d61aaa-2871-4fa9-9b18-56084be56e07
+  adx_value: https://login.windows.net/ae9d6e9a-cc18-4204-ac29-43a0ccb860e8/
+- adx_description: Set whether the header web template is output cached.
+  adx_name: Header/OutputCache/Enabled
+  adx_sitesettingid: 8e9060f2-1676-45de-ae0a-17a8a8889172
+  adx_value: True
+- adx_name: Authentication/OpenAuth/Microsoft/ClientSecret
+  adx_sitesettingid: 9150a7b0-9255-4a38-a9e7-11c520ade919
+- adx_name: Authentication/OpenIdConnect/AzureAD/Caption
+  adx_sitesettingid: 95b8deeb-7c58-f011-bec1-000d3a4ecbd7
+  adx_value: Microsoft Entra ID
+- adx_name: Authentication/OpenAuth/Microsoft/ClientId
+  adx_sitesettingid: 962ff4b5-6531-4c6b-91d3-c2c2456b95c8
+- adx_filecontent: 
+  adx_name: Authentication/OpenIdConnect/AzureAD/RebrandDisclaimerEnabled
+  adx_sitesettingid: 97b8deeb-7c58-f011-bec1-000d3a4ecbd7
+  adx_value: true
+- adx_name: Site/BootstrapV5Enabled
+  adx_sitesettingid: 990c2307-7911-4c64-82a7-70d82206ced5
+  adx_value: true
+- adx_name: Authentication/OpenIdConnect/AzureAD/RegistrationClaimsMapping
+  adx_sitesettingid: 9b28ba3c-0797-4fcc-8c16-28bf1d483778
+  adx_value: emailaddress1=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress,fullname=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name,firstname=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname,lastname=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname
+- adx_name: PWAFeature
+  adx_sitesettingid: 9f647eed-2bca-4d13-81d5-c8f5f4bc22cf
+  adx_value: '{"status":"disable"}'
+- adx_filecontent: 
+  adx_name: Authentication/Registration/ExternalLoginEnabled
+  adx_sitesettingid: a19644db-7600-45ac-b737-6acd8cfe8858
+  adx_value: true
+- adx_name: Search/IndexNotesAttachments
+  adx_sitesettingid: a1ab47f9-cbd5-4b28-8eea-62f28fe73c6b
+  adx_value: false
+- adx_description: Site setting that controls the depth of the webpage hierarchy that’s cloned in a newly-added supported language. Web link sets and content snippets are cloned in the newly-added language when webpages are cloned.
+  adx_name: MultiLanguage/MaximumDepthToClone
+  adx_sitesettingid: a2f8e5a3-064c-48ec-956e-53ec8b6decdf
+  adx_value: 3
+- adx_filecontent: 
+  adx_name: Authentication/OpenIdConnect/AAD-B2C_1/RegistrationEnabled
+  adx_sitesettingid: ab807a08-5c5e-41cf-8e15-ef093333d357
+  adx_value: ''
+  statecode: 1
+  statuscode: 2
+- adx_name: Authentication/OpenIdConnect/AzureAD/AllowContactMappingWithEmail
+  adx_sitesettingid: abd80248-0af4-4e9e-868e-51f82223395c
+  adx_value: true
+- adx_name: Search/IndexQueryName
+  adx_sitesettingid: b04322f4-291e-4d17-813f-e3ca1f80e335
+  adx_value: Portal Search
+- adx_description: Site setting that determines if the language code is included in the portal URL.
+  adx_name: MultiLanguage/DisplayLanguageCodeInURL
+  adx_sitesettingid: b37d11ae-0983-49dc-b814-ada336357e8b
+  adx_value: False
+- adx_name: Authentication/UserManager/UserValidator/RequireUniqueEmail
+  adx_sitesettingid: b6a0e5e0-dc71-43af-97da-06ff138717cf
+  adx_value: true
+- adx_filecontent: 
+  adx_name: Authentication/OpenIdConnect/AzureAD/RegistrationEnabled
+  adx_sitesettingid: b751d26c-3f2b-47ad-af0c-78c81402155b
+  adx_value: true
+- adx_description: Determines if faceted search is used for this portal.
+  adx_name: Search/FacetedView
+  adx_sitesettingid: be635b92-8227-4230-876f-1db5ff95475e
+  adx_value: True
+- adx_description: A date/time value in GMT format to represent the effective date of the current published terms and conditions. If the terms agreement is enabled, portal users that have not accepted the terms after this date will be asked to accept them the next time they sign in. If the date is not provided, and the terms agreement is enabled, the terms will be presented every time portal users sign in.
+  adx_name: Authentication/Registration/TermsPublicationDate
+  adx_sitesettingid: c159c83e-5bd8-4186-8744-d8f58defc2aa
+- adx_name: Profile/ForceSignUp
+  adx_sitesettingid: c6a64ccc-e69b-415d-849e-ed4d4dc046f8
+  adx_value: False
+- adx_filecontent: 
+  adx_name: Authentication/OpenIdConnect/AAD-B2C_1/ClientId
+  adx_sitesettingid: cc7c4238-ab41-4911-a2d7-ab5cbf1d134e
+  adx_value: ''
+  statecode: 1
+  statuscode: 2
+- adx_description: Used to group a set of entities under an entry in the record type facet view.
+  adx_name: Search/RecordTypeFacetsEntities
+  adx_sitesettingid: d0e9e016-8585-40bb-bfe8-2cff11d27fc4
+  adx_value: Downloads:annotation,adx_webfile
+- adx_name: Profile/ShowMarketingOptionsPanel
+  adx_sitesettingid: d1ef31a0-78bc-41f1-a1b0-e8757479f799
+  adx_value: True
+- adx_name: Authentication/Registration/EmailConfirmationEnabled
+  adx_sitesettingid: d3dfabb3-4fb3-4d65-aabf-eb67f537c12c
+  adx_value: true
+- adx_description: Set whether the footer web template is output cached.
+  adx_name: Footer/OutputCache/Enabled
+  adx_sitesettingid: dca42237-8feb-4f17-8e7f-88a96809ef13
+  adx_value: True
+- adx_description: 'The amount of time the IP address will have to wait if Authentication/LoginThrottling/MaxInvaildAttemptsFromIPAddress occur within Authentication/LoginThrottling/MaxAttemptsTimeLimitTimeSpan amount of time. Default: 00:10:00 (10 mins)'
+  adx_name: Authentication/LoginThrottling/IpAddressTimeoutTimeSpan
+  adx_sitesettingid: dd4393ac-e67a-45f6-bb44-8e2e8617daaa
+  adx_value: 00:10:00
+- adx_name: Authentication/OpenAuth/Facebook/AppSecret
+  adx_sitesettingid: ebf58948-17a8-4e37-a390-d1b0cb3cbfa5
+- adx_name: Search/Enabled
+  adx_sitesettingid: f0d16b96-46fc-40e3-ad01-ea01ad0a2311
+  adx_value: true
+- adx_filecontent: 
+  adx_name: Authentication/OpenIdConnect/AzureAD/ExternalLogoutEnabled
+  adx_sitesettingid: f146821b-394a-43cd-992e-d87419136c83
+  adx_value: true
+- adx_description: Enabling this setting will show all customer activity on the portal timeline.
+  adx_name: CustomerSupport/DisplayAllUserActivitiesOnTimeline
+  adx_sitesettingid: f23964de-8781-4377-8022-bb0722d72d37
+  adx_value: false
+- adx_filecontent: 
+  adx_name: Authentication/OpenIdConnect/AAD-B2C_1/RedirectUri
+  adx_sitesettingid: f2f6a6a1-848a-4831-b226-a6041cccc283
+  adx_value: ''
+  statecode: 1
+  statuscode: 2
+- adx_name: OnlineDomains
+  adx_sitesettingid: f5efa0a9-5389-47db-baa7-8c7a0e251f45
+  adx_value: sharepoint.com;microsoftonline.com
+- adx_description: 'The Prefix entered here will be used to filter Notes Text, allowing you to control notes exposed on the Portal ex: *WEB*'
+  adx_name: KnowledgeManagement/NotesFilter
+  adx_sitesettingid: f7a5cb24-474c-4cfa-b200-6a0ee0033767
+  adx_value: '*WEB*'
+- adx_name: Authentication/Registration/Enabled
+  adx_sitesettingid: fffedfec-06dd-4af9-bc39-3fd665e94a73
+  adx_value: true
+# Web API settings - Main enable setting
+- adx_name: Webapi/Enabled
+  adx_value: true
+  adx_description: Enable Web API for the entire portal
+  adx_sitesettingid: 8a5d6899-b5d7-43ac-8359-482529724979
+
+# Additional Web API configuration settings
+- adx_name: Webapi/EntityPermissions/Enabled
+  adx_value: true
+  adx_description: Enable entity permissions for Web API
+  adx_sitesettingid: 8a5d6912-b5d7-43ac-8359-482529724992
+
+- adx_name: Webapi/FieldSecurity/Enabled
+  adx_value: true
+  adx_description: Enable field-level security for Web API (required for column permissions)
+  adx_sitesettingid: 8a5d6913-b5d7-43ac-8359-482529724993
+
+# Core Web API configuration settings
+- adx_name: Webapi/contact/enabled
+  adx_value: true
+  adx_description: Enable Web API for Contact table (testing standard table)
+  adx_sitesettingid: 8a5d6910-b5d7-43ac-8359-482529724990
+
+- adx_name: Webapi/contact/fields
+  adx_value: contactid,fullname,firstname,lastname,emailaddress1,telephone1
+  adx_description: Allowed fields for Contact table Web API
+  adx_sitesettingid: 8a5d6911-b5d7-43ac-8359-482529724991
+
+# =============================================================================
+# Web API Settings for RCSA Entities
+# =============================================================================
+# All entity names match the exact entity logical names from Dataverse
+# Format: Webapi/{entity_logical_name}/{setting}
+# =============================================================================
+
+# Web API settings for cr129_risk entity (singular, matches entity logical name)
+- adx_name: Webapi/cr129_risk/enabled
+  adx_value: true
+  adx_description: Enable Web API for Risk table
+  adx_sitesettingid: 8a5d6900-b5d7-43ac-8359-482529724980
+
+- adx_name: Webapi/cr129_risk/fields
+  adx_value: cr129_riskid,cr129_risktitle,cr129_riskdescription,cr129_businessunitname,_cr129_businessunitname_value,cr129_inherentrisk,cr129_residualrisk,cr129_linkedcontrols,cr129_mappedcontrol,_cr129_mappedcontrol_value,statecode,statuscode,createdon,modifiedon,ownerid,_ownerid_value
+  adx_description: Allowed fields for Risk table Web API including LinkedControls and MappedControl (explicit field names)
+  adx_sitesettingid: 8a5d6901-b5d7-43ac-8359-482529724981
+
+- adx_name: Webapi/cr129_risk/disableodatafilter
+  adx_value: false
+  adx_description: Allow OData filtering for Risk table
+  adx_sitesettingid: 8a5d6902-b5d7-43ac-8359-482529724982
+
+# Web API settings for cr129_proc entity (singular, matches entity logical name)
+- adx_name: Webapi/cr129_proc/enabled
+  adx_value: true
+  adx_description: Enable Web API for Process table
+  adx_sitesettingid: 8a5d6907-b5d7-43ac-8359-482529724987
+
+- adx_name: Webapi/cr129_proc/fields
+  adx_value: cr129_procid,cr129_processname,cr129_processid,cr129_businessunitname,_cr129_businessunitname_value,cr129_processcriticality,cr129_processowner,statecode,statuscode
+  adx_description: Allowed fields for Process table Web API (includes business unit lookup value)
+  adx_sitesettingid: 8a5d6908-b5d7-43ac-8359-482529724988
+
+- adx_name: Webapi/cr129_proc/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for Process table
+  adx_sitesettingid: 8a5d6909-b5d7-43ac-8359-482529724989
+
+# Web API settings for cr129_control entity (singular, matches entity logical name)
+- adx_name: Webapi/cr129_control/enabled
+  adx_value: true
+  adx_description: Enable Web API for Control table
+  adx_sitesettingid: 8a5d6904-b5d7-43ac-8359-482529724984
+
+# Additional Web API settings for cr129_control troubleshooting
+- adx_name: Webapi/cr129_control/maxpagesize
+  adx_value: 1000
+  adx_description: Maximum page size for Control table queries
+  adx_sitesettingid: 8a5d6946-b5d7-43ac-8359-482529725026
+
+- adx_name: Webapi/cr129_control/fields
+  adx_value: cr129_controlid,cr129_controltitle,cr129_controltype,cr129_designefficiency,cr129_operationalefficiency,cr129_isautomated,cr129_controlowner,statecode,statuscode,createdon,modifiedon,cr129_mineff
+  adx_description: All required fields for Control table Web API including system fields
+  adx_sitesettingid: 8a5d6905-b5d7-43ac-8359-482529724985
+
+- adx_name: Webapi/cr129_control/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for Control table
+  adx_sitesettingid: 8a5d6906-b5d7-43ac-8359-482529724986
+
+# =============================================================================
+# CRITICAL: Web API settings for PLURAL EntitySetName endpoints
+# Required when EnableEntitySetNaming is true - API calls use plural names
+# =============================================================================
+
+# Web API settings for cr129_controls (plural EntitySetName)
+- adx_name: Webapi/cr129_controls/enabled
+  adx_value: true
+  adx_description: Enable Web API for Control table using EntitySetName (plural)
+  adx_sitesettingid: 8a5d6950-b5d7-43ac-8359-482529725030
+
+- adx_name: Webapi/cr129_controls/fields
+  adx_value: cr129_controlid,cr129_controltitle,cr129_controltype,cr129_designefficiency,cr129_operationalefficiency,cr129_isautomated,cr129_controlowner,statecode,statuscode,createdon,modifiedon,cr129_mineff
+  adx_description: All required fields for Control table Web API (EntitySetName plural)
+  adx_sitesettingid: 8a5d6951-b5d7-43ac-8359-482529725031
+
+- adx_name: Webapi/cr129_controls/maxpagesize
+  adx_value: 1000
+  adx_description: Maximum page size for Control table queries (EntitySetName plural)
+  adx_sitesettingid: 8a5d6952-b5d7-43ac-8359-482529725032
+
+- adx_name: Webapi/cr129_controls/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for Control table (EntitySetName plural)
+  adx_sitesettingid: 8a5d6953-b5d7-43ac-8359-482529725033
+
+# Web API settings for cr129_riskctrl entity (singular, matches entity logical name)
+- adx_name: Webapi/cr129_riskctrl/enabled
+  adx_value: true
+  adx_description: Enable Web API for Risk-Control Mapping table
+  adx_sitesettingid: 8a5d6920-b5d7-43ac-8359-482529725000
+
+- adx_name: Webapi/cr129_riskctrl/fields
+  adx_value: "*"
+  adx_description: All required fields including lookup value fields for Risk-Control Mapping Web API
+  adx_sitesettingid: 8a5d6921-b5d7-43ac-8359-482529725001
+
+- adx_name: Webapi/cr129_riskctrl/disableodatafilter
+  adx_value: true
+  adx_description: Disable OData filter for Risk-Control Mapping Web API (workaround for multiple relationships issue)
+  adx_sitesettingid: 8a5d6922-b5d7-43ac-8359-482529725002
+
+# Web API settings for cr129_riskctrls (plural EntitySetName)
+- adx_name: Webapi/cr129_riskctrls/enabled
+  adx_value: true
+  adx_description: Enable Web API for Risk-Control Mapping table using EntitySetName (plural)
+  adx_sitesettingid: 8a5d6954-b5d7-43ac-8359-482529725034
+
+- adx_name: Webapi/cr129_riskctrls/fields
+  adx_value: "*"
+  adx_description: All required fields including lookup value fields for Risk-Control Mapping Web API (EntitySetName plural)
+  adx_sitesettingid: 8a5d6955-b5d7-43ac-8359-482529725035
+
+- adx_name: Webapi/cr129_riskctrls/maxpagesize
+  adx_value: 1000
+  adx_description: Maximum page size for Risk-Control Mapping table queries (EntitySetName plural)
+  adx_sitesettingid: 8a5d6956-b5d7-43ac-8359-482529725036
+
+- adx_name: Webapi/cr129_riskctrls/disableodatafilter
+  adx_value: true
+  adx_description: Disable OData filtering for Risk-Control Mapping table (EntitySetName plural) - workaround for known Power Pages issue
+  adx_sitesettingid: 8a5d6957-b5d7-43ac-8359-482529725037
+
+# Web API settings for cr129_bu entity (singular, matches entity logical name)
+- adx_name: Webapi/cr129_bu/enabled
+  adx_value: true
+  adx_description: Enable Web API for Business Unit table
+  adx_sitesettingid: 8a5d6907-b5d7-43ac-8359-482529724987
+
+- adx_name: Webapi/cr129_bu/fields
+  adx_value: cr129_buid,cr129_businessunitname,statecode,statuscode,createdon,modifiedon
+  adx_description: All required fields for Business Unit table Web API
+  adx_sitesettingid: 8a5d6908-b5d7-43ac-8359-482529724988
+
+- adx_name: Webapi/cr129_bu/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for Business Unit table
+  adx_sitesettingid: 8a5d6909-b5d7-43ac-8359-482529724989
+
+# Web API settings for cr129_kri entity (singular, matches entity logical name)
+- adx_name: Webapi/cr129_kri/enabled
+  adx_value: true
+  adx_description: Enable Web API for KRI table
+  adx_sitesettingid: 8a5d6910-b5d7-43ac-8359-482529724990
+
+- adx_name: Webapi/cr129_kri/fields
+  adx_value: cr129_kriid,cr129_kriname,cr129_kridescription,cr129_threshold,statecode,statuscode,createdon,modifiedon,ownerid,_ownerid_value
+  adx_description: All required fields for KRI table Web API
+  adx_sitesettingid: 8a5d6911-b5d7-43ac-8359-482529724991
+
+- adx_name: Webapi/cr129_kri/maxpagesize
+  adx_value: 1000
+  adx_description: Maximum page size for KRI table queries
+  adx_sitesettingid: 8a5d6912-b5d7-43ac-8359-482529724992
+
+- adx_name: Webapi/cr129_kri/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for KRI table
+  adx_sitesettingid: 8a5d6913-b5d7-43ac-8359-482529724993
+
+# =============================================================================
+# Additional plural EntitySetName Web API settings for complete coverage
+# =============================================================================
+
+# Web API settings for cr129_risks (plural EntitySetName)
+- adx_name: Webapi/cr129_risks/enabled
+  adx_value: true
+  adx_description: Enable Web API for Risk table using EntitySetName (plural)
+  adx_sitesettingid: 8a5d6958-b5d7-43ac-8359-482529725038
+
+- adx_name: Webapi/cr129_risks/fields
+  adx_value: cr129_riskid,cr129_risktitle,cr129_riskdescription,cr129_businessunitname,_cr129_businessunitname_value,cr129_inherentrisk,cr129_residualrisk,cr129_linkedcontrols,statecode,statuscode,createdon,modifiedon,ownerid,_ownerid_value
+  adx_description: All required fields for Risk table Web API including LinkedControls (EntitySetName plural)
+  adx_sitesettingid: 8a5d6959-b5d7-43ac-8359-482529725039
+
+- adx_name: Webapi/cr129_risks/maxpagesize
+  adx_value: 1000
+  adx_description: Maximum page size for Risk table queries (EntitySetName plural)
+  adx_sitesettingid: 8a5d6960-b5d7-43ac-8359-482529725040
+
+- adx_name: Webapi/cr129_risks/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for Risk table (EntitySetName plural)
+  adx_sitesettingid: 8a5d6961-b5d7-43ac-8359-482529725041
+
+# Web API settings for cr129_procs (plural EntitySetName)
+- adx_name: Webapi/cr129_processes/enabled
+  adx_value: true
+  adx_description: Enable Web API for Process table using EntitySetName (plural)
+  adx_sitesettingid: 8a5d6962-b5d7-43ac-8359-482529725042
+
+- adx_name: Webapi/cr129_processes/fields
+  adx_value: cr129_procid,cr129_processname,cr129_businessunitname,_cr129_businessunitname_value,statecode,statuscode,createdon,modifiedon,ownerid,_ownerid_value
+  adx_description: All required fields for Process table Web API (EntitySetName plural)
+  adx_sitesettingid: 8a5d6963-b5d7-43ac-8359-482529725043
+
+- adx_name: Webapi/cr129_processes/maxpagesize
+  adx_value: 1000
+  adx_description: Maximum page size for Process table queries (EntitySetName plural)
+  adx_sitesettingid: 8a5d6964-b5d7-43ac-8359-482529725044
+
+- adx_name: Webapi/cr129_processes/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for Process table (EntitySetName plural)
+  adx_sitesettingid: 8a5d6965-b5d7-43ac-8359-482529725045
+
+# Web API settings for cr129_bus (plural EntitySetName)
+- adx_name: Webapi/cr129_bus/enabled
+  adx_value: true
+  adx_description: Enable Web API for Business Unit table using EntitySetName (plural)
+  adx_sitesettingid: 8a5d6966-b5d7-43ac-8359-482529725046
+
+- adx_name: Webapi/cr129_bus/fields
+  adx_value: cr129_buid,cr129_businessunitname,statecode,statuscode,createdon,modifiedon
+  adx_description: All required fields for Business Unit table Web API (EntitySetName plural)
+  adx_sitesettingid: 8a5d6967-b5d7-43ac-8359-482529725047
+
+- adx_name: Webapi/cr129_bus/maxpagesize
+  adx_value: 1000
+  adx_description: Maximum page size for Business Unit table queries (EntitySetName plural)
+  adx_sitesettingid: 8a5d6968-b5d7-43ac-8359-482529725048
+
+- adx_name: Webapi/cr129_bus/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for Business Unit table (EntitySetName plural)
+  adx_sitesettingid: 8a5d6969-b5d7-43ac-8359-482529725049
+
+# Web API settings for cr129_assesses (plural EntitySetName)
+- adx_name: Webapi/cr129_assesses/enabled
+  adx_value: true
+  adx_description: Enable Web API for Assessment table using EntitySetName (plural)
+  adx_sitesettingid: 8a5d6970-b5d7-43ac-8359-482529725050
+
+- adx_name: Webapi/cr129_assesses/fields
+  adx_value: cr129_assessid,cr129_assessmentname,cr129_businessunitname,_cr129_businessunitname_value,statecode,statuscode,createdon,modifiedon,ownerid,_ownerid_value
+  adx_description: All required fields for Assessment table Web API (EntitySetName plural)
+  adx_sitesettingid: 8a5d6971-b5d7-43ac-8359-482529725051
+
+- adx_name: Webapi/cr129_assesses/maxpagesize
+  adx_value: 1000
+  adx_description: Maximum page size for Assessment table queries (EntitySetName plural)
+  adx_sitesettingid: 8a5d6972-b5d7-43ac-8359-482529725052
+
+- adx_name: Webapi/cr129_assesses/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for Assessment table (EntitySetName plural)
+  adx_sitesettingid: 8a5d6973-b5d7-43ac-8359-482529725053
+
+# Web API settings for cr129_issues (plural EntitySetName)
+- adx_name: Webapi/cr129_issues/enabled
+  adx_value: true
+  adx_description: Enable Web API for Issue table using EntitySetName (plural)
+  adx_sitesettingid: 8a5d6974-b5d7-43ac-8359-482529725054
+
+- adx_name: Webapi/cr129_issues/fields
+  adx_value: cr129_issueid,cr129_issuetitle,cr129_issuedescription,statecode,statuscode,createdon,modifiedon,ownerid,_ownerid_value
+  adx_description: All required fields for Issue table Web API (EntitySetName plural)
+  adx_sitesettingid: 8a5d6975-b5d7-43ac-8359-482529725055
+
+- adx_name: Webapi/cr129_issues/maxpagesize
+  adx_value: 1000
+  adx_description: Maximum page size for Issue table queries (EntitySetName plural)
+  adx_sitesettingid: 8a5d6976-b5d7-43ac-8359-482529725056
+
+- adx_name: Webapi/cr129_issues/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for Issue table (EntitySetName plural)
+  adx_sitesettingid: 8a5d6977-b5d7-43ac-8359-482529725057
+
+# Web API settings for cr129_scales (plural EntitySetName)
+- adx_name: Webapi/cr129_scales/enabled
+  adx_value: true
+  adx_description: Enable Web API for Scale table using EntitySetName (plural)
+  adx_sitesettingid: 8a5d6978-b5d7-43ac-8359-482529725058
+
+- adx_name: Webapi/cr129_scales/fields
+  adx_value: cr129_scaleid,cr129_scalename,cr129_scalevalue,statecode,statuscode,createdon,modifiedon,ownerid,_ownerid_value
+  adx_description: All required fields for Scale table Web API (EntitySetName plural)
+  adx_sitesettingid: 8a5d6979-b5d7-43ac-8359-482529725059
+
+- adx_name: Webapi/cr129_scales/maxpagesize
+  adx_value: 1000
+  adx_description: Maximum page size for Scale table queries (EntitySetName plural)
+  adx_sitesettingid: 8a5d6980-b5d7-43ac-8359-482529725060
+
+- adx_name: Webapi/cr129_scales/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for Scale table (EntitySetName plural)
+  adx_sitesettingid: 8a5d6981-b5d7-43ac-8359-482529725061
+
+# Web API settings for cr129_kris (plural EntitySetName)
+- adx_name: Webapi/cr129_kris/enabled
+  adx_value: true
+  adx_description: Enable Web API for KRI table using EntitySetName (plural)
+  adx_sitesettingid: 8a5d6982-b5d7-43ac-8359-482529725062
+
+- adx_name: Webapi/cr129_kris/fields
+  adx_value: cr129_kriid,cr129_kriname,cr129_kridescription,cr129_threshold,statecode,statuscode,createdon,modifiedon,ownerid,_ownerid_value
+  adx_description: All required fields for KRI table Web API (EntitySetName plural)
+  adx_sitesettingid: 8a5d6983-b5d7-43ac-8359-482529725063
+
+- adx_name: Webapi/cr129_kris/maxpagesize
+  adx_value: 1000
+  adx_description: Maximum page size for KRI table queries (EntitySetName plural)
+  adx_sitesettingid: 8a5d6984-b5d7-43ac-8359-482529725064
+
+- adx_name: Webapi/cr129_kris/disableodatafilter
+  adx_value: false
+  adx_description: Enable OData filtering for KRI table (EntitySetName plural)
+  adx_sitesettingid: 8a5d6985-b5d7-43ac-8359-482529725065
+
+# Additional Web API settings for authentication and metadata
+- adx_name: Webapi/error/innererror
+  adx_value: false
+  adx_description: Hide inner error details for security
+  adx_sitesettingid: 8a5d6926-b5d7-43ac-8359-482529725006
+
+# Critical Web API metadata settings
+- adx_name: Webapi/CORS/Enabled
+  adx_value: false
+  adx_description: Disable CORS for Web API
+  adx_sitesettingid: 8a5d6927-b5d7-43ac-8359-482529725007
+
+- adx_name: Webapi/MaxPageSize
+  adx_value: 5000
+  adx_description: Maximum page size for Web API queries
+  adx_sitesettingid: 8a5d6928-b5d7-43ac-8359-482529725008
+
+- adx_name: Webapi/MaxExpandDepth
+  adx_value: 2
+  adx_description: Maximum expand depth for Web API queries
+  adx_sitesettingid: 8a5d6929-b5d7-43ac-8359-482529725009
+
+# Additional critical Web API settings for metadata and authentication
+- adx_name: Webapi/url
+  adx_value: "/_api"
+  adx_description: Web API URL path
+  adx_sitesettingid: 8a5d6930-b5d7-43ac-8359-482529725010
+
+- adx_name: Webapi/AllowedOrigins
+  adx_value: "*"
+  adx_description: Allowed origins for Web API
+  adx_sitesettingid: 8a5d6931-b5d7-43ac-8359-482529725011
+
+# Simplified entity set name mappings - removing these to test if they're causing conflicts
+
+# Additional critical Web API settings
+# Temporarily removed complex Web API settings to isolate the issue
+
+# Cache invalidation setting to force portal refresh
+- adx_name: Webapi/CacheInvalidation
+  adx_value: "2025-01-16-01"
+  adx_description: Force cache invalidation for API settings
+  adx_sitesettingid: 8a5d6950-b5d7-43ac-8359-482529725030
+
+# Removed duplicate cr129_controls settings - using cr129_control (singular) instead
+
+# =============================================================================
+# EntitySetName Mappings for RCSA Tables
+# =============================================================================
+# These mappings allow Web API calls to use plural entity set names
+# while maintaining singular logical entity names for site settings
+# Per Microsoft documentation: https://learn.microsoft.com/en-us/power-pages/configure/web-api-overview#site-settings-for-the-web-api
+# =============================================================================
+
+- adx_name: Webapi/EntitySetName/cr129_risk
+  adx_value: cr129_risks
+  adx_description: Entity set name for cr129_risk table (maps singular entity to plural set name)
+  adx_sitesettingid: 8a5d6932-b5d7-43ac-8359-482529725012
+
+- adx_name: Webapi/EntitySetName/cr129_control
+  adx_value: cr129_controls
+  adx_description: Entity set name for cr129_control table (maps singular entity to plural set name)
+  adx_sitesettingid: 8a5d6933-b5d7-43ac-8359-482529725013
+
+- adx_name: Webapi/EntitySetName/cr129_proc
+  adx_value: cr129_processes
+  adx_description: Entity set name for cr129_proc table (maps singular entity to plural set name)
+  adx_sitesettingid: 8a5d6934-b5d7-43ac-8359-482529725014
+
+- adx_name: Webapi/EntitySetName/cr129_riskctrl
+  adx_value: cr129_riskctrls
+  adx_description: Entity set name for cr129_riskctrl table (maps singular entity to plural set name)
+  adx_sitesettingid: 8a5d6935-b5d7-43ac-8359-482529725015
+
+- adx_name: Webapi/EntitySetName/cr129_bu
+  adx_value: cr129_bus
+  adx_description: Entity set name for cr129_bu table (maps singular entity to plural set name)
+  adx_sitesettingid: 8a5d6936-b5d7-43ac-8359-482529725016
+
+- adx_name: Webapi/EntitySetName/cr129_assess
+  adx_value: cr129_assesses
+  adx_description: Entity set name for cr129_assess table (maps singular entity to plural set name)
+  adx_sitesettingid: 8a5d6937-b5d7-43ac-8359-482529725017
+
+- adx_name: Webapi/EntitySetName/cr129_issue
+  adx_value: cr129_issues
+  adx_description: Entity set name for cr129_issue table (maps singular entity to plural set name)
+  adx_sitesettingid: 8a5d6938-b5d7-43ac-8359-482529725018
+
+- adx_name: Webapi/EntitySetName/cr129_scale
+  adx_value: cr129_scales
+  adx_description: Entity set name for cr129_scale table (maps singular entity to plural set name)
+  adx_sitesettingid: 8a5d6939-b5d7-43ac-8359-482529725019
+
+- adx_name: Webapi/EntitySetName/cr129_kri
+  adx_value: cr129_kris
+  adx_description: Entity set name for cr129_kri table (maps singular entity to plural set name)
+  adx_sitesettingid: 8a5d6940-b5d7-43ac-8359-482529725020
+
+# Cache invalidation to force portal refresh after permission changes
+- adx_name: Webapi/CacheInvalidation
+  adx_value: "2025-01-15-20:30:00"
+  adx_description: Force portal cache refresh for Web API changes
+  adx_sitesettingid: 8a5d6941-b5d7-43ac-8359-482529725021
+
+# =============================================================================
+# CRITICAL Web API Settings for Entity Set Naming and Metadata
+# =============================================================================
+# These settings are REQUIRED for proper Web API functionality with navigation properties
+
+- adx_name: Webapi/EnableEntitySetNaming
+  adx_value: true
+  adx_description: Enable EntitySetName mappings to use plural entity set names (REQUIRED for navigation properties)
+  adx_sitesettingid: 8a5d6941-b5d7-43ac-8359-482529725021
+
+- adx_name: Webapi/MetadataEnabled
+  adx_value: true
+  adx_description: Enable Web API metadata endpoint for schema discovery and navigation properties
+  adx_sitesettingid: 8a5d6942-b5d7-43ac-8359-482529725022
+
+- adx_name: Webapi/OData/EnableKeyAsSegment
+  adx_value: false
+  adx_description: Use standard OData key format (EntitySet(key)) instead of key-as-segment
+  adx_sitesettingid: 8a5d6943-b5d7-43ac-8359-482529725023
+
+# Cache invalidation for Web API changes
+- adx_name: WebAPI/Cache-Invalidation
+  adx_value: 20250115_153000
+  adx_description: Cache invalidation timestamp for Web API permissions - Updated for LinkedControls field
+  adx_sitesettingid: 8a5d6943-b5d7-43ac-8359-482529725024
+
+# =============================================================================
+
+# =============================================================================
+# URGENT: Phase 1 Quick Fix Options for Thursday Deadline
+# =============================================================================
+
+# Quick Fix: Temporarily disable OData filters to isolate permission issues
+# Uncomment these if Phase 1 shows 403 errors to test if OData filtering is the issue
+
+# - adx_name: Webapi/cr129_risk/disableodatafilter
+#   adx_value: true
+#   adx_description: "URGENT FIX: Disable OData filtering to isolate 403 errors"
+#   adx_sitesettingid: 8a5d6950-b5d7-43ac-8359-482529725050
+
+# - adx_name: Webapi/cr129_control/disableodatafilter  
+#   adx_value: true
+#   adx_description: "URGENT FIX: Disable OData filtering to isolate 403 errors"
+#   adx_sitesettingid: 8a5d6951-b5d7-43ac-8359-482529725051
+
+# - adx_name: Webapi/cr129_risks/disableodatafilter
+#   adx_value: true
+#   adx_description: "URGENT FIX: Disable OData filtering to isolate 403 errors"
+#   adx_sitesettingid: 8a5d6952-b5d7-43ac-8359-482529725052
+
+# - adx_name: Webapi/cr129_controls/disableodatafilter
+#   adx_value: true
+#   adx_description: "URGENT FIX: Disable OData filtering to isolate 403 errors"
+#   adx_sitesettingid: 8a5d6953-b5d7-43ac-8359-482529725053
+
+# =============================================================================

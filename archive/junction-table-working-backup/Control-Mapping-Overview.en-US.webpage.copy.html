@@ -1,0 +1,867 @@
+<!-- Include jQuery FIRST, then Portal Web API Wrapper -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% if user %}
+  {% include 'Portal Web API Wrapper' %}
+  <input type="hidden" name="__RequestVerificationToken" value="{{ request.verification_token }}" />
+{% else %}
+  <!-- User not authenticated - redirect to sign in -->
+  <script>
+    console.log('❌ User not authenticated on Control Mapping page, redirecting to sign-in');
+    window.location.href = '/signin?returnUrl=' + encodeURIComponent(window.location.pathname);
+  </script>
+{% endif %}
+
+<!-- Include Bootstrap and dependencies -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+{% if user %}
+<!-- Fallback Web API Implementation for authenticated users -->
+<script>
+// Ensure webapi is available
+if (typeof webapi === 'undefined' || !webapi.safeAjax) {
+  console.warn('🔄 Web API wrapper not loaded, creating fallback implementation...');
+  
+  window.webapi = window.webapi || {};
+  
+  window.webapi.safeAjax = function(options) {
+    var deferred = $.Deferred();
+    
+    // Add verification token
+      options.headers = options.headers || {};
+      var token = $('input[name="__RequestVerificationToken"]').val();
+      if (token) {
+        options.headers["__RequestVerificationToken"] = token;
+    }
+    
+    $.ajax(options).done(deferred.resolve).fail(deferred.reject);
+    return deferred.promise();
+  };
+  
+  console.log('✅ Fallback Web API wrapper created successfully');
+}
+</script>
+
+<!-- Bootstrap 5 Control Mapping Page - Multi-Select Implementation -->
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="control-header" style="background: linear-gradient(135deg, #fd7e14 0%, #ffc107 100%); color: white; padding: 3rem 0; margin-bottom: 2rem;">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="display-5 fw-bold mb-2">Control Mapping</h1>
+          <p class="lead mb-0">Map multiple controls to identified risks across your organization</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <div class="step-indicator bg-white bg-opacity-25 rounded-pill px-3 py-1">
+            <i class="bi bi-3-circle me-2"></i>
+            Step 3 of 5
+          </div>
+          <div class="h5 mt-2 mb-0">Control Mapping</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Summary -->
+  <div class="container">
+    <div class="progress-card" style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+      <div class="row align-items-center">
+        <div class="col-md-2">
+          <div id="progressCircle" class="progress-circle mx-auto" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, #fd7e14, #ffc107); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;">0/0</div>
+        </div>
+        <div class="col-md-6">
+          <h4 class="fw-bold mb-2">Mapping Progress</h4>
+          <p class="text-muted mb-0">Track your control mapping completion across all identified risks</p>
+        </div>
+        <div class="col-md-4">
+          <div class="row text-center">
+            <div class="col-4">
+              <div id="totalRisks" class="h3 fw-bold text-primary">0</div>
+              <div class="small text-muted">Total Risks</div>
+            </div>
+            <div class="col-4">
+              <div id="mappedRisks" class="h3 fw-bold text-success">0</div>
+              <div class="small text-muted">Mapped</div>
+            </div>
+            <div class="col-4">
+              <div id="unmappedRisks" class="h3 fw-bold text-warning">0</div>
+              <div class="small text-muted">Unmapped</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk Cards Grid -->
+  <div class="container">
+    <div id="riskCardsGrid" class="row g-4">
+      <!-- Risk cards will be populated dynamically -->
+          </div>
+          </div>
+
+  <!-- Action Buttons -->
+  <div class="container">
+    <div class="row mt-4 mb-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+          <button onclick="goBack()" class="btn btn-outline-secondary btn-lg">
+            <i class="bi bi-arrow-left me-2"></i>
+              Back to Risk Identification
+            </button>
+          <button id="continueBtn" onclick="continueToNextStep()" class="btn btn-warning btn-lg">
+            Continue to Residual Assessment
+            <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Control Selection Modal - Multi-Select Implementation -->
+<div id="controlMappingModal" class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Map Controls to Risk</h5>
+        <button type="button" data-bs-dismiss="modal" class="btn-close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <h6 id="modalRiskTitle" class="fw-bold">Risk Title</h6>
+          <p id="modalRiskDescription" class="text-muted">Risk description</p>
+        </div>
+        <div class="mb-3">
+          <input type="text" placeholder="Search available controls..." id="controlSearch" class="form-control" />
+        </div>
+        <div id="controlOptions" class="control-options">
+          <!-- Loading state -->
+          <div class="text-center p-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading controls...</span>
+            </div>
+            <p class="mt-2 text-muted">Loading available controls...</p>
+          </div>
+            </div>
+          </div>
+      <div class="modal-footer">
+        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cancel</button>
+        <button type="button" onclick="saveControlMappings()" class="btn btn-primary">Save Mappings</button>
+            </div>
+          </div>
+            </div>
+          </div>
+
+<!-- Enhanced JavaScript for Multi-Select Control Mapping with Junction Table -->
+<script>
+class MultiSelectControlMapping {
+  constructor() {
+    this.selectedRisks = [];
+    this.availableControls = [];
+    this.currentRiskId = null;
+    this.currentRiskData = null;
+    this.riskMappings = {}; // Track current mappings: { riskId: [controlIds] }
+    this.existingMappings = new Map(); // Initialize the existingMappings Map for junction table data
+    this.init();
+  }
+
+  async init() {
+    console.log('✅ Initializing Multi-Select Control Mapping with cr129_riskctrl junction table');
+    
+    try {
+      // Load selected risks from session storage
+      this.loadSelectedRisks();
+      
+      // Load available controls from Dataverse
+      await this.loadAvailableControls();
+      
+      // Load existing mappings from Dataverse using the junction table
+      await this.loadExistingMappingsFromJunctionTable();
+      
+      // Bind event handlers
+      this.bindEvents();
+      
+      console.log('✅ Multi-Select Control Mapping page initialized successfully');
+      
+    } catch (error) {
+      console.error('❌ Error initializing Control Mapping page:', error);
+      // Show error message to user
+      this.displayErrorState();
+    }
+  }
+
+  // Load risks from Risk Identification session storage [[memory:3367576]]
+  loadSelectedRisks() {
+    console.log('🔄 Loading selected risks from session storage...');
+    
+    try {
+      // Load risks from Risk Identification V2 page
+      const allRisks = JSON.parse(sessionStorage.getItem('rcsa_custom_risks') || '[]');
+      console.log('📋 All risks loaded from session storage:', allRisks);
+      
+      // Filter risks for the current process
+      const processId = sessionStorage.getItem('rcsa_selected_process_id');
+      console.log('🔍 Current process ID:', processId);
+      
+      if (processId) {
+        this.selectedRisks = allRisks.filter(risk => risk.processId === processId);
+      } else {
+        this.selectedRisks = allRisks;
+      }
+      
+      console.log('✅ Selected risks loaded for Control Mapping:', this.selectedRisks.length, 'risks');
+      
+      // Display the risks
+      this.displaySelectedRisks();
+      this.updateProgress();
+      
+    } catch (error) {
+      console.error('❌ Error loading selected risks:', error);
+      this.selectedRisks = [];
+      this.displayEmptyState();
+    }
+  }
+
+  // Load available controls from Dataverse [[memory:3346968]]
+  async loadAvailableControls() {
+    console.log('🔄 Loading controls from Dataverse...');
+    
+    try {
+      // Use the correct EntitySetName for controls
+      const response = await webapi.safeAjax({
+        url: '/_api/cr129_controls?$select=cr129_controlid,cr129_controltitle,cr129_controltype,cr129_controlowner&$filter=statecode eq 0&$orderby=cr129_controltitle',
+        type: 'GET',
+        contentType: 'application/json; charset=utf-8'
+      });
+      
+      this.availableControls = response.value || [];
+      console.log('✅ Controls loaded from Dataverse:', this.availableControls.length);
+      
+    } catch (error) {
+      console.error('❌ Error loading controls from Dataverse:', error);
+      // Use fallback controls
+      this.availableControls = this.getFallbackControls();
+      console.log('⚠️ Using fallback controls:', this.availableControls.length);
+    }
+  }
+
+  // Fallback controls when Dataverse is unavailable
+  getFallbackControls() {
+      return [
+        {
+          cr129_controlid: 'fallback-001',
+          cr129_controltitle: 'Access Control Review',
+        cr129_controltype: 'Preventive',
+          cr129_controlowner: 'IT Security Team'
+        },
+        {
+          cr129_controlid: 'fallback-002',
+          cr129_controltitle: 'Segregation of Duties',
+          cr129_controltype: 'Preventive',
+          cr129_controlowner: 'Finance Team'
+        },
+        {
+          cr129_controlid: 'fallback-003',
+          cr129_controltitle: 'Automated Monitoring',
+          cr129_controltype: 'Detective',
+          cr129_controlowner: 'Risk Management'
+      },
+      {
+        cr129_controlid: 'fallback-004',
+        cr129_controltitle: 'Regular System Backups',
+        cr129_controltype: 'Detective',
+        cr129_controlowner: 'IT Operations'
+      },
+      {
+        cr129_controlid: 'fallback-005',
+        cr129_controltitle: 'Compliance Monitoring',
+        cr129_controltype: 'Detective',
+        cr129_controlowner: 'Compliance Team'
+      }
+    ];
+  }
+
+  // Load existing mappings from junction table - FIXED VERSION
+  async loadExistingMappingsFromJunctionTable() {
+    console.log('🔄 Loading existing mappings from cr129_riskctrl junction table...');
+    
+    try {
+      // Use lookup value fields for reading (they work for SELECT but not for FILTER)
+      const response = await webapi.safeAjax({
+                        url: '/_api/cr129_riskctrls?$filter=statecode eq 0&$expand=cr129_ControlTitle($select=cr129_controlid,cr129_controltitle),cr129_RIskTitle($select=cr129_riskid,cr129_risktitle)',
+        type: 'GET',
+        contentType: 'application/json; charset=utf-8'
+      });
+      
+      console.log('✅ Junction records loaded successfully:', response.value?.length || 0, 'mappings found');
+      console.log('🔍 Sample junction record structure:', response.value?.[0]);
+      
+      // Process the mappings using physical field names
+      this.existingMappings.clear();
+      
+      if (response.value) {
+                  response.value.forEach(record => {
+            // Extract GUID values from expanded objects (working approach from guide)
+            const riskId = record.cr129_RIskTitle?.cr129_riskid;
+            const controlId = record.cr129_ControlTitle?.cr129_controlid;
+            
+            console.log('🔍 Processing record - Risk ID:', riskId, 'Control ID:', controlId, 'Record:', record);
+          
+          if (riskId && controlId) {
+            if (!this.existingMappings.has(riskId)) {
+              this.existingMappings.set(riskId, []);
+            }
+            this.existingMappings.get(riskId).push({
+              controlId: controlId,
+              junctionRecordId: record.cr129_riskctrlid
+            });
+          }
+        });
+      }
+      
+      console.log('✅ Existing mappings processed:', this.existingMappings.size, 'risks have mappings');
+      
+      // Update the display with loaded mappings
+      this.applyExistingMappingsToDisplay();
+      
+      return true;
+      
+    } catch (error) {
+      console.log('❌ Error loading existing mappings from junction table:', error);
+      if (error.responseJSON?.error) {
+        console.log('Error details:', error.responseJSON.error);
+      }
+      return false;
+    }
+  }
+  
+  // Apply existing mappings to the display
+  applyExistingMappingsToDisplay() {
+    console.log('🎨 Applying existing mappings to display...');
+    
+    // Convert existingMappings to the format expected by the UI
+    this.riskMappings = {};
+    
+    for (const [riskId, mappings] of this.existingMappings.entries()) {
+      // Find the local risk that matches this GUID
+      console.log('🔍 Looking for local risk with ID:', riskId);
+      console.log('🔍 Available risk IDs:', this.selectedRisks.map(r => ({ id: r.id, cr129_riskid: r.cr129_riskid })));
+      
+      const localRisk = this.selectedRisks.find(r => (r.cr129_riskid || r.id) === riskId);
+      
+      if (localRisk) {
+        this.riskMappings[localRisk.id] = mappings.map(m => m.controlId);
+        
+        // Update the risk card display
+        const controls = mappings.map(m => this.availableControls.find(c => c.cr129_controlid === m.controlId)).filter(Boolean);
+        this.updateRiskCard(localRisk.id, controls);
+        
+        console.log('✅ Applied mappings for risk:', localRisk.id, '→', mappings.length, 'controls');
+      }
+    }
+    
+    this.updateProgress();
+    console.log('✅ All existing mappings applied to display');
+  }
+
+  // Display the selected risks as cards
+  displaySelectedRisks() {
+    const container = document.getElementById('riskCardsGrid');
+    
+    if (this.selectedRisks.length === 0) {
+      this.displayEmptyState();
+      return;
+    }
+    
+    container.innerHTML = this.selectedRisks.map(risk => this.generateRiskCard(risk)).join('');
+    
+    // Add event listeners for map control buttons
+    container.querySelectorAll('.map-control-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const riskId = e.target.getAttribute('data-risk-id');
+        const riskTitle = e.target.getAttribute('data-risk-title');
+        const riskDescription = e.target.getAttribute('data-risk-description');
+        this.openControlMapping(riskId, riskTitle, riskDescription);
+      });
+    });
+  }
+
+  // Generate HTML for a risk card
+  generateRiskCard(risk) {
+    const categoryClass = this.getCategoryClass(risk.category);
+    const severityBadge = this.getSeverityBadge(risk.likelihood, risk.impact);
+    
+    return `
+      <div class="col-lg-4">
+        <div data-risk-id="${risk.id}" class="risk-card unmapped" style="border: 2px solid #ffc107; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; background: #fffbf0; transition: all 0.3s ease; position: relative;">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h5 class="fw-bold mb-0">${risk.title}</h5>
+            ${severityBadge}
+        </div>
+          <p class="text-muted mb-3">${risk.description}</p>
+        <div class="mb-3">
+            <span class="badge ${categoryClass} mb-2">${risk.category}</span>
+            <div class="small fw-bold mb-2">Mapped Controls:</div>
+          <div id="controls-${risk.id}" class="controls-container">
+              <div class="text-muted small">No controls mapped yet</div>
+          </div>
+        </div>
+        <div class="d-grid">
+            <button class="btn btn-outline-primary map-control-btn" data-risk-id="${risk.id}" data-risk-title="${risk.title}" data-risk-description="${risk.description}">
+            <i class="bi bi-plus-circle me-2"></i>
+              Map Controls
+          </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Display empty state when no risks found
+  displayEmptyState() {
+    const container = document.getElementById('riskCardsGrid');
+    container.innerHTML = `
+      <div class="col-12">
+        <div class="text-center py-5">
+          <i class="bi bi-exclamation-triangle text-muted mb-3" style="font-size: 4rem;"></i>
+          <h4 class="text-muted">No Risks Found</h4>
+          <p class="text-muted">Please complete Risk Identification first to identify risks that need control mapping.</p>
+          <button onclick="controlMapping.goBack()" class="btn btn-primary">
+            <i class="bi bi-arrow-left me-2"></i>
+            Go to Risk Identification
+          </button>
+        </div>
+        </div>
+      `;
+  }
+
+  // Display error state when initialization fails
+  displayErrorState() {
+    const container = document.getElementById('riskCardsGrid');
+    container.innerHTML = `
+      <div class="col-12">
+        <div class="text-center py-5">
+          <i class="bi bi-exclamation-triangle text-danger mb-3" style="font-size: 4rem;"></i>
+          <h4 class="text-danger">Initialization Error</h4>
+          <p class="text-muted">There was an error loading the Control Mapping page. Please try refreshing the page.</p>
+          <button class="btn btn-primary" onclick="window.location.reload()">
+            <i class="bi bi-arrow-clockwise me-2"></i>Refresh Page
+          </button>
+        </div>
+        </div>
+      `;
+  }
+
+  // Open control mapping modal
+  openControlMapping(riskId, riskTitle, riskDescription) {
+    this.currentRiskId = riskId;
+    this.currentRiskData = this.selectedRisks.find(r => r.id === riskId);
+    
+    document.getElementById('modalRiskTitle').textContent = riskTitle;
+    document.getElementById('modalRiskDescription').textContent = riskDescription;
+    
+    // Populate control options with checkboxes
+    this.populateControlOptions();
+
+    const modal = new bootstrap.Modal(document.getElementById('controlMappingModal'));
+    modal.show();
+  }
+
+  // Populate control options in modal (multi-select with checkboxes)
+  populateControlOptions() {
+    const container = document.getElementById('controlOptions');
+    const currentMappings = this.riskMappings[this.currentRiskId] || [];
+    
+    if (this.availableControls.length === 0) {
+      container.innerHTML = `
+        <div class="text-center p-4">
+          <i class="bi bi-exclamation-triangle text-warning mb-3" style="font-size: 3rem;"></i>
+          <h6 class="text-muted">No Controls Available</h6>
+          <p class="text-muted small">Controls could not be loaded from Dataverse.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = this.availableControls.map(control => `
+      <div data-control-id="${control.cr129_controlid}" class="control-option" style="background: white; border: 1px solid #e9ecef; border-radius: 8px; padding: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.3s ease;">
+        <div class="form-check">
+          <input type="checkbox" id="${control.cr129_controlid}" name="selectedControls" value="${control.cr129_controlid}" class="form-check-input" ${currentMappings.includes(control.cr129_controlid) ? 'checked' : ''} />
+          <label for="${control.cr129_controlid}" class="form-check-label w-100">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <strong>${control.cr129_controltitle}</strong>
+                <br />
+                <small class="text-muted">Type: ${control.cr129_controltype || 'Unknown'}</small>
+                <br />
+                <small class="text-muted">Owner: ${control.cr129_controlowner || 'Unknown'}</small>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+    `).join('');
+    
+    // Add click handlers for the control options
+    container.querySelectorAll('.control-option').forEach(option => {
+      option.addEventListener('click', (e) => {
+        if (e.target.type !== 'checkbox') {
+          const checkbox = option.querySelector('input[type="checkbox"]');
+          checkbox.checked = !checkbox.checked;
+        }
+      });
+    });
+  }
+
+  // Save control mappings using junction table
+  async saveControlMappings() {
+    const saveBtn = document.querySelector('#controlMappingModal .btn-primary');
+    const originalText = saveBtn.innerHTML;
+    
+    try {
+      // Show loading state
+      saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+      saveBtn.disabled = true;
+      
+      const riskId = this.currentRiskId;
+      const selectedControls = Array.from(document.querySelectorAll('input[name="selectedControls"]:checked')).map(cb => cb.value);
+      const currentMappings = this.riskMappings[riskId] || [];
+      
+      console.log('💾 Saving control mappings - Risk:', riskId);
+      console.log('📋 Selected controls:', selectedControls);
+      console.log('📋 Current mappings:', currentMappings);
+      
+      // Find the risk to get its GUID
+      const risk = this.selectedRisks.find(r => r.id === riskId);
+      if (!risk) {
+        throw new Error('Risk not found');
+      }
+      
+      const riskGuid = risk.cr129_riskid || risk.id;
+      
+      // Determine what needs to be added and removed
+      const toAdd = selectedControls.filter(id => !currentMappings.includes(id));
+      const toRemove = currentMappings.filter(id => !selectedControls.includes(id));
+      
+      console.log('➕ Controls to add:', toAdd);
+      console.log('➖ Controls to remove:', toRemove);
+      
+      // Remove deselected mappings
+      for (const controlId of toRemove) {
+        await this.removeJunctionRecord(riskGuid, controlId);
+      }
+      
+      // Add new mappings
+      for (const controlId of toAdd) {
+        const response = await this.createJunctionRecord(riskGuid, controlId);
+        
+        // Update the cache with the new record
+        if (response && response.cr129_riskctrlid) {
+          if (!this.existingMappings.has(riskGuid)) {
+            this.existingMappings.set(riskGuid, []);
+          }
+          this.existingMappings.get(riskGuid).push({
+            controlId: controlId,
+            junctionRecordId: response.cr129_riskctrlid
+          });
+        }
+      }
+      
+      // Update local state
+      this.riskMappings[riskId] = selectedControls;
+      
+      // Update risk card display
+      const selectedControlObjects = selectedControls.map(id => this.availableControls.find(c => c.cr129_controlid === id)).filter(Boolean);
+      this.updateRiskCard(riskId, selectedControlObjects);
+      this.updateProgress();
+      
+      // Close modal
+      const modal = bootstrap.Modal.getInstance(document.getElementById('controlMappingModal'));
+      modal.hide();
+      
+      // Show success message
+      this.showSuccessMessage(`Successfully mapped ${selectedControls.length} controls to risk!`);
+      
+    } catch (error) {
+      console.error('❌ Error saving control mappings:', error);
+      this.showErrorMessage('Failed to save control mappings. Please try again.');
+    } finally {
+      // Restore button state
+      saveBtn.innerHTML = originalText;
+      saveBtn.disabled = false;
+    }
+  }
+
+  // Create a new junction table record
+  async createJunctionRecord(riskGuid, controlGuid) {
+    console.log('➕ Creating junction record:', riskGuid, '→', controlGuid);
+    
+    const junctionData = {
+      "cr129_RIskTitle@odata.bind": `/cr129_risks(${riskGuid})`,
+      "cr129_ControlTitle@odata.bind": `/cr129_controls(${controlGuid})`
+    };
+    
+    console.log('🔄 Junction POST data:', junctionData);
+    
+    try {
+      const response = await webapi.safeAjax({
+        url: '/_api/cr129_riskctrls',
+        type: 'POST',
+        data: JSON.stringify(junctionData),
+        contentType: 'application/json; charset=utf-8'
+      });
+      
+      console.log('✅ Junction record created successfully');
+      return response;
+    } catch (error) {
+      console.error('❌ Error creating junction record:', error);
+      console.error('Error details:', error.responseText || error.statusText);
+      throw error;
+    }
+  }
+
+  // Remove a junction table record using cached data approach
+  async removeJunctionRecord(riskGuid, controlGuid) {
+    console.log('🗑️ Removing junction record:', riskGuid, '→', controlGuid);
+    
+    try {
+      // Method 1: Try to use cached data first
+      let recordToDelete = null;
+      
+      if (this.existingMappings.has(riskGuid)) {
+        const mappings = this.existingMappings.get(riskGuid);
+        const mapping = mappings.find(m => m.controlId === controlGuid);
+        if (mapping) {
+          recordToDelete = mapping.junctionRecordId;
+        }
+      }
+      
+      if (recordToDelete) {
+        // Use cached ID - fastest approach
+        await webapi.safeAjax({
+          url: `/_api/cr129_riskctrls(${recordToDelete})`,
+          type: 'DELETE',
+          contentType: 'application/json; charset=utf-8'
+        });
+        
+        console.log('✅ Junction record deleted using cached ID:', recordToDelete);
+        
+        // Update cache
+        if (this.existingMappings.has(riskGuid)) {
+          const mappings = this.existingMappings.get(riskGuid);
+          const updatedMappings = mappings.filter(m => m.controlId !== controlGuid);
+          if (updatedMappings.length > 0) {
+            this.existingMappings.set(riskGuid, updatedMappings);
+          } else {
+            this.existingMappings.delete(riskGuid);
+          }
+        }
+        
+      } else {
+        // Method 2: Load all records and filter client-side (fallback)
+        console.log('🔍 Record not in cache, loading all records to find match...');
+        
+        const response = await webapi.safeAjax({
+                      url: `/_api/cr129_riskctrls?$filter=statecode eq 0&$expand=cr129_ControlTitle($select=cr129_controlid,cr129_controltitle),cr129_RIskTitle($select=cr129_riskid,cr129_risktitle)`,
+          type: 'GET',
+          contentType: 'application/json; charset=utf-8'
+        });
+        
+        const records = response.value || [];
+        
+        // Filter records to find the one matching our risk and control  
+        const matchingRecords = records.filter(record => {
+                      // Use expanded objects to get GUIDs
+            const recordRiskId = record.cr129_RIskTitle?.cr129_riskid;
+            const recordControlId = record.cr129_ControlTitle?.cr129_controlid;
+            return recordRiskId === riskGuid && recordControlId === controlGuid;
+        });
+        
+        if (matchingRecords.length === 0) {
+          console.log('❌ No matching junction record found for deletion');
+          throw new Error('Junction record not found for deletion');
+        }
+        
+        for (const record of matchingRecords) {
+          await webapi.safeAjax({
+            url: `/_api/cr129_riskctrls(${record.cr129_riskctrlid})`,
+            type: 'DELETE',
+            contentType: 'application/json; charset=utf-8'
+          });
+          
+          console.log('✅ Junction record deleted successfully:', record.cr129_riskctrlid);
+        }
+      }
+      
+    } catch (error) {
+      console.error('❌ Error removing junction record:', error);
+      throw error;
+    }
+  }
+
+  // Update risk card display
+  updateRiskCard(riskId, controls) {
+    const riskCard = document.querySelector(`[data-risk-id="${riskId}"]`);
+    const controlsContainer = document.getElementById(`controls-${riskId}`);
+    
+    if (!controlsContainer) return;
+    
+    if (!controls || controls.length === 0) {
+      // No controls mapped
+      controlsContainer.innerHTML = '<div class="text-muted small">No controls mapped yet</div>';
+      riskCard.classList.remove('mapped');
+      riskCard.classList.add('unmapped');
+      riskCard.style.borderColor = '#ffc107';
+      riskCard.style.backgroundColor = '#fffbf0';
+    } else {
+      // Controls mapped
+      const controlsList = controls.map(control => `
+        <div class="d-flex align-items-center justify-content-between mb-1">
+          <div>
+            <span class="fw-bold text-success small">${control.cr129_controltitle}</span>
+            <br />
+            <small class="text-muted">${control.cr129_controltype || 'Unknown Type'}</small>
+          </div>
+          <i class="bi bi-check-circle-fill text-success"></i>
+        </div>
+      `).join('');
+      
+      controlsContainer.innerHTML = `
+        <div class="mapped-controls">
+          ${controlsList}
+          <div class="mt-2">
+            <span class="badge bg-success">${controls.length} control${controls.length > 1 ? 's' : ''} mapped</span>
+          </div>
+        </div>
+      `;
+      
+      riskCard.classList.remove('unmapped');
+      riskCard.classList.add('mapped');
+      riskCard.style.borderColor = '#28a745';
+      riskCard.style.backgroundColor = '#f8fff9';
+    }
+  }
+
+  // Update progress summary
+  updateProgress() {
+    const totalRisks = this.selectedRisks.length;
+    const mappedCount = Object.keys(this.riskMappings).filter(riskId => this.riskMappings[riskId].length > 0).length;
+    const unmappedCount = totalRisks - mappedCount;
+    
+    document.getElementById('progressCircle').textContent = `${mappedCount}/${totalRisks}`;
+    document.getElementById('totalRisks').textContent = totalRisks;
+    document.getElementById('mappedRisks').textContent = mappedCount;
+    document.getElementById('unmappedRisks').textContent = unmappedCount;
+    
+    // Enable continue button (controls are optional)
+    document.getElementById('continueBtn').disabled = false;
+  }
+
+  // Bind event handlers
+  bindEvents() {
+    // Search functionality
+    document.getElementById('controlSearch').addEventListener('input', (e) => {
+      this.filterControls(e.target.value);
+    });
+  }
+
+  // Filter controls in modal
+  filterControls(searchTerm) {
+    const controlOptions = document.querySelectorAll('.control-option');
+    const term = searchTerm.toLowerCase();
+    
+    controlOptions.forEach(option => {
+      const controlText = option.textContent.toLowerCase();
+      option.style.display = controlText.includes(term) ? 'block' : 'none';
+    });
+  }
+
+  // Navigation functions
+  goBack() {
+    console.log('🔄 Navigating back to Risk Identification...');
+    window.location.href = '/Risk-ID';
+  }
+
+  continueToNextStep() {
+    console.log('🔄 Continuing to Residual Assessment...');
+    
+    // Store mappings in session storage for next step
+    sessionStorage.setItem('rcsa_control_mappings', JSON.stringify(this.riskMappings));
+    
+    // Show loading state
+    const btn = document.getElementById('continueBtn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
+    btn.disabled = true;
+    
+    setTimeout(() => {
+      window.location.href = '/Residual-Assessment';
+    }, 1000);
+  }
+
+  // Utility functions
+  getCategoryClass(category) {
+    const categoryClasses = {
+      'Credit': 'bg-danger text-white',
+      'Operational': 'bg-warning text-dark',
+      'Market': 'bg-info text-white',
+      'Liquidity': 'bg-primary text-white',
+      'Compliance': 'bg-success text-white',
+      'Technology': 'bg-secondary text-white',
+      'Fraud': 'bg-dark text-white'
+    };
+    return categoryClasses[category] || 'bg-secondary text-white';
+  }
+
+  getSeverityBadge(likelihood, impact) {
+    const score = (likelihood || 1) * (impact || 1);
+    if (score >= 16) return '<span class="badge bg-danger">Critical</span>';
+    if (score >= 9) return '<span class="badge bg-warning">High</span>';
+    if (score >= 4) return '<span class="badge bg-info">Medium</span>';
+    return '<span class="badge bg-success">Low</span>';
+  }
+
+  showSuccessMessage(message) {
+    // Simple alert for now - can be enhanced with toast notifications
+    console.log('✅ Success:', message);
+    alert(message);
+  }
+
+  showErrorMessage(message) {
+    // Simple alert for now - can be enhanced with toast notifications
+    console.error('❌ Error:', message);
+    alert(message);
+  }
+}
+
+// Global functions for onclick handlers
+function openControlMapping(riskId, riskTitle, riskDescription) {
+  window.controlMapping.openControlMapping(riskId, riskTitle, riskDescription);
+}
+
+function saveControlMappings() {
+  window.controlMapping.saveControlMappings();
+}
+
+function goBack() {
+  window.controlMapping.goBack();
+}
+
+function continueToNextStep() {
+  window.controlMapping.continueToNextStep();
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('✅ Multi-Select Control Mapping page loaded');
+  window.controlMapping = new MultiSelectControlMapping();
+});
+</script>
+{% endif %}
+
+<div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;">
+  <div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;"><div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;"></div></div>
+</div>
